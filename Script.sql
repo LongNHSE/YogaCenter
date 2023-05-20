@@ -6,19 +6,17 @@ GO
 --CREATE TABLE--
 
 
-
+CREATE TABLE room(
+	[maRoom] NVARCHAR(10) primary key,
+	[roomNo] NVARCHAR(10) NOT NULL,
+	[status] BIT NOT NULL
+	)
 CREATE TABLE slot(
 	[maSlot] NVARCHAR(10) primary key,
 	[timeStart] Time NOT NULL,
 	[timeEnd] Time NOT NULL
 )
-CREATE TABLE lichDay(
-	[maLichDay] NVARCHAR(10) primary key,
-	[Ngay] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-	[maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-	
-	CONSTRAINT fk_slot_CH FOREIGN KEY ([maSlot]) REFERENCES slot([maSlot])
-)
+
 
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
@@ -51,10 +49,13 @@ CREATE TABLE lopHoc(
 	[soBuoi] INTEGER NOT NULL,
 	[maTrainer] NVARCHAR(10) NOT NULL, -- CONSTRAINT --
 	[maLoaiLopHoc] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-	[maLichDay] NVARCHAR(10) NOT NULL --CONSTRAINT
+	[maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+	[maRoom] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	[ngay] NVARCHAR(20) NOT NULL 
 	CONSTRAINT fk_maTrainer_lopHoc FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer]),
 	CONSTRAINT fk_loaiLopHoc_lopHoc FOREIGN KEY([maLoaiLopHoc]) REFERENCES loaiLopHoc([maLoaiLopHoc]),
-	CONSTRAINT fk_maLD_lopHoc FOREIGN KEY([maLichDay]) REFERENCES lichDay(maLichDay)
+	CONSTRAINT fk_maSlot_lopHoc FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
+	CONSTRAINT fk_maRoom_lopHoc FOREIGN KEY([maRoom]) REFERENCES room(maRoom)
 	)
 CREATE TABLE [admin](
 	[maAdmin] NVARCHAR(10) primary key,
