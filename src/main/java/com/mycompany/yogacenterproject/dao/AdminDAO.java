@@ -44,7 +44,7 @@ public class AdminDAO {
     }
 
     //CREATE NEW ADMIN
-    public boolean createAdmin(String usernName, String psw, String maAdmin) {
+    public boolean createAdmin(String userName, String psw, String maAdmin) {
         String sql = "INSERT INTO [dbo].[Admin] (maAdmin,username, psw)" + "VALUES(?, ?, ?)";
 
         // If ps.executeUpdate() co du lieu vao thi return 1 va return 0 neu ko co
@@ -53,7 +53,7 @@ public class AdminDAO {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, maAdmin);
-            ps.setString(2, usernName);
+            ps.setString(2, userName);
             ps.setString(3, psw);
 
             row = ps.executeUpdate();
@@ -96,7 +96,7 @@ public class AdminDAO {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO = adminDAO.login("sa2", "1234");
         System.out.println(adminDTO.toString());
-adminDAO.deleteAdmin("AD0001");
+//adminDAO.deleteAdmin("AD0001");
 //        adminDAO.createAdmin("sa2", "123123", "AD0002");
     }
 }
