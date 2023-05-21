@@ -19,7 +19,7 @@ import org.apache.commons.mail.resolver.DataSourceUrlResolver;
  */
 public class test {
 
-    public static void main(String[] args) throws EmailException, MalformedURLException {
+    public static void OTPSender(String OTP) throws EmailException, MalformedURLException {
 
         // Tạo đối tượng Email
         ImageHtmlEmail email = new ImageHtmlEmail();
@@ -43,7 +43,6 @@ public class test {
         URL url = new URL("https://gpcoder.com");
 
         email.setDataSourceResolver(new DataSourceUrlResolver(url));
-        String OTP = Utils.generateRandomString(5);
         // Nội dung email
         String htmlContent = "<div style=\"font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2\">"
                 + "  <div style=\"margin:50px auto;width:70%;padding:20px 0\">"
@@ -73,5 +72,9 @@ public class test {
         email.send();
 
         System.out.println("Message sent successfully");
+    }
+
+    public static void main(String[] args) throws EmailException, MalformedURLException {
+
     }
 }

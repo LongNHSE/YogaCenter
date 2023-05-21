@@ -4,19 +4,24 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.test;
+import com.mycompany.yogacenterproject.util.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
  * @author Oalskad
  */
-@WebServlet(name = "OTPController", urlPatterns = {"/OTPController"})
 public class OTPController extends HttpServlet {
 
     /**
@@ -29,19 +34,24 @@ public class OTPController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, EmailException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet OTPController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet OTPController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String OTP = Utils.generateRandomString(5);
+            test.OTPSender(OTP);
+            
+            HttpSession sessionOTP = request.getSession();
+            
+            sessionOTP.setMaxInactiveInterval(5);
+            sessionOTP.setAttribute("OTP", OTP);
+
+            // Send the OTP as a response
+            
+            
+            
+            String url = "Test/OTPTest.jsp";
+           response.sendRedirect(url);
         }
     }
 
@@ -57,7 +67,11 @@ public class OTPController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (EmailException ex) {
+            Logger.getLogger(OTPController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -71,7 +85,11 @@ public class OTPController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (EmailException ex) {
+            Logger.getLogger(OTPController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

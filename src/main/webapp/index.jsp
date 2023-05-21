@@ -1,8 +1,9 @@
 <%-- 
-    Document   : OTPTest
-    Created on : May 21, 2023, 4:44:24 PM
+    Document   : index
+    Created on : May 21, 2023, 5:23:32 PM
     Author     : Oalskad
 --%>
+
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -10,13 +11,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        
     </head>
     <body>
-       
-        <h1>Your OTP: ${OTP}</h1>
-        asdasdsd
+        <form action="<%=url%>/OTPController" method="POST">
+            <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">Log
+                in</button>
+        </form>
     </body>
 </html>
