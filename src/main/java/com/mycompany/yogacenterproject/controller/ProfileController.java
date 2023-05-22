@@ -40,21 +40,21 @@ public class ProfileController extends HttpServlet {
     }
 
     public void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /// View profile trainee
-        String url = "/profile.jsp";
-        String maHV = request.getParameter("maHV");
-        TraineeDAO dao = new TraineeDAO();
-        TraineeDTO trainee = dao.details(maHV);
-        if (trainee!=null&& maHV.equals(trainee.getMaHV())) {
-            String Ho = dao.details(maHV).getHo();
-            String Ten = dao.details(maHV).getTen();
-            Date dob = dao.details(maHV).getDob();
-//        session.setAttribute("Ho", Ho);
-//        session.setAttribute("Ten", Ten);
-//        session.setAttribute("dob", dob);
-        }
-        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/profile.jsp");
-        rd.forward(request, response);
+//        /// View profile trainee
+//        String url = "/profile.jsp";
+//        String maHV = request.getParameter("maHV");
+//        TraineeDAO dao = new TraineeDAO();
+//        TraineeDTO trainee = dao.details(maHV);
+//        if (trainee!=null&& maHV.equals(trainee.getMaHV())) {
+//            String Ho = dao.details(maHV).getHo();
+//            String Ten = dao.details(maHV).getTen();
+//            Date dob = dao.details(maHV).getDob();
+////        session.setAttribute("Ho", Ho);
+////        session.setAttribute("Ten", Ten);
+////        session.setAttribute("dob", dob);
+//        }
+//        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/profile.jsp");
+//        rd.forward(request, response);
     }
 
     public void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
