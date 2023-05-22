@@ -4,8 +4,8 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.hocVienDAO;
-import com.mycompany.yogacenterproject.dto.hocVienDTO;
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;

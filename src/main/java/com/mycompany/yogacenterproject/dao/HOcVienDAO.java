@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
-import com.mycompany.yogacenterproject.dto.hocVienDTO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class hocVienDAO {
+public class HocVienDAO {
 //Read list của toàn bộ học viên
 
-    public List<hocVienDTO> readListHocVien() {
-        List<hocVienDTO> listHocVien = new ArrayList<>();
+    public List<HocVienDTO> readListHocVien() {
+        List<HocVienDTO> listHocVien = new ArrayList<>();
         try {
             String sql = "SELECT * FROM hocVien";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -33,7 +33,7 @@ public class hocVienDAO {
                 String psw = rs.getString("psw");
                 String maLopHoc = rs.getString("maLopHoc");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                hocVienDTO newTrainee = new hocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
                 listHocVien.add(newTrainee);
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class hocVienDAO {
     }
     
 // Tìm kiếm details của 1 người dựa trên id
-    public hocVienDTO searchHocVienById(String maHV) {
+    public HocVienDTO searchHocVienById(String maHV) {
         try {
             String sql = "SELECT * FROM hocVien where maHV=?";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -57,17 +57,17 @@ public class hocVienDAO {
                 String psw = rs.getString("psw");
                 String maLopHoc = rs.getString("maLopHoc");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                hocVienDTO newTrainee = new hocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
                 return newTrainee;
             }
         } catch (SQLException e) {
-            Logger.getLogger(hocVienDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
     
 /// Add thêm học viên
-    public void addHocVien(hocVienDTO newHocVien) {
+    public void addHocVien(HocVienDTO newHocVien) {
         try {
             String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email)"
                     + "values (?,?,?,?,?,?,?,?,?)";
@@ -88,7 +88,7 @@ public class hocVienDAO {
     }
     
 ///Update học viên
-    public void updateHocVien(hocVienDTO upTrainee) {
+    public void updateHocVien(HocVienDTO upTrainee) {
         try {
             String sql = "Update hocVien set Ho=?,Ten=?,dob=?, username=?,psw=? WHERE maHV=?";
             PreparedStatement stmt = DBUtils.getConnection().prepareStatement(sql);
@@ -100,7 +100,7 @@ public class hocVienDAO {
             stmt.setString(5, upTrainee.getMaHV());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(hocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -113,7 +113,7 @@ public class hocVienDAO {
             stm.setString(1, maHV);
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(hocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

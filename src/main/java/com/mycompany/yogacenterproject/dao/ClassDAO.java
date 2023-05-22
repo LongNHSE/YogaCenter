@@ -5,7 +5,7 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.ClassDTO;
-import com.mycompany.yogacenterproject.dto.hocVienDTO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Date;
 import java.sql.PreparedStatement;

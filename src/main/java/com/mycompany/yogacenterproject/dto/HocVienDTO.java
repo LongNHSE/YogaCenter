@@ -6,7 +6,7 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
 
-public class hocVienDTO {
+public class HocVienDTO {
     private String maHV;
     private String Ho;
     private String Ten;
@@ -17,10 +17,10 @@ public class hocVienDTO {
     private String maLoaiTK;
     public String email;
     
-    public hocVienDTO() {
+    public HocVienDTO() {
     }
 
-    public hocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
