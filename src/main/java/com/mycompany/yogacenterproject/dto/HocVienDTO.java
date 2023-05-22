@@ -6,7 +6,7 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
 
-public class TraineeDTO {
+public class hocVienDTO {
     private String maHV;
     private String Ho;
     private String Ten;
@@ -15,16 +15,12 @@ public class TraineeDTO {
     private String psw;
     private String maLopHoc;
     private String maLoaiTK;
-
-    public TraineeDTO() {
+    public String email;
+    
+    public hocVienDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "TraineeDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + '}';
-    }
-
-    public TraineeDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK) {
+    public hocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
@@ -33,6 +29,7 @@ public class TraineeDTO {
         this.psw = psw;
         this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
+        this.email = email;
     }
 
     public String getMaHV() {
@@ -98,6 +95,20 @@ public class TraineeDTO {
     public void setMaLoaiTK(String maLoaiTK) {
         this.maLoaiTK = maLoaiTK;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "TraineeDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + '}';
+    }
+
     
     
 }

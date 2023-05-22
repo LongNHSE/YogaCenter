@@ -4,8 +4,8 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.TraineeDAO;
-import com.mycompany.yogacenterproject.dto.TraineeDTO;
+import com.mycompany.yogacenterproject.dao.hocVienDAO;
+import com.mycompany.yogacenterproject.dto.hocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -43,8 +43,8 @@ public class ProfileController extends HttpServlet {
 //        /// View profile trainee
 //        String url = "/profile.jsp";
 //        String maHV = request.getParameter("maHV");
-//        TraineeDAO dao = new TraineeDAO();
-//        TraineeDTO trainee = dao.details(maHV);
+//        hocVienDAO dao = new hocVienDAO();
+//        hocVienDTO trainee = dao.details(maHV);
 //        if (trainee!=null&& maHV.equals(trainee.getMaHV())) {
 //            String Ho = dao.details(maHV).getHo();
 //            String Ten = dao.details(maHV).getTen();
