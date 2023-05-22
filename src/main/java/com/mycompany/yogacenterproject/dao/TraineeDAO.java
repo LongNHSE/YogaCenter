@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class TraineeDAO {
 
-    public List<TraineeDTO> read() {
+    public List<TraineeDTO> readTrainee() {
         List<TraineeDTO> listTrainee = new ArrayList<>();
         try {
             String sql = "SELECT * FROM hocVien";
@@ -34,6 +34,9 @@ public class TraineeDAO {
                 String maLoaiTK = rs.getString("maLoaiTK");
                 TraineeDTO newTrainee = new TraineeDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK);
                 listTrainee.add(newTrainee);
+
+                rs.close();
+                stm.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +44,7 @@ public class TraineeDAO {
         return listTrainee;
     }
 
-    public TraineeDTO details(String maHV) {
+    public TraineeDTO searchHvByMaHV(String maHV) {
         try {
             String sql = "SELECT * FROM hocVien where maHV=?";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -56,12 +59,20 @@ public class TraineeDAO {
                 String maLopHoc = rs.getString("maLopHoc");
                 String maLoaiTK = rs.getString("maLoaiTK");
                 TraineeDTO newTrainee = new TraineeDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK);
+                
+                rs.close();
+                stm.close();
+                
                 return newTrainee;
+
             }
         } catch (SQLException e) {
             Logger.getLogger(TraineeDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
+    
+    
+    //UPDATE 
 
 }
