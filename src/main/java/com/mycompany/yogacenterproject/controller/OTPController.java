@@ -38,14 +38,14 @@ public class OTPController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-            hocVienDTO hocVienDTO = session.getAttribute("hocVienDTO");
+//            HttpSession session = request.getSession();
+//            hocVienDTO hocVienDTO = session.getAttribute("hocVienDTO");
             String OTP = Utils.generateRandomString(5);
-            EmailController.OTPSender(OTP, hocVienDTO.email );
-            
+//            EmailController.OTPSender(OTP, hocVienDTO.email );
+            EmailController.OTPSender(OTP, "Oalskad1904@gmail.com" );
             HttpSession sessionOTP = request.getSession();
             
-            sessionOTP.setMaxInactiveInterval(5);
+            sessionOTP.setMaxInactiveInterval(60);
             sessionOTP.setAttribute("OTP", OTP);
 
             // Send the OTP as a response

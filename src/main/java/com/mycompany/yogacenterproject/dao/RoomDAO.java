@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,27 @@ import java.util.List;
  * @author Oalskad
  */
 public class RoomDAO {
+
+    public boolean updateRoom(String maRoom, boolean status) {
+        String sql = " UPDATE [dbo].[Room]" + "SET"
+                + "status = ?"
+                + "WHERE maRoom = ?";
+        int row = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, status);
+
+            ps.setString(2, maRoom);
+            row = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return row > 0;
+    }
 
     public List<RoomDTO> readRoom() {
         List<RoomDTO> listRoomDTO = new ArrayList<RoomDTO>();
