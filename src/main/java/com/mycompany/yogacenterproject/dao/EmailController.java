@@ -17,9 +17,9 @@ import org.apache.commons.mail.resolver.DataSourceUrlResolver;
  *
  * @author Oalskad
  */
-public class test {
+public class EmailController {
 
-    public static void OTPSender(String OTP) throws EmailException, MalformedURLException {
+    public static void OTPSender(String OTP,String mailAddress) throws EmailException, MalformedURLException {
 
         // Tạo đối tượng Email
         ImageHtmlEmail email = new ImageHtmlEmail();
@@ -33,7 +33,7 @@ public class test {
         email.setFrom(MailConfig.APP_EMAIL);
 
         // Người nhận
-        email.addTo(MailConfig.RECEIVE_EMAIL);
+        email.addTo(mailAddress);
 
         // Tiêu đề
         email.setSubject("Testing Subject");

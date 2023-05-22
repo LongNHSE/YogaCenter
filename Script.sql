@@ -8,7 +8,6 @@ GO
 
 CREATE TABLE room(
 	[maRoom] NVARCHAR(10) primary key,
-	[roomNo] NVARCHAR(10) NOT NULL,
 	[status] BIT NOT NULL
 	)
 CREATE TABLE slot(
@@ -70,7 +69,7 @@ CREATE TABLE hocVien(
 	[dob] DATE NOT NULL,
 	[username] NVARCHAR(50) NOT NULL,
 	[psw] NVARCHAR(75) NOT NULL,
-	[maLopHoc] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+	[maLopHoc] NVARCHAR(10) NULL, --CONSTRAINT--
 	[maLoaiTK] NVARCHAR(10) NOT NULL --Constraint--
 	CONSTRAINT fk_maLop_HocVien FOREIGN KEY([maLopHoc]) REFERENCES lopHoc([maLopHoc]),
 	CONSTRAINT fk_loaiTK_HocVien FOREIGN KEY([maLoaiTK]) REFERENCES loaiTaiKhoan([maLoaiTK])

@@ -12,7 +12,7 @@ public class Constants {
 
     public static final String MA_ADMIN_FORMAT = "AD%04";
     public static final String MA_SLOT_FORMAT = "SL%04";
-
+    public static final String MA_ROOM_FORMAT = "RO%04";
     
     
     

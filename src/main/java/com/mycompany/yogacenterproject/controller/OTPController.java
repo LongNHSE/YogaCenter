@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.test;
+import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.util.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,8 +38,10 @@ public class OTPController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            HttpSession session = request.getSession();
+            hocVienDTO hocVienDTO = session.getAttribute("hocVienDTO");
             String OTP = Utils.generateRandomString(5);
-            test.OTPSender(OTP);
+            EmailController.OTPSender(OTP, hocVienDTO.email );
             
             HttpSession sessionOTP = request.getSession();
             

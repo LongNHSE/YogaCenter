@@ -46,16 +46,18 @@ public class SlotDAO {
     }
 
     //UPDATE SLOT
-    public boolean updateSlot(Time timeStartNew, Time timeEndNew) {
+    public boolean updateSlot(Time timeStartNew, Time timeEndNew,String maSlot) {
         String sql = " UPDATE [dbo].[slot]" + "SET"
                 + "timeStart = ?"
-                + "timeEnd= ?";
+                + "timeEnd= ?"
+                + "WHERE maSlot = ?";
         int row = 0;
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setTime(1, timeStartNew);
             ps.setTime(2, timeEndNew);
+            ps.setString(3, maSlot);
             row = ps.executeUpdate();
 
             ps.close();
@@ -82,6 +84,10 @@ public class SlotDAO {
                 slotDTO.setTimeEnd(rs.getTime("timeEnd"));
 
                 listSlotDTO.add(slotDTO);
+                
+                rs.close();
+                ps.close();
+                conn.close();
             }
         } catch (SQLException e) {
             System.out.println(e);

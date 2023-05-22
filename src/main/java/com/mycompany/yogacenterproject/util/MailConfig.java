@@ -21,5 +21,5 @@ public class MailConfig {
 
     public static final String APP_PASSWORD = "kznikmofofvfavtr"; // your password
 
-    public static final String RECEIVE_EMAIL = "oalskad1904@gmail.com";
+    
 }
