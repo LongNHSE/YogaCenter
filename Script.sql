@@ -68,10 +68,12 @@ CREATE TABLE hocVien(
 	[Ten] NVARCHAR(25) NOT NULL,
 	[dob] DATE NOT NULL,
 	[username] NVARCHAR(50) NOT NULL,
+	
 	[psw] NVARCHAR(75) NOT NULL,
 	[maLopHoc] NVARCHAR(10) NULL, --CONSTRAINT--
-	[maLoaiTK] NVARCHAR(10) NOT NULL --Constraint--
-	CONSTRAINT fk_maLop_HocVien FOREIGN KEY([maLopHoc]) REFERENCES lopHoc([maLopHoc]),
+	[maLoaiTK] NVARCHAR(10) NOT NULL, --Constraint--
+	[email] NVARCHAR(50) NOT NULL
+	
 	CONSTRAINT fk_loaiTK_HocVien FOREIGN KEY([maLoaiTK]) REFERENCES loaiTaiKhoan([maLoaiTK])
 	)
 CREATE TABLE diemDanh(
@@ -94,8 +96,8 @@ CREATE TABLE hoaDon(
 	CONSTRAINT fk_maHV_hoaDon FOREIGN KEY([maHV]) REFERENCES hocVien([maHV]),
 	CONSTRAINT fk_maLop_hoaDon FOREIGN KEY([maLopHoc]) REFERENCES lopHoc([maLopHoc])
 	)
-CREATE TABLE Don(
-	[maDon] NVARCHAR(10) primary key,
+CREATE TABLE Request(
+	[maRequest] NVARCHAR(10) primary key,
 	[maHV] NVARCHAR(10),  --CONSTRAINT--
 	[maTrainer] NVARCHAR(10),  --CONSTRAINT-- 
 	[maLopHoc] NVARCHAR(10) ,--CONSTRAINT--
