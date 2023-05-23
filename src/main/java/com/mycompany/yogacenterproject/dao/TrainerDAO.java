@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
-import com.mycompany.yogacenterproject.dto.hocVienDTO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Date;

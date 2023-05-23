@@ -4,27 +4,24 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.EmailController;
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
-
-
-import com.mycompany.yogacenterproject.util.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.commons.mail.EmailException;
 
 /**
  *
  * @author Oalskad
  */
-public class OTPController extends HttpServlet {
+public class AdminController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,32 +33,40 @@ public class OTPController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, EmailException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-           
-
             HttpSession session = request.getSession();
-
-            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-
-            String OTP = Utils.generateRandomString(5);
-//            EmailController.OTPSender(OTP, hocVienDTO.email );
-            EmailController.OTPSender(OTP, "Oalskad1904@gmail.com" );
-            HttpSession sessionOTP = request.getSession();
+            String action = request.getParameter("action");
+          
+             listHocVienDTO(request,response);
+//            
+//            
+//            switch (action) {
+//                case "listHocVienDTO":
+//                    listHocVienDTO(request,response);
+//                    break;
+//                default:
+//                    throw new AssertionError();
+//            }
             
-            sessionOTP.setMaxInactiveInterval(60);
-            sessionOTP.setAttribute("OTP", OTP);
-
-            // Send the OTP as a responSse
             
             
             
-            String url = "Test/OTPTest.jsp";
-           response.sendRedirect(url);
+            
+            
         }
+    }
+    public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        listHocVienDTO = hocVienDAO.readListHocVien();
+        request.setAttribute("listHocVienDTO", listHocVienDTO);
+//        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HocVienList.jsp");
+        rs.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -76,11 +81,7 @@ public class OTPController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (EmailException ex) {
-            Logger.getLogger(OTPController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -94,11 +95,7 @@ public class OTPController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (EmailException ex) {
-            Logger.getLogger(OTPController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

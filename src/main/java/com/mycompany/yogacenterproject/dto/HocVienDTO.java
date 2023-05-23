@@ -16,11 +16,12 @@ public class HocVienDTO {
     private String maLopHoc;
     private String maLoaiTK;
     public String email;
+    public String phone;
     
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
@@ -30,7 +31,18 @@ public class HocVienDTO {
         this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
         this.email = email;
+        this.phone = phone;
     }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    
 
     public String getMaHV() {
         return maHV;
