@@ -33,7 +33,9 @@ public class HocVienDAO {
                 String psw = rs.getString("psw");
                 String maLopHoc = rs.getString("maLopHoc");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, email, phone);
                 listHocVien.add(newTrainee);
             }
         } catch (SQLException e) {
@@ -41,7 +43,7 @@ public class HocVienDAO {
         }
         return listHocVien;
     }
-    
+
 // Tìm kiếm details của 1 người dựa trên id
     public HocVienDTO searchHocVienById(String maHV) {
         try {
@@ -57,7 +59,9 @@ public class HocVienDAO {
                 String psw = rs.getString("psw");
                 String maLopHoc = rs.getString("maLopHoc");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, maHV);
+                String email = rs.getString("email");
+                String phone = rs.getString("phone");
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, email, phone);
                 return newTrainee;
             }
         } catch (SQLException e) {
@@ -65,11 +69,11 @@ public class HocVienDAO {
         }
         return null;
     }
-    
+
 /// Add thêm học viên
     public void addHocVien(HocVienDTO newHocVien) {
         try {
-            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email)"
+            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone)"
                     + "values (?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newHocVien.getMaHV());
@@ -81,12 +85,13 @@ public class HocVienDAO {
             stm.setString(7, newHocVien.getMaLopHoc());
             stm.setString(8, newHocVien.getMaLoaiTK());
             stm.setString(9, newHocVien.getEmail());
+            stm.setString(10, newHocVien.getPhone());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(TrainerDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
 ///Update học viên
     public void updateHocVien(HocVienDTO upTrainee) {
         try {
@@ -103,7 +108,7 @@ public class HocVienDAO {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     ////Hủy diệt 1 đứa học sinh bằng id
     public void deleteHocVienById(String maHV) {
         try {
@@ -115,5 +120,12 @@ public class HocVienDAO {
         } catch (SQLException ex) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public static void main(String[] args) {
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        listHocVienDTO = hocVienDAO.readListHocVien();
+        
+        System.out.println(listHocVienDTO);
     }
 }
