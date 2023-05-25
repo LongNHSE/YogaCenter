@@ -12,37 +12,28 @@ public class HocVienDTO {
     private String Ten;
     private Date dob;
     private String username;
+    public String phone;    
     private String psw;
     private String maLopHoc;
     private String maLoaiTK;
     public String email;
-    public String phone;
+;
     
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLopHoc, String maLoaiTK, String email) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
         this.dob = dob;
         this.username = username;
+        this.phone = phone;
         this.psw = psw;
         this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
         this.email = email;
-        this.phone = phone;
     }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    
 
     public String getMaHV() {
         return maHV;
@@ -84,6 +75,14 @@ public class HocVienDTO {
         this.username = username;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPsw() {
         return psw;
     }
@@ -116,10 +115,14 @@ public class HocVienDTO {
         this.email = email;
     }
 
+    
+
     @Override
     public String toString() {
-        return "TraineeDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + '}';
+        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", phone=" + phone + '}';
     }
+
+    
 
     
     
