@@ -4,6 +4,8 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -29,10 +31,18 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        try ( PrintWriter out = response.getWriter()) {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");    
+        HocVienDAO dao = new HocVienDAO();
+        HocVienDTO a = dao.login(email, password);
+        if(a == null){
+            request.getRequestDispatcher("signin.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("success.jsp").forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
