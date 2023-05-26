@@ -46,7 +46,7 @@ public class DBUtils {
     private final static String userID = "sa";
     private final static String password = "123456";
 
-    public static void main(String[] args) {
-        getConnection();
-    }
+//    public static void main(String[] args) {
+//        getConnection();
+//    }
 }

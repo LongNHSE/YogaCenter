@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
-import com.mycompany.yogacenterproject.dto.ClassDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Date;
@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClassDAO {
+public class LopHocDAO {
 
 ///Hiện danh sách lớp
-    public List<ClassDTO> readListClass() {
-        List<ClassDTO> listClass = new ArrayList<>();
+    public List<LopHocDTO> readListClass() {
+        List<LopHocDTO> listClass = new ArrayList<>();
         try {
             String sql = "SELECT * FROM lopHoc";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -34,7 +34,7 @@ public class ClassDAO {
                 String maSlot = rs.getString("maSlot");
                 String maRoom = rs.getString("maRoom");
                 Date ngay = rs.getDate("ngay");
-                ClassDTO displayClass = new ClassDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
+                LopHocDTO displayClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
                 listClass.add(displayClass);
             }
             return listClass;
@@ -45,7 +45,7 @@ public class ClassDAO {
     }
 
 ////Search class by id
-    public ClassDTO searchClassById(String maLopHoc) {
+    public LopHocDTO searchClassById(String maLopHoc) {
         try {
             String sql = "SELECT * FROM lopHoc where maLopHoc=?";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -59,17 +59,17 @@ public class ClassDAO {
                 String maSlot = rs.getString("maSlot");
                 String maRoom = rs.getString("maRoom");
                 Date ngay = rs.getDate("ngay");
-                ClassDTO foundClass = new ClassDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
+                LopHocDTO foundClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
                 return foundClass;
             }
         } catch (SQLException e) {
-            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
 
 //////Insert a class
-    public void addClass(ClassDTO newClass) {
+    public void addClass(LopHocDTO newClass) {
         try {
             String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maTrainer,maLoaiLopHoc,maSlot,maRoom,ngay)"
                     + "values(?,?,?,?,?,?,?,?)";
@@ -83,12 +83,12 @@ public class ClassDAO {
             stm.setString(7, newClass.getMaRoom());
             stm.setDate(8, newClass.getNgay());
         } catch (SQLException e) {
-            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
 /////Update Class (1 lớp có thể thay đổi giáo viên và mã phòng nhưng không thể thay đổi ngày, số buổi, loại lớp học)
-    public void updateClass(ClassDTO upClass) {
+    public void updateClass(LopHocDTO upClass) {
         try {
             String sql="UPDATE lopHoc set soLuongHV=?,maTrainer=?,maSlot=?,maRoom=?"
                     + "where maLopHoc=?";
@@ -99,7 +99,7 @@ public class ClassDAO {
             stm.setString(4,upClass.getMaRoom());
             stm.setString(5,upClass.getMaLopHoc());
         } catch (SQLException e) {
-            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -112,7 +112,7 @@ public void deleteClassById(String maLopHoc) {
             stm.setString(1, maLopHoc);
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(ClassDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }      
 }

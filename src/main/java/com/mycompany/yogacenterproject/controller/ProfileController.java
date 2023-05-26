@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class ProfileController extends HttpServlet {
 
@@ -24,11 +25,11 @@ public class ProfileController extends HttpServlet {
         try {
             String action = request.getParameter("action");
             switch (action) {
-                case "view":
-                    view(request, response);
+                case "viewProfile":
+                    viewProfile(request, response);
                     break;
-                case "update":
-                    update(request, response);
+                case "updateProfile":
+                    updateProfile(request, response);
                     break;
                 default:
                     break;
@@ -39,11 +40,11 @@ public class ProfileController extends HttpServlet {
         }
     }
 
-    public void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        /// View profile trainee
-//        String url = "/profile.jsp";
+    public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /// View profile trainee
+//        String url = "/profile.jsp";              ///Mot ham lay id ** Dung id de tim thong tin detail ** View profile dua tren thong tin
 //        String maHV = request.getParameter("maHV");
-//        hocVienDAO dao = new hocVienDAO();
+        HocVienDAO dao = new HocVienDAO();
 //        hocVienDTO trainee = dao.details(maHV);
 //        if (trainee!=null&& maHV.equals(trainee.getMaHV())) {
 //            String Ho = dao.details(maHV).getHo();
@@ -53,11 +54,12 @@ public class ProfileController extends HttpServlet {
 ////        session.setAttribute("Ten", Ten);
 ////        session.setAttribute("dob", dob);
 //        }
-//        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/profile.jsp");
-//        rd.forward(request, response);
+        /////Lam 1 ham check login cua Hoc Vien
+        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/profile.jsp");
+        rd.forward(request, response);
     }
 
-    public void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void updateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 

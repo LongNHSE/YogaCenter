@@ -122,10 +122,9 @@ public class HocVienDAO {
         }
     }
     public static void main(String[] args) {
-        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
-        
         System.out.println(listHocVienDTO);
     }
 }
