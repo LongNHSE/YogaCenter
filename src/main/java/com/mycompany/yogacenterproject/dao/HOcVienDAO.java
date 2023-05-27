@@ -40,7 +40,8 @@ public class HocVienDAO {
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, email, phone);
+                String gender = rs.getString("gender");
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
                 listHocVien.add(newTrainee);
             }
         } catch (SQLException e) {
@@ -66,7 +67,8 @@ public class HocVienDAO {
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, psw, maLopHoc, maLoaiTK, email, phone);
+                String gender = rs.getString("gender");
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
                 return newTrainee;
             }
         } catch (SQLException e) {
@@ -78,8 +80,8 @@ public class HocVienDAO {
 /// Add thêm học viên
     public void addHocVien(HocVienDTO newHocVien) {
         try {
-            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone)"
-                    + "values (?,?,?,?,?,?,?,?,?)";
+            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone,gender)"
+                    + "values (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
@@ -91,6 +93,7 @@ public class HocVienDAO {
             stm.setString(8, newHocVien.getMaLoaiTK());
             stm.setString(9, newHocVien.getEmail());
             stm.setString(10, newHocVien.getPhone());
+            stm.setString(11, newHocVien.getGender());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(TrainerDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -137,8 +140,9 @@ public class HocVienDAO {
             ps.setString(2, pass);
             rs=ps.executeQuery();
             while(rs.next()){
+                
 //              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                return new HocVienDTO(rs.getString(1),rs.getString(2), rs.getString(3), rs.getDate(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10));
+                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLopHoc"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
                 
             }
         } catch (Exception e) {
@@ -148,7 +152,7 @@ public class HocVienDAO {
     public static void main(String[] args) {
         List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO login = hocVienDAO.login("devlindinh", "123456");
+        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
         
         System.out.println(login);
     }

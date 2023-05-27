@@ -3,7 +3,9 @@
     Created on : May 27, 2023, 12:37:59 AM
     Author     : devli
 --%>
-
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -28,7 +30,7 @@
                 <h3>Sign In</h3>
                 <span>or use your account</span>
 
-                <form action="${pageContext.request.contextPath}/login" id="form_input">
+                <form action="${url}/login" id="form_input">
                     <div class="type">
                         <input type="text" placeholder="Username" name="username" >
 

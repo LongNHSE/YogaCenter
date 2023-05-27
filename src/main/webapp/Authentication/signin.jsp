@@ -3,7 +3,9 @@
     Created on : May 23, 2023, 9:53:30 PM
     Author     : devli
 --%>
-
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- link css -->
-    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
 
     <!-- link icon -->
     <link
@@ -33,7 +35,8 @@
           <h3>Sign In</h3>
           <span>or use your account</span>
 
-          <form action="login" id="form_input" method="POST">
+          <form action="<%=url%>/LoginController/login" id="form_input" method="POST">
+             <%=url%>
             <div class="type">
               <input type="text" placeholder="Username" name="username" id="username" />
             </div>
@@ -115,6 +118,6 @@
     </div>
 
     <!-- link script -->
-    <script src="./assets/js/main.js"></script>
+    <script src="${url}/assets/js/main.js"></script>
   </body>
 </html>

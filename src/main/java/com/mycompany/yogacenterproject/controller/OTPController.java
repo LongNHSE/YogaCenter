@@ -7,10 +7,10 @@ package com.mycompany.yogacenterproject.controller;
 import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 
-
 import com.mycompany.yogacenterproject.util.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -41,27 +41,32 @@ public class OTPController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
-           
-
-            HttpSession session = request.getSession();
-
-            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-
-            String OTP = Utils.generateRandomString(5);
-//            EmailController.OTPSender(OTP, hocVienDTO.email );
-            EmailController.OTPSender(OTP, "Oalskad1904@gmail.com" );
-            HttpSession sessionOTP = request.getSession();
-            
-            sessionOTP.setMaxInactiveInterval(60);
-            sessionOTP.setAttribute("OTP", OTP);
-
-            // Send the OTP as a responSse
             
             
+         
             
-            String url = "Test/OTPTest.jsp";
-           response.sendRedirect(url);
         }
+    }
+
+    public static boolean checkOTP(HttpServletRequest request, HttpServletResponse response,String OTP) {
+        boolean check = false;
+        HttpSession sessionOTP = request.getSession();
+        String OTPCheck = (String)sessionOTP.getAttribute("OTP") ;
+        check = OTPCheck.equals(OTP);
+        return check;
+    }
+
+    public static void generateOTP(String email, HttpServletRequest request) throws EmailException, MalformedURLException {
+        String OTP = "";
+
+        OTP = Utils.generateRandomString(5);
+        EmailController.OTPSender(OTP, email);
+        EmailController.OTPSender(OTP, email);
+        HttpSession sessionOTP = request.getSession();
+
+        sessionOTP.setMaxInactiveInterval(60);
+        sessionOTP.setAttribute("OTP", OTP);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

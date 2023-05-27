@@ -13,18 +13,19 @@ public class HocVienDTO {
     private String Ten;
     private Date dob;
     private String username;
-    public String phone;
+    private String phone;
     private String psw;
     private String maLopHoc;
     private String maLoaiTK;
-    public String email;
+    private String email;
+    private String gender;
 
     ;
     
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLopHoc, String maLoaiTK, String email) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLopHoc, String maLoaiTK, String email, String gender) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
@@ -35,7 +36,18 @@ public class HocVienDTO {
         this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
         this.email = email;
+        this.gender = gender;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    
 
     public String getMaHV() {
         return maHV;
