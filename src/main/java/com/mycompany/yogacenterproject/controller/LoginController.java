@@ -7,11 +7,13 @@ package com.mycompany.yogacenterproject.controller;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  *
@@ -33,15 +35,19 @@ public class LoginController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        String email = request.getParameter("email");
+
+        HttpSession session=request.getSession();  
+        String username = request.getParameter("username");
         String password = request.getParameter("password");    
         HocVienDAO dao = new HocVienDAO();
-        HocVienDTO a = dao.login(email, password);
-        if(a == null){
+        HocVienDTO hocVienDTO = dao.login(username, password);
+        if(hocVienDTO == null){
             request.getRequestDispatcher("signin.jsp").forward(request, response);
         }else{
+            session.setAttribute("user", hocVienDTO);
             request.getRequestDispatcher("success.jsp").forward(request, response);
         }
+        
 
     }
 

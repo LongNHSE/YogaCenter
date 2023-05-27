@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 public class HocVienDAO {
     Connection conn = null;
     PreparedStatement ps = null;
-    ResultSet rs = null;    
+    ResultSet rs = null; 
+
 //Read list của toàn bộ học viên
 
     public List<HocVienDTO> readListHocVien() {

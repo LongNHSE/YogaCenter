@@ -7,17 +7,19 @@ package com.mycompany.yogacenterproject.dto;
 import java.sql.Date;
 
 public class HocVienDTO {
+
     private String maHV;
     private String Ho;
     private String Ten;
     private Date dob;
     private String username;
-    public String phone;    
+    public String phone;
     private String psw;
     private String maLopHoc;
     private String maLoaiTK;
     public String email;
-;
+
+    ;
     
     public HocVienDTO() {
     }
@@ -115,15 +117,10 @@ public class HocVienDTO {
         this.email = email;
     }
 
-    
-
     @Override
     public String toString() {
         return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", phone=" + phone + '}';
+
     }
 
-    
-
-    
-    
 }
