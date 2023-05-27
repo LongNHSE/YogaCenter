@@ -7,39 +7,44 @@ package com.mycompany.yogacenterproject.dto;
 import java.sql.Date;
 
 public class HocVienDTO {
+
     private String maHV;
     private String Ho;
     private String Ten;
     private Date dob;
     private String username;
+    private String phone;
     private String psw;
     private String maLopHoc;
     private String maLoaiTK;
-    public String email;
-    public String phone;
+    private String email;
+    private String gender;
+
+    ;
     
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLopHoc, String maLoaiTK, String email, String gender) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
         this.dob = dob;
         this.username = username;
+        this.phone = phone;
         this.psw = psw;
         this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
         this.email = email;
-        this.phone = phone;
+        this.gender = gender;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getGender() {
+        return gender;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     
@@ -84,6 +89,14 @@ public class HocVienDTO {
         this.username = username;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPsw() {
         return psw;
     }
@@ -118,9 +131,8 @@ public class HocVienDTO {
 
     @Override
     public String toString() {
-        return "TraineeDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + '}';
+        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", phone=" + phone + '}';
+
     }
 
-    
-    
 }

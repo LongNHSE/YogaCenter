@@ -22,11 +22,7 @@ CREATE TABLE loaiLopHoc(
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
 	[hocPhi] DECIMAL(10,2) NOT NULL
 	)
-CREATE TABLE loaiTaiKhoan(
-	[maLoaiTK] NVARCHAR(10) primary key,
-	[tenLoaiTK] NVARCHAR(20) NOT NULL,
-	[vaitro] NVARCHAR(15) NOT NULL
-	)
+
 CREATE TABLE Trainer(
 	[maTrainer] NVARCHAR(10) primary key,
 	[HoVaTen] NVARCHAR(50) NOT NULL,
@@ -39,8 +35,8 @@ CREATE TABLE Trainer(
 	[soNgayNghi] INTEGER NOT NULL,
 	[status] BIT NOT NULL,
 	[trainerType] VARCHAR(255) NOT NULL,
-	[maLoaiTK] NVARCHAR(10) NOT NULL --CONSTRAINT--
-	CONSTRAINT fk_loaiTK_TRAINER FOREIGN KEY([maLoaiTK]) REFERENCES loaiTaiKhoan([maLoaiTK])
+	
+	
 	)
 CREATE TABLE lopHoc(
 	[maLopHoc] NVARCHAR(10) primary key,
@@ -70,11 +66,12 @@ CREATE TABLE hocVien(
 	[username] NVARCHAR(50) NOT NULL,
 	[phone] NVARCHAR(11) NOT NULL,
 	[psw] NVARCHAR(75) NOT NULL,
+	[gender]nvarchar(10)NOT NULL,
 	[maLopHoc] NVARCHAR(10) NULL, --CONSTRAINT--
 	[maLoaiTK] NVARCHAR(10) NOT NULL, --Constraint--
 	[email] NVARCHAR(50) NOT NULL
 	
-	CONSTRAINT fk_loaiTK_HocVien FOREIGN KEY([maLoaiTK]) REFERENCES loaiTaiKhoan([maLoaiTK])
+	
 	)
 CREATE TABLE diemDanh(
 	[maDiemDanh] NVARCHAR(10) primary key,

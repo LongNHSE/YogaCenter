@@ -1,3 +1,6 @@
+﻿DROP DATABASE YogaCenter
+go
+
 CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
@@ -68,13 +71,11 @@ CREATE TABLE hocVien(
 	[Ten] NVARCHAR(25) NOT NULL,
 	[dob] DATE NOT NULL,
 	[username] NVARCHAR(50) NOT NULL,
-	
+	[phone] NVARCHAR(11) NOT NULL,
 	[psw] NVARCHAR(75) NOT NULL,
-	[maLopHoc] NVARCHAR(10) NULL, --CONSTRAINT--
-	[maLoaiTK] NVARCHAR(10) NOT NULL, --Constraint--
+	[maLopHoc] NVARCHAR(10) NULL,
+	[maLoaiTK] NVARCHAR(10) NOT NULL, 
 	[email] NVARCHAR(50) NOT NULL
-	
-	CONSTRAINT fk_loaiTK_HocVien FOREIGN KEY([maLoaiTK]) REFERENCES loaiTaiKhoan([maLoaiTK])
 	)
 CREATE TABLE diemDanh(
 	[maDiemDanh] NVARCHAR(10) primary key,
@@ -150,3 +151,6 @@ CREATE TABLE paySlip(
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]),
 	CONSTRAINT fk_maPaySlip_OT FOREIGN KEY([maOT]) REFERENCES  bangOT([maOT])
 	)
+
+INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email)
+VALUES('001', N'Nguyễn', N'Trung Kiên', '2003-05-27', 'devlindinh', 01662255761, '123456', 'CLASS001', 'US', 'devlindinh@gmail.com')
