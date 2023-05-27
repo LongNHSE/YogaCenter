@@ -5,7 +5,7 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
-import com.mycompany.yogacenterproject.dto.RoomDTO;
+import com.mycompany.yogacenterproject.dto.PhongHocDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Oalskad
  */
-public class RoomDAO {
+public class PhongHocDAO {
 
     public boolean updateRoom(String maRoom, boolean status) {
         String sql = " UPDATE [dbo].[Room]" + "SET"
@@ -42,15 +42,15 @@ public class RoomDAO {
         return row > 0;
     }
 
-    public List<RoomDTO> readRoom() {
-        List<RoomDTO> listRoomDTO = new ArrayList<RoomDTO>();
+    public List<PhongHocDTO> readRoom() {
+        List<PhongHocDTO> listRoomDTO = new ArrayList<PhongHocDTO>();
         String sql = "SELECT * FROM [dbo].[room]";
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                RoomDTO roomDTO = new RoomDTO();
+                PhongHocDTO roomDTO = new PhongHocDTO();
                 roomDTO.setMaRoom(rs.getString(1));
                 roomDTO.setStatus(rs.getBoolean(2));
 
@@ -67,9 +67,9 @@ public class RoomDAO {
 
     }
 
-    public RoomDTO searchByMaRoom(String maRoom) {
+    public PhongHocDTO searchByMaRoom(String maRoom) {
         String sql = "SELECT * FROM [dbo].[room] WHERE maRoom = ?";
-        RoomDTO roomDTO = new RoomDTO();
+        PhongHocDTO roomDTO = new PhongHocDTO();
         try {
 
             Connection conn = DBUtils.getConnection();

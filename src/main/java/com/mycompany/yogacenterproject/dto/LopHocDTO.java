@@ -6,7 +6,7 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
 
-public class ClassDTO {
+public class LopHocDTO {
     private String maLopHoc;
     private int soLuongHV;
     private int soBuoi;
@@ -16,10 +16,10 @@ public class ClassDTO {
     private String maRoom;
     private Date ngay;
 
-    public ClassDTO() {
+    public LopHocDTO() {
     }
 
-    public ClassDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngay) {
+    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngay) {
         this.maLopHoc = maLopHoc;
         this.soLuongHV = soLuongHV;
         this.soBuoi = soBuoi;

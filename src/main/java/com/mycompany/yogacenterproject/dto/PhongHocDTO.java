@@ -8,14 +8,14 @@ package com.mycompany.yogacenterproject.dto;
  *
  * @author Oalskad
  */
-public class RoomDTO {
+public class PhongHocDTO {
     String maRoom;
     boolean status;
 
-    public RoomDTO() {
+    public PhongHocDTO() {
     }
 
-    public RoomDTO(String maRoom, boolean status) {
+    public PhongHocDTO(String maRoom, boolean status) {
         this.maRoom = maRoom;
         this.status = status;
     }
