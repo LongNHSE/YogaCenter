@@ -150,10 +150,12 @@ public class HocVienDAO {
         return null;
     }        
     public static void main(String[] args) {
-        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
+
         HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
         
         System.out.println(login);
+
     }
 }
