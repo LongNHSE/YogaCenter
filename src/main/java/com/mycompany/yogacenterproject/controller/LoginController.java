@@ -45,6 +45,7 @@ public class LoginController extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         String url = request.getContextPath();
         String action = request.getParameter("action");
+        request.setAttribute("action", action);
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -55,23 +56,36 @@ public class LoginController extends HttpServlet {
                 String email = request.getParameter("email");
                 //Session chưa login sẽ được set timeout là 60s
                 session.setAttribute("email", email);
-                OTPSend(email, request);
-                request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
+                OTPSend(email, request, response);
+                
             } else if (action.equals("OTP")) {
-                
+
                 OTPCheck(request, response, request.getParameter("OTP"));
-            } else{
-                
-                
-            signup(request, response);
+            } else {
+
+                signup(request, response);
             }
 
         }
     }
 
     //FUNCTION TO SEND OTP
-    public void OTPSend(String email, HttpServletRequest request) throws EmailException, MalformedURLException, ServletException, IOException {
-        OTPController.generateOTP(email, request);
+    public void OTPSend(String email, HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
+        boolean error = true;
+        String errorMessageMail = "";
+        HocVienDAO hocVienDAO = new HocVienDAO();
+
+        if (hocVienDAO.selectByHocVienEmail(email)) {
+            errorMessageMail += "Email has already existed";
+            error = false;
+        }
+        request.setAttribute("errorMessageMail", errorMessageMail);
+        if (!hocVienDAO.selectByHocVienEmail(email)) {
+            OTPController.generateOTP(email, request);
+            request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/Authentication/signup_1.jsp").forward(request, response);
+        }
     }
 
     //FUNCTION CHECK OTP
@@ -84,7 +98,7 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    public void signup(HttpServletRequest request, HttpServletResponse response) throws  ServletException, IOException {
+    public void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         HocVienDAO hocVienDAO = new HocVienDAO();
         String errorMessage = "";
@@ -110,11 +124,11 @@ public class LoginController extends HttpServlet {
             error = false;
         }
         String phone = request.getParameter("phoneNumber");
-        String email = (String)session.getAttribute("email");
+        String email = (String) session.getAttribute("email");
         String gender = request.getParameter("gender");
 
         if (hocVienDAO.selectByUserName(username)) {
-            errorMessage += "Username is already taken";
+            errorMessage += "Username has already taken";
             error = false;
         }
         request.setAttribute("errorMessage", errorMessage);

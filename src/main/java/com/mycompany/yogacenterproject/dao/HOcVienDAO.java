@@ -217,7 +217,7 @@ public class HocVienDAO {
             Connection con = DBUtils.getConnection();
 
             // Bước 2: tạo ra đối tượng statement
-            String sql = "SELECT * FROM [dbo].[User] where email= ?";
+            String sql = "SELECT * FROM [dbo].[hocVien] where email= ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, email);
 
@@ -246,20 +246,21 @@ public class HocVienDAO {
         HocVienDAO hocVienDAO = new HocVienDAO();
 
         HocVienDTO hocVienDTO = new HocVienDTO();
-        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
-Date a = Date.valueOf("2003-02-13");
-            hocVienDTO.setUsername("A");
-            hocVienDTO.setTen("Long");
-            hocVienDTO.setPsw("1234");
-            hocVienDTO.setPhone("123");
-            hocVienDTO.setMaLopHoc(null);
-            hocVienDTO.setMaLoaiTK("HOCVIEN");
-            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
-            hocVienDTO.setHo("Nguyen");
-            hocVienDTO.setGender("Male");
-            hocVienDTO.setEmail("huylong2");
-            hocVienDTO.setDob(a);
-            hocVienDAO.addHocVien(hocVienDTO);
+        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
+//        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
+//Date a = Date.valueOf("2003-02-13");
+//            hocVienDTO.setUsername("A");
+//            hocVienDTO.setTen("Long");
+//            hocVienDTO.setPsw("1234");
+//            hocVienDTO.setPhone("123");
+//            hocVienDTO.setMaLopHoc(null);
+//            hocVienDTO.setMaLoaiTK("HOCVIEN");
+//            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
+//            hocVienDTO.setHo("Nguyen");
+//            hocVienDTO.setGender("Male");
+//            hocVienDTO.setEmail("huylong2");
+//            hocVienDTO.setDob(a);
+//            hocVienDAO.addHocVien(hocVienDTO);
         
 //        System.out.println(AUTO_HOCVIEN_ID);
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
