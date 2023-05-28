@@ -244,6 +244,7 @@ public class HocVienDAO {
         
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
+
         HocVienDTO hocVienDTO = new HocVienDTO();
         String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 Date a = Date.valueOf("2003-02-13");
@@ -264,6 +265,7 @@ Date a = Date.valueOf("2003-02-13");
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
 //        int a = hocVienDAO.lastIDIndex();
 //        System.out.println(a);
+
 
     }
 }
