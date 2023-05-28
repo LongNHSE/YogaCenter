@@ -27,38 +27,41 @@
                             <div class="card-body p-4 p-md-5">
                                 <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
                                 <form action="<%=url%>/LoginController/signup" method="POST">
-                                   
+
                                     <div class="row">
                                         <div class="col-md-6 mb-4 pb-2">
 
                                             <div class="form-outline">
                                                 <input type="email" id="emailAddress" class="form-control form-control-lg" name="email" required="required"/>
                                                 <label class="form-label" for="emailAddress">Email</label>
+
+
+                                            </div>
+                                            <div style="color: red; font-weight: BOLD">
+                                                <% String errorMessageMail = (String) request.getAttribute("errorMessageMail"); %>
+                                                <% if (errorMessageMail != null) {%> <%= errorMessageMail%> <% }%>
                                             </div>
 
-                                        </div>
+                                            <div class="mb-1">
+                                                <input type="checkbox" class="form-check-inline" id="policyCheck" name="policyCheck" required="required">
+                                                <label for="policyCheck" class="form-label">I agree with the <a href="" style="color: black">Term and Condition</a> and the <a href="" style="color: black">Privacy Policy</a> </label>
 
+                                                <div class="mt-4 pt-2">
+                                                    <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
+                                                </div>
+                                                <input type="hidden" id="thisField" name="action" value="OTPSend" />
+
+
+                                                </form>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="mb-1">
-                                        <input type="checkbox" class="form-check-inline" id="policyCheck" name="policyCheck" required="required">
-                                        <label for="policyCheck" class="form-label">I agree with the <a href="" style="color: black">Term and Condition</a> and the <a href="" style="color: black">Privacy Policy</a> </label>
-
-
-                                        <div class="mt-4 pt-2">
-                                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
-                                        </div>
-                                        <input type="hidden" id="thisField" name="action" value="OTPSend">
-
-
-                                </form>
 
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </body>
+                        </section>
+                        </body>
 
-   
-</html>
+
+                        </html>
