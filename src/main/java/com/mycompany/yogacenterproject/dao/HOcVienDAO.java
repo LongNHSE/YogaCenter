@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
@@ -81,7 +82,7 @@ public class HocVienDAO {
     public void addHocVien(HocVienDTO newHocVien) {
         try {
             String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone,gender)"
-                    + "values (?,?,?,?,?,?,?,?,?,?)";
+                    + "values (?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
@@ -148,14 +149,121 @@ public class HocVienDAO {
         } catch (Exception e) {
         }
         return null;
-    }        
+        
+    }   
+    
+    
+    
+    //GENERATE ID 
+     public int lastIDIndex() {
+        String sql = "SELECT TOP 1 maHV FROM [hocVien] ORDER BY maHV DESC";
+        int index = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                
+                int numberOnly = Integer.parseInt(rs.getString("maHV").replaceAll("[^0-9]", ""));
+                index = numberOnly;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return index;
+    }
+    
+     //KIEM TRA USERNAME CUA HOC VIEN DA TON TAI CHUA
+     public boolean selectByUserName(String userName) {
+
+        try {
+
+            // Bước 1: tạo kết nối đến CSDL
+            Connection con = DBUtils.getConnection();
+
+            // Bước 2: tạo ra đối tượng statement
+            String sql = "SELECT * FROM [dbo].[hocVien] where username=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, userName);
+
+            // Bước 3: thực thi câu lệnh SQL
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+
+            // Bước 4:
+            if (rs.next()) {
+
+                return true;
+            }
+
+            // Bước 5:
+            DBUtils.closeConnection(con);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+     
+    //KIEM TRA EMAIL DA TON TAI CHUA
+     public boolean selectByHocVienEmail(String email) {
+
+        try {
+
+            // Bước 1: tạo kết nối đến CSDL
+            Connection con = DBUtils.getConnection();
+
+            // Bước 2: tạo ra đối tượng statement
+            String sql = "SELECT * FROM [dbo].[User] where email= ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, email);
+
+            // Bước 3: thực thi câu lệnh SQL
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+
+            // Bước 4:
+            if (rs.next()) {
+//               
+                return true;
+            }
+
+            // Bước 5:
+            DBUtils.closeConnection(con);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public static void main(String[] args) {
+        
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
-
-        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
+        HocVienDTO hocVienDTO = new HocVienDTO();
+        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
+Date a = Date.valueOf("2003-02-13");
+            hocVienDTO.setUsername("A");
+            hocVienDTO.setTen("Long");
+            hocVienDTO.setPsw("1234");
+            hocVienDTO.setPhone("123");
+            hocVienDTO.setMaLopHoc(null);
+            hocVienDTO.setMaLoaiTK("HOCVIEN");
+            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
+            hocVienDTO.setHo("Nguyen");
+            hocVienDTO.setGender("Male");
+            hocVienDTO.setEmail("huylong2");
+            hocVienDTO.setDob(a);
+            hocVienDAO.addHocVien(hocVienDTO);
         
-        System.out.println(login);
+//        System.out.println(AUTO_HOCVIEN_ID);
+//        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
+//        int a = hocVienDAO.lastIDIndex();
+//        System.out.println(a);
 
     }
 }

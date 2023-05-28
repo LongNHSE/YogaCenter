@@ -27,13 +27,14 @@
                         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                             <div class="card-body p-4 p-md-5">
                                 <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
-                                <form action="${url}/Access/signup" method="POST">
+                                <form action="<%=url%>/LoginController/signup" method="POST">
+                                    <input type="hidden" id="thisField" name="action" value="addUser" />
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
 
-                                                <input type="text" id="userName" class="form-control form-control-lg" name="userName" required="required"/>
+                                                <input type="text" id="userName" class="form-control form-control-lg" name="username" required="required"/>
                                                 <label class="form-label" for="userName">User Name</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
@@ -46,7 +47,7 @@
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
-                                                <input type="password" id="password" class="form-control form-control-lg" name="password" required="required" onkeyup='check();'/>
+                                                <input type="password" id="password" class="form-control form-control-lg" name="psw" required="required" onkeyup='check();'/>
                                                 <label class="form-label" for="password">Password</label>
                                             </div>
                                             <div class="form-outline">
@@ -116,7 +117,7 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-4 pb-2">
-
+                                           
                                             <div class="form-outline">
                                                 <input type="email" id="emailAddress" value="${sessionScope.email}"  class="form-control form-control-lg" name="email" required="required" disabled/>
                                                 <label class="form-label" for="emailAddress">Email</label>
@@ -126,7 +127,7 @@
                                         <div class="col-md-6 mb-4 pb-2">
 
                                             <div class="form-outline">
-                                                <input type="tel" placeholder="xxx-xxx-xxx" pattern="[0-9]{9}" id="phoneNumber" class="form-control form-control-lg" name="phoneNumber" required="required" />
+                                                <input type="tel" placeholder="xxx-xxx-xxxx" pattern="[0-9]{10}" id="phoneNumber" class="form-control form-control-lg" name="phoneNumber" required="required" />
                                                 <label class="form-label" for="phoneNumber">Phone Number</label>
                                             </div>
 
@@ -139,6 +140,7 @@
 
                                         <div class="mt-4 pt-2">
                                             <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
+                                            
                                         </div>
 
 

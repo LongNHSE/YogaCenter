@@ -62,10 +62,11 @@ public class OTPController extends HttpServlet {
         OTP = Utils.generateRandomString(5);
         EmailController.OTPSender(OTP, email);
         EmailController.OTPSender(OTP, email);
-        HttpSession sessionOTP = request.getSession();
+        HttpSession session = request.getSession();
 
-        sessionOTP.setMaxInactiveInterval(60);
-        sessionOTP.setAttribute("OTP", OTP);
+        
+        session.setMaxInactiveInterval(60);
+        session.setAttribute("OTP", OTP);
 
     }
 

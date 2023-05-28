@@ -47,7 +47,7 @@
                                         <div class="mt-4 pt-2">
                                             <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
                                         </div>
-                                        <input type="hidden" id="thisField" name="action" value="OTPSend">
+                                        <input type="hidden" id="thisField" name="action" value="OTPSend" />
 
 
                                 </form>
