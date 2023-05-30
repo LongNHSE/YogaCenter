@@ -6,11 +6,12 @@
 
 
 
+<%@page import="com.mycompany.yogacenterproject.dto.TrainerDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.HocVienDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="Model.UserDTO"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -18,7 +19,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>ROYAL HOTEL | Responsive Travel & Tourism Template</title>
+        <title>YogaCenter</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -44,13 +45,28 @@
     </head>
     <%
 
-        List<HocVienDTO> listHocVienDTO = (List<HocVienDTO>) request.getAttribute("listHocVienDTO");
+        List<TrainerDTO> listTrainerDTO = (List<TrainerDTO>) request.getAttribute("listTrainerDTO");
 
     %>
 
     <body>
-        
-                       
+        <header id="header">
+            <div class="mobile-menu-btn"><i class="fa fa-bars"></i></div>
+            <nav class="main-menu top-menu">
+                <ul>
+                    <li><a href="<%= url%>/Admin/AdminHomepage.jsp">Home</a></li>
+
+                    <li>
+                        <form action="ADlogoutController" method="POST">
+
+                            <input class="btn btn-outline-danger"  type="submit" value="Logout"></input>
+
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
 
         <table class="table">
 
@@ -59,31 +75,30 @@
 
 
                     <th scope="col">Ma Hoc Vien</th>
-                    <th scope="col">Ho</th>
-                    <th scope="col">Ten</th>
+                    <th scope="col">HoVaTen</th>
                     <th scope="col">Username</th>
                     <th scope="col">Day of birth</th>
-                    
-                
+
+
                     <th scope="col">Email</th>
-                    
+                    <th scope="col">Phone</th>
                     <th scope="col">Ma Lop Hoc</th>
-                    
+
                 </tr>
             </thead>
             <tbody>
-                <% if (listHocVienDTO != null) {
-                        for (HocVienDTO hocVienDTO : listHocVienDTO) {
+                <% if (listTrainerDTO != null) {
+                        for (TrainerDTO trainerDTO : listTrainerDTO) {
                 %>
             <form action="UserUpdateController">
                 <tr>
-                    <th scope="row"><%= hocVienDTO.getMaHV() %></th>
-                    <td><%= hocVienDTO.getHo() %> </td>
-                    <td><%= hocVienDTO.getTen()%> </td>
+                    <th scope="row"><%= trainerDTO.getMaTrainer()%></th>
+                    <td><%= trainerDTO.getHoVaTen()%> </td>
+                    <td><%= trainerDTO.getUsername()%> </td>
                     <td><%= hocVienDTO.getUsername()%> </td>
-                    <td><%= hocVienDTO.getDob()%> </td>
-                    <td><%= hocVienDTO.getEmail()%> </td>
-                  
+                    <td><%= trainerDTO.getDob()%> </td>
+                    <td><%= trainerDTO.getEmail()%> </td>
+                    <td><%= hocVienDTO.getPhone()%> </td>
                     <td><%= hocVienDTO.getMaLopHoc()%> </td>
 
 
@@ -114,7 +129,7 @@
 
 
 
-     Footer Section Start 
+    Footer Section Start 
     <div id="footer">
         <div class="container">
             <div class="row">
@@ -134,17 +149,17 @@
             </div>
         </div>
     </div>
-     Footer Section End 
+    Footer Section End 
 
     <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
-     Vendor JavaScript File 
+    Vendor JavaScript File 
 
-     Booking Javascript File 
+    Booking Javascript File 
     <script src="js/booking.js"></script>
     <script src="js/jqBootstrapValidation.min.js"></script>
 
-     Main Javascript File 
+    Main Javascript File 
     <script src="js/main.js"></script>
 </body>
 </html>

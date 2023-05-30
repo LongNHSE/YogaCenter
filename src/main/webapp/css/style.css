@@ -25,7 +25,10 @@ a:focus {
     outline: none;
     text-decoration: none;
 }
-
+.center {
+  
+  text-align: center;
+}
 p {
     color: #666;
     font-size: 14px;

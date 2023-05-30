@@ -53,7 +53,7 @@
             <div class="mobile-menu-btn"><i class="fa fa-bars"></i></div>
             <nav class="main-menu top-menu">
                 <ul>
-                    <li><a href="<%= url%>/#">Home</a></li>
+                    <li><a href="<%= url%>/Admin/AdminHomepage.jsp">Home</a></li>
 
                     <li>
                         <form action="ADlogoutController" method="POST">
@@ -81,7 +81,7 @@
 
 
                     <th scope="col">Email</th>
-                     <th scope="col">Phone</th>
+                    <th scope="col">Phone</th>
                     <th scope="col">Ma Lop Hoc</th>
 
                 </tr>

@@ -39,8 +39,21 @@ public class AdminController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
-          
-             listHocVienDTO(request,response);
+
+            if (action.equals("listHocVien")) {
+                listHocVienDTO(request, response);
+            } else if (action.equals("detailHocVien")) {
+
+            } else if (action.equals("listTrainer")) {
+
+            } else if (action.equals("detailTrainer")) {
+
+            } else if (action.equals("listLopHoc")) {
+
+            } else if (action.equals("detailLopHoc")) {
+                
+            }
+
 //            
 //            
 //            switch (action) {
@@ -50,15 +63,10 @@ public class AdminController extends HttpServlet {
 //                default:
 //                    throw new AssertionError();
 //            }
-            
-            
-            
-            
-            
-            
         }
     }
-    public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
@@ -66,7 +74,7 @@ public class AdminController extends HttpServlet {
 //        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
         RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HocVienList.jsp");
         rs.forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

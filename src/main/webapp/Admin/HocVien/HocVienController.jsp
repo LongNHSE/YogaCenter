@@ -84,17 +84,12 @@
         </nav>
     </header>
     <div class="center">
-        
-        <a href="<%=url%>/Admin/HocVien/HocVienController.jsp">
-            <input type="submit" value="HocVienController" />
-        </a>
-        <a href="<%=url%>/Admin/Trainer/TrainerController.jsp">
-            <input type="submit" value="TrainerController" />
-        </a>
-         <a href="<%=url%>/Admin/Class/ClassController.jsp">
-            <input type="submit" value="ClassController" />
-         </a>
-        
+        <form action="<%=url%>/AdminController" method="POST">
+            <input type="submit" value="ListHocVien" />
+            <input type="hidden" value="listHocVien" name="action"/>
+            <%=url%>
+        </form>
+
     </div>
 
 
