@@ -61,7 +61,7 @@ public class OTPController extends HttpServlet {
 
         OTP = Utils.generateRandomString(5);
         EmailController.OTPSender(OTP, email);
-        EmailController.OTPSender(OTP, email);
+        
         HttpSession session = request.getSession();
 
         

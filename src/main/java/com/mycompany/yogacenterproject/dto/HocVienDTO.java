@@ -20,7 +20,7 @@ public class HocVienDTO {
     private String email;
     private String gender;
 
-    ;
+    
     
     public HocVienDTO() {
     }

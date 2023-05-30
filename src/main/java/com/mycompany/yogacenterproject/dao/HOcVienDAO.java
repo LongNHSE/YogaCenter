@@ -246,7 +246,8 @@ public class HocVienDAO {
         HocVienDAO hocVienDAO = new HocVienDAO();
 
         HocVienDTO hocVienDTO = new HocVienDTO();
-        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
+        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
+        System.out.println(hocVienDTO);
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 //Date a = Date.valueOf("2003-02-13");
 //            hocVienDTO.setUsername("A");
