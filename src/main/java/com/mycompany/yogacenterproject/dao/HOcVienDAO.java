@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HocVienDAO {
+public class HOcVienDAO {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null; 
@@ -69,12 +69,12 @@ public class HocVienDAO {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
-                return newTrainee;
+                HocVienDTO result = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
+                return result;  
             }
         } catch (SQLException e) {
-            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
-        }
+            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, e);
+        }  
         return null;
     }
 
@@ -114,7 +114,7 @@ public class HocVienDAO {
             stmt.setString(5, upTrainee.getMaHV());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -127,7 +127,7 @@ public class HocVienDAO {
             stm.setString(1, maHV);
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 //    Login
@@ -243,11 +243,11 @@ public class HocVienDAO {
     public static void main(String[] args) {
         
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
-        HocVienDAO hocVienDAO = new HocVienDAO();
-
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
         HocVienDTO hocVienDTO = new HocVienDTO();
-        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
-        System.out.println(hocVienDTO);
+//        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
+//        hocVienDTO=hocVienDAO.searchHocVienById("HV0001");
+//        System.out.println(hocVienDTO.toString());
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 //Date a = Date.valueOf("2003-02-13");
 //            hocVienDTO.setUsername("A");

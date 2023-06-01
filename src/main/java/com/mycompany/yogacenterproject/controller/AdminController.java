@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.HOcVienDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,7 +68,7 @@ public class AdminController extends HttpServlet {
 
     public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
-        HocVienDAO hocVienDAO = new HocVienDAO();
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
         request.setAttribute("listHocVienDTO", listHocVienDTO);
 //        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");

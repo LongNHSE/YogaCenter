@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.HOcVienDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,40 +22,39 @@ public class ProfileController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String action = request.getParameter("action");
-            switch (action) {
-                case "viewProfile":
-                    viewProfile(request, response);
-                    break;
-                case "updateProfile":
-                    updateProfile(request, response);
-                    break;
-                default:
-                    break;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        viewProfile(request, response);
+//        try {
+//            log("chay vao process request");////////////////////
+//            String action = request.getParameter("action");
+//            action="viewProfile";
+//            switch (action) {
+//                case "viewProfile":
+//                    viewProfile(request, response);
+//                    break;
+//                case "updateProfile":
+//                    updateProfile(request, response);
+//                    break;
+//                default:
+//                    break;
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /// View profile trainee
-//        String url = "/profile.jsp";              ///Mot ham lay id ** Dung id de tim thong tin detail ** View profile dua tren thong tin
-//        String maHV = request.getParameter("maHV");
-        HocVienDAO dao = new HocVienDAO();
-//        hocVienDTO trainee = dao.details(maHV);
-//        if (trainee!=null&& maHV.equals(trainee.getMaHV())) {
-//            String Ho = dao.details(maHV).getHo();
-//            String Ten = dao.details(maHV).getTen();
-//            Date dob = dao.details(maHV).getDob();
-////        session.setAttribute("Ho", Ho);
-////        session.setAttribute("Ten", Ten);
-////        session.setAttribute("dob", dob);
-//        }
-        /////Lam 1 ham check login cua Hoc Vien
-        RequestDispatcher rd = request.getServletContext().getRequestDispatcher("/profile.jsp");
+      //  log("chay vao view Profile");////////////////////
+        HttpSession session= request.getSession();
+        String maHocVien= request.getParameter("maHocVien");
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDTO hvDTO=hocVienDAO.searchHocVienById(maHocVien);
+        log(maHocVien);////////////////////
+        log(hvDTO.getHo());////////////////////
+//        hvDTO.setHo(hvDTO.getHo());
+        session.setAttribute("hocVienDTO", hvDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authentication/profile.jsp");
         rd.forward(request, response);
     }
 

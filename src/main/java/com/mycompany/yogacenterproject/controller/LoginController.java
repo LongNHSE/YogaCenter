@@ -5,7 +5,7 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.AdminDAO;
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.HOcVienDAO;
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
@@ -77,7 +77,7 @@ public class LoginController extends HttpServlet {
     public void OTPSend(String email, HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
         boolean error = true;
         String errorMessageMail = "";
-        HocVienDAO hocVienDAO = new HocVienDAO();
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
         
         if (hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "Email has already existed";
@@ -105,7 +105,7 @@ public class LoginController extends HttpServlet {
     //TAO TAI KHOAN VA LUU VAO DATABASE
     public void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        HocVienDAO hocVienDAO = new HocVienDAO();
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
         String errorMessage = "";
         String errorMessageDate = "";
         boolean error = true;
@@ -169,12 +169,12 @@ public class LoginController extends HttpServlet {
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        HocVienDAO dao = new HocVienDAO();
+        HOcVienDAO dao = new HOcVienDAO();
         HocVienDTO hocVienDTO = dao.login(username, password);
         if (hocVienDTO == null) {
             request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
         } else {
-            session.setAttribute("user", hocVienDTO);
+            session.setAttribute("hocVienDTO", hocVienDTO);
             // set lại session time out là 5p
             session.setMaxInactiveInterval(300);
             
