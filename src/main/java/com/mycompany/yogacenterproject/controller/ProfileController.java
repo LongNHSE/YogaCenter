@@ -22,25 +22,24 @@ public class ProfileController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        viewProfile(request, response);
-//        try {
-//            log("chay vao process request");////////////////////
-//            String action = request.getParameter("action");
-//            action="viewProfile";
-//            switch (action) {
-//                case "viewProfile":
-//                    viewProfile(request, response);
-//                    break;
-//                case "updateProfile":
-//                    updateProfile(request, response);
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            log("chay vao process request");////////////////////
+            String action = request.getParameter("action");
+            action="viewProfile";
+            switch (action) {
+                case "viewProfile":
+                    viewProfile(request, response);
+                    break;
+                case "updateProfile":
+                    updateProfile(request, response);
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
