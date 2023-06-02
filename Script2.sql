@@ -1,7 +1,7 @@
-CREATE DATABASE YogaCenter
+/*CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
-GO
+GO*/
 
 --CREATE TABLE--
 
@@ -25,33 +25,47 @@ CREATE TABLE loaiLopHoc(
 
 CREATE TABLE Trainer(
 	[maTrainer] NVARCHAR(10) primary key,
-	[HoVaTen] NVARCHAR(50) NOT NULL,
-	[dob] DATE NOT NULL,
-	[phone] NVARCHAR(11) NOT NULL,
-	[email] NVARCHAR(25) NOT NULL,
-	[salary] DECIMAL(10,2) NOT NULL,
-	[username] NVARCHAR(50) NOT NULL,
-	[psw] NVARCHAR(75) NOT NULL,
-	[soNgayNghi] INTEGER NOT NULL,
-	[status] BIT NOT NULL,
-	[trainerType] VARCHAR(255) NOT NULL,
+	[HoVaTen] [nvarchar](50) NOT NULL,
+	[dob] [date] NOT NULL,
+	[phone] [nvarchar](11) NOT NULL,
+	[email] [nvarchar](25) NOT NULL,
+	[salary] [decimal](10, 2) NOT NULL,
+	[username] [nvarchar](50) NOT NULL,
+	[psw] [nvarchar](75) NOT NULL,
+	[soNgayNghi] [int] NOT NULL,
+	[status] [bit] NOT NULL,
+	[trainerType] [varchar](255) NOT NULL,
+	[maLoaiTK] [nvarchar](50) NULL,
 	
 	
 	)
 CREATE TABLE lopHoc(
-	[maLopHoc] NVARCHAR(10) primary key,
+	[maLopHoc] NVARCHAR(10) PRIMARY KEY not null,
 	[soLuongHV] INTEGER NOT NULL,
+	[soLuongHvHienTai] INTEGER NOT NULL, /*moiThem*/
 	[soBuoi] INTEGER NOT NULL,
 	[maTrainer] NVARCHAR(10) NOT NULL, -- CONSTRAINT --
 	[maLoaiLopHoc] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 	[maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 	[maRoom] NVARCHAR(10) NOT NULL, --CONSTRAINT
-	[ngay] NVARCHAR(20) NOT NULL 
+	[ngay] NVARCHAR(20) NOT NULL
+	
 	CONSTRAINT fk_maTrainer_lopHoc FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer]),
 	CONSTRAINT fk_loaiLopHoc_lopHoc FOREIGN KEY([maLoaiLopHoc]) REFERENCES loaiLopHoc([maLoaiLopHoc]),
 	CONSTRAINT fk_maSlot_lopHoc FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 	CONSTRAINT fk_maRoom_lopHoc FOREIGN KEY([maRoom]) REFERENCES room(maRoom)
 	)
+
+CREATE TABLE timeTable(
+	[maLopHoc] NVARCHAR(10) not null,
+	[ngayHoc] date not null,
+	[thu] nvarchar(20) not null
+	PRIMARY KEY (maLopHoc, ngayHoc),
+	CONSTRAINT fk_maLop_ThoiKhoaBieu FOREIGN KEY([maLopHoc]) REFERENCES lopHoc([maLopHoc])
+)
+
+
+
 CREATE TABLE [admin](
 	[maAdmin] NVARCHAR(10) primary key,
 	[username] NVARCHAR(50) NOT NULL,
@@ -147,3 +161,5 @@ CREATE TABLE paySlip(
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]),
 	CONSTRAINT fk_maPaySlip_OT FOREIGN KEY([maOT]) REFERENCES  bangOT([maOT])
 	)
+
+

@@ -24,6 +24,12 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>4.4.1</version>
+        </dependency>
 
         <dependency>
             <groupId>jakarta.servlet</groupId>

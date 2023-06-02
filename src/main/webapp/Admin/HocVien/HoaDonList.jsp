@@ -6,6 +6,7 @@
 
 
 
+<%@page import="com.mycompany.yogacenterproject.dto.HoaDonDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.HocVienDTO"%>
 <%@page import="java.util.List"%>
 
@@ -44,7 +45,7 @@
     </head>
     <%
 
-        List<HocVienDTO> listHocVienDTO = (List<HocVienDTO>) request.getAttribute("listHocVienDTO");
+        List<HoaDonDTO> listHoaDon = (List<HoaDonDTO>) request.getAttribute("listHoaDon");
 
     %>
 
@@ -71,42 +72,26 @@
 
             <thead>
                 <tr>
-
-
+                    <th scope="col">Ma Hoa Don</th>
                     <th scope="col">Ma Hoc Vien</th>
-                    <th scope="col">Ho</th>
-                    <th scope="col">Ten</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Day of birth</th>
-
-
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Gender</th>
                     <th scope="col">Ma Lop Hoc</th>
-
+                    <th scope="col">So Tien</th>
+                    <th scope="col">Ngay Thanh Toan</th>
                 </tr>
             </thead>
             <tbody>
-                <% if (listHocVienDTO != null) {
-                        for (HocVienDTO hocVienDTO : listHocVienDTO) {
+                <% if (listHoaDon != null) {
+                        for (HoaDonDTO hoaDonDTO : listHoaDon) {
                 %>
-            <form action="<%=url%>/AdminController" method="POST">
+            <form action="<%=url%>/AdminController">
                 <tr>
-                    <th scope="row"><%= hocVienDTO.getMaHV()%></th>
-                    <td><%= hocVienDTO.getHo()%> </td>
-                    <td><%= hocVienDTO.getTen()%> </td>
-                    <td><%= hocVienDTO.getUsername()%> </td>
-                    <td><%= hocVienDTO.getDob()%> </td>
-                    <td><%= hocVienDTO.getEmail()%> </td>
-                    <td><%= hocVienDTO.getPhone()%> </td>
-                    <td><%= hocVienDTO.getGender()%> </td>
-                    <td><%= hocVienDTO.getMaLopHoc()%> </td>
-                    <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action" ></td>
-                    <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
-                <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >
+                    <th scope="row"><%= hoaDonDTO.getMahoaDon()%></th>
+                    <td><%= hoaDonDTO.getMaHV()%> </td>
+                    <td><%= hoaDonDTO.getMaLopHoc() %> </td>
+                    <td><%= hoaDonDTO.getGiaTien()%> </td>
+                    <td><%= hoaDonDTO.getNgayThanhToan()%> </td>
                 </tr>
-           </form>
+            </form>
             <% }
             } else {%>
             <tr>
