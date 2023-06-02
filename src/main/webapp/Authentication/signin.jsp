@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="forgot">
-                            <span>Forgot your password?</span>
+                            <a href="<%=url%>/Authentication/resetPass.jsp">Forgot your password?</a>
                         </div>
 
                         <button class="btn bkg">Sign In</button>

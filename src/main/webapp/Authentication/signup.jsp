@@ -28,7 +28,7 @@
                             <div class="card-body p-4 p-md-5">
                                 <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
                                 <form action="<%=url%>/LoginController/signup" method="POST">
-                                    <input type="hidden" id="thisField" name="action" value="addUser" />
+                                    <input type="hidden" id="thisField" name="action" value="addUser" placeholder="Enter your OTP send through email" />
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
 

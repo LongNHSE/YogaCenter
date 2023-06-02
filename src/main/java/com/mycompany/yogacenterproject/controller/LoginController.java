@@ -59,10 +59,15 @@ public class LoginController extends HttpServlet {
                 OTPSend(email, request, response);
                 
             } else if (action.equals("OTP")) {
-
                 OTPCheck(request, response, request.getParameter("OTP"));
-            } else {
-
+            }else if(action.equals("OTPVerify")){
+                OTPVerify(request, response, request.getParameter("OTP"));
+            }else if(action.equals("resetPsw")){
+                 resetPsw(request, response);
+            }else if(action.equals("changePass")){
+                 newPass(request, response);
+            }
+            else {
                 signup(request, response);
             }
 
@@ -88,13 +93,22 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    //FUNCTION CHECK OTP
+    //FUNCTION CHECK OTP ( for Registeration)
     public void OTPCheck(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
         OTPController.checkOTP(request, response, OTP);
         if (OTPController.checkOTP(request, response, OTP)) {
             request.getRequestDispatcher("/Authentication/signup.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
+        }
+    }
+     //FUNCTION CHECK OTP ( for Reset Password)
+    public void OTPVerify(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
+        OTPController.checkOTP(request, response, OTP);
+        if (OTPController.checkOTP(request, response, OTP)) {
+            request.getRequestDispatcher("/Authentication/changePass.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
         }
     }
 
@@ -155,7 +169,8 @@ public class LoginController extends HttpServlet {
             rd.forward(request, response);
         }
     }
-
+    
+    //LOGINM
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
@@ -171,6 +186,35 @@ public class LoginController extends HttpServlet {
 
             request.getRequestDispatcher("/Authentication/success.jsp").forward(request, response);
         }
+    }
+    
+    //RESET PASSWORD
+    public  void resetPsw(HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException{
+        HttpSession session = request.getSession();
+        String email = request.getParameter("email");        
+        String errorMessageMail = "";
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        if(!hocVienDAO.selectByHocVienEmail(email)){
+            errorMessageMail += "You have not sign up with this email before";
+            request.setAttribute("errorMessageMail", errorMessageMail);
+            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/resetPass.jsp");
+            rd.forward(request, response);
+           
+        }
+        else{
+            session.setAttribute("email", email);
+            OTPController.generateOTP(email, request);
+            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
+        }
+    }
+    public void newPass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+          HttpSession session = request.getSession();
+          String email = (String) session.getAttribute("email");
+          String newPass = request.getParameter("newPass");
+          HocVienDAO hocVienDAO = new HocVienDAO();
+          hocVienDAO.changePsw(newPass, email);
+          RequestDispatcher rd = request.getRequestDispatcher("/Authentication/success.jsp");
+          rd.forward(request, response);          
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
