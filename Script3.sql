@@ -77,7 +77,6 @@ CREATE TABLE hocVien(
 	[phone] NVARCHAR(11) NOT NULL,
 	[psw] NVARCHAR(75) NOT NULL,
 	[gender]nvarchar(10)NOT NULL,
-	[maLopHoc] nvarchar(10) NULL,
 	[maLoaiTK] NVARCHAR(10) NOT NULL, --Constraint--
 	[email] NVARCHAR(50) NOT NULL	
 	)
