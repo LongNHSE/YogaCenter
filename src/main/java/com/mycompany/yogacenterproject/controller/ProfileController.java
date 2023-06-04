@@ -5,10 +5,13 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HOcVienDAO;
+import com.mycompany.yogacenterproject.dao.HoaDonDAO;
+import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,12 +26,14 @@ public class ProfileController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            log("chay vao process request");////////////////////
+           // log("chay vao process request");////////////////////
             String action = request.getParameter("action");
-            action="viewProfile";
             switch (action) {
                 case "viewProfile":
                     viewProfile(request, response);
+                    break;
+                case "viewTransaction":
+                    viewHocVienTransaction(request,response);
                     break;
                 case "updateProfile":
                     updateProfile(request, response);
@@ -43,15 +48,15 @@ public class ProfileController extends HttpServlet {
     }
 
     public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /// View profile trainee
+      // View profile trainee
       //  log("chay vao view Profile");////////////////////
         HttpSession session= request.getSession();
         String maHocVien= request.getParameter("maHocVien");
         HOcVienDAO hocVienDAO = new HOcVienDAO();
         HocVienDTO hvDTO=hocVienDAO.searchHocVienById(maHocVien);
-        log(maHocVien);////////////////////
-        log(hvDTO.getHo());////////////////////
-//        hvDTO.setHo(hvDTO.getHo());
+    //   log(maHocVien);////////////////////
+    //   log(hvDTO.getHo());////////////////////
+    //   hvDTO.setHo(hvDTO.getHo());
         session.setAttribute("hocVienDTO", hvDTO);
         RequestDispatcher rd = request.getRequestDispatcher("./Authentication/profile.jsp");
         rd.forward(request, response);
@@ -60,7 +65,20 @@ public class ProfileController extends HttpServlet {
     public void updateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
-
+    public void viewHocVienTransaction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String maHocVien=request.getParameter("maHocVien");
+        HoaDonDAO hoaDonDAO=new HoaDonDAO();
+        List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
+        listHoaDon=hoaDonDAO.listHoaDon(maHocVien);
+        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDTO hvDTO=hocVienDAO.searchHocVienById(maHocVien);
+        ///set Attribute
+        session.setAttribute("hocVienDTO", hvDTO);
+        session.setAttribute("listHoaDon", listHoaDon);
+        RequestDispatcher rd= request.getRequestDispatcher("./Authentication/transaction.jsp");
+        rd.forward(request, response);
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -99,5 +117,7 @@ public class ProfileController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }

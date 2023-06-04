@@ -82,6 +82,7 @@
 
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Ma Lop Hoc</th>
 
                 </tr>
@@ -90,7 +91,7 @@
                 <% if (listHocVienDTO != null) {
                         for (HocVienDTO hocVienDTO : listHocVienDTO) {
                 %>
-            <form action="UserUpdateController">
+            <form action="<%=url%>/AdminController" method="POST">
                 <tr>
                     <th scope="row"><%= hocVienDTO.getMaHV()%></th>
                     <td><%= hocVienDTO.getHo()%> </td>
@@ -99,16 +100,13 @@
                     <td><%= hocVienDTO.getDob()%> </td>
                     <td><%= hocVienDTO.getEmail()%> </td>
                     <td><%= hocVienDTO.getPhone()%> </td>
+                    <td><%= hocVienDTO.getGender()%> </td>
                     <td><%= hocVienDTO.getMaLopHoc()%> </td>
-
-
-                    <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action"  ></td>
+                    <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action" ></td>
                     <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
-
                 <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >
-
                 </tr>
-            </form>
+           </form>
             <% }
             } else {%>
             <tr>

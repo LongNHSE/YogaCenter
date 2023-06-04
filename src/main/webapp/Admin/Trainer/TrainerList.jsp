@@ -82,7 +82,9 @@
 
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
-                    <th scope="col">Ma Lop Hoc</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">So Ngay Nghi</th>
+                    <th scope="col">Trainer Type</th>
 
                 </tr>
             </thead>
@@ -95,17 +97,19 @@
                     <th scope="row"><%= trainerDTO.getMaTrainer()%></th>
                     <td><%= trainerDTO.getHoVaTen()%> </td>
                     <td><%= trainerDTO.getUsername()%> </td>
-                    <td><%= hocVienDTO.getUsername()%> </td>
                     <td><%= trainerDTO.getDob()%> </td>
                     <td><%= trainerDTO.getEmail()%> </td>
-                    <td><%= hocVienDTO.getPhone()%> </td>
-                    <td><%= hocVienDTO.getMaLopHoc()%> </td>
+                    <td><%= trainerDTO.getPhone()%> </td>
+                     <td><%= trainerDTO.getSalary()%> </td>
+                     <td><%= trainerDTO.getSoNgayNghi()%> </td>
+                    <td><%= trainerDTO.getTrainerType()%> </td>
+
 
 
                     <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action"  ></td>
                     <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
 
-                <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >
+                <input type="hidden" name="maTrainer" value="<%= trainerDTO.getMaTrainer()%>" >
 
                 </tr>
             </form>

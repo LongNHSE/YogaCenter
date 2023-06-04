@@ -39,7 +39,9 @@ public class LoginDAO {
     }    
     public static void main(String[] args) {
         LoginDAO dao = new LoginDAO();
-        HocVienDTO login = dao.login("devlindinh", "123456");
+//        HocVienDTO login = dao.login("devlindinh", "123456");
+        HocVienDTO login = dao.login("longNiger", "123456");
+
         System.out.println(login.toString());
     }
 }

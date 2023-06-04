@@ -20,10 +20,14 @@
     </head>
     <body>
         <h1>SUCCESS</h1>
-        <h1>${hocVienDTO.maHV}</h1>
         <form action="<%=url%>/ProfileController?action=viewProfile&&maHocVien=${hocVienDTO.maHV}" method="POST">
             <button name="action" value="">
             Profile
+            </button>
+        </form>
+            <form action="<%=url%>/ProfileController?action=viewTransaction&&maHocVien=${hocVienDTO.maHV}" method="POST">
+            <button name="action" value="">
+            Transaction History
             </button>
         </form>
     </body>

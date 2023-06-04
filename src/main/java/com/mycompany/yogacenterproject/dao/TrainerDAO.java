@@ -31,14 +31,15 @@ public class TrainerDAO {
                 Date dob = rs.getDate("dob");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
-                String salary = rs.getString("salary");
+                long salary = rs.getLong("salary");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
                 int soNgayNghi = rs.getInt("soNgayNghi");
                 boolean status = rs.getBoolean("status");
                 String trainerType = rs.getString("trainerType");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                TrainerDTO newTrainer=  new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, soNgayNghi, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+                TrainerDTO newTrainer=  new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+                
                 listTrainer.add(newTrainer);
             }
             return listTrainer;
@@ -59,7 +60,7 @@ public class TrainerDAO {
                 Date dob = rs.getDate("dob");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
-                String salary = rs.getString("salary");
+                long salary = rs.getLong("salary");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
                 int soNgayNghi = rs.getInt("soNgayNghi");
@@ -85,7 +86,7 @@ public class TrainerDAO {
             stmt.setDate(3, newTrainer.getDob());
             stmt.setString(4, newTrainer.getPhone());
             stmt.setString(5, newTrainer.getEmail());
-            stmt.setFloat(6, newTrainer.getSalary());
+            stmt.setLong(6, newTrainer.getSalary());
             stmt.setString(7, newTrainer.getUsername());
             stmt.setBoolean(8, newTrainer.getStatus());
             stmt.setString(9, newTrainer.getTrainerType());
@@ -119,7 +120,7 @@ public void deleteTrainerById(String maTrainer) {
             stmt.setDate(2, upTrainer.getDob());
             stmt.setString(3, upTrainer.getPhone());
             stmt.setString(4, upTrainer.getEmail());
-            stmt.setFloat(5, upTrainer.getSalary());
+            stmt.setLong(5, upTrainer.getSalary());
             stmt.setString(6, upTrainer.getUsername());
             stmt.setBoolean(7, upTrainer.getStatus());
             stmt.setString(8, upTrainer.getTrainerType());
@@ -129,4 +130,10 @@ public void deleteTrainerById(String maTrainer) {
             Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }     
+ 
+ 
+    public static void main(String[] args) {
+        TrainerDAO trainerDAO = new TrainerDAO();
+        System.out.println(trainerDAO.readListTrainer().get(0).getSalary());
+    }
 }
