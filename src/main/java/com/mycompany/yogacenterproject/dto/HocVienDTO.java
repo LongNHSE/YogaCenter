@@ -131,8 +131,9 @@ public class HocVienDTO {
 
     @Override
     public String toString() {
-        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", phone=" + phone + '}';
-
+        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", phone=" + phone + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", gender=" + gender + '}';
     }
+
+
 
 }
