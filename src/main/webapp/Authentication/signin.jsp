@@ -50,20 +50,24 @@
                         </div>
 
                         <div class="forgot">
-                            <span>Forgot your password?</span>
+                            <a href="<%=url%>/Authentication/resetPass.jsp">Forgot your password?</a>
                         </div>
 
                         <button class="btn bkg">Sign In</button>
                         <input type="hidden" id="thisField" name="action" value="login">
+                        <br>
+                        <a href="<%=url%>/Admin/adminLogin.jsp">Sign in as an Admin</a>
                     </form>
+                    
                 </div>
 
                 <div class="form sign_up">
                     <h3>Sign Up</h3>
                     <span>or use your email for register</span>
 
-                    
+
                 </div>
+                    
             </div>
 
             <div class="overlay">
@@ -71,24 +75,18 @@
                     <h3>Welcome Back!</h3>
                     <p>To keep with us please login with your personal info</p>
 
-                    
+
 
 
                     <a href="<%=url%>/Authentication/signup_1.jsp"><button class="btn bkg">Sign Up</button></a>
-                        
-                    
+
+
                 </div>
 
-                <div class="page page_signUp">
-                    <h3>Hello Friend!</h3>
-                    <p>Enter your personal details and start journey with us</p>
-
-                    <button class="btn btnSign-up">
-                        <i class="bi bi-arrow-left"></i> Sign In
-                    </button>
-                </div>
             </div>
+
         </div>
+
 
         <!-- link script -->
 

@@ -4,7 +4,9 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.AdminDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.Utils;
@@ -52,15 +54,23 @@ public class LoginController extends HttpServlet {
 
             if (action.equals("login")) {
                 login(request, response);
+            } else if (action.equals("adminLogin")) {
+                adminLogin(request, response);
             } else if (action.equals("OTPSend")) {
                 String email = request.getParameter("email");
                 //Session chưa login sẽ được set timeout là 60s
                 session.setAttribute("email", email);
                 OTPSend(email, request, response);
-                
+
             } else if (action.equals("OTP")) {
 
                 OTPCheck(request, response, request.getParameter("OTP"));
+            } else if (action.equals("OTPVerify")) {
+                OTPVerify(request, response, request.getParameter("OTP"));
+            } else if (action.equals("resetPsw")) {
+                resetPsw(request, response);
+            } else if (action.equals("changePass")) {
+                newPass(request, response);
             } else {
 
                 signup(request, response);
@@ -88,7 +98,7 @@ public class LoginController extends HttpServlet {
         }
     }
 
-    //FUNCTION CHECK OTP
+    //FUNCTION CHECK OTP ( for Registeration)
     public void OTPCheck(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
         OTPController.checkOTP(request, response, OTP);
         if (OTPController.checkOTP(request, response, OTP)) {
@@ -97,7 +107,18 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
         }
     }
+    //FUNCTION CHECK OTP ( for Reset Password)
 
+    public void OTPVerify(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
+        OTPController.checkOTP(request, response, OTP);
+        if (OTPController.checkOTP(request, response, OTP)) {
+            request.getRequestDispatcher("/Authentication/changePass.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
+        }
+    }
+
+    //TAO TAI KHOAN VA LUU VAO DATABASE
     public void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         HocVienDAO hocVienDAO = new HocVienDAO();
@@ -141,7 +162,10 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setPsw(psw);
             hocVienDTO.setPhone(phone);
             hocVienDTO.setMaLopHoc(null);
+
+            //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
             hocVienDTO.setMaLoaiTK("HOCVIEN");
+
             hocVienDTO.setMaHV(maHV);
             hocVienDTO.setHo(ho);
             hocVienDTO.setGender(gender);
@@ -156,8 +180,13 @@ public class LoginController extends HttpServlet {
         }
     }
 
+
+    //LOGIN
+
+
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         HocVienDAO dao = new HocVienDAO();
@@ -170,6 +199,55 @@ public class LoginController extends HttpServlet {
             session.setMaxInactiveInterval(300);
 
             request.getRequestDispatcher("/Authentication/success.jsp").forward(request, response);
+        }
+    }
+
+    //RESET PASSWORD
+    public void resetPsw(HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        String email = request.getParameter("email");
+        String errorMessageMail = "";
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        if (!hocVienDAO.selectByHocVienEmail(email)) {
+            errorMessageMail += "You have not sign up with this email before";
+            request.setAttribute("errorMessageMail", errorMessageMail);
+            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/resetPass.jsp");
+            rd.forward(request, response);
+
+        } else {
+            session.setAttribute("email", email);
+            OTPController.generateOTP(email, request);
+            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
+        }
+    }
+
+    public void newPass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        String newPass = request.getParameter("newPass");
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        hocVienDAO.changePsw(newPass, email);
+        RequestDispatcher rd = request.getRequestDispatcher("/Authentication/success.jsp");
+        rd.forward(request, response);
+    }
+
+    //LOGIN CUA ADMIN 
+    public void adminLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        AdminDAO adminDAO = new AdminDAO();
+        AdminDTO adminDTO = new AdminDTO();
+        adminDTO = adminDAO.login(username, password);
+        if (adminDTO == null) {
+            request.getRequestDispatcher("/Admin/adminLogin.jsp").forward(request, response);
+
+        } else {
+            session.setAttribute("adminDTO", adminDTO);
+            // set lại session time out là 5p
+            session.setMaxInactiveInterval(300);
+
+            request.getRequestDispatcher("/Admin/AdminHomepage.jsp").forward(request, response);
         }
     }
 

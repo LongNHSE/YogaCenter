@@ -240,13 +240,40 @@ public class HocVienDAO {
         return false;
     }
     
+     //Update user's password
+     public HocVienDTO changePsw(String psw, String email){
+           String query = "UPDATE dbo.hocVien\n" +
+                            "set psw = ? where email = ? ";
+           try {
+            conn = new DBUtils().getConnection(); // connect DB
+            ps = conn.prepareStatement(query); 
+            ps.setString(1, psw);
+            ps.setString(2, email);            
+            ps.executeUpdate();                 
+           } catch (Exception e) {
+           }
+           return null;
+     }
     public static void main(String[] args) {
         
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
 
         HocVienDTO hocVienDTO = new HocVienDTO();
-        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
+
+        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
+        System.out.println(hocVienDTO);
+
+        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
+        if(a){
+              System.out.println("Email exist");
+        }
+        else{
+              System.out.println("Email not exist");
+        }
+//        System.out.println(hocVienDTO.toString());
+//        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
+
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 //Date a = Date.valueOf("2003-02-13");
 //            hocVienDTO.setUsername("A");

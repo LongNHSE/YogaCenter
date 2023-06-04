@@ -87,6 +87,26 @@ public class LopHocDAO {
         }
     }
 
+    
+//TAO LOP HOC DUA TREN SLOT VA CHECK XEM SLOT DO PHONG CO TRONG KHONG
+     public void addClassBasedOnRoom(LopHocDTO newClass) {
+        try {
+            String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maTrainer,maLoaiLopHoc,maSlot,maRoom,ngay)"
+                    + "values(?,?,?,?,?,?,?,?)";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, newClass.getMaLopHoc());
+            stm.setInt(2, newClass.getSoLuongHV());
+            stm.setInt(3, newClass.getSoBuoi());
+            stm.setString(4, newClass.getMaTrainer());
+            stm.setString(5, newClass.getMaLoaiLopHoc());
+            stm.setString(6, newClass.getMaSlot());
+            stm.setString(7, newClass.getMaRoom());
+            stm.setDate(8, newClass.getNgay());
+        } catch (SQLException e) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
 /////Update Class (1 lớp có thể thay đổi giáo viên và mã phòng nhưng không thể thay đổi ngày, số buổi, loại lớp học)
     public void updateClass(LopHocDTO upClass) {
         try {

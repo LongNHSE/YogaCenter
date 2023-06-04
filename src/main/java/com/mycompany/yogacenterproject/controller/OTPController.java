@@ -47,7 +47,7 @@ public class OTPController extends HttpServlet {
             
         }
     }
-
+// CHECK OTP SENT WITH THE INPUT OTP
     public static boolean checkOTP(HttpServletRequest request, HttpServletResponse response,String OTP) {
         boolean check = false;
         HttpSession sessionOTP = request.getSession();
@@ -55,13 +55,14 @@ public class OTPController extends HttpServlet {
         check = OTPCheck.equals(OTP);
         return check;
     }
+// GENERATE OTPS
 
     public static void generateOTP(String email, HttpServletRequest request) throws EmailException, MalformedURLException {
         String OTP = "";
 
         OTP = Utils.generateRandomString(5);
         EmailController.OTPSender(OTP, email);
-        EmailController.OTPSender(OTP, email);
+        
         HttpSession session = request.getSession();
 
         

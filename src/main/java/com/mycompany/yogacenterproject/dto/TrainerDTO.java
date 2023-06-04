@@ -13,7 +13,7 @@ private String HoVaTen;
 private Date dob;
 private String phone;    
 private String email;
-private float salary;
+private long salary;
 private String username;
 private String psw;
 private int soNgayNghi;
@@ -21,7 +21,7 @@ private Boolean status;
 private String trainerType;
 private String maLoaiTK;
 
-    public TrainerDTO(String maTrainer, String HoVaTen, Date dob, String phone, String email, float salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
+    public TrainerDTO(String maTrainer, String HoVaTen, Date dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
         this.maTrainer = maTrainer;
         this.HoVaTen = HoVaTen;
         this.dob = dob;
@@ -79,11 +79,11 @@ private String maLoaiTK;
         this.email = email;
     }
 
-    public float getSalary() {
+    public long getSalary() {
         return salary;
     }
 
-    public void setSalary(float salary) {
+    public void setSalary(long salary) {
         this.salary = salary;
     }
 

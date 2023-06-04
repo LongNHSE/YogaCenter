@@ -4,8 +4,12 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -39,8 +43,23 @@ public class AdminController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
-          
-             listHocVienDTO(request,response);
+
+            if (action.equals("listHocVien")) {
+                listHocVienDTO(request, response);
+            } else if (action.equals("detailHocVien")) {
+
+            } else if (action.equals("View Receipt")) {
+                listReceipt(request, response);
+            } else if (action.equals("listTrainer")) {
+                listTrainerDTO(request, response);
+            } else if (action.equals("detailTrainer")) {
+
+            } else if (action.equals("listLopHoc")) {
+
+            } else if (action.equals("detailLopHoc")) {
+
+            }
+
 //            
 //            
 //            switch (action) {
@@ -50,15 +69,10 @@ public class AdminController extends HttpServlet {
 //                default:
 //                    throw new AssertionError();
 //            }
-            
-            
-            
-            
-            
-            
         }
     }
-    public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
@@ -66,7 +80,31 @@ public class AdminController extends HttpServlet {
 //        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
         RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HocVienList.jsp");
         rs.forward(request, response);
+
+    }
+
+    public void listTrainerDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<TrainerDTO> listTrainerDTO = new ArrayList<TrainerDTO>();
+        TrainerDAO trainerDAO = new TrainerDAO();
+        listTrainerDTO = trainerDAO.readListTrainer();
+        request.setAttribute("listTrainerDTO", listTrainerDTO);
+//        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Admin/Trainer/TrainerList.jsp");
+        rs.forward(request, response);
+
+    }
+
+    public void listReceipt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
+        List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
+        HoaDonDAO hoaDonDAO = new HoaDonDAO();
+       
+        listHoaDon = hoaDonDAO.listHoaDon(request.getParameter("maHV"));
+         
+        request.setAttribute("listHoaDon", listHoaDon);
+        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HoaDonList.jsp");
+        rs.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -32,11 +32,13 @@ public class AdminDAO {
                 admin.setMaADmin(rs.getString("maAdmin"));
                 admin.setUserName(rs.getString("username"));
                 admin.setPsw(rs.getString("psw"));
+                return admin;
             }
+            
             rs.close();
             ps.close();
             conn.close();
-            return admin;
+            
         } catch (SQLException ex) {
             System.out.println("Query error!" + ex.getMessage());
         }
@@ -94,8 +96,8 @@ public class AdminDAO {
     public static void main(String[] args) {
         AdminDAO adminDAO = new AdminDAO();
         AdminDTO adminDTO = new AdminDTO();
-        adminDTO = adminDAO.login("sa2", "1234");
-        System.out.println(adminDTO.toString());
+        adminDTO = adminDAO.login("admin1", "1234");
+        System.out.println(adminDTO);
 //adminDAO.deleteAdmin("AD0001");
 //        adminDAO.createAdmin("sa2", "123123", "AD0002");
     }
