@@ -58,7 +58,7 @@
 								<!-- Password Input -->
 								<div class="form-group row justify-content-center px-3">
 									<div class="col-9 px-0">
-										<input type="password" name="" id ="confirmPassword" placeholder="Verify password" class="form-control border-info placeicon">
+										<input type="password" name="" id ="confirmPassword" placeholder="Verify password" class="form-control border-info placeicon" onkeyup='check();'>
                                                                         <input type="hidden" id="thisField" name="action" value="changePass">
                                                                         <span id='message'></span>
 									</div>
@@ -67,8 +67,8 @@
 								<!-- Log in Button -->
 								<div class="form-group row justify-content-center">
 									<div class="col-3 px-3 mt-3">
-										<input type="submit" value="Reset"
-											class="btn btn-block btn-info">
+										<input id="submit" type="submit" value="Reset"
+											class="btn btn-block btn-info" disabled>
 									</div>
 								</div>
 							</form>
