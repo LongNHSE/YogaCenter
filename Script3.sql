@@ -1,13 +1,9 @@
-<<<<<<< HEAD:Script3.sql
+
 use master
 go
 drop database YogaCenter
 go
-=======
-﻿DROP DATABASE YogaCenter
-GO
------
->>>>>>> 95865408d2d4957987caba3379901eb95c7d859c:Script2.sql
+
 CREATE DATABASE YogaCenter
 GO
 ----
@@ -181,16 +177,7 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-<<<<<<< HEAD:Script3.sql
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
 	)
-=======
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]),
-	CONSTRAINT fk_maPaySlip_OT FOREIGN KEY([maOT]) REFERENCES  bangOT([maOT])
-	)
 
-INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, maLoaiTK, email)
-VALUES('HV001', N'Nguyễn', N'Trung Kiên', '2003-05-27', 'devlindinh', 01662255761, '123456','Gei', 'CLASS001', 'US', 'devlindinh@gmail.com')
-INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, maLoaiTK, email)
-VALUES('HCV002', N'Nguyễn', N'Huy Long', '1969-06-09', 'longNiger', 01662255761, '123456','Female', 'CLASS003', 'US', 'huylong@gmail.com')
->>>>>>> 95865408d2d4957987caba3379901eb95c7d859c:Script2.sql
+
