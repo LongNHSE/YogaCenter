@@ -50,6 +50,9 @@ public class ScheduleDAO {
 
         return listScheduleHv;
     }
+    
+    
+    
 
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
     public boolean createScheduleHV(String maLopHoc, String maHV, String maSlot) throws SQLException {

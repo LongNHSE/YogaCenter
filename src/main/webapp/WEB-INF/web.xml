@@ -20,6 +20,10 @@
         <servlet-name>ScheduleController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ScheduleController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>ScheduleController</servlet-name>
         <url-pattern>/ScheduleController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

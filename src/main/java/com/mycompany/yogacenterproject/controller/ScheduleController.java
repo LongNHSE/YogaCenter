@@ -7,12 +7,18 @@ package com.mycompany.yogacenterproject.controller;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
+import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,32 +46,77 @@ public class ScheduleController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-            HocVienDAO hocVienDAO = new HocVienDAO();
-            HocVienDTO hocVienDTO = (HocVienDTO)session.getAttribute("user");
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            List<ScheduleHvDTO> listScheduleHv = scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV());
-            SlotDAO slotDAO = new SlotDAO();
-            
-            List<SlotDTO> listSlot = slotDAO.readSlot();
-            request.setAttribute("listSlot", listSlot);
-            request.setAttribute("listScheduleHv", listScheduleHv);
+
+            Schedule(request, response);
+            date(request, response);
+
             request.getRequestDispatcher("/Class/Schedule.jsp").forward(request, response);
-           
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
         }
+    }
+
+    public void Schedule(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        HttpSession session = request.getSession();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("user");
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        List<ScheduleHvDTO> listScheduleHv = scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV());
+        SlotDAO slotDAO = new SlotDAO();
+
+        List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listSlot", listSlot);
+        request.setAttribute("listScheduleHv", listScheduleHv);
+        String weekRange = request.getParameter("weekRange");
+        LocalDate today = LocalDate.now();
+        if (weekRange != null) {
+
+            LocalDate localDate = LocalDate.parse(weekRange);
+            today = localDate; // Get the current date
+        }
+
+        LocalDate monday = today.with(DayOfWeek.MONDAY);
+
+        List<LocalDate> days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            String a = (monday.plusDays(i).toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate datea = LocalDate.parse(a, formatter);
+            days.add(datea);
+
+        }
+        request.setAttribute("listDate", days);
+    }
+
+    public void date(HttpServletRequest request, HttpServletResponse response) {
+        LocalDate currentDateNow = LocalDate.now();
+        LocalDate startDateOfMonth = currentDateNow.withDayOfMonth(1);
+        LocalDate startDate = startDateOfMonth;
+        LocalDate endDate = startDate.plusMonths(3).minusDays(1);
+
+        List<DateStartAndDateEnd> weekRanges = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+            DateStartAndDateEnd date = new DateStartAndDateEnd();
+            LocalDate weekStart = currentDate.with(DayOfWeek.MONDAY);
+
+            LocalDate weekEnd = currentDate.with(DayOfWeek.SUNDAY);
+
+            String formattedStartDate = weekStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String formattedEndDate = weekEnd.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            date.setDateStart(weekStart);
+            date.setDateEnd(weekEnd);
+            date.setFormattedStartDate(formattedStartDate);
+            date.setFormattedEndDate(formattedEndDate);
+            weekRanges.add(date);
+
+            currentDate = currentDate.plusWeeks(1);
+        }
+
+        request.setAttribute("weekRanges", weekRanges);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

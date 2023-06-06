@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class HocVienDTO {
 
@@ -15,21 +16,43 @@ public class HocVienDTO {
     private String username;
     private String phone;
     private String psw;
-    private String maLopHoc;
+    private List<String> maLopHoc;
     private String maLoaiTK;
     private String email;
     private String gender;
 
-    public String getMaLopHoc() {
-        return maLopHoc;
+    public List getMaLopHoc() {
+        if (maLopHoc != null) {
+            return maLopHoc;
+        } else {
+            return null;
+        }
     }
 
-    public void setMaLopHoc(String maLopHoc) {
+    public void setMaLopHoc(List maLopHoc) {
         this.maLopHoc = maLopHoc;
     }
 
-    
-    
+    public String generateString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < maLopHoc.size(); i++) {
+            stringBuilder.append(maLopHoc.get(i));
+            if (i < maLopHoc.size() - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public String printClass() {
+        StringBuilder htmlBuilder = new StringBuilder();
+        for (String lopHoc : maLopHoc) {
+            htmlBuilder.append(lopHoc).append(" ");
+
+        }
+        return htmlBuilder.toString();
+    }
+
     public HocVienDTO() {
     }
 
@@ -46,8 +69,6 @@ public class HocVienDTO {
         this.gender = gender;
     }
 
-    
-
     public String getGender() {
         return gender;
     }
@@ -55,8 +76,6 @@ public class HocVienDTO {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    
 
     public String getMaHV() {
         return maHV;
@@ -114,8 +133,6 @@ public class HocVienDTO {
         this.psw = psw;
     }
 
-   
-
     public String getMaLoaiTK() {
         return maLoaiTK;
     }
@@ -134,9 +151,7 @@ public class HocVienDTO {
 
     @Override
     public String toString() {
-        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", phone=" + phone + ", psw=" + psw + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", gender=" + gender + '}';
+        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", phone=" + phone + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", gender=" + gender + '}';
     }
-
-
 
 }
