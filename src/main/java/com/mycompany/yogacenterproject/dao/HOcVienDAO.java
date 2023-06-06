@@ -37,12 +37,12 @@ public class HocVienDAO {
                 Date dob = rs.getDate("dob");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
-                String maLopHoc = rs.getString("maLopHoc");
+               
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw,  maLoaiTK, email,gender);
                 listHocVien.add(newTrainee);
             }
         } catch (SQLException e) {
@@ -64,12 +64,12 @@ public class HocVienDAO {
                 Date dob = rs.getDate("dob");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
-                String maLopHoc = rs.getString("maLopHoc");
+              
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email,gender);
                 return newTrainee;
             }
         } catch (SQLException e) {
@@ -81,8 +81,8 @@ public class HocVienDAO {
 /// Add thêm học viên
     public void addHocVien(HocVienDTO newHocVien) {
         try {
-            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone,gender)"
-                    + "values (?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLoaiTK,email,phone,gender)"
+                    + "values (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
@@ -90,11 +90,11 @@ public class HocVienDAO {
             stm.setDate(4, newHocVien.getDob());
             stm.setString(5, newHocVien.getUsername());
             stm.setString(6, newHocVien.getPsw());
-            stm.setString(7, newHocVien.getMaLopHoc());
-            stm.setString(8, newHocVien.getMaLoaiTK());
-            stm.setString(9, newHocVien.getEmail());
-            stm.setString(10, newHocVien.getPhone());
-            stm.setString(11, newHocVien.getGender());
+            
+            stm.setString(7, newHocVien.getMaLoaiTK());
+            stm.setString(8, newHocVien.getEmail());
+            stm.setString(9, newHocVien.getPhone());
+            stm.setString(10, newHocVien.getGender());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(TrainerDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -143,7 +143,7 @@ public class HocVienDAO {
             while(rs.next()){
                 
 //              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLopHoc"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
+                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
                 
             }
         } catch (Exception e) {

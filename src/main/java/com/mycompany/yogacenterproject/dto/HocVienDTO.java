@@ -20,12 +20,20 @@ public class HocVienDTO {
     private String email;
     private String gender;
 
+    public String getMaLopHoc() {
+        return maLopHoc;
+    }
+
+    public void setMaLopHoc(String maLopHoc) {
+        this.maLopHoc = maLopHoc;
+    }
+
     
     
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLopHoc, String maLoaiTK, String email, String gender) {
+    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLoaiTK, String email, String gender) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
@@ -33,11 +41,12 @@ public class HocVienDTO {
         this.username = username;
         this.phone = phone;
         this.psw = psw;
-        this.maLopHoc = maLopHoc;
         this.maLoaiTK = maLoaiTK;
         this.email = email;
         this.gender = gender;
     }
+
+    
 
     public String getGender() {
         return gender;
@@ -105,13 +114,7 @@ public class HocVienDTO {
         this.psw = psw;
     }
 
-    public String getMaLopHoc() {
-        return maLopHoc;
-    }
-
-    public void setMaLopHoc(String maLopHoc) {
-        this.maLopHoc = maLopHoc;
-    }
+   
 
     public String getMaLoaiTK() {
         return maLoaiTK;
@@ -131,7 +134,7 @@ public class HocVienDTO {
 
     @Override
     public String toString() {
-        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", phone=" + phone + ", psw=" + psw + ", maLopHoc=" + maLopHoc + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", gender=" + gender + '}';
+        return "HocVienDTO{" + "maHV=" + maHV + ", Ho=" + Ho + ", Ten=" + Ten + ", dob=" + dob + ", username=" + username + ", phone=" + phone + ", psw=" + psw + ", maLoaiTK=" + maLoaiTK + ", email=" + email + ", gender=" + gender + '}';
     }
 
 

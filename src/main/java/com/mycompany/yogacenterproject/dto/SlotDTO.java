@@ -13,18 +13,35 @@ import java.util.Date;
  */
 public class SlotDTO {
     private String maSlot;
-    private Time timeStart;
-    private Time timeEnd;
+    private String timeStart;
+    private String timeEnd;
 
     public SlotDTO() {
     }
 
-    public SlotDTO(String maSlot, Time timeStart, Time timeEnd) {
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public SlotDTO(String maSlot, String timeStart, String timeEnd) {
         this.maSlot = maSlot;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
     }
 
+  
     public String getMaSlot() {
         return maSlot;
     }
@@ -33,21 +50,8 @@ public class SlotDTO {
         this.maSlot = maSlot;
     }
 
-    public Time getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(Time timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public Time getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(Time timeEnd) {
-        this.timeEnd = timeEnd;
-    }
+   
+    
 
     @Override
     public String toString() {
