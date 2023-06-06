@@ -1,7 +1,9 @@
+
 use master
 go
 drop database YogaCenter
 go
+
 CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
@@ -174,5 +176,6 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
+	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
 	)
+
