@@ -3,7 +3,9 @@
     Created on : May 31, 2023, 7:13:35 AM
     Author     : Oalskad
 --%>
-
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <%@page import="com.mycompany.yogacenterproject.dao.LopHocDAO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.DateStartAndDateEnd"%>
 <%@page import="java.time.LocalDate"%>
@@ -18,7 +20,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="ScheduleStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
@@ -109,6 +111,7 @@
                             <td>
 
                                 <% if (hasSchedule) { %>
+                                 <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc %></span>
                                 <div class="margin-10px-top font-size14"><%=maLopHoc %></div>
                                 <div class="font-size13 text-light-gray"><%=tenLopHoc %></div>
                                 <% }%>
