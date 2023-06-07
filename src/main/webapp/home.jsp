@@ -1,6 +1,15 @@
+<%-- 
+    Document   : home
+    Created on : Jun 7, 2023, 7:21:10 AM
+    Author     : devli
+--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
   <!-- basic -->
   <meta charset="utf-8">
@@ -49,7 +58,25 @@
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
         <a class="nav-item nav-link" href="trainer.html">Trainer</a>
         <a class="nav-item nav-link" href="contact.html">Contact us</a>
-        <a class="nav-item nav-link" href="<%=url%>/Authentication/signin.jsp">Login</a>
+        <c:if test = "${sessionScope.user == null}">
+            <a class="nav-item nav-link" href="<%=url%>/Authentication/signin.jsp">Login</a>              
+        </c:if>
+        <c:if test = "${sessionScope.user != null}">
+            <div class="btn-group btn-user-menu">
+                  <button style=" margin-left: 100px; background: #be2532 " class=" btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  
+                  <span>${sessionScope.user.username}</span>
+                  </button>
+                  <div class="dropdown-menu btn-menu">
+                       <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
+                                                    <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
+                                                    <a class="dropdown-item btn-menu-item" href="#">Something else here</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
+                                                          <b style="color: black">Logout</b>
+                                                    </a>
+                  </div>
+            </div>               
+        </c:if>
         <a class="nav-item nav-link" href="#"><img src="images/search-icon.png"></a>
       </div>
     </div>
@@ -400,5 +427,4 @@
     });
   </script>
 </body>
-
 </html>
