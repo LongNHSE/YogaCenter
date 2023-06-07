@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <!-- site metas -->
-  <title>About</title>
+  <title>Classes</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -43,7 +43,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="home.html">Home</a>
+        <a class="nav-item nav-link" href="home.jsp">Home</a>
         <a class="nav-item nav-link" href="about.html">About</a>
         <a class="nav-item nav-link" href="classes.html">Classes</a>
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
@@ -55,23 +55,31 @@
     </div>
   </nav>
   <!-- header section end -->
-  <!-- about section start -->
-  <div class="about_section layout_padding">
+  <!-- pricing section start -->
+  <div class="pricing_section layout_padding">
     <div class="container">
-      <div class="about_main">
-        <h1 class="about_text">About Us</h1>
-        <p class="ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum
-          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. </p>
-      </div>
-      <div class="about_bt_main">
-        <div class="about_bt"><a href="#">About More</a></div>
+      <h1 class="pricing_taital">Our Pricing</h1>
+      <div class="pricing_section_2">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="plane_section">
+              <h1 class="starter_text">STARTER PLAN</h1>
+              <div class="number_text">50<span style="font-size: 16px;">/$</span></div>
+              <p class="lorem_amet_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="plane_section">
+              <h1 class="starter_text">STARTER PLAN</h1>
+              <div class="number_text">50<span style="font-size: 16px;">/$</span></div>
+              <p class="lorem_amet_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <!-- about section end -->
+  <!-- pricing section end -->
   <!-- copyright section start -->
   <div class="copyright_section">
     <div class="container">
