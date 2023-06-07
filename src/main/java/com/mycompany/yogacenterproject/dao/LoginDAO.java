@@ -30,7 +30,7 @@ public class LoginDAO {
             rs=ps.executeQuery();
             while(rs.next()){
 //              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLopHoc"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
+                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
                 
             }
         } catch (Exception e) {

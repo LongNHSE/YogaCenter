@@ -18,12 +18,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HocVienDAO {
+
     Connection conn = null;
     PreparedStatement ps = null;
-    ResultSet rs = null; 
+    ResultSet rs = null;
 
 //Read list của toàn bộ học viên
-
     public List<HocVienDTO> readListHocVien() {
         List<HocVienDTO> listHocVien = new ArrayList<>();
         try {
@@ -37,12 +37,14 @@ public class HocVienDAO {
                 Date dob = rs.getDate("dob");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
-                String maLopHoc = rs.getString("maLopHoc");
+
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
+                
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
+                newTrainee.setMaLopHoc(classOfTrainee(maHV));
                 listHocVien.add(newTrainee);
             }
         } catch (SQLException e) {
@@ -59,17 +61,18 @@ public class HocVienDAO {
             stm.setString(1, maHV);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
+                
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
                 Date dob = rs.getDate("dob");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
-                String maLopHoc = rs.getString("maLopHoc");
+
                 String maLoaiTK = rs.getString("maLoaiTK");
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLopHoc, maLoaiTK, email,gender);
+                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
                 return newTrainee;
             }
         } catch (SQLException e) {
@@ -81,8 +84,8 @@ public class HocVienDAO {
 /// Add thêm học viên
     public void addHocVien(HocVienDTO newHocVien) {
         try {
-            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLopHoc,maLoaiTK,email,phone,gender)"
-                    + "values (?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "Insert into hocVien(maHV,Ho,Ten,dob,username,psw,maLoaiTK,email,phone,gender)"
+                    + "values (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
@@ -90,11 +93,11 @@ public class HocVienDAO {
             stm.setDate(4, newHocVien.getDob());
             stm.setString(5, newHocVien.getUsername());
             stm.setString(6, newHocVien.getPsw());
-            stm.setString(7, newHocVien.getMaLopHoc());
-            stm.setString(8, newHocVien.getMaLoaiTK());
-            stm.setString(9, newHocVien.getEmail());
-            stm.setString(10, newHocVien.getPhone());
-            stm.setString(11, newHocVien.getGender());
+
+            stm.setString(7, newHocVien.getMaLoaiTK());
+            stm.setString(8, newHocVien.getEmail());
+            stm.setString(9, newHocVien.getPhone());
+            stm.setString(10, newHocVien.getGender());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(TrainerDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -131,31 +134,77 @@ public class HocVienDAO {
         }
     }
 //    Login
-    public HocVienDTO login(String username, String pass){
-        String querry = "SELECT * FROM hocVien\n" +
-                "where username = ? and psw = ? ";
+
+    public HocVienDTO login(String username, String pass) {
+        String querry = "SELECT * FROM hocVien\n"
+                + "where username = ? and psw = ? ";
         try {
             conn = new DBUtils().getConnection(); // connect DB
             ps = conn.prepareStatement(querry);
             ps.setString(1, username);
             ps.setString(2, pass);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                
+            rs = ps.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                HocVienDTO hocVienDTO = new HocVienDTO();
+                if (i == 0) {
+                    List<String> listMaLopHoc = classOfTrainee(rs.getString("maHV"));
+                    hocVienDTO.setMaLopHoc(listMaLopHoc);
+                    i++;
+                }
 //              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLopHoc"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
-                
+
+                hocVienDTO.setMaHV(rs.getString("maHV"));
+                hocVienDTO.setHo(rs.getString("Ho"));
+                hocVienDTO.setTen(rs.getString("Ten"));
+                hocVienDTO.setDob(rs.getDate("dob"));
+                hocVienDTO.setUsername(rs.getString("username"));
+                hocVienDTO.setPhone(rs.getString("phone"));
+                hocVienDTO.setPsw(rs.getString("psw"));
+                hocVienDTO.setGender(rs.getString("gender"));
+                hocVienDTO.setMaLoaiTK(rs.getString("maLoaiTk"));
+                hocVienDTO.setEmail(rs.getString("email"));
+
+                return hocVienDTO;
+
             }
+
         } catch (Exception e) {
         }
         return null;
-        
-    }   
-    
-    
-    
+
+    }
+
+    //GET ALL CLASS FROM 1 TRAINEE 
+    public List<String> classOfTrainee(String maHv) {
+        List<String> listMaLopHoc = new ArrayList();
+
+        String querry = "SELECT maLopHoc\n"
+                + "FROM ScheduleHV\n"
+                + "WHERE maHV = ? \n"
+                + "group by maLopHoc";
+        try {
+            conn = new DBUtils().getConnection(); // connect DB
+            
+            ps = conn.prepareStatement(querry);
+            ps.setString(1, maHv);
+            ResultSet rs;
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String maLopHoc = rs.getString("maLopHoc");
+                listMaLopHoc.add(maLopHoc);
+                
+            }
+            return listMaLopHoc;
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
     //GENERATE ID 
-     public int lastIDIndex() {
+    public int lastIDIndex() {
         String sql = "SELECT TOP 1 maHV FROM [hocVien] ORDER BY maHV DESC";
         int index = 0;
         try {
@@ -163,7 +212,7 @@ public class HocVienDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                
+
                 int numberOnly = Integer.parseInt(rs.getString("maHV").replaceAll("[^0-9]", ""));
                 index = numberOnly;
             }
@@ -175,9 +224,9 @@ public class HocVienDAO {
         }
         return index;
     }
-    
-     //KIEM TRA USERNAME CUA HOC VIEN DA TON TAI CHUA
-     public boolean selectByUserName(String userName) {
+
+    //KIEM TRA USERNAME CUA HOC VIEN DA TON TAI CHUA
+    public boolean selectByUserName(String userName) {
 
         try {
 
@@ -207,9 +256,9 @@ public class HocVienDAO {
         }
         return false;
     }
-     
+
     //KIEM TRA EMAIL DA TON TAI CHUA
-     public boolean selectByHocVienEmail(String email) {
+    public boolean selectByHocVienEmail(String email) {
 
         try {
 
@@ -239,41 +288,46 @@ public class HocVienDAO {
         }
         return false;
     }
-    
-     //Update user's password
-     public HocVienDTO changePsw(String psw, String email){
-           String query = "UPDATE dbo.hocVien\n" +
-                            "set psw = ? where email = ? ";
-           try {
+
+    //Update user's password
+    public HocVienDTO changePsw(String psw, String email) {
+        String query = "UPDATE dbo.hocVien\n"
+                + "set psw = ? where email = ? ";
+        try {
             conn = new DBUtils().getConnection(); // connect DB
-            ps = conn.prepareStatement(query); 
+            ps = conn.prepareStatement(query);
             ps.setString(1, psw);
-            ps.setString(2, email);            
-            ps.executeUpdate();                 
-           } catch (Exception e) {
-           }
-           return null;
-     }
+            ps.setString(2, email);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    
+    
+    
+    
+    
+
     public static void main(String[] args) {
-        
+
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
 
         HocVienDTO hocVienDTO = new HocVienDTO();
 
-        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
+        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
         System.out.println(hocVienDTO);
 
-        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
-        if(a){
-              System.out.println("Email exist");
-        }
-        else{
-              System.out.println("Email not exist");
-        }
+//        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
+//        if (a) {
+//            System.out.println("Email exist");
+//        } else {
+//            System.out.println("Email not exist");
+//        }
 //        System.out.println(hocVienDTO.toString());
 //        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
-
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 //Date a = Date.valueOf("2003-02-13");
 //            hocVienDTO.setUsername("A");
@@ -288,12 +342,9 @@ public class HocVienDAO {
 //            hocVienDTO.setEmail("huylong2");
 //            hocVienDTO.setDob(a);
 //            hocVienDAO.addHocVien(hocVienDTO);
-        
 //        System.out.println(AUTO_HOCVIEN_ID);
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
 //        int a = hocVienDAO.lastIDIndex();
 //        System.out.println(a);
-
-
     }
 }

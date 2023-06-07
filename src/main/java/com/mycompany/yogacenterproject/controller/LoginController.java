@@ -161,7 +161,7 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setTen(ten);
             hocVienDTO.setPsw(psw);
             hocVienDTO.setPhone(phone);
-            hocVienDTO.setMaLopHoc(null);
+            
 
             //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
             hocVienDTO.setMaLoaiTK("HOCVIEN");

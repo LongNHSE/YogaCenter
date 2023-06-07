@@ -32,16 +32,16 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
 
         <!-- Vendor CSS File -->
-        <link href="<%= url%>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="<%= url%>/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="<%= url%>/vendor/animate/animate.min.css" rel="stylesheet">
-        <link href="<%= url%>/vendor/slick/slick.css" rel="stylesheet">
-        <link href="<%= url%>/vendor/slick/slick-theme.css" rel="stylesheet">
-        <link href="<%= url%>/vendor/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+        <link href="Admin/vendorAdmin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="Admin/vendorAdmin/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="Admin/vendorAdmin/animate/animate.min.css" rel="stylesheet">
+        <link href="Admin/vendorAdmin/slick/slick.css" rel="stylesheet">
+        <link href="Admin/vendorAdmin/slick/slick-theme.css" rel="stylesheet">
+        <link href="Admin/vendorAdmin/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
         <!-- Main Stylesheet File -->
-        <link href="<%= url%>/css/hover-style.css" rel="stylesheet">
-        <link href="<%= url%>/css/style.css" rel="stylesheet">
+        <link href="Admin/cssAdmin/hover-style.css" rel="stylesheet">
+        <link href="Admin/cssAdmin/style.css" rel="stylesheet" type="text/css"/>
     </head>
     <%
 
