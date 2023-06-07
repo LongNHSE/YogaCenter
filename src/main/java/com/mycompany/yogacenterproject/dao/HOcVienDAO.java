@@ -90,11 +90,10 @@ public class HOcVienDAO {
             stm.setDate(4, newHocVien.getDob());
             stm.setString(5, newHocVien.getUsername());
             stm.setString(6, newHocVien.getPsw());
-            stm.setString(7, newHocVien.getMaLopHoc());
-            stm.setString(8, newHocVien.getMaLoaiTK());
-            stm.setString(9, newHocVien.getEmail());
-            stm.setString(10, newHocVien.getPhone());
-            stm.setString(11, newHocVien.getGender());
+            stm.setString(7, newHocVien.getMaLoaiTK());
+            stm.setString(8, newHocVien.getEmail());
+            stm.setString(9, newHocVien.getPhone());
+            stm.setString(10, newHocVien.getGender());
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(TrainerDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -110,8 +109,8 @@ public class HOcVienDAO {
             stmt.setString(2, upTrainee.getTen());
             stmt.setDate(3, upTrainee.getDob());
             stmt.setString(4, upTrainee.getUsername());
-            stmt.setString(4, upTrainee.getPsw());
-            stmt.setString(5, upTrainee.getMaHV());
+            stmt.setString(5, upTrainee.getPsw());
+            stmt.setString(6, upTrainee.getMaHV());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -262,10 +261,10 @@ public class HOcVienDAO {
 //        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
 //        hocVienDTO=hocVienDAO.searchHocVienById("HV0001");
 //        System.out.println(hocVienDTO.toString());
-        hocVienDTO = hocVienDAO.login("weqe", "weqwe");
+        hocVienDTO = hocVienDAO.login("devlindinh", "123456");
         System.out.println(hocVienDTO);
 
-        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
+        boolean a = hocVienDAO.selectByHocVienEmail("devlindinh@gmail.com");
         if(a){
               System.out.println("Email exist");
         }
