@@ -79,13 +79,13 @@ CREATE TABLE hocVien(
 	[email] NVARCHAR(50) NOT NULL	
 	)
 
-CREATE TABLE ScheduleHV(
+create TABLE ScheduleHV(
 [maHV] nvarchar(10) not null,--CONSTRAINT--
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 [thu] nvarchar(20) NOT NULl
-primary key(maLopHoc,maHV)
+primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 constraint fk_maLopHoc_ScheduleHV foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
