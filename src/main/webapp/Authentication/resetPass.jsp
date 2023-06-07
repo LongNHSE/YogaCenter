@@ -19,36 +19,6 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">      
     <body>
-<!--      <div align="center">
-              <h2>Reset Your Password</h2>
-              <p>
-              Please enter your login email, we'll send a new random password to your inbox:
-              </p>
-
-              <form id="resetForm" action="<%=url%>/LoginController/signup" method="post">
-                  <table>
-                      <tr>
-                          <td>Email:</td>
-                          <td><input type="text" name="email" id="email" size="20" required="required"></td>
-                      </tr>
-                      <tr>
-                          <td colspan="2" align="center">
-                               <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
-                               <input type="hidden" id="thisField" name="action" value="resetPsw" />                               
-                          </td> 
-                      </tr>    
-                  </table>            
-              </form> 
-                  
-                 
-            <c:if test="${not empty errorMessageMail}">
-                  <div class="text-danger bo" role="alert"> 
-                        <p class="error"> <strong>${errorMessageMail}</strong> </p>
-                        <p> <a href ="<%=url%>/Authentication/signin.jsp">Return to login page.</a> </p>
-                  </div>                                      
-            </c:if>
-            
-          </div>-->
                   
             <div class="container d-flex flex-column ">
               <div class="row align-items-center justify-content-center
