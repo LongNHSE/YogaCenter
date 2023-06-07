@@ -71,9 +71,11 @@
                        <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
                                                     <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
                                                     <a class="dropdown-item btn-menu-item" href="#">Something else here</a>
-                                                    <a class="dropdown-item btn-menu-item" href="logout"><b style="color: black">Logout</b></a>
-                                              </div>
-                                            </div>               
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
+                                                          <b style="color: black">Logout</b>
+                                                    </a>
+                  </div>
+            </div>               
         </c:if>
         <a class="nav-item nav-link" href="#"><img src="images/search-icon.png"></a>
       </div>

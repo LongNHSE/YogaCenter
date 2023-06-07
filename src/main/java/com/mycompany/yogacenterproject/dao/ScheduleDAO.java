@@ -139,18 +139,18 @@ public class ScheduleDAO {
 
         ScheduleDAO schedule = new ScheduleDAO();
         schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
-         List<ScheduleHvDTO> listScheduleHv =schedule.readScheduleHvDTO("HV0001");
-         
-        for(ScheduleHvDTO x :listScheduleHv ){
-            System.out.println(x.toString());
-//            System.out.println(x.getNgayHoc());
-            
-//            Date ld = Date.valueOf("2023-06-05");
-//            x.getNgayHoc().compareTo(ld);
-//            System.out.println(x.getNgayHoc().equals(ld));
-            
-            
-        }
-        System.out.println(schedule.readScheduleHvDTO("HV0001").toString());
+//         List<ScheduleHvDTO> listScheduleHv =schedule.readScheduleHvDTO("HV0001");
+//         
+//        for(ScheduleHvDTO x :listScheduleHv ){
+//            System.out.println(x.toString());
+////            System.out.println(x.getNgayHoc());
+//            
+////            Date ld = Date.valueOf("2023-06-05");
+////            x.getNgayHoc().compareTo(ld);
+////            System.out.println(x.getNgayHoc().equals(ld));
+//            
+//            
+//        }
+//        System.out.println(schedule.readScheduleHvDTO("HV0001").toString());
     }
 }
