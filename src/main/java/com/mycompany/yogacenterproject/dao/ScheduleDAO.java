@@ -8,17 +8,17 @@ import com.mycompany.yogacenterproject.dto.DateAndDay;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -50,9 +50,6 @@ public class ScheduleDAO {
 
         return listScheduleHv;
     }
-    
-    
-    
 
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
     public boolean createScheduleHV(String maLopHoc, String maHV, String maSlot) throws SQLException {
@@ -62,7 +59,7 @@ public class ScheduleDAO {
         PreparedStatement ps = conn.prepareStatement(sql);
 
         List<DateAndDay> listDate = new ArrayList();
-        listDate = listDateAndDay("monday", "wednesday");
+        listDate = listDateAndDay("monday", "wednesday");//ID required 
 
         for (DateAndDay x : listDate) {
             ps.setString(1, maHV);
@@ -77,23 +74,24 @@ public class ScheduleDAO {
         return false;
     }
 
-    public List<DateAndDay> listDateAndDay(String thu1, String thu2) {
-        LocalDate startDate = LocalDate.of(2023, 6, 5); // Get the current date
-        LocalDate endDate = startDate.plusWeeks(5); // Calculate the end date
+    public List<DateAndDay> listDateAndDay(String thu1, String thu2, String initDate, int weeksInterval, LocalDate date1, LocalDate date2) {
+        DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter(Locale.ENGLISH);
+        LocalDate startDate = LocalDate.parse(initDate, df); // Get the current date
+        LocalDate endDate = startDate.plusWeeks(weeksInterval); // Calculate the end date
 
         LocalDate date = startDate;
         List<DateAndDay> listDate = new ArrayList();
         String a = thu1;
         String b = thu2;
         while (date.isBefore(endDate)) {
-            LocalDate monday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(a.toUpperCase())));
-            LocalDate wednesday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(b.toUpperCase())));
+            date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(a.toUpperCase())));
+            date2 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(b.toUpperCase())));
 
-            System.out.println(monday.getDayOfWeek() + " " + monday);
-            System.out.println(wednesday.getDayOfWeek() + " " + wednesday);
+            System.out.println(date1.getDayOfWeek() + " " + date1);
+            System.out.println(date2.getDayOfWeek() + " " + date2);
 
-            DateAndDay DateofA = new DateAndDay(monday.getDayOfWeek().toString(), monday.toString());
-            DateAndDay DateofB = new DateAndDay(wednesday.getDayOfWeek().toString(), wednesday.toString());
+            DateAndDay DateofA = new DateAndDay(date1.getDayOfWeek().toString(), date.toString());
+            DateAndDay DateofB = new DateAndDay(date2.getDayOfWeek().toString(), date2.toString());
             listDate.add(DateofA);
             listDate.add(DateofB);
 
@@ -139,6 +137,7 @@ public class ScheduleDAO {
 
         ScheduleDAO schedule = new ScheduleDAO();
         schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
+<<<<<<< HEAD
 //         List<ScheduleHvDTO> listScheduleHv =schedule.readScheduleHvDTO("HV0001");
 //         
 //        for(ScheduleHvDTO x :listScheduleHv ){
@@ -152,5 +151,6 @@ public class ScheduleDAO {
 //            
 //        }
 //        System.out.println(schedule.readScheduleHvDTO("HV0001").toString());
+
     }
 }
