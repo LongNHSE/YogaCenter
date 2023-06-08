@@ -71,7 +71,8 @@
                   <div class="dropdown-menu btn-menu">
                        <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
                                                     <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
-                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>
+                                                    <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
                                                     <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
                                                           <b style="color: black">Logout</b>
                                                     </a>
