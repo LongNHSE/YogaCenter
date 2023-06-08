@@ -1,3 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -8,8 +12,25 @@
       <title>bs5 edit profile account details - Bootdey.com</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+      <!--bootstrap css--> 
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+      <!--style css--> 
+     <link href="css/style.css" rel="stylesheet" type="text/css"/>
+      <!--Responsive-->
+     <link rel="stylesheet" href="css/responsive.css">
+      <!--fevicon--> 
+     <link rel="icon" href="images/fevicon.png" type="image/gif" />
+      <!--Scrollbar Custom CSS--> 
+     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+      <!--Tweaks for older IEs-->
+     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!--owl stylesheets--> 
+     <link rel="stylesheet" href="css/owl.carousel.min.css">
+     <link rel="stylesheet" href="css/owl.theme.default.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+       media="screen">      
       <style type="text/css">
-             body{margin-top:20px;
+             body{
       background-color:#f2f6fc;
       color:#69707a;
       }
@@ -71,7 +92,46 @@
           </style>
       </head>
       <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="logo"><a href="home.jsp"><img src="images/logo.png"></a></div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="home.jsp">Home</a>
+        <a class="nav-item nav-link" href="about.html">About</a>
+        <a class="nav-item nav-link" href="classes.html">Classes</a>
+        <a class="nav-item nav-link" href="schedule.html">Schedule</a>
+        <a class="nav-item nav-link" href="trainer.html">Trainer</a>
+        <a class="nav-item nav-link" href="contact.html">Contact us</a>
+        <c:if test = "${sessionScope.user == null}">
+            <a class="nav-item nav-link" href="<%=url%>/Authentication/signin.jsp">Login</a>              
+        </c:if>
+        <c:if test = "${sessionScope.user != null}">
+            <div class="btn-group btn-user-menu">
+                  <button style=" margin-left: 100px; background: #be2532 " class=" btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  
+                  <span>${sessionScope.user.username}</span>
+                  </button>
+                  <div class="dropdown-menu btn-menu">
+                       <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
+                                                    <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>
+                                                    <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
+                                                          <b style="color: black">Logout</b>
+                                                    </a>
+                  </div>
+            </div>               
+        </c:if>
+        <a class="nav-item nav-link" href="#"><img src="images/search-icon.png"></a>
+      </div>
+    </div>
+  </nav>               
       <div class="container-xl px-4 mt-4">
+         
       <hr class="mt-0 mb-4">
       <div class="row">
 <!--      <div class="col-xl-4">
@@ -149,7 +209,43 @@
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
       <script type="text/javascript">
-
       </script>
+      <!-- Javascript files-->
+      <script src="js/jquery.min.js"></script>
+      <script src="js/popper.min.js"></script>
+      <script src="js/bootstrap.bundle.min.js"></script>
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/plugin.js"></script>
+      <!-- sidebar -->
+      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+      <script src="js/custom.js"></script>
+      <!-- javascript -->
+      <script src="js/owl.carousel.js"></script>
+      <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+      <script>
+        $('#myCarousel').carousel({
+          interval: false
+        });
+
+        //scroll slides on swipe for touch enabled devices
+
+        $("#myCarousel").on("touchstart", function (event) {
+
+          var yClick = event.originalEvent.touches[0].pageY;
+          $(this).one("touchmove", function (event) {
+
+            var yMove = event.originalEvent.touches[0].pageY;
+            if (Math.floor(yClick - yMove) > 1) {
+              $(".carousel").carousel('next');
+            }
+            else if (Math.floor(yClick - yMove) < -1) {
+              $(".carousel").carousel('prev');
+            }
+          });
+          $(".carousel").on("touchend", function () {
+            $(this).off("touchmove");
+          });
+        });
+      </script>      
       </body>
 </html>
