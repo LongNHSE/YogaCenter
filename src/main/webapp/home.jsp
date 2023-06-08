@@ -11,41 +11,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- basic -->
-  <meta charset="utf-8">
+<!--   basic 
+-->  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- mobile metas -->
+<!--   mobile metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-  <!-- site metas -->
+   <!--site metas--> 
   <title>Yogasan</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="author" content="">
-  <!-- bootstrap css -->
+   <!--bootstrap css--> 
   <link rel="stylesheet" href="css/bootstrap.min.css">
-  <!-- style css -->
+   <!--style css--> 
   <link href="css/style.css" rel="stylesheet" type="text/css"/>
-  <!-- Responsive-->
+   <!--Responsive-->
   <link rel="stylesheet" href="css/responsive.css">
-  <!-- fevicon -->
+   <!--fevicon--> 
   <link rel="icon" href="images/fevicon.png" type="image/gif" />
-  <!-- Scrollbar Custom CSS -->
+   <!--Scrollbar Custom CSS--> 
   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-  <!-- Tweaks for older IEs-->
+   <!--Tweaks for older IEs-->
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-  <!-- owl stylesheets -->
+   <!--owl stylesheets--> 
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-    media="screen">
-</head>
+    media="screen"><!--
+</head>-->
+
 <!-- body -->
 
 <body>
   <!-- header section start -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="logo"><a href="index.html"><img src="images/logo.png"></a></div>
+    <div class="logo"><a href="home.jsp"><img src="images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -70,7 +71,7 @@
                   <div class="dropdown-menu btn-menu">
                        <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
                                                     <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
-                                                    <a class="dropdown-item btn-menu-item" href="#">Something else here</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/ScheduleController">View my schedule</a>
                                                     <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
                                                           <b style="color: black">Logout</b>
                                                     </a>

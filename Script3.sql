@@ -79,7 +79,7 @@ CREATE TABLE hocVien(
 	[email] NVARCHAR(50) NOT NULL	
 	)
 
-CREATE TABLE ScheduleHV(
+create TABLE ScheduleHV(
 [maHV] nvarchar(10) not null,--CONSTRAINT--
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,

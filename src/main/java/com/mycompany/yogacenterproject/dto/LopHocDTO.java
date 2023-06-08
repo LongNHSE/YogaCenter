@@ -14,12 +14,12 @@ public class LopHocDTO {
     private String maLoaiLopHoc;
     private String maSlot;
     private String maRoom;
-    private Date ngay;
+    private Date ngayBatDau;
 
     public LopHocDTO() {
     }
 
-    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngay) {
+    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngayBatDau) {
         this.maLopHoc = maLopHoc;
         this.soLuongHV = soLuongHV;
         this.soBuoi = soBuoi;
@@ -27,7 +27,7 @@ public class LopHocDTO {
         this.maLoaiLopHoc = maLoaiLopHoc;
         this.maSlot = maSlot;
         this.maRoom = maRoom;
-        this.ngay = ngay;
+        this.ngayBatDau = ngayBatDau;
     }
 
     public String getMaLopHoc() {
@@ -87,16 +87,16 @@ public class LopHocDTO {
     }
 
     public Date getNgay() {
-        return ngay;
+        return ngayBatDau;
     }
 
-    public void setNgay(Date ngay) {
-        this.ngay = ngay;
+    public void setNgay(Date ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
     }
 
     @Override
     public String toString() {
-        return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngay=" + ngay + '}';
+        return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngayBatDau=" + ngayBatDau + '}';
     }
     
     
