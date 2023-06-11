@@ -59,7 +59,7 @@ public class ScheduleDAO {
         PreparedStatement ps = conn.prepareStatement(sql);
 
         List<DateAndDay> listDate = new ArrayList();
-        listDate = listDateAndDay("monday", "wednesday");//ID required 
+//        listDate = listDateAndDay("monday", "wednesday");//ID required 
 
         for (DateAndDay x : listDate) {
             ps.setString(1, maHV);
@@ -100,6 +100,8 @@ public class ScheduleDAO {
 
         return listDate;
     }
+    
+    
 
     public static void main(String[] args) throws SQLException {
         // Get the current week's calendar
@@ -137,7 +139,7 @@ public class ScheduleDAO {
 
         ScheduleDAO schedule = new ScheduleDAO();
         schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
-<<<<<<< HEAD
+
 //         List<ScheduleHvDTO> listScheduleHv =schedule.readScheduleHvDTO("HV0001");
 //         
 //        for(ScheduleHvDTO x :listScheduleHv ){

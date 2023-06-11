@@ -15,5 +15,5 @@ public class Constants {
     public static final String MA_SLOT_FORMAT = "SL%04d";
     public static final String MA_ROOM_FORMAT = "RO%04d";
     public static final String MA_HOADON_FORMAT = "RC%04d";
-
+    public static final String MA_LOAILOPHOC_FORMAT = "TYPE%04d";
 }

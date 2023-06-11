@@ -5,13 +5,22 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
+import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
+import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
+import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +43,36 @@ public class ClassController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        String action = request.getParameter("action");
+
+        taoLopHocPage(request, response);
+//        if (action.equals("CreateClassType")) {
+//            createLoaiLopHoc(request, response);
+//
+//        }
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
         }
+    }
+
+    //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
+    public void taoLopHocPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        listLoaiLopHoc = loaiLopHocDAO.readLoaiLopHoc();
+        request.setAttribute("listLoaiLopHoc", listLoaiLopHoc);
+
+        SlotDAO slotDAO = new SlotDAO();
+        List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listSlot", listSlot);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/CreateClassPage.jsp");
+        rd.forward(request, response);
+
     }
 
     //DANG KY LOP 
@@ -67,12 +100,52 @@ public class ClassController extends HttpServlet {
         }
 
     }
-    
+
+    //TAO LOAI LOP HOC
+    public void createLoaiLopHoc(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+
+        String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
+        String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
+        String errorMessage = "";
+        boolean check = true;
+
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+
+        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
+            errorMessage += "Ten loai lop hoc da ton tai";
+            check = false;
+        }
+        double hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
+
+        if (check == true) {
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+
+            loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
+            response.sendRedirect("Admin/Class/ClassController.jsp");
+        } else {
+            request.setAttribute("errorMessage", errorMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/CreateClassTypePage.jsp");
+            rd.forward(request, response);
+            try {
+                rd.forward(request, response);
+            } catch (IOException ex) {
+                Logger.getLogger(ClassController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void createLopHoc(HttpServletRequest request, HttpServletResponse response) {
+        
+    }
+
     //Tao ScheduleHv
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response){
-        
-        
+    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response) {
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -87,7 +160,11 @@ public class ClassController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClassController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -101,7 +178,11 @@ public class ClassController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClassController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
