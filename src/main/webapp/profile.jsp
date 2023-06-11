@@ -158,19 +158,19 @@
 
       <div class="mb-3">
             <label class="small mb-1" for="inputUsername">Username</label>
-      <input class="form-control" id="inputUsername" type="text" placeholder="" value="${sessionScope.user.getUsername()}">
+      <input class="form-control" id="inputUsername" type="text" placeholder="" value="${sessionScope.hocVienDTO.getUsername()}">
       </div>
 
       <div class="row gx-3 mb-3">
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputFirstName">Last Name</label>
-      <input class="form-control" id="inputFirstName" type="text" placeholder="" value="${sessionScope.user.getHo()}">
+      <input class="form-control" id="inputFirstName" type="text" placeholder="" value="${sessionScope.hocVienDTO.getHo()}">
       </div>
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputLastName">First name name</label>
-      <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="${sessionScope.user.getTen()}">
+      <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="${sessionScope.hocVienDTO.getTen()}">
       </div>
       </div>
 
@@ -183,19 +183,19 @@
 
       <div class="mb-3">
       <label class="small mb-1" for="inputEmailAddress">Email address</label>
-      <input class="form-control" id="inputEmailAddress" type="email" placeholder="" value="${sessionScope.user.getEmail()}" readonly>
+      <input class="form-control" id="inputEmailAddress" type="email" placeholder="" value="${sessionScope.hocVienDTO.getEmail()}" readonly>
       </div>
 
       <div class="row gx-3 mb-3">
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputPhone">Phone number</label>
-      <input class="form-control" id="inputPhone" type="tel" placeholder="" value="${sessionScope.user.getPhone()}">
+      <input class="form-control" id="inputPhone" type="tel" placeholder="" value="${sessionScope.hocVienDTO.getPhone()}">
       </div>
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputBirthday">Birthday</label>
-      <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="${sessionScope.user.getDob()}">
+      <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="${sessionScope.hocVienDTO.getDob()}">
       </div>
       </div>
 

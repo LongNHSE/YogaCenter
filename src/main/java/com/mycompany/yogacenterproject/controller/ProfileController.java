@@ -58,7 +58,7 @@ public class ProfileController extends HttpServlet {
     //   log(hvDTO.getHo());////////////////////
     //   hvDTO.setHo(hvDTO.getHo());
         session.setAttribute("hocVienDTO", hvDTO);
-        RequestDispatcher rd = request.getRequestDispatcher("./Authentication/profile.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./profile.jsp");
         rd.forward(request, response);
     }
 
