@@ -4,7 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.HOcVienDAO;
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -52,7 +52,7 @@ public class ProfileController extends HttpServlet {
       //  log("chay vao view Profile");////////////////////
         HttpSession session= request.getSession();
         String maHocVien= request.getParameter("maHocVien");
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hvDTO=hocVienDAO.searchHocVienById(maHocVien);
     //   log(maHocVien);////////////////////
     //   log(hvDTO.getHo());////////////////////
@@ -71,7 +71,7 @@ public class ProfileController extends HttpServlet {
         HoaDonDAO hoaDonDAO=new HoaDonDAO();
         List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
         listHoaDon=hoaDonDAO.listHoaDon(maHocVien);
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hvDTO=hocVienDAO.searchHocVienById(maHocVien);
         ///set Attribute
         session.setAttribute("hocVienDTO", hvDTO);

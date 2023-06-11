@@ -71,7 +71,7 @@ public class TrainerDAO {
                 return newTrainer; 
             } 
         } catch (SQLException e) {
-            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
@@ -106,7 +106,7 @@ public void deleteTrainerById(String maTrainer) {
             stm.setString(1, maTrainer);
             stm.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
 
@@ -127,7 +127,7 @@ public void deleteTrainerById(String maTrainer) {
             stmt.setString(9, upTrainer.getMaLoaiTK());
             stmt.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(HOcVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }     
  

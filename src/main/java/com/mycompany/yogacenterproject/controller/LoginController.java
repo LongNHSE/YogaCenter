@@ -5,7 +5,7 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.AdminDAO;
-import com.mycompany.yogacenterproject.dao.HOcVienDAO;
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
@@ -83,7 +83,7 @@ public class LoginController extends HttpServlet {
     public void OTPSend(String email, HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
         boolean error = true;
         String errorMessageMail = "";
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         if (hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "Email has already existed";
             error = false;
@@ -120,7 +120,7 @@ public class LoginController extends HttpServlet {
     //TAO TAI KHOAN VA LUU VAO DATABASE
     public void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         String errorMessage = "";
         String errorMessageDate = "";
         boolean error = true;
@@ -160,7 +160,7 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setTen(ten);
             hocVienDTO.setPsw(psw);
             hocVienDTO.setPhone(phone);
-            hocVienDTO.setMaLopHoc(null);
+            
 
             //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
             hocVienDTO.setMaLoaiTK("HOCVIEN");
@@ -188,15 +188,16 @@ public class LoginController extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        HOcVienDAO dao = new HOcVienDAO();
+        HocVienDAO dao = new HocVienDAO();
         HocVienDTO hocVienDTO = dao.login(username, password);
         if (hocVienDTO == null) {
             request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
         } else {
             session.setAttribute("hocVienDTO", hocVienDTO);
             // set lại session time out là 5p
-            session.setMaxInactiveInterval(300);
-
+//            session.setMaxInactiveInterval(300);
+            // set lại session time out là 10p
+            session.setMaxInactiveInterval(600);
             request.getRequestDispatcher("/Authentication/success.jsp").forward(request, response);
         }
     }
@@ -206,7 +207,7 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         String email = request.getParameter("email");
         String errorMessageMail = "";
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         if (!hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "You have not sign up with this email before";
             request.setAttribute("errorMessageMail", errorMessageMail);
@@ -224,7 +225,7 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         String newPass = request.getParameter("newPass");
-        HOcVienDAO hocVienDAO = new HOcVienDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
         hocVienDAO.changePsw(newPass, email);
         RequestDispatcher rd = request.getRequestDispatcher("/Authentication/success.jsp");
         rd.forward(request, response);

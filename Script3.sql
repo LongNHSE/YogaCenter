@@ -2,12 +2,8 @@ use master
 go
 drop database YogaCenter
 go
-﻿DROP DATABASE YogaCenter
-GO
------
 CREATE DATABASE YogaCenter
 GO
-----
 USE YogaCenter
 GO
 
@@ -178,11 +174,7 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
-	)
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]),
-	CONSTRAINT fk_maPaySlip_OT FOREIGN KEY([maOT]) REFERENCES  bangOT([maOT])
+CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
 	)
 
 INSERT INTO loaiLopHoc(maLoaiLopHoc,tenLoaiLopHoc,hocPhi) values('CLASS001',N'Yoga1',1400)

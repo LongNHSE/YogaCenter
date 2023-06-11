@@ -71,7 +71,7 @@ public class SlotDAO {
     //READ SLOT and RETURN LIST OF SLOTDTO
     public List<SlotDTO> readSlot() {
         List<SlotDTO> listSlotDTO = new ArrayList<SlotDTO>();
-        String sql = "SELECT * FROM [dbo].[slot]";
+        String sql = "SELECT maSlot , CAST(timeStart AS VARCHAR(5)) AS TimeStart, CAST(timeEnd AS VARCHAR(5)) AS TimeEnd FROM [dbo].[slot]";
 
         try {
             Connection conn = DBUtils.getConnection();
@@ -80,15 +80,16 @@ public class SlotDAO {
             while (rs.next()) {
                 SlotDTO slotDTO = new SlotDTO();
                 slotDTO.setMaSlot(rs.getString("maSlot"));
-                slotDTO.setTimeStart(rs.getTime("timeStart"));
-                slotDTO.setTimeEnd(rs.getTime("timeEnd"));
+                slotDTO.setTimeStart(rs.getString("timeStart"));
+                slotDTO.setTimeEnd(rs.getString("timeEnd"));
 
                 listSlotDTO.add(slotDTO);
                 
-                rs.close();
+                
+            }
+            rs.close();
                 ps.close();
                 conn.close();
-            }
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -107,8 +108,8 @@ public class SlotDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 slotDTO.setMaSlot(rs.getString(1));
-                slotDTO.setTimeStart(rs.getTime(2));
-                slotDTO.setTimeEnd(rs.getTime(3));
+                slotDTO.setTimeStart(rs.getString(2));
+                slotDTO.setTimeEnd(rs.getString(3));
             }
 
             rs.close();
@@ -140,10 +141,12 @@ public class SlotDAO {
         listSlotDTO = slotDAO.readSlot();
         for (SlotDTO x : listSlotDTO) {
             System.out.println(x.toString());
+            
+           
         }
         
-        SlotDTO slotDTO = new SlotDTO();
-        slotDTO = slotDAO.searchByMaSlot("SL0001");
+        
+        List<SlotDTO> slotDTO = slotDAO.readSlot();
         System.out.println(slotDTO.toString());
         
         
