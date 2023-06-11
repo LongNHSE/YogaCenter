@@ -3,6 +3,7 @@
     Created on : Mar 2, 2023, 12:03:46 PM
     Author     : Oalskad
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -52,12 +53,12 @@
                                                 <input type="hidden" id="thisField" name="action" value="OTPSend" />
 
 
-                                                </form>
+
 
                                             </div>
                                         </div>
                                     </div>
-
+                              </form>
                             </div>
                         </div>
                         </section>

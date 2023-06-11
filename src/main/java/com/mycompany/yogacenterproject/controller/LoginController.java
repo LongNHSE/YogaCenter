@@ -71,7 +71,10 @@ public class LoginController extends HttpServlet {
                 resetPsw(request, response);
             } else if (action.equals("changePass")) {
                 newPass(request, response);
-            } else {
+            }else if(action.equals("logout")){
+                  logout(request,response);
+            }
+            else {
 
                 signup(request, response);
             }
@@ -199,6 +202,8 @@ public class LoginController extends HttpServlet {
             // set lại session time out là 10p
             session.setMaxInactiveInterval(600);
             request.getRequestDispatcher("/Authentication/success.jsp").forward(request, response);
+//            request.getRequestDispatcher("home.jsp").forward(request, response);
+            response.sendRedirect("../home.jsp");
         }
     }
 
@@ -249,6 +254,13 @@ public class LoginController extends HttpServlet {
 
             request.getRequestDispatcher("/Admin/AdminHomepage.jsp").forward(request, response);
         }
+    }
+    
+//    Logout
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        response.sendRedirect("../home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

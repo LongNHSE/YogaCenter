@@ -2,6 +2,7 @@ use master
 go
 drop database YogaCenter
 go
+
 CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
@@ -77,13 +78,13 @@ CREATE TABLE hocVien(
 	[email] NVARCHAR(50) NOT NULL	
 	)
 
-CREATE TABLE ScheduleHV(
+create TABLE ScheduleHV(
 [maHV] nvarchar(10) not null,--CONSTRAINT--
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 [thu] nvarchar(20) NOT NULl
-primary key(maLopHoc,maHV)
+primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 constraint fk_maLopHoc_ScheduleHV foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -175,7 +176,7 @@ CREATE TABLE paySlip(
 	Total DECIMAL(10, 2),
 	[Date] DATE,
 CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
-	)
+)
 
 INSERT INTO loaiLopHoc(maLoaiLopHoc,tenLoaiLopHoc,hocPhi) values('CLASS001',N'Yoga1',1400)
 INSERT INTO loaiLopHoc(maLoaiLopHoc,tenLoaiLopHoc,hocPhi) values('CLASS003',N'Yoga3',1800)
@@ -185,4 +186,5 @@ INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, m
 VALUES('HV001', N'Nguyễn', N'Trung Kiên', '2003-05-27', 'devlindinh', 01662255761, '123456','Gei', 'CLASS001', 'US', 'devlindinh@gmail.com')
 INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, maLoaiTK, email)
 VALUES('HCV002', N'Nguyễn', N'Huy Long', '1969-06-09', 'longNiger', 01662255761, '123456','Female', 'CLASS003', 'US', 'huylong@gmail.com')
+	
 
