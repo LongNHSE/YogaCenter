@@ -1098,6 +1098,53 @@ input::-ms-input-placeholder {
     outline: 0 none;
 }
 
+
+
+
+.selected-control {
+    display:block;
+    width:100%;
+    height:calc(2.25rem + 2px);
+    padding:.375rem .75rem;
+    font-size:1rem;
+    font-weight:400;
+    line-height:1.5;
+    color:#495057;
+    background-color:#fff;
+    background-clip:padding-box;
+    border:1px solid #ced4da;
+    border-radius:.25rem;
+    margin-bottom: 27px;
+    transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+#booking .selected-control::-ms-expand {
+   
+}
+.weekday-selector input {
+  display: none!important;
+}
+
+.weekday-selector input[type=checkbox] + label {
+  display: inline-block;
+  border-radius: 6px;
+  background: #dddddd;
+  height: 40px;
+  width: 30px;
+  margin-right: 3px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.weekday-selector input[type=checkbox]:checked + label {
+  background: #2AD705;
+  color: #ffffff;
+}
+
+
+
+
 #booking .button button {
     display: inline-block;
     font-size: 16px;

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <head>
   <!-- basic -->
   <meta charset="utf-8">
@@ -9,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <!-- site metas -->
-  <title>Contact</title>
+  <title>About</title>
   <meta name="keywords" content="">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -36,64 +38,60 @@
 <body>
   <!-- header section start -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="logo"><a href="home.html"><img src="images/logo.png"></a></div>
+    <div class="logo"><a href="index.html"><img src="images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="home.html">Home</a>
-        <a class="nav-item nav-link" href="about.html">About</a>
+        <a class="nav-item nav-link" href="home.jsp">Home</a>
+        <a class="nav-item nav-link" href="about.jsp">About</a>
         <a class="nav-item nav-link" href="classes.html">Classes</a>
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
         <a class="nav-item nav-link" href="trainer.html">Trainer</a>
         <a class="nav-item nav-link" href="contact.html">Contact us</a>
-        <a class="nav-item nav-link" href="#">Login</a>
+        <c:if test = "${sessionScope.user == null}">
+            <a class="nav-item nav-link" href="<%=url%>/Authentication/signin.jsp">Login</a>              
+        </c:if>
+        <c:if test = "${sessionScope.user != null}">
+            <div class="btn-group btn-user-menu">
+                  <button style=" margin-left: 100px; background: #be2532 " class=" btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  
+                  <span>${sessionScope.user.username}</span>
+                  </button>
+                  <div class="dropdown-menu btn-menu">
+                       <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
+                                                    <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
+                                                    <a class="dropdown-item btn-menu-item" href="#">Something else here</a>
+                                                    <a class="dropdown-item btn-menu-item" href="<%=url%>/LoginController/signup?action=logout">
+                                                          <b style="color: black">Logout</b>
+                                                    </a>
+                  </div>
+            </div>               
+        </c:if>
         <a class="nav-item nav-link" href="#"><img src="images/search-icon.png"></a>
       </div>
     </div>
   </nav>
   <!-- header section end -->
-  <!-- contact section start -->
-  <div class="contact_section layout_padding">
+  <!-- about section start -->
+  <div class="about_section layout_padding">
     <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h1 class="contact_text">Contact Us</h1>
-          <div class="mail_section">
-            <input type="text" class="mail_text" placeholder="Name" name="text">
-            <input type="text" class="mail_text" placeholder="Email" name="text">
-            <input type="text" class="mail_text" placeholder="Phone Number" name="text">
-            <textarea class="massage-bt" placeholder="Massage" rows="5" id="comment" name="Massage"></textarea>
-            <div class="send_bt"><a href="#">SEND</a></div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="social_icon">
-            <ul>
-              <li><a href="#"><img src="images/fb-icon.png"></a></li>
-              <li><a href="#"><img src="images/twitter-icon.png"></a></li>
-              <li><a href="#"><img src="images/instagram-icon.png"></a></li>
-              <li><a href="#"><img src="images/linkdin-icon.png"></a></li>
-            </ul>
-          </div>
-          <div class="map">
-            <div class="map-responsive">
-              <iframe
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France"
-                width="600" height="250" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>
-            </div>
-          </div>
-          <div class="call_text"><img src="images/call-icon.png"><span class="padding_left_0">+01 9876543210</span>
-          </div>
-          <div class="call_text"><img src="images/mail-icon.png"><span class="padding_left_0">demo@gmail.com</span>
-          </div>
-        </div>
+      <div class="about_main">
+        <h1 class="about_text">About Us</h1>
+        <p class="ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing
+          elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum
+          dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+          aliqua. </p>
+      </div>
+      <div class="about_bt_main">
+        <div class="about_bt"><a href="#">About More</a></div>
       </div>
     </div>
   </div>
-  <!-- contact section end -->
+  <!-- about section end -->
   <!-- copyright section start -->
   <div class="copyright_section">
     <div class="container">

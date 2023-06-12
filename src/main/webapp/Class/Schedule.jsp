@@ -53,7 +53,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="index.html">Home</a>
+            <a class="nav-item nav-link" href="home.jsp">Home</a>
             <a class="nav-item nav-link" href="about.html">About</a>
             <a class="nav-item nav-link" href="classes.html">Classes</a>
             <a class="nav-item nav-link" href="schedule.html">Schedule</a>
@@ -168,7 +168,7 @@
                                 <% if (hasSchedule) { %>
                                  <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc %></span>
                                 <div class="margin-10px-top font-size14"><%=maLopHoc %></div>
-                                <div class="font-size13 text-light-gray"><%=tenLopHoc %></div>
+                                
                                 <% }%>
                             </td>
                             <%  calendar.add(Calendar.DAY_OF_WEEK, 1);

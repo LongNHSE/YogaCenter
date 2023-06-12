@@ -1,11 +1,10 @@
 
-use master
-go
-drop database YogaCenter
-go
+﻿DROP DATABASE YogaCenter
+GO
 
 CREATE DATABASE YogaCenter
 GO
+----
 USE YogaCenter
 GO
 
@@ -79,7 +78,7 @@ CREATE TABLE hocVien(
 	[email] NVARCHAR(50) NOT NULL	
 	)
 
-create TABLE ScheduleHV(
+CREATE TABLE ScheduleHV(
 [maHV] nvarchar(10) not null,--CONSTRAINT--
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
@@ -87,8 +86,8 @@ create TABLE ScheduleHV(
 [thu] nvarchar(20) NOT NULl
 primary key(maLopHoc,maHV,ngayHoc)
 
-CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
-constraint fk_maLopHoc_ScheduleHV foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
+CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES [ScheduleTrainer]([maSlot]),
+constraint fk_maLopHoc_ScheduleHV foreign key([maLopHoc]) references [ScheduleTrainer]([maLopHoc]),
 constraint fk_maHocVien_ScheduleHV foreign key([maHV]) references [hocVien]([maHV])
 )
 CREATE TABLE ScheduleTrainer(
@@ -176,6 +175,6 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
-	)
 
+	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
+	)

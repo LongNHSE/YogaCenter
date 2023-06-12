@@ -92,18 +92,18 @@ public class PhongHocDAO {
         return roomDTO;
     }
 
-    ////CHECK PHONG CO TRONG VAO SLOT DO KO
+    ////CHECK PHONG CO TRONG VAO SLOT DO KO TRA VE FALSE NEU PHONG TRONG
     public boolean checkRoomEmpty(String maRoom, String maSlot, String thu1, String thu2) {
         boolean check = true;
 //        String sql = "SELECT lopHoc.maLopHoc, maSlot,lopHoc.maRoom, room.maRoom, timeTable.ngayHoc,timeTable.thu"
 //                + "FROM ([dbo].[lopHoc] INNER JOIN [dbo].[room] On lopHoc.maRoom=room.maRoom)"
 //                + "INNER JOIN [dbo].[timeTable] On lopHoc.maLopHoc=timeTable.maLopHoc"
 //                + "WHERE lopHoc.maRoom =?  AND maSlot =? and thu=?";
-        String sql = "SELECT lopHoc.maLopHoc, maSlot, lopHoc.maRoom, room.maRoom, timeTable.ngayHoc, timeTable.thu " +
-                         "FROM lopHoc " +
-                         "INNER JOIN room ON lopHoc.maRoom = room.maRoom " +
-                         "INNER JOIN timeTable ON lopHoc.maLopHoc = timeTable.maLopHoc " +
-                         "WHERE lopHoc.maRoom = ? AND maSlot = ? and thu=?";
+        String sql = "SELECT lopHoc.maLopHoc, maSlot, lopHoc.maRoom, room.maRoom, ScheduleTrainer.ngayHoc, ScheduleTrainer.thu "
+                + "FROM lopHoc "
+                + "INNER JOIN room ON lopHoc.maRoom = room.maRoom "
+                + "INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc "
+                + "WHERE lopHoc.maRoom = ? AND maSlot = ? and thu=?";
         try {
 
             Connection conn = DBUtils.getConnection();
@@ -115,12 +115,11 @@ public class PhongHocDAO {
             if (!rs.next()) {
                 return false;
             }
-            
-            
+
             ps.setString(1, maRoom);
             ps.setString(2, maSlot);
             ps.setString(3, thu2);
-             rs = ps.executeQuery();
+            rs = ps.executeQuery();
             if (!rs.next()) {
                 return false;
             }
@@ -135,11 +134,43 @@ public class PhongHocDAO {
 
         return check;
     }
+//RETURN PHONG HOC DANG TRONG
 
-    
+    public PhongHocDTO getEmptyRoom(String maSlot, String thu1, String thu2) {
+        String sql = "SELECT room.maRoom\n"
+                + "    FROM room\n"
+                + "    WHERE room.maRoom NOT IN (\n"
+                + "    SELECT lopHoc.maRoom\n"
+                + "    FROM lopHoc\n"
+                + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
+                + "    WHERE maSlot = ? AND (thu = ? or thu= ?))";
+        PhongHocDTO phongHocDTO = new PhongHocDTO();
+        try {
+
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maSlot);
+            ps.setString(2, thu1);
+            ps.setString(3, thu2);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                phongHocDTO = new PhongHocDTO(rs.getString("maRoom"), true);
+                return phongHocDTO;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return phongHocDTO;
+    }
+
     public static void main(String[] args) {
         PhongHocDAO a = new PhongHocDAO();
-        Boolean b = a.checkRoomEmpty("RO0001", "SL002", "MONDAY", "WEDNESDAY");
-        System.out.println(b);
+//        Boolean b = a.checkRoomEmpty("RO0001", "SL001", "MONDAY", "WEDNESDAY");
+        System.out.println(a.getEmptyRoom("SL002", "WEDNESDAY", "MONDAY").toString());
     }
 }

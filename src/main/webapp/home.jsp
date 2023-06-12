@@ -55,7 +55,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="home.jsp">Home</a>
-        <a class="nav-item nav-link" href="about.html">About</a>
+        <a class="nav-item nav-link" href="about.jsp">About</a>
         <a class="nav-item nav-link" href="classes.html">Classes</a>
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
         <a class="nav-item nav-link" href="trainer.html">Trainer</a>
