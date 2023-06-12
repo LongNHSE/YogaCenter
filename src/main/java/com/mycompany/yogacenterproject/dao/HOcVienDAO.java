@@ -12,8 +12,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +41,10 @@ public class HocVienDAO {
                 String maHV = rs.getString("maHV");
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
-                Date dob = rs.getDate("dob");
+                //////DEFINE LOCALDATE AND RECEIVING DATA
+                DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);
+                LocalDate dob = LocalDate.parse("dob", df);
+
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -42,7 +52,7 @@ public class HocVienDAO {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                
+
                 HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
                 newTrainee.setMaLopHoc(classOfTrainee(maHV));
                 listHocVien.add(newTrainee);
@@ -61,10 +71,12 @@ public class HocVienDAO {
             stm.setString(1, maHV);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                
+
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
-                Date dob = rs.getDate("dob");
+                ///////DATE
+                DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);
+                LocalDate dob = LocalDate.parse("dob", df);
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -72,12 +84,12 @@ public class HocVienDAO {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO result = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email,gender);
+                HocVienDTO result = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
                 return result;
             }
         } catch (SQLException e) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
-        }  
+        }
         return null;
     }
 
@@ -90,7 +102,7 @@ public class HocVienDAO {
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
             stm.setString(3, newHocVien.getTen());
-            stm.setDate(4, newHocVien.getDob());
+            stm.setDate(4, Date.valueOf(newHocVien.getDob()));
             stm.setString(5, newHocVien.getUsername());
             stm.setString(6, newHocVien.getPsw());
             stm.setString(7, newHocVien.getMaLoaiTK());
@@ -110,7 +122,7 @@ public class HocVienDAO {
             PreparedStatement stmt = DBUtils.getConnection().prepareStatement(sql);
             stmt.setString(1, upTrainee.getHo());
             stmt.setString(2, upTrainee.getTen());
-            stmt.setDate(3, upTrainee.getDob());
+            stmt.setDate(3, Date.valueOf(upTrainee.getDob()));
             stmt.setString(4, upTrainee.getUsername());
             stmt.setString(5, upTrainee.getPsw());
             stmt.setString(6, upTrainee.getMaHV());
@@ -151,12 +163,19 @@ public class HocVienDAO {
                     hocVienDTO.setMaLopHoc(listMaLopHoc);
                     i++;
                 }
-//              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-
+//              String maHV, String Ho, String Ten, LocalDate dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
+                Date date= new Date(i);
+                // Convert Date to Instant
+                Instant instant = date.toInstant();
+                // Convert Instant to ZonedDateTime using system default time zone
+                ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+                // Extract LocalDate from ZonedDateTime
+                LocalDate localDate = zonedDateTime.toLocalDate();
+                ////////////////////////////////////
                 hocVienDTO.setMaHV(rs.getString("maHV"));
                 hocVienDTO.setHo(rs.getString("Ho"));
                 hocVienDTO.setTen(rs.getString("Ten"));
-                hocVienDTO.setDob(rs.getDate("dob"));
+//                hocVienDTO.setDob(rs.getDate("dob"));
                 hocVienDTO.setUsername(rs.getString("username"));
                 hocVienDTO.setPhone(rs.getString("phone"));
                 hocVienDTO.setPsw(rs.getString("psw"));
@@ -184,7 +203,7 @@ public class HocVienDAO {
                 + "group by maLopHoc";
         try {
             conn = new DBUtils().getConnection(); // connect DB
-            
+
             ps = conn.prepareStatement(querry);
             ps.setString(1, maHv);
             ResultSet rs;
@@ -193,7 +212,7 @@ public class HocVienDAO {
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 listMaLopHoc.add(maLopHoc);
-                
+
             }
             return listMaLopHoc;
         } catch (SQLException e) {
@@ -302,12 +321,6 @@ public class HocVienDAO {
         }
         return null;
     }
-    
-    
-    
-    
-    
-    
 
     public static void main(String[] args) {
 
