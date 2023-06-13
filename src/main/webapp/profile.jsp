@@ -195,7 +195,7 @@
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputBirthday">Birthday</label>
-      <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
+      <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
       </div>
       </div>
 

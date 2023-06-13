@@ -11,6 +11,7 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -76,17 +77,16 @@ public class ProfileController extends HttpServlet {
             String phone = request.getParameter("phone");
 //////RECEIVING STRING DATE FROM JSP, THEN CONVERT TO DATE TYPE
             String date=request.getParameter("dob");
-            DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);            log(ho);
-            LocalDate dob=LocalDate.parse(ten, df);
-/////////////////////////////            
-            log(ten);
+            Date dateTime = (Date) new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+//            DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("yyyy-mm-dd").toFormatter(Locale.ENGLISH);         
             log(date);
-            log(phone);
-            log(username);
-            HocVienDTO changeHocVien = new HocVienDTO(maHV, ho, ten, dob, username, phone, ten, phone, phone, ten);
+//            LocalDate dob=LocalDate.parse(ten, df);
+/////////////////////////////            
+            HocVienDTO changeHocVien = new HocVienDTO(maHV, ho, ten, null, username, phone, ten, phone, phone, ten);
             hocVienDAO.updateHocVien(changeHocVien);
         } catch (Exception e) {
             e.printStackTrace();
+            log("chay vao catch");
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher("./profile.jsp");
             rd.forward(request, response);

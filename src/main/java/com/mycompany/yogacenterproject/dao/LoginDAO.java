@@ -9,34 +9,47 @@ import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 
 /**
  *
  * @author devli
  */
 public class LoginDAO {
+
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 //    Login
-    public HocVienDTO login(String username, String pass){
-        String querry = "SELECT * FROM hocVien\n" +
-                "where username = ? and psw = ? ";
+
+    public HocVienDTO login(String username, String pass) {
+        String querry = "SELECT * FROM hocVien\n"
+                + "where username = ? and psw = ? ";
         try {
             conn = new DBUtils().getConnection(); // connect DB
             ps = conn.prepareStatement(querry);
             ps.setString(1, username);
             ps.setString(2, pass);
-            rs=ps.executeQuery();
-            while(rs.next()){
+            rs = ps.executeQuery();
+            while (rs.next()) {
 //              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                return new HocVienDTO(rs.getString("maHV"),rs.getString("Ho"), rs.getString("Ten"), rs.getDate("dob"),rs.getString("username"),rs.getString("phone"),rs.getString("psw"),rs.getString("maLoaiTk"),rs.getString("email"),rs.getString("gender"));
-                
+                String maHV=rs.getString("maHV");
+                String ho=rs.getString("Ho");
+                String ten=rs.getString("Ten");
+                String user =rs.getString("username");
+                String phone=rs.getString("phone");
+                String psw=rs.getString("psw");
+                String maLoaiTk=rs.getString("maLoaiTk");
+                String email=rs.getString("email");
+                String gender=rs.getString("gender");
+                HocVienDTO loginUser= new HocVienDTO(maHV, ho, ten, null, username, phone, psw, maLoaiTk, email, gender);
+                return loginUser;
             }
         } catch (Exception e) {
         }
         return null;
-    }    
+    }
+
     public static void main(String[] args) {
         LoginDAO dao = new LoginDAO();
 //        HocVienDTO login = dao.login("devlindinh", "123456");

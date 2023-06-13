@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -75,8 +77,11 @@ public class HocVienDAO {
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
                 ///////DATE
-                DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);
-                LocalDate dob = LocalDate.parse("dob", df);
+                Date date=rs.getDate("dob");
+//                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                
+                
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -156,6 +161,7 @@ public class HocVienDAO {
             ps.setString(2, pass);
             rs = ps.executeQuery();
             int i = 0;
+            System.out.println("chay vao try");///////
             while (rs.next()) {
                 HocVienDTO hocVienDTO = new HocVienDTO();
                 if (i == 0) {
@@ -164,33 +170,28 @@ public class HocVienDAO {
                     i++;
                 }
 //              String maHV, String Ho, String Ten, LocalDate dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-                Date date= new Date(i);
-                // Convert Date to Instant
-                Instant instant = date.toInstant();
-                // Convert Instant to ZonedDateTime using system default time zone
-                ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
-                // Extract LocalDate from ZonedDateTime
-                LocalDate localDate = zonedDateTime.toLocalDate();
-                ////////////////////////////////////
-                hocVienDTO.setMaHV(rs.getString("maHV"));
-                hocVienDTO.setHo(rs.getString("Ho"));
-                hocVienDTO.setTen(rs.getString("Ten"));
-//                hocVienDTO.setDob(rs.getDate("dob"));
-                hocVienDTO.setUsername(rs.getString("username"));
-                hocVienDTO.setPhone(rs.getString("phone"));
-                hocVienDTO.setPsw(rs.getString("psw"));
-                hocVienDTO.setGender(rs.getString("gender"));
-                hocVienDTO.setMaLoaiTK(rs.getString("maLoaiTk"));
-                hocVienDTO.setEmail(rs.getString("email"));
-
-                return hocVienDTO;
-
+                String maHV = rs.getString("maHV");
+                String ho = rs.getString("Ho");
+                String ten = rs.getString("Ten");
+                String user = rs.getString("username");
+                String phone = rs.getString("phone");
+                String psw = rs.getString("psw");
+                String maLoaiTk = rs.getString("maLoaiTk");
+                String email = rs.getString("email");
+                String gender = rs.getString("gender");
+                ////////CONVERT DATE TO LOCALDATE
+                Date date = rs.getDate("dob");
+//                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
+                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                //////////////////////////////////////////////////////////////////
+                HocVienDTO loginUser = new HocVienDTO(maHV, ho, ten, dob, user, phone, psw, maLoaiTk, email, gender);
+                return loginUser;
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
-
     }
 
     //GET ALL CLASS FROM 1 TRAINEE 
@@ -327,7 +328,8 @@ public class HocVienDAO {
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hocVienDTO = new HocVienDTO();
-        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
+//        hocVienDTO = hocVienDAO.login("longNiger", "123456");
+        hocVienDTO = hocVienDAO.searchHocVienById("HCV002");
         System.out.println(hocVienDTO);
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
