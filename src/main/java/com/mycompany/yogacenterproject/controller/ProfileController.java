@@ -11,8 +11,9 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class ProfileController extends HttpServlet {
         //  log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
         String maHocVien = request.getParameter("maHocVien");
+        log(maHocVien);
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hvDTO = hocVienDAO.searchHocVienById(maHocVien);
         //   log(maHocVien);////////////////////
@@ -75,14 +77,15 @@ public class ProfileController extends HttpServlet {
             String ho = request.getParameter("ho");
             String ten = request.getParameter("ten");
             String phone = request.getParameter("phone");
+            log("chay vao update");
+
 //////RECEIVING STRING DATE FROM JSP, THEN CONVERT TO DATE TYPE
-            String date=request.getParameter("dob");
-            Date dateTime = (Date) new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
-//            DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("yyyy-mm-dd").toFormatter(Locale.ENGLISH);         
+            String date = request.getParameter("dob");
             log(date);
-//            LocalDate dob=LocalDate.parse(ten, df);
+            Date dateTime=Date.valueOf(date);
+            LocalDate dob=Instant.ofEpochMilli(dateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 /////////////////////////////            
-            HocVienDTO changeHocVien = new HocVienDTO(maHV, ho, ten, null, username, phone, ten, phone, phone, ten);
+            HocVienDTO changeHocVien = new HocVienDTO(maHV, ho, ten, dob, username, phone, ten, phone, phone, ten);
             hocVienDAO.updateHocVien(changeHocVien);
         } catch (Exception e) {
             e.printStackTrace();

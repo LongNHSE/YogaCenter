@@ -204,7 +204,7 @@ public class LoginController extends HttpServlet {
         if (hocVienDTO == null) {
             request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
         } else {
-            session.setAttribute("user", hocVienDTO);
+            session.setAttribute("hocVienDTO", hocVienDTO);
             // set lại session time out là 10       p
             session.setMaxInactiveInterval(600);
             request.getRequestDispatcher("/Authentication/success.jsp").forward(request, response);

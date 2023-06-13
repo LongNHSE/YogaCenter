@@ -123,13 +123,13 @@ public class HocVienDAO {
 ///Update học viên
     public void updateHocVien(HocVienDTO upTrainee) {
         try {
-            String sql = "Update hocVien set Ho=?,Ten=?,dob=?, username=?,psw=? WHERE maHV=?";
+            String sql = "Update hocVien set Ho=?,Ten=?,dob=?, username=?,phone=? WHERE maHV=?";
             PreparedStatement stmt = DBUtils.getConnection().prepareStatement(sql);
             stmt.setString(1, upTrainee.getHo());
             stmt.setString(2, upTrainee.getTen());
             stmt.setDate(3, Date.valueOf(upTrainee.getDob()));
             stmt.setString(4, upTrainee.getUsername());
-            stmt.setString(5, upTrainee.getPsw());
+            stmt.setString(5, upTrainee.getPhone());
             stmt.setString(6, upTrainee.getMaHV());
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -329,8 +329,10 @@ public class HocVienDAO {
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hocVienDTO = new HocVienDTO();
 //        hocVienDTO = hocVienDAO.login("longNiger", "123456");
-        hocVienDTO = hocVienDAO.searchHocVienById("HCV002");
-        System.out.println(hocVienDTO);
+//        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
+//        hocVienDAO.updateHocVien(hocVienDTO);
+        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
+        System.out.println(hocVienDTO.toString());
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
