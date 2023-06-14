@@ -197,14 +197,18 @@ public class LoginController extends HttpServlet {
         if (hocVienDTO == null) {
             request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
         } else {
-            session.setAttribute("user", hocVienDTO);
-            // set lại session time out là 10       p
-            session.setMaxInactiveInterval(600);
+        session.setAttribute("user", hocVienDTO);
 
-//            request.getRequestDispatcher("home.jsp").forward(request, response);
+        // Lấy URL trang trước đó từ localStorage (nếu có)
+        String redirectUrl = (String) session.getAttribute("redirectUrl");
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            response.sendRedirect(redirectUrl);
+        } else {
+            // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
             response.sendRedirect("../home.jsp");
-
         }
+
+      }
     }
 
     //RESET PASSWORD
@@ -260,7 +264,11 @@ public class LoginController extends HttpServlet {
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
         session.removeAttribute("user");
-        response.sendRedirect("../home.jsp");
+        String referer = request.getHeader("Referer");
+        if(referer == null || referer.isEmpty()){
+              referer = "../home.jsp";
+        }
+        response.sendRedirect(referer);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

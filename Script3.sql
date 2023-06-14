@@ -1,9 +1,10 @@
 ﻿
-use master
-go
-drop database YogaCenter
-go
+ use master 
+ go
 
+ alter database YogaCenter set single_user with rollback immediate
+
+ drop database YogaCenter
 CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
@@ -32,6 +33,8 @@ CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
 	[hocPhi] DECIMAL(10,2) NOT NULL,
+	[subTitle] TEXT NOT NULL,
+	[description] TEXT NOT NULL,
 	[maAnh] NVARCHAR(10) NOT NULL --CONSTRAINT
 	CONSTRAINT fk_maAnh_loailopHoc FOREIGN KEY([maAnh]) REFERENCES lopHocImg(maAnh)
 	)

@@ -21,69 +21,48 @@
               <meta name="viewport" content="initial-scale=1, maximum-scale=1">
                <!--site metas--> 
               <title>Yogasan</title>
-              <meta name="keywords" content="">
-              <meta name="description" content="">
-              <meta name="author" content="">
-               <!--bootstrap css--> 
-              <link rel="stylesheet" href="../css/bootstrap.min.css">
-               <!--style css--> 
-              <link href="../css/style.css" rel="stylesheet" type="text/css"/>
-               <!--Responsive-->
-              <link rel="stylesheet" href="../css/responsive.css">
-               <!--fevicon--> 
-              <link rel="icon" href="../images/fevicon.png" type="image/gif" />
-               <!--Scrollbar Custom CSS--> 
-              <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
-               <!--Tweaks for older IEs-->
-              <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-               <!--owl stylesheets--> 
-              <link rel="stylesheet" href="../css/owl.carousel.min.css">
-              <link rel="stylesheet" href="../css/owl.theme.default.min.css">
-              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-                media="screen">            
-            <link
-                  href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-                  rel="stylesheet"
-                />
+            <!--CSS-->
+            <%@ include file="../Components/CSSComponent.jsp" %>
+            <!--Javascript-->
+            <%@ include file="../Components/JsComponent.jsp" %>            
                 <style type="text/css">
 
-                  body {
-                    margin-top: 20px;
-                    background: #ddd;
-                  }
 
                   /*
             * @subsection Shop
             */
-                  .product {
+                  .classCate {
                     padding-top: 5px;
                     padding-bottom: 5px;
                     margin-left: auto;
                     margin-right: auto;
                   }
 
-                  .product .caption {
+                  .classCate .caption {
                     margin-top: 15px;
                   }
 
-                  .product .caption h6 {
+                  .classCate .caption h6 {
                     color: #455a64;
                   }
 
-                  .product .caption .price + .price {
+                  .classCate .caption .price + .price {
                     margin-left: 15px;
                   }
 
-                  .product.tumbnail {
+                  .classCate .tumbnail {
                     box-shadow: 0 5px 25px 0 transparent;
                     transition: 0.3s linear;
                     padding-top: 0;
                   }
 
-                  .product.tumbnail img:hover {
+                  .classCate.tumbnail img:hover {
                     box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
                   }
-
+                  .classCate.tumbnail:hover {
+                    transform: scale(1.1); /* Kích thước tăng lên 110% khi hover */
+                    border-color: #ff0000; /* Màu border khi hover */
+                  }
                   .single-product span {
                     display: inline-block;
                   }
@@ -277,21 +256,26 @@
                   }                  
             </style>            
       </head>
-      <body>          
-      <div class="container bootstrap snipets">
+      <body>
+       <!--navbar : Start-->
+            <jsp:include page="../Components/headerComponent.jsp" />       
+       <!--navbar: End-->
+       
+       <!--Container: Start-->
+
+      <div class="container bootstrap snipets " style="margin-top:15px">
       <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
       <div class="row">
-
             <c:forEach items="${requestScope.listCate}" var="a">
               <div class="col-xs-6 col-md-4">
-                  <div class="product tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;">
+                  <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
                       <a href="ClassController">
                           <img src="${a.getUrlIMG()}" alt="" style="width: 100%; height: 100%;">
                       </a>
-                      <div class="caption">
-                          <h3><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h3>
+                      <div class="caption text-center">
+                          <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h2>
                           <span class="price"></span>
-                          <button class="button">
+                          <button class="button ">
                               <span class="button-content">DETAILS</span>
                           </button>                     
                       </div>
@@ -300,8 +284,7 @@
           </c:forEach>
       </div>      
       </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript"></script>
+       <!--Container: End-->
+              
       </body>
 </html>

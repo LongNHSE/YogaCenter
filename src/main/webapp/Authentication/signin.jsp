@@ -53,7 +53,7 @@
                             <a href="<%=url%>/Authentication/resetPass.jsp">Forgot your password?</a>
                         </div>
 
-                        <button class="btn bkg">Sign In</button>
+                        <button class="btn bkg">Sign In</button>                      
                         <input type="hidden" id="thisField" name="action" value="login">
                         <br>
                         <a href="<%=url%>/Admin/adminLogin.jsp">Sign in as an Admin</a>
