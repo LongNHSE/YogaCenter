@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -71,10 +75,9 @@ public class LoginController extends HttpServlet {
                 resetPsw(request, response);
             } else if (action.equals("changePass")) {
                 newPass(request, response);
-            }else if(action.equals("logout")){
-                  logout(request,response);
-            }
-            else {
+            } else if (action.equals("logout")) {
+                logout(request, response);
+            } else {
 
                 signup(request, response);
             }
@@ -87,7 +90,6 @@ public class LoginController extends HttpServlet {
         boolean error = true;
         String errorMessageMail = "";
         HocVienDAO hocVienDAO = new HocVienDAO();
-
         if (hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "Email has already existed";
             error = false;
@@ -164,7 +166,6 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setTen(ten);
             hocVienDTO.setPsw(psw);
             hocVienDTO.setPhone(phone);
-            
 
             //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
             hocVienDTO.setMaLoaiTK("HOCVIEN");
@@ -173,7 +174,16 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setHo(ho);
             hocVienDTO.setGender(gender);
             hocVienDTO.setEmail(email);
-            hocVienDTO.setDob(dateOfBirth);
+            
+            // Convert Date to Instant
+            Instant instant = dateOfBirth.toInstant();
+            // Convert Instant to ZonedDateTime using system default time zone
+            ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+            // Extract LocalDate from ZonedDateTime
+            LocalDate dob = zonedDateTime.toLocalDate();
+            ////////////////////////////////////
+            hocVienDTO.setDob(dob);
+           
             hocVienDAO.addHocVien(hocVienDTO);
             RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
             rd.forward(request, response);
@@ -183,10 +193,7 @@ public class LoginController extends HttpServlet {
         }
     }
 
-
     //LOGIN
-
-
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
@@ -197,19 +204,19 @@ public class LoginController extends HttpServlet {
         if (hocVienDTO == null) {
             request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
         } else {
-        session.setAttribute("user", hocVienDTO);
-
-        // Lấy URL trang trước đó từ localStorage (nếu có)
-        String redirectUrl = (String) session.getAttribute("redirectUrl");
-        if (redirectUrl != null && !redirectUrl.isEmpty()) {
-            response.sendRedirect(redirectUrl);
-        } else {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
-            response.sendRedirect("../home.jsp");
+            session.setAttribute("hocVienDTO", hocVienDTO);
+            // Lấy URL trang trước đó từ localStorage (nếu có)
+            String redirectUrl = (String) session.getAttribute("redirectUrl");
+            if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                response.sendRedirect(redirectUrl);
+            } else {
+                // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
+                response.sendRedirect("../home.jsp");
+            }
         }
-
       }
-    }
+    
 
     //RESET PASSWORD
     public void resetPsw(HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
@@ -259,9 +266,9 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("/Admin/AdminHomepage.jsp").forward(request, response);
         }
     }
-    
+
 //    Logout
-    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         String referer = request.getHeader("Referer");

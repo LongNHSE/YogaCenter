@@ -99,6 +99,6 @@ public class HoaDonDAO {
 
     public static void main(String[] args) {
         HoaDonDAO hoaDonDAO = new HoaDonDAO();
-        System.out.println(hoaDonDAO.listHoaDon("HV0001"));
+        System.out.println(hoaDonDAO.listHoaDon("HV001"));
     }
 }

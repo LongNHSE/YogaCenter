@@ -4,7 +4,9 @@
 
  alter database YogaCenter set single_user with rollback immediate
 
- drop database YogaCenter
+drop database YogaCenter
+go
+
 CREATE DATABASE YogaCenter
 GO
 USE YogaCenter
@@ -186,7 +188,22 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
+<<<<<<< HEAD
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
 
 )
+=======
+CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
+)
+
+INSERT INTO loaiLopHoc(maLoaiLopHoc,tenLoaiLopHoc,hocPhi) values('CLASS001',N'Yoga1',1400)
+INSERT INTO loaiLopHoc(maLoaiLopHoc,tenLoaiLopHoc,hocPhi) values('CLASS003',N'Yoga3',1800)
+
+
+INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, maLoaiTK, email)
+VALUES('HV001', N'Nguyễn', N'Trung Kiên', '2003-05-27', 'devlindinh', 01662255761, '123456','Gei', 'CLASS001', 'US', 'devlindinh@gmail.com')
+INSERT INTO hocVien(maHV, Ho, Ten, dob, username, phone, psw, gender,maLopHoc, maLoaiTK, email)
+VALUES('HCV002', N'Nguyễn', N'Huy Long', '1969-06-09', 'longNiger', 01662255761, '123456','Female', 'CLASS003', 'US', 'huylong@gmail.com')
+	
+>>>>>>> 1375e75990601fe5b44ace818c8258516153220b
 

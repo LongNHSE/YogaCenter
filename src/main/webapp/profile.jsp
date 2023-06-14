@@ -154,52 +154,52 @@
       <div class="card mb-4">
       <div class="card-header">Account Details</div>
       <div class="card-body">
-      <form>
-
+      <form method="POST" action="<%=url%>/ProfileController">
+          <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" hidden="" readonly>
       <div class="mb-3">
-            <label class="small mb-1" for="inputUsername">Username</label>
-      <input class="form-control" id="inputUsername" type="text" placeholder="" value="${sessionScope.user.getUsername()}">
+            <label class="small mb-1" for="inputUsername" >Username</label>
+      <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}">
       </div>
 
       <div class="row gx-3 mb-3">
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputFirstName">Last Name</label>
-      <input class="form-control" id="inputFirstName" type="text" placeholder="" value="${sessionScope.user.getHo()}">
+      <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}">
       </div>
 
       <div class="col-md-6">
-      <label class="small mb-1" for="inputLastName">First name name</label>
-      <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" value="${sessionScope.user.getTen()}">
+      <label class="small mb-1" for="inputLastName">First name</label>
+      <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}">
       </div>
       </div>
 
       <div class="row gx-3 mb-3">
       <div class="col-md-12">
       <label class="small mb-1" for="inputOrgName">Organization name</label>
-      <input class="form-control" id="inputOrgName" type="text" placeholder="Enter your organization name" value="Start Bootstrap">
+      <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap">
       </div>
       </div>
 
       <div class="mb-3">
       <label class="small mb-1" for="inputEmailAddress">Email address</label>
-      <input class="form-control" id="inputEmailAddress" type="email" placeholder="" value="${sessionScope.user.getEmail()}" readonly>
+      <input class="form-control" id="inputEmailAddress" name="email" type="email"  value="${hocVienDTO.email}" readonly>
       </div>
 
       <div class="row gx-3 mb-3">
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputPhone">Phone number</label>
-      <input class="form-control" id="inputPhone" type="tel" placeholder="" value="${sessionScope.user.getPhone()}">
+      <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}">
       </div>
 
       <div class="col-md-6">
       <label class="small mb-1" for="inputBirthday">Birthday</label>
-      <input class="form-control" id="inputBirthday" type="text" name="birthday" placeholder="Enter your birthday" value="${sessionScope.user.getDob()}">
+      <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
       </div>
       </div>
 
-      <button class="btn btn-primary" type="button">Save changes</button>
+      <button class="btn btn-primary" type="submit" name="action" value="updateProfile" >Save changes</button>
       </form>
       </div>
       </div>
