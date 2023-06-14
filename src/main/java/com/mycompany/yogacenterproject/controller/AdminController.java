@@ -6,9 +6,11 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,6 +60,8 @@ public class AdminController extends HttpServlet {
 
             } else if (action.equals("detailLopHoc")) {
 
+            }else if (action.equals("listClassUnassigned")){
+                listClassUnassigned(request, response);
             }
 
 //            
@@ -105,6 +109,17 @@ public class AdminController extends HttpServlet {
         RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HoaDonList.jsp");
         rs.forward(request, response);
 
+    }
+    
+    public void listClassUnassigned(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        List<LopHocDTO> listLopHocTemp = new ArrayList();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        listLopHocTemp = lopHocDAO.listLopTemp();
+        
+        request.setAttribute("listLopHocTemp", listLopHocTemp);
+        RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/ListClassUnassigned.jsp");
+        rd.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

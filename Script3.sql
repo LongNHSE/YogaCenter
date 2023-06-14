@@ -103,6 +103,18 @@ constraint fk_maLopHoc_ScheduleTR foreign key([maLopHoc]) references [lopHoc]([m
 CONSTRAINT fk_maSlot_ScheduleTR FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 constraint fk_maTrainer_ScheduleTR foreign key([maTrainer]) references [Trainer]([maTrainer])
 )
+CREATE TABLE ScheduleTemp(
+
+[maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
+[ngayHoc] Date NOT NULL,
+[maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+[thu] nvarchar(20) NOT NULl
+primary key(maLopHoc,ngayHoc)
+
+constraint fk_maLopHoc_ScheduleT foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
+CONSTRAINT fk_maSlot_ScheduleT FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
+
+)
 
 /*CREATE TABLE temp(
 

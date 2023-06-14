@@ -9,7 +9,8 @@ import java.sql.Date;
 
 public class TrainerDTO {
 private String maTrainer;    
-private String HoVaTen;
+private String ho;
+private String ten;
 private Date dob;
 private String phone;    
 private String email;
@@ -21,9 +22,10 @@ private Boolean status;
 private String trainerType;
 private String maLoaiTK;
 
-    public TrainerDTO(String maTrainer, String HoVaTen, Date dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
+    public TrainerDTO(String maTrainer, String ho, String ten, Date dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
         this.maTrainer = maTrainer;
-        this.HoVaTen = HoVaTen;
+        this.ho = ho;
+        this.ten = ten;
         this.dob = dob;
         this.phone = phone;
         this.email = email;
@@ -36,6 +38,32 @@ private String maLoaiTK;
         this.maLoaiTK = maLoaiTK;
     }
 
+    public String getHo() {
+        return ho;
+    }
+
+    public void setHo(String ho) {
+        this.ho = ho;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
+
+    @Override
+    public String toString() {
+        return "TrainerDTO{" + "maTrainer=" + maTrainer + ", ho=" + ho + ", ten=" + ten + ", dob=" + dob + ", phone=" + phone + ", email=" + email + ", salary=" + salary + ", username=" + username + ", psw=" + psw + ", soNgayNghi=" + soNgayNghi + ", status=" + status + ", trainerType=" + trainerType + ", maLoaiTK=" + maLoaiTK + '}';
+    }
+
+ 
+    
+
+    
+
     public TrainerDTO() {
     }
 
@@ -47,14 +75,7 @@ private String maLoaiTK;
         this.maTrainer = maTrainer;
     }
 
-    public String getHoVaTen() {
-        return HoVaTen;
-    }
-
-    public void setHoVaTen(String HoVaTen) {
-        this.HoVaTen = HoVaTen;
-    }
-
+   
     public Date getDob() {
         return dob;
     }
@@ -134,11 +155,10 @@ private String maLoaiTK;
     public void setMaLoaiTK(String maLoaiTK) {
         this.maLoaiTK = maLoaiTK;
     }
+    
 
-    @Override
-    public String toString() {
-        return "TrainerDTO{" + "maTrainer=" + maTrainer + ", HoVaTen=" + HoVaTen + ", dob=" + dob + ", phone=" + phone + ", email=" + email + ", salary=" + salary + ", username=" + username + ", psw=" + psw + ", soNgayNghi=" + soNgayNghi + ", status=" + status + ", trainerType=" + trainerType + ", maLoaiTK=" + maLoaiTK + '}';
-    }
+   
+   
 
 
 }

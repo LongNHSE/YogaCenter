@@ -67,7 +67,7 @@
 
                                             <div class="form-outline">
 
-                                                <select id="Slot" name="listSlot"  onchange="checkAvailability()" class="selected-control" >
+                                                <select id="Slot" name="listSlot"  onchange="checkAvailability()" class="selected-control" required="">
                                                     <option class="form-label" value=""> Please choose Slot</option>
                                                     <c:forEach items="${listSlot}" var="Slot" varStatus="loop" >
                                                         <option  class="form-label" value="${Slot.maSlot}">SLOT ${loop.index + 1}: ${Slot.timeStart}-${Slot.timeEnd}</option>
@@ -81,11 +81,11 @@
 
 
 
-                                            <div class="form-outline"id="dayInput" onchange="checkAvailability()">
+                                            <div class="form-outline"id="dayInput" name="weekdays" onchange="checkAvailability()" >
 
                                                 <div class="form-check form-check-inline ">
                                                     <input class=" weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Monday"  />
+                                                           value="Monday" required />
                                                     <label class="form-check-label" for="weekday">Monday</label>
                                                 </div>
                                                 <div class="form-check form-check-inline ">
@@ -127,15 +127,14 @@
 
                                         </div>
                                     </div>
-                                    <p class="form-check-label"  id="checkRoom">Tuesday</p>
+                                    <p class="form-check-label"  id="checkRoom"></p>
                                     <div style="margin-bottom: 50px"></div>
                                     <div class="row">
                                         <div class="form-outline datepicker w-100">
-                                            <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" />
+                                            <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" onchange="checkDate()" />
                                             <label for="initializeDate" class="form-label">Initialize Date</label>
                                             <div style="color: red; font-weight: BOLD">
-                                                <% String errorMessageDate = (String) request.getAttribute("errorMessageDate"); %>
-                                                <% if (errorMessageDate != null) {%> <%= errorMessageDate%> <% }%>
+                                                <p id="checkDate"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +142,7 @@
 
                                     <div class="mt-4 pt-2">
                                         <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
-
+                                        <input class="btn btn-outline-danger" type="hidden" value="CreateClass" id="submit" name="action"  />
                                     </div>
 
 
@@ -199,6 +198,44 @@
             } else {
                 var checkRoomElement = document.getElementById('checkRoom');
                 checkRoomElement.textContent = '';
+            }
+        }
+        function checkDate() {
+
+            var dateElement = document.getElementById('initializeDate');
+            var initializeDate = dateElement.value;
+            if (initializeDate !== '') {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'Admin/Class/checkDate.jsp?initializeDate=' + initializeDate, true);
+                xhr.responseType = 'document'; // Set the response type to 'document' to handle the response as XML
+                xhr.responseType = 'text';
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        var responseText = xhr.responseText.trim();
+
+                        var availability = (responseText == 'true');
+
+                        // Now you can use the 'availability' boolean as needed
+                        if (!availability) {
+                            var checkDateElement = document.getElementById('checkDate');
+                            checkDateElement.textContent = "Classes must be initialized 1 weeks before it is publicized for attendance";
+                            checkDateElement.style.fontWeight = 'bold';
+                            checkDateElement.style.color = 'red';
+
+                            var button = document.getElementById('submit'); // Replace 'yourButtonId' with the actual ID of your button
+                            button.disabled = true;
+                        } else {
+                            var checkDateElement = document.getElementById('checkDate');
+                            checkDateElement.textContent = '';
+                            var button = document.getElementById('submit'); // Replace 'yourButtonId' with the actual ID of your button
+                            button.disabled = false;
+                        }
+                    }
+                };
+                xhr.send();
+            } else {
+                var checkDateElement = document.getElementById('checkDate');
+                checkDateElement.textContent = '';
             }
         }
 //        function checkAvailability() {

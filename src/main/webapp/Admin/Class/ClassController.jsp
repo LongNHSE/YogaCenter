@@ -85,9 +85,19 @@
         </nav>
     </header>
     <div class="center">
-
-        <a href="<%=url%>/ClassController"><button class="btn btn-outline-danger">Create Class</button></a>
-        <a href="CreateClassTypePage.jsp"><button class="btn btn-outline-danger">Create Class Type</button></a>
+        <div>
+            <form action="<%=url%>/ClassController">
+                <input class="btn btn-outline-danger" type="submit" value="Create Class" id="submit"  />
+                <input class="btn btn-outline-danger" type="hidden" value="CreateClassPage" id="submit" name="action"  />
+            </form
+        </div>
+        <div>
+            <form action="<%=url%>/AdminController">
+                <input class="btn btn-outline-danger" type="submit" value="List Class Unassigned" id="submit"  />
+                <input class="btn btn-outline-danger" type="hidden" value="listClassUnassigned" id="submit" name="action"  />
+            </form
+        </div>
+        <a href="./CreateClassTypePage.jsp"><button class="btn btn-outline-danger">Create Class Type</button></a>
 
 
 

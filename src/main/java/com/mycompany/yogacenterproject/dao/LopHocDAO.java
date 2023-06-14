@@ -7,10 +7,12 @@ package com.mycompany.yogacenterproject.dao;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -71,17 +73,19 @@ public class LopHocDAO {
 //////Insert a class
     public void addClass(LopHocDTO newClass) {
         try {
-            String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maTrainer,maLoaiLopHoc,maSlot,maRoom,ngay)"
-                    + "values(?,?,?,?,?,?,?,?)";
+            String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maLoaiLopHoc,maRoom,ngay,soLuongHvHienTai)"
+                    + "values(?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newClass.getMaLopHoc());
             stm.setInt(2, newClass.getSoLuongHV());
             stm.setInt(3, newClass.getSoBuoi());
-            stm.setString(4, newClass.getMaTrainer());
-            stm.setString(5, newClass.getMaLoaiLopHoc());
-            stm.setString(6, newClass.getMaSlot());
-            stm.setString(7, newClass.getMaRoom());
-            stm.setDate(8, newClass.getNgay());
+
+            stm.setString(4, newClass.getMaLoaiLopHoc());
+
+            stm.setString(5, newClass.getMaRoom());
+            stm.setDate(6, newClass.getNgayBatDau());
+            stm.setInt(7, 0);
+            stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -100,7 +104,7 @@ public class LopHocDAO {
             stm.setString(5, newClass.getMaLoaiLopHoc());
             stm.setString(6, newClass.getMaSlot());
             stm.setString(7, newClass.getMaRoom());
-            stm.setDate(8, newClass.getNgay());
+            stm.setDate(8, newClass.getNgayBatDau());
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -135,25 +139,46 @@ public class LopHocDAO {
         }
     }
 //LAY ID LOAI LOP HOC 
+
     public String IDLoaiLopHoc(String maLopHoc) {
         try {
             String sql = "SELECT maLoaiLopHoc from [dbo].[lopHoc] where maLopHoc = ?";
             PreparedStatement stm;
             stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, maLopHoc);
-            ResultSet rs; 
+            ResultSet rs;
             rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getString("maLoaiLopHoc");
             }
         } catch (SQLException ex) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
-        
+
     }
-    
+
+    //LAY TEN LOAI LOP HOC 
+
+    public String tenLoaiLopHoc(String maLopHoc) {
+        try {
+            String sql = "SELECT tenLoaiLopHoc from [dbo].[lopHoc] where maLopHoc = ?";
+            PreparedStatement stm;
+            stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLopHoc);
+            ResultSet rs;
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getString("tenLoaiLopHoc");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+    }
 //LAY LOAI LOP BEN BAN LOAILOPHOC
     public String tenLopHoc(String maLoaiLopHoc) {
         try {
@@ -161,23 +186,85 @@ public class LopHocDAO {
             PreparedStatement stm;
             stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, maLoaiLopHoc);
-            ResultSet rs; 
+            ResultSet rs;
             rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getString("tenLoaiLopHoc");
             }
         } catch (SQLException ex) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
-        
+
     }
-    
+
+    //LAY ID CUOI LIST
+    public int lastIDIndex() {
+        String sql = "SELECT TOP 1 maLopHoc FROM [dbo].[lopHoc] ORDER BY maLopHoc DESC";
+        int index = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                int numberOnly = Integer.parseInt(rs.getString("maLopHoc").replaceAll("[^0-9]", ""));
+                index = numberOnly;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return index;
+    }
+
+    //LAY LIST LOP UNASSIGNED
+    public List<LopHocDTO> listLopTemp() {
+        List<LopHocDTO> listLopHoc = new ArrayList();
+        String sql = "Select  lopHoc.maLopHoc,lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom ,ScheduleTemp.maSlot, lopHoc.ngay\n"
+                + "From lopHoc\n"
+                + "inner join [dbo].[ScheduleTemp] on lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+                + "group BY lopHoc.maLopHoc,lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom ,ScheduleTemp.maSlot, lopHoc.ngay";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LopHocDTO lopHocDTO = new LopHocDTO();
+                lopHocDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                lopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                lopHocDTO.setMaRoom(rs.getString("maRoom"));
+                lopHocDTO.setMaSlot(rs.getString("maSlot"));
+                lopHocDTO.setNgayBatDau(rs.getDate("ngay"));
+                lopHocDTO.setSoLuongHV(rs.getInt("soLuongHV"));
+                listLopHoc.add(lopHocDTO);
+
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return listLopHoc;
+    }
+
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
-        
-        System.out.println(a.tenLopHoc(a.IDLoaiLopHoc("LOP0001")));
+        a.lastIDIndex();
+        Date aa = Date.valueOf(LocalDate.now());
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
+        lopHocDTO.setMaLopHoc("TYPE0001");
+        lopHocDTO.setMaRoom("RO0001");
+        lopHocDTO.setNgayBatDau(aa);
+
+        a.addClass(lopHocDTO);
+
     }
 
 }

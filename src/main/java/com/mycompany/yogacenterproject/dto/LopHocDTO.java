@@ -7,6 +7,7 @@ package com.mycompany.yogacenterproject.dto;
 import java.sql.Date;
 
 public class LopHocDTO {
+
     private String maLopHoc;
     private int soLuongHV;
     private int soBuoi;
@@ -15,6 +16,24 @@ public class LopHocDTO {
     private String maSlot;
     private String maRoom;
     private Date ngayBatDau;
+
+    private String[] thu;
+
+    public Date getNgayBatDau() {
+        return ngayBatDau;
+    }
+
+    public void setNgayBatDau(Date ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
+    }
+
+    public String[] getThu() {
+        return thu;
+    }
+
+    public void setThu(String[] thu) {
+        this.thu = thu;
+    }
 
     public LopHocDTO() {
     }
@@ -86,18 +105,11 @@ public class LopHocDTO {
         this.maRoom = maRoom;
     }
 
-    public Date getNgay() {
-        return ngayBatDau;
-    }
-
-    public void setNgay(Date ngayBatDau) {
-        this.ngayBatDau = ngayBatDau;
-    }
+   
 
     @Override
     public String toString() {
         return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngayBatDau=" + ngayBatDau + '}';
     }
-    
-    
+
 }

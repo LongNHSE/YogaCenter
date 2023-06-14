@@ -16,7 +16,8 @@ public class HoaDonDTO {
     private String maLopHoc;
     private long giaTien;
     private Date ngayThanhToan;
-
+    
+   
     public HoaDonDTO() {
     }
 

@@ -60,18 +60,18 @@ public class LoaiLopHocDAO {
     }
 
     //CHECK TEN LOAI LOP HOC 
-    public String searchTenLoaiLopHoc(String tenLoaiLopHoc) {
-        String sql = "SELECT tenLoaiLopHoc FROM [dbo].[loaiLopHoc] where tenLoaiLopHoc = ?";
+    public String searchTenLoaiLopHoc(String maLoaiLopHoc) {
+        String sql = "SELECT tenLoaiLopHoc FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?  ";
         String tenLoai = "";
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, tenLoaiLopHoc);
+            ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
                 tenLoai = rs.getString("tenLoaiLopHoc");
-
+                return tenLoai.trim();
             }
             rs.close();
             ps.close();
@@ -79,7 +79,7 @@ public class LoaiLopHocDAO {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-        return tenLoai.trim();
+        return null;
     }
 
     //READ LIST LOAI LOP HOC 
@@ -142,7 +142,7 @@ public class LoaiLopHocDAO {
 
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
-//        System.out.println(a.searchTenLoaiLopHoc("Iyengar yoga").equals("Iyengar yoga"));
+        System.out.println(a.searchTenLoaiLopHoc("TYPE0001"));
 //        System.out.println(a.readLoaiLopHoc());
         System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
