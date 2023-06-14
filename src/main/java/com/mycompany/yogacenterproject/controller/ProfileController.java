@@ -58,42 +58,48 @@ public class ProfileController extends HttpServlet {
         //  log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
         String maHocVien = request.getParameter("maHocVien");
-        log(maHocVien);
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hvDTO = hocVienDAO.searchHocVienById(maHocVien);
         //   log(maHocVien);////////////////////
         //   log(hvDTO.getHo());////////////////////
         //   hvDTO.setHo(hvDTO.getHo());
-        session.setAttribute("hocVienDTO", hvDTO);
+        session.setAttribute("maHV", hvDTO.getMaHV());
         RequestDispatcher rd = request.getRequestDispatcher("./profile.jsp");
         rd.forward(request, response);
     }
 
+//////////SET MAHV HIDDEN MOI DEM VE DC, RELOAD TRANG VE STATELESS >< K CO CACH GIU MAHV SAU KHI NHAN SAVE CHANGE, TRANG CAP NHAT DUNG LUC   
     public void updateProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HocVienDAO hocVienDAO = new HocVienDAO();
-        try {
-            String maHV = request.getParameter("maHocVien");
-            String username = request.getParameter("username");
-            String ho = request.getParameter("ho");
-            String ten = request.getParameter("ten");
-            String phone = request.getParameter("phone");
-            log("chay vao update");
-
+        HttpSession session = request.getSession();
+        String maHV = request.getParameter("maHV");
+        log(maHV);///////
+        String username = request.getParameter("username");
+        String ho = request.getParameter("ho");
+        String ten = request.getParameter("ten");
+        String phone = request.getParameter("phone");
+//            String psw= request.getParameter("psw");
+//            String email= request.getParameter("email");
+//            String gender= request.getParameter("gender");
 //////RECEIVING STRING DATE FROM JSP, THEN CONVERT TO DATE TYPE
-            String date = request.getParameter("dob");
-            log(date);
-            Date dateTime=Date.valueOf(date);
-            LocalDate dob=Instant.ofEpochMilli(dateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+        String date = request.getParameter("dob");
+        Date dateTime = Date.valueOf(date);
+        LocalDate dob = Instant.ofEpochMilli(dateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 /////////////////////////////            
-            HocVienDTO changeHocVien = new HocVienDTO(maHV, ho, ten, dob, username, phone, ten, phone, phone, ten);
-            hocVienDAO.updateHocVien(changeHocVien);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log("chay vao catch");
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher("./profile.jsp");
-            rd.forward(request, response);
-        }
+        HocVienDTO changeHocVien = (HocVienDTO)session.getAttribute("hocVienDTO");
+        changeHocVien.setDob(dob);
+        changeHocVien.setEmail(changeHocVien.getEmail());
+        changeHocVien.setGender(changeHocVien.getGender());
+        changeHocVien.setHo(ho);
+        changeHocVien.setMaHV(maHV);
+        changeHocVien.setTen(ten);
+        changeHocVien.setPhone(phone);
+        changeHocVien.setUsername(username);
+        session.setAttribute("hocVienDTO",changeHocVien);
+        hocVienDAO.updateHocVien(changeHocVien);
+        log(changeHocVien.toString());
+        RequestDispatcher rd = request.getRequestDispatcher("./ProfileController?action=viewProfile&&maHocVien=" + maHV);
+        rd.forward(request, response);
     }
 
     public void viewHocVienTransaction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -155,9 +155,9 @@
       <div class="card-header">Account Details</div>
       <div class="card-body">
       <form method="POST" action="<%=url%>/ProfileController">
-
+          <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" hidden="" readonly>
       <div class="mb-3">
-            <label class="small mb-1" for="inputUsername">Username</label>
+            <label class="small mb-1" for="inputUsername" >Username</label>
       <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}">
       </div>
 
@@ -183,7 +183,7 @@
 
       <div class="mb-3">
       <label class="small mb-1" for="inputEmailAddress">Email address</label>
-      <input class="form-control" id="inputEmailAddress" name="email" type="email" placeholder="" value="${hocVienDTO.email}" readonly>
+      <input class="form-control" id="inputEmailAddress" name="email" type="email"  value="${hocVienDTO.email}" readonly>
       </div>
 
       <div class="row gx-3 mb-3">
