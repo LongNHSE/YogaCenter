@@ -45,7 +45,7 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="home.jsp">Home</a>
         <a class="nav-item nav-link" href="about.html">About</a>
-        <a class="nav-item nav-link" href="classes.html">Classes</a>
+        <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
         <a class="nav-item nav-link" href="trainer.html">Trainer</a>
         <a class="nav-item nav-link" href="contact.html">Contact us</a>

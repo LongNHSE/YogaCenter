@@ -12,7 +12,7 @@
 <html>
 <head>
 <!--   basic 
--->  <meta charset="utf-8">
+--><meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!--   mobile metas -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,8 +40,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
     media="screen">
   <!--
+ 
 </head>-->
-
+      </head>
 <!-- body -->
 
 <body>
@@ -56,7 +57,7 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="home.jsp">Home</a>
         <a class="nav-item nav-link" href="about.jsp">About</a>
-        <a class="nav-item nav-link" href="classes.html">Classes</a>
+        <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link" href="schedule.html">Schedule</a>
         <a class="nav-item nav-link" href="trainer.html">Trainer</a>
         <a class="nav-item nav-link" href="contact.html">Contact us</a>

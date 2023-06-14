@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
+import com.mycompany.yogacenterproject.dto.LopHocIMG;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +22,9 @@ import java.util.Locale;
  * @author Oalskad
  */
 public class LoaiLopHocDAO {
-
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc, hocPhi)"
                 + "VALUES(?,?,?)";
@@ -140,13 +143,34 @@ public class LoaiLopHocDAO {
         return null;
     }
 
+    // PRINT CLASSES' CATEGORIES
+    public List<LopHocIMG> getAllCategories(){
+          List<LopHocIMG> list = new ArrayList<>();
+          String query = "SELECT * FROM dbo.lopHocImg";
+          try {
+            conn = new DBUtils().getConnection(); // connect DB
+            ps = conn.prepareStatement(query);
+            rs=ps.executeQuery(); 
+            while(rs.next()){
+                  list.add(new LopHocIMG(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+          } catch (Exception e) {
+          }
+          return list;
+    }
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
+        
 //        System.out.println(a.searchTenLoaiLopHoc("Iyengar yoga").equals("Iyengar yoga"));
 //        System.out.println(a.readLoaiLopHoc());
         System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
 //        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO("TYPE0003", " Iyengar yoga", b);
 //        a.createLoaiLopHoc(loaiLopHocDTO);
+      List<LopHocIMG> listIMG = a.getAllCategories();
+      for (LopHocIMG o: listIMG){
+            System.out.println(o.toString());
+      }
+      
     }
 }
