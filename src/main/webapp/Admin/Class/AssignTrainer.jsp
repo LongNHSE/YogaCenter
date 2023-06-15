@@ -23,6 +23,7 @@
     </head>
     <%
         List<TrainerDTO> listTrainer = (List<TrainerDTO>) request.getAttribute("listTrainer");
+        String maLopHoc = request.getParameter("maLopHoc");
 
     %>
     <body>
@@ -36,33 +37,26 @@
                                 <form action="<%=url%>/ClassController" method="POST">
 
                                     <div class="row">
-                                        <div class="col-md-6 mb-4">
+                                        <div class="col-md-12 mb-4">
 
-                                        <div class="form-outline">
+                                            <div class="form-outline">
 
-                                                <select name="listLoaiLopHoc"  onchange="getHocPhi(this.value)" class="selected-control " onchange="getHocPhi(this.value)" required>
-                                                    <option class="form-label" value=""> Please choose type of class</option>
+                                                <select name="listTrainer"   class="selected-control "  required>
+                                                    <option class="form-label" value=""> Please choose Trainer</option>
                                                     <c:forEach items="${listTrainer}" var="Trainer">
                                                         <option class="form-label" value="${Trainer.maTrainer}">${Trainer.ten}</option>
                                                     </c:forEach>
                                                 </select>
-                                                <label class="form-label" for="LoaiLopHoc">Type of class</label>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-
-                                            <div class="form-outline">
-                                                <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.5">
-                                                    <span class="currency">x1.000.000VND</span>
-                                                    <label class="form-label" for="hocPhi">Hoc Phi</label>
-                                                </div>
+                                                </br>
+                                                <label class="form-label" for="listTrainer">Trainer</label>
                                             </div>
 
                                             <div class="mb-1">
                                                 <div class="mt-4 pt-2">
-                                                    <input type="hidden" name="action" value="CreateClassType" />
+                                                    <c:set var="maLopHoc" value="${requestScope.maLopHoc}" />
+                                                        
+                                                    <input type="hidden" name="maLopHoc" value="${maLopHoc}" />
+                                                    <input type="hidden" name="action" value="AssignTrainer" />
                                                     <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
                                                 </div>
                                             </div>

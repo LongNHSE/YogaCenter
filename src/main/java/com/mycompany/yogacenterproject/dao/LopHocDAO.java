@@ -56,12 +56,16 @@ public class LopHocDAO {
             while (rs.next()) {
                 int soLuongHV = rs.getInt("soLuongHV");
                 int soBuoi = rs.getInt("soBuoi");
-                String maTrainer = rs.getString("maTrainer");
                 String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
-                String maSlot = rs.getString("maSlot");
+          
                 String maRoom = rs.getString("maRoom");
                 Date ngay = rs.getDate("ngay");
-                LopHocDTO foundClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
+                LopHocDTO foundClass = new LopHocDTO();
+                foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
+                foundClass.setMaLopHoc(maLopHoc);
+                foundClass.setMaRoom(maRoom);
+                foundClass.setSoBuoi(soBuoi);
+                foundClass.setNgayBatDau(ngay);
                 return foundClass;
             }
         } catch (SQLException e) {
@@ -256,14 +260,15 @@ public class LopHocDAO {
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
         a.lastIDIndex();
-        Date aa = Date.valueOf(LocalDate.now());
-        LopHocDTO lopHocDTO = new LopHocDTO();
-        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
-        lopHocDTO.setMaLopHoc("TYPE0001");
-        lopHocDTO.setMaRoom("RO0001");
-        lopHocDTO.setNgayBatDau(aa);
+//        Date aa = Date.valueOf(LocalDate.now());
+//        LopHocDTO lopHocDTO = new LopHocDTO();
+//        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
+//        lopHocDTO.setMaLopHoc("TYPE0001");
+//        lopHocDTO.setMaRoom("RO0001");
+//        lopHocDTO.setNgayBatDau(aa);
 
-        a.addClass(lopHocDTO);
+//        a.addClass(lopHocDTO);
+System.out.println(a.searchClassById("LOP0003"));
 
     }
 

@@ -62,6 +62,8 @@ public class ClassController extends HttpServlet {
             response.sendRedirect("Admin/Class/ClassController.jsp");
         } else if (action.equals("Assign Trainer")) {
             thongTinAssignPage(request, response);
+        }else if (action.equals("AssignTrainer")){
+            assignTrainer(request, response);
         }
 
 //        if (action.equals("CreateClassType")) {
@@ -216,8 +218,18 @@ public class ClassController extends HttpServlet {
     }
 
     //ASSIGN GIAO VIEN VAO SCHEDULE
-    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) {
-
+    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        String maLopHoc = request.getParameter("maLopHoc");
+        String maTrainer = request.getParameter("listTrainer");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
+        
+        response.sendRedirect("Admin/Class/ClassController.jsp");
+        
+        
+        
     }
 
     //Tao ScheduleHv
