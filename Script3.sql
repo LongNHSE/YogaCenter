@@ -1,6 +1,9 @@
+﻿
+ use master 
+ go
 
-use master
-go
+ alter database YogaCenter set single_user with rollback immediate
+
 drop database YogaCenter
 go
 
@@ -23,13 +26,20 @@ CREATE TABLE slot(
 	[timeEnd] Time NOT NULL
 )
 
-
+CREATE TABLE lopHocImg(
+	[maAnh] NVARCHAR(10) primary key,
+	[tenAnh] NVARCHAR(25) NOT NULL,
+	[URLAnh] TEXT NOT NULL
+	)
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-	[hocPhi] DECIMAL(10,2) NOT NULL
+	[hocPhi] DECIMAL(10,2) NOT NULL,
+	[subTitle] TEXT NOT NULL,
+	[description] TEXT NOT NULL,
+	[maAnh] NVARCHAR(10) NOT NULL --CONSTRAINT
+	CONSTRAINT fk_maAnh_loailopHoc FOREIGN KEY([maAnh]) REFERENCES lopHocImg(maAnh)
 	)
-
 CREATE TABLE Trainer(
 	[maTrainer] NVARCHAR(10) primary key,
 	[Ho] NVARCHAR(10) NOT NULL,
@@ -60,6 +70,8 @@ CREATE TABLE lopHoc(
 	CONSTRAINT fk_maRoom_lopHoc FOREIGN KEY([maRoom]) REFERENCES room(maRoom)
 	)
 
+
+
 CREATE TABLE [admin](
 	[maAdmin] NVARCHAR(10) primary key,
 	[username] NVARCHAR(50) NOT NULL,
@@ -79,13 +91,13 @@ CREATE TABLE hocVien(
 	[email] NVARCHAR(50) NOT NULL	
 	)
 
-CREATE TABLE ScheduleHV(
+create TABLE ScheduleHV(
 [maHV] nvarchar(10) not null,--CONSTRAINT--
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 [thu] nvarchar(20) NOT NULl
-primary key(maLopHoc,maHV)
+primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 constraint fk_maLopHoc_ScheduleHV foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -97,11 +109,23 @@ CREATE TABLE ScheduleTrainer(
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 [thu] nvarchar(20) NOT NULl
-primary key(maLopHoc,maTrainer)
+primary key(maLopHoc,maTrainer,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleTR foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
 CONSTRAINT fk_maSlot_ScheduleTR FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
 constraint fk_maTrainer_ScheduleTR foreign key([maTrainer]) references [Trainer]([maTrainer])
+)
+CREATE TABLE ScheduleTemp(
+
+[maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
+[ngayHoc] Date NOT NULL,
+[maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+[thu] nvarchar(20) NOT NULl
+primary key(maLopHoc,ngayHoc)
+
+constraint fk_maLopHoc_ScheduleT foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
+CONSTRAINT fk_maSlot_ScheduleT FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
+
 )
 
 /*CREATE TABLE temp(
@@ -176,6 +200,9 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
-	)
+
+	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
+
+)
+
 

@@ -24,6 +24,14 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClassController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.ClassController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TrainerController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.TrainerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassController</servlet-name>
+        <url-pattern>/ClassController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrainerController</servlet-name>
+        <url-pattern>/TrainerController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -36,6 +36,11 @@ public class PhongHocDTO {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "PhongHocDTO{" + "maRoom=" + maRoom + ", status=" + status + '}';
+    }
     
     
     

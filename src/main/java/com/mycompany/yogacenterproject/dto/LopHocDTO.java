@@ -7,6 +7,7 @@ package com.mycompany.yogacenterproject.dto;
 import java.sql.Date;
 
 public class LopHocDTO {
+
     private String maLopHoc;
     private int soLuongHV;
     private int soBuoi;
@@ -14,12 +15,30 @@ public class LopHocDTO {
     private String maLoaiLopHoc;
     private String maSlot;
     private String maRoom;
-    private Date ngay;
+    private Date ngayBatDau;
+
+    private String[] thu;
+
+    public Date getNgayBatDau() {
+        return ngayBatDau;
+    }
+
+    public void setNgayBatDau(Date ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
+    }
+
+    public String[] getThu() {
+        return thu;
+    }
+
+    public void setThu(String[] thu) {
+        this.thu = thu;
+    }
 
     public LopHocDTO() {
     }
 
-    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngay) {
+    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngayBatDau) {
         this.maLopHoc = maLopHoc;
         this.soLuongHV = soLuongHV;
         this.soBuoi = soBuoi;
@@ -27,7 +46,7 @@ public class LopHocDTO {
         this.maLoaiLopHoc = maLoaiLopHoc;
         this.maSlot = maSlot;
         this.maRoom = maRoom;
-        this.ngay = ngay;
+        this.ngayBatDau = ngayBatDau;
     }
 
     public String getMaLopHoc() {
@@ -86,18 +105,11 @@ public class LopHocDTO {
         this.maRoom = maRoom;
     }
 
-    public Date getNgay() {
-        return ngay;
-    }
-
-    public void setNgay(Date ngay) {
-        this.ngay = ngay;
-    }
+   
 
     @Override
     public String toString() {
-        return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngay=" + ngay + '}';
+        return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngayBatDau=" + ngayBatDau + '}';
     }
-    
-    
+
 }

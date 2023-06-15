@@ -34,4 +34,9 @@ public class DateAndDay {
         return date;
     }
 
+    @Override
+    public String toString() {
+        return "DateAndDay{" + "day=" + day + ", date=" + date + '}';
+    }
+
 }
