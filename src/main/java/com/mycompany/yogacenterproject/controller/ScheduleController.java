@@ -61,7 +61,7 @@ public class ScheduleController extends HttpServlet {
     public void Schedule(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         HttpSession session = request.getSession();
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("user");
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         List<ScheduleHvDTO> listScheduleHv = scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV());
         SlotDAO slotDAO = new SlotDAO();

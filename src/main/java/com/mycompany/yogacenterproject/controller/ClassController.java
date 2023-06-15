@@ -16,6 +16,7 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.mycompany.yogacenterproject.dto.LopHocIMG;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;

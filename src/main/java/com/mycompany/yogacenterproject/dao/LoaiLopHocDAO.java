@@ -160,12 +160,8 @@ public class LoaiLopHocDAO {
     }
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
-<<<<<<< HEAD
         System.out.println(a.searchTenLoaiLopHoc("TYPE0001"));
-=======
-        
-//        System.out.println(a.searchTenLoaiLopHoc("Iyengar yoga").equals("Iyengar yoga"));
->>>>>>> b5107d4b02b122a58a99ce7070983cc68e1f586d
+
 //        System.out.println(a.readLoaiLopHoc());
         System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;

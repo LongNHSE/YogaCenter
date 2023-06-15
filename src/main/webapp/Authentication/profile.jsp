@@ -46,8 +46,8 @@
         <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
 
     <header id="header">
-     
-w
+
+        w
 
         <div class="mobile-menu-btn"><i class="fa fa-bars"></i></div>
         <nav class="main-menu top-menu">
@@ -58,15 +58,15 @@ w
                 <li><a href="amenities.html">Amenities</a></li>
                 <li><a href="booking.html">Booking</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
-                    <c:if test="${sessionScope.userDTO != null}">
+                    <c:if test="${sessionScope.hocVienDTO != null}">
                     <li class="active">
                         <a href="/Profile.jsp">
-                            ${sessionScope.userDTO.userName} 
+                            ${sessionScope.hocVienDTO.userName} 
                         </a></li>
                     </li>
                 </c:if>
-                <c:if test="${sessionScope.hvDTO != null}">
-                    <li>
+                <c:if test="${sessionScope.hocVienDTO != null}">
+                    <li>s
                         <form action="/Hotel/Access/logout" method="POST">
 
                             <input class="btn btn-outline-danger"  type="submit" value="Logout"></input>
@@ -75,7 +75,7 @@ w
                     </li>
                 </c:if>
 
-                <c:if test="${sessionScope.hvDTO == null}">
+                <c:if test="${sessionScope.hocVienDTO == null}">
                     <li>
                         <div class="">
                             <a class="btn btn-outline-danger" href="<%=url%>">Login</a>
@@ -93,10 +93,10 @@ w
                                 <div class="u-border-2 u-border-grey-75 u-border-no-bottom u-container-layout u-container-layout-1">
                                     <img src="<%=url%>/images/rikka-takanashi.gif" alt="" class="u-image u-image-circle u-image-1" data-image-width="1280" data-image-height="1280">
                                     <form action="/Hotel/Profile/details"method="post">
-                                    <p class="u-text u-text-1">
-                                        <a class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-link u-button-style u-none u-text-body-color u-text-hover-palette-1-base u-btn-1" ><button class="btn btn-outline-danger" type="submit">Show receipt details</button><br>
-                                        </a>
-                                    </p>
+                                        <p class="u-text u-text-1">
+                                            <a class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-link u-button-style u-none u-text-body-color u-text-hover-palette-1-base u-btn-1" ><button class="btn btn-outline-danger" type="submit">Show receipt details</button><br>
+                                            </a>
+                                        </p>
                                     </form>
                                     <p class="u-text u-text-2">
                                         <a class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-link u-button-style u-none u-text-body-color u-text-hover-palette-1-base u-btn-2" href="<%= url%>/userUpdate.jsp"><button class="btn btn-outline-danger" value="Edit profile">Edit profile </button><br>
@@ -110,7 +110,7 @@ w
                                     </p>
                                     <p class="u-text u-text-4">Ten: ${sessionScope.hocVienDTO.ten}</b> <br>
                                     </p>
-                                         <p class="u-text u-text-3">Gender : <b>${sessionScope.hocVienDTO.gender}</b>  <br>
+                                    <p class="u-text u-text-3">Gender : <b>${sessionScope.hocVienDTO.gender}</b>  <br>
                                     </p>
                                     <p class="u-text u-text-3">Date of birth : <b>${sessionScope.hocVienDTO.dob}</b>  <br>
                                     </p>

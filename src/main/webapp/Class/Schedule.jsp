@@ -3,10 +3,9 @@
     Created on : May 31, 2023, 7:13:35 AM
     Author     : Oalskad
 --%>
-<<<<<<< HEAD
-=======
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
->>>>>>> ced18b722daf5ec63312e8621265c51f84104de6
+
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -62,14 +61,14 @@
             <a class="nav-item nav-link" href="schedule.html">Schedule</a>
             <a class="nav-item nav-link" href="trainer.html">Trainer</a>
             <a class="nav-item nav-link" href="contact.html">Contact us</a>
-            <c:if test = "${sessionScope.user == null}">
+            <c:if test = "${sessionScope.hocVienDTO == null}">
                 <a class="nav-item nav-link" href="<%=url%>/Authentication/signin.jsp">Login</a>              
             </c:if>
-            <c:if test = "${sessionScope.user != null}">
+            <c:if test = "${sessionScope.hocVienDTO != null}">
                 <div class="btn-group btn-user-menu">
                       <button style=" margin-left: 100px; background: #be2532 " class=" btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                      <span>${sessionScope.user.username}</span>
+                      <span>${sessionScope.hocVienDTO.username}</span>
                       </button>
                       <div class="dropdown-menu btn-menu">
                            <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
@@ -96,12 +95,7 @@
 
 
 
-        <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
-            List<SlotDTO> listSlot = (List<SlotDTO>) request.getAttribute("listSlot");
-            List<LocalDate> listDate = (List<LocalDate>) request.getAttribute("listDate");
-            List<DateStartAndDateEnd> weekRanges = (List<DateStartAndDateEnd>) request.getAttribute("weekRanges");
-
-        %>
+     
 
 
 
@@ -113,11 +107,8 @@
                     <%                        for (DateStartAndDateEnd weekRange : weekRanges) { %>
                   
                    
-<<<<<<< HEAD
-                    <option value=<%=weekRange.getDateStart() %> <% if(weekRange.getDateStart().equals(listDate.get(0))){%> selected <% } %>> <%=weekRange.getFormattedStartDate()%> - <%=weekRange.getFormattedEndDate()%> </option>;
-=======
+
                     <option id="schedule" value=<%=weekRange.getDateStart() %> <% if(weekRange.getDateStart().equals(listDate.get(0))){%> selected <% } %>> <%=weekRange.getFormattedStartDate()%> - <%=weekRange.getFormattedEndDate()%> </option>;
->>>>>>> ced18b722daf5ec63312e8621265c51f84104de6
                         <% }
                     %>
                 </select>

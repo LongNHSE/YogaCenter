@@ -161,7 +161,7 @@ public class HocVienDAO {
             ps.setString(2, pass);
             rs = ps.executeQuery();
             int i = 0;
-            System.out.println("chay vao try");///////
+//            System.out.println("chay vao try");///////
             while (rs.next()) {
                 HocVienDTO hocVienDTO = new HocVienDTO();
                 if (i == 0) {
@@ -331,8 +331,8 @@ public class HocVienDAO {
 //        hocVienDTO = hocVienDAO.login("longNiger", "123456");
 //        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
 //        hocVienDAO.updateHocVien(hocVienDTO);
-        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
-        System.out.println(hocVienDTO.toString());
+        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
+        System.out.println(hocVienDTO.getMaHV());
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
