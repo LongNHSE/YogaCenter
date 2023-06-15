@@ -12,8 +12,17 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,7 +43,10 @@ public class HocVienDAO {
                 String maHV = rs.getString("maHV");
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
-                Date dob = rs.getDate("dob");
+                //////DEFINE LOCALDATE AND RECEIVING DATA
+                DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);
+                LocalDate dob = LocalDate.parse("dob", df);
+
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -42,7 +54,7 @@ public class HocVienDAO {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                
+
                 HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
                 newTrainee.setMaLopHoc(classOfTrainee(maHV));
                 listHocVien.add(newTrainee);
@@ -61,10 +73,15 @@ public class HocVienDAO {
             stm.setString(1, maHV);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                
+
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
-                Date dob = rs.getDate("dob");
+                ///////DATE
+                Date date=rs.getDate("dob");
+//                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                
+                
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -72,8 +89,8 @@ public class HocVienDAO {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
-                HocVienDTO newTrainee = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
-                return newTrainee;
+                HocVienDTO result = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
+                return result;
             }
         } catch (SQLException e) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -90,10 +107,9 @@ public class HocVienDAO {
             stm.setString(1, newHocVien.getMaHV());
             stm.setString(2, newHocVien.getHo());
             stm.setString(3, newHocVien.getTen());
-            stm.setDate(4, newHocVien.getDob());
+            stm.setDate(4, Date.valueOf(newHocVien.getDob()));
             stm.setString(5, newHocVien.getUsername());
             stm.setString(6, newHocVien.getPsw());
-
             stm.setString(7, newHocVien.getMaLoaiTK());
             stm.setString(8, newHocVien.getEmail());
             stm.setString(9, newHocVien.getPhone());
@@ -107,14 +123,14 @@ public class HocVienDAO {
 ///Update học viên
     public void updateHocVien(HocVienDTO upTrainee) {
         try {
-            String sql = "Update hocVien set Ho=?,Ten=?,dob=?, username=?,psw=? WHERE maHV=?";
+            String sql = "Update hocVien set Ho=?,Ten=?,dob=?, username=?,phone=? WHERE maHV=?";
             PreparedStatement stmt = DBUtils.getConnection().prepareStatement(sql);
             stmt.setString(1, upTrainee.getHo());
             stmt.setString(2, upTrainee.getTen());
-            stmt.setDate(3, upTrainee.getDob());
+            stmt.setDate(3, Date.valueOf(upTrainee.getDob()));
             stmt.setString(4, upTrainee.getUsername());
-            stmt.setString(4, upTrainee.getPsw());
-            stmt.setString(5, upTrainee.getMaHV());
+            stmt.setString(5, upTrainee.getPhone());
+            stmt.setString(6, upTrainee.getMaHV());
             stmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -145,6 +161,7 @@ public class HocVienDAO {
             ps.setString(2, pass);
             rs = ps.executeQuery();
             int i = 0;
+            System.out.println("chay vao try");///////
             while (rs.next()) {
                 HocVienDTO hocVienDTO = new HocVienDTO();
                 if (i == 0) {
@@ -152,27 +169,29 @@ public class HocVienDAO {
                     hocVienDTO.setMaLopHoc(listMaLopHoc);
                     i++;
                 }
-//              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
-
-                hocVienDTO.setMaHV(rs.getString("maHV"));
-                hocVienDTO.setHo(rs.getString("Ho"));
-                hocVienDTO.setTen(rs.getString("Ten"));
-                hocVienDTO.setDob(rs.getDate("dob"));
-                hocVienDTO.setUsername(rs.getString("username"));
-                hocVienDTO.setPhone(rs.getString("phone"));
-                hocVienDTO.setPsw(rs.getString("psw"));
-                hocVienDTO.setGender(rs.getString("gender"));
-                hocVienDTO.setMaLoaiTK(rs.getString("maLoaiTk"));
-                hocVienDTO.setEmail(rs.getString("email"));
-
-                return hocVienDTO;
-
+//              String maHV, String Ho, String Ten, LocalDate dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
+                String maHV = rs.getString("maHV");
+                String ho = rs.getString("Ho");
+                String ten = rs.getString("Ten");
+                String user = rs.getString("username");
+                String phone = rs.getString("phone");
+                String psw = rs.getString("psw");
+                String maLoaiTk = rs.getString("maLoaiTk");
+                String email = rs.getString("email");
+                String gender = rs.getString("gender");
+                ////////CONVERT DATE TO LOCALDATE
+                Date date = rs.getDate("dob");
+//                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
+                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                //////////////////////////////////////////////////////////////////
+                HocVienDTO loginUser = new HocVienDTO(maHV, ho, ten, dob, user, phone, psw, maLoaiTk, email, gender);
+                return loginUser;
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
-
     }
 
     //GET ALL CLASS FROM 1 TRAINEE 
@@ -185,7 +204,7 @@ public class HocVienDAO {
                 + "group by maLopHoc";
         try {
             conn = new DBUtils().getConnection(); // connect DB
-            
+
             ps = conn.prepareStatement(querry);
             ps.setString(1, maHv);
             ResultSet rs;
@@ -194,7 +213,7 @@ public class HocVienDAO {
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 listMaLopHoc.add(maLopHoc);
-                
+
             }
             return listMaLopHoc;
         } catch (SQLException e) {
@@ -303,22 +322,17 @@ public class HocVienDAO {
         }
         return null;
     }
-    
-    
-    
-    
-    
-    
 
     public static void main(String[] args) {
 
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
-
         HocVienDTO hocVienDTO = new HocVienDTO();
-
-        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-        System.out.println(hocVienDTO);
+//        hocVienDTO = hocVienDAO.login("longNiger", "123456");
+//        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
+//        hocVienDAO.updateHocVien(hocVienDTO);
+        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
+        System.out.println(hocVienDTO.toString());
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {

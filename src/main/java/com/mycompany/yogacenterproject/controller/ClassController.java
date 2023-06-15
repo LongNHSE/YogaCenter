@@ -14,7 +14,9 @@ import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
+
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
@@ -70,6 +72,7 @@ public class ClassController extends HttpServlet {
 //            createLoaiLopHoc(request, response);
 //
 //        }
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
@@ -236,6 +239,15 @@ public class ClassController extends HttpServlet {
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
     public void createScheduleHv(HttpServletRequest request, HttpServletResponse response) {
 
+    }
+    // Show Class
+    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+          List<LopHocIMG> listCate = new ArrayList<>();
+          LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();  
+          listCate = loaiLopHocDAO.getAllCategories();
+          request.setAttribute("listCate", listCate);
+          RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
+          rd.forward(request, response);        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

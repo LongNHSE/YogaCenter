@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class HocVienDTO {
@@ -12,7 +13,7 @@ public class HocVienDTO {
     private String maHV;
     private String Ho;
     private String Ten;
-    private Date dob;
+    private LocalDate dob;
     private String username;
     private String phone;
     private String psw;
@@ -56,7 +57,7 @@ public class HocVienDTO {
     public HocVienDTO() {
     }
 
-    public HocVienDTO(String maHV, String Ho, String Ten, Date dob, String username, String phone, String psw, String maLoaiTK, String email, String gender) {
+    public HocVienDTO(String maHV, String Ho, String Ten, LocalDate dob, String username, String phone, String psw, String maLoaiTK, String email, String gender) {
         this.maHV = maHV;
         this.Ho = Ho;
         this.Ten = Ten;
@@ -101,11 +102,11 @@ public class HocVienDTO {
         this.Ten = Ten;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

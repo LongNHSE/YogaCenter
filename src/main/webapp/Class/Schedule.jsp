@@ -3,7 +3,10 @@
     Created on : May 31, 2023, 7:13:35 AM
     Author     : Oalskad
 --%>
+<<<<<<< HEAD
+=======
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+>>>>>>> ced18b722daf5ec63312e8621265c51f84104de6
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -93,13 +96,28 @@
 
 
 
+        <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
+            List<SlotDTO> listSlot = (List<SlotDTO>) request.getAttribute("listSlot");
+            List<LocalDate> listDate = (List<LocalDate>) request.getAttribute("listDate");
+            List<DateStartAndDateEnd> weekRanges = (List<DateStartAndDateEnd>) request.getAttribute("weekRanges");
+
+        %>
+
+
+
+
+
         <div class="container">
             <form action="ScheduleController" method="post">
                 <select name="weekRange">
                     <%                        for (DateStartAndDateEnd weekRange : weekRanges) { %>
                   
                    
+<<<<<<< HEAD
+                    <option value=<%=weekRange.getDateStart() %> <% if(weekRange.getDateStart().equals(listDate.get(0))){%> selected <% } %>> <%=weekRange.getFormattedStartDate()%> - <%=weekRange.getFormattedEndDate()%> </option>;
+=======
                     <option id="schedule" value=<%=weekRange.getDateStart() %> <% if(weekRange.getDateStart().equals(listDate.get(0))){%> selected <% } %>> <%=weekRange.getFormattedStartDate()%> - <%=weekRange.getFormattedEndDate()%> </option>;
+>>>>>>> ced18b722daf5ec63312e8621265c51f84104de6
                         <% }
                     %>
                 </select>
