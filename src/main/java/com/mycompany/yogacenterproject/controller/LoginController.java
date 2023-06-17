@@ -270,7 +270,7 @@ public class LoginController extends HttpServlet {
 //    Logout
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.removeAttribute("user");
+        session.removeAttribute("hocVienDTO");
         String referer = request.getHeader("Referer");
         if(referer == null || referer.isEmpty()){
               referer = "../home.jsp";

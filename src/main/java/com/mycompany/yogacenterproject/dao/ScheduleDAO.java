@@ -7,6 +7,7 @@ package com.mycompany.yogacenterproject.dao;
 import com.mycompany.yogacenterproject.dto.DateAndDay;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 
@@ -59,6 +60,31 @@ public class ScheduleDAO {
         return listScheduleHv;
     }
 
+    public List<ScheduleTempDTO> readScheduleTemp() throws SQLException {
+        List<ScheduleTempDTO> listScheduleTemp = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[ScheduleTemp] ";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        try {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                ScheduleTempDTO scheduleTempDTO = new ScheduleTempDTO();
+                scheduleTempDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                scheduleTempDTO.setMaSlot(rs.getString("maSlot"));
+                scheduleTempDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                scheduleTempDTO.setThu(rs.getString("thu"));
+                listScheduleTemp.add(scheduleTempDTO);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return listScheduleTemp;
+    }
+
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
     public boolean createScheduleHV(String maLopHoc, String maHV, String maSlot) throws SQLException {
         String sql = "INSERT INTO [dbo].[ScheduleHV](maHV,maLopHoc, ngayHoc,maSlot, thu) "
@@ -107,7 +133,7 @@ public class ScheduleDAO {
 
         List<DateAndDay> listDate = new ArrayList();
 
-        listDate = listDateAndDay(lopHocDTO.getThu(), lopHocDTO.getNgayBatDau(), lopHocDTO.getSoBuoi() / 2);
+        listDate = listDateAndDay(lopHocDTO.getThu(), lopHocDTO.getNgayBatDau(), lopHocDTO.getSoBuoi());
 
         for (DateAndDay x : listDate) {
 
@@ -122,7 +148,7 @@ public class ScheduleDAO {
         return false;
     }
 
-    public List<DateAndDay> listDateAndDay(String[] thu, Date initDate, int weeksInterval) {
+    public List<DateAndDay> listDateAndDay(String[] thu, Date initDate, int slot) {
         DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter(Locale.ENGLISH);
 
         //DOI DATE THANH LOCALDATE
@@ -139,37 +165,31 @@ public class ScheduleDAO {
         }
 
         LocalDate startDate = localDate;
-        LocalDate endDate = startDate.plusWeeks(weeksInterval); // Calculate the end date
+//        LocalDate endDate = startDate.plusWeeks(weeksInterval); // Calculate the end date
 
         LocalDate date = startDate;
         List<DateAndDay> listDate = new ArrayList();
+        while (listDate.size() < slot) {
 
-        while (date.isBefore(endDate)) {
-            System.out.println(date.isAfter(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase())))));
+            for (int a = 0; a < thu.length; a++) {
+                if (!date.isAfter(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase()))))) {
+                    LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase())));
+                    DateAndDay DateofA = new DateAndDay(date1.getDayOfWeek().toString(), date1.toString());
+                    listDate.add(DateofA);
+                    if (listDate.size() >= slot) {
+                        break;
+                    }
+                } else {
+                    LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase())));
 
-            if (!date.isAfter(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase()))))) {
-                LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase())));
-                DateAndDay DateofA = new DateAndDay(date1.getDayOfWeek().toString(), date1.toString());
-                listDate.add(DateofA);
-                System.out.println(date1.getDayOfWeek() + " " + date1);
-                System.out.println(date.isBefore(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase())))));
-            } else {
-                LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase())));
-                System.out.println(date.isBefore(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[0].toUpperCase())))));
-
+                }
             }
-            LocalDate date2 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[1].toUpperCase())));
-
-            System.out.println(date2.getDayOfWeek() + " " + date2);
-
-            DateAndDay DateofB = new DateAndDay(date2.getDayOfWeek().toString(), date2.toString());
-
-            listDate.add(DateofB);
-
             date = date.plusWeeks(1); // Move to the next week
+
         }
 
         return listDate;
+
     }
 
     public static void main(String[] args) throws SQLException, ParseException {
@@ -205,41 +225,65 @@ public class ScheduleDAO {
 //            System.out.println(x.getDate());
 //            
 //        }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String inputDateStr = "2023-06-14";
+
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String inputDateStr = "2023-06-17";
+//        ScheduleDAO schedule = new ScheduleDAO();
+//        Date currentDate = dateFormat.parse(inputDateStr);
+//
+//        // Create a calendar instance
+//        Calendar calendar = Calendar.getInstance();
+//
+//        // Set the calendar's time to the current date
+//        calendar.setTime(currentDate);
+//
+//        // Add one week to the calendar
+//        calendar.add(Calendar.WEEK_OF_YEAR, 1);
+//
+//        // Get the date after adding one week
+//        Date dateAfterOneWeek = calendar.getTime();
+////        schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
+//        String[] week = {"MONDAY", "WEDNESDAY", "TUESDAY"};
+//        List<DateAndDay> listDate = schedule.listDateAndDay(week, currentDate, 5);
+//        System.out.println(listDate.size());
+//        for (DateAndDay x : listDate) {
+//
+//            System.out.println(x);
+//
         ScheduleDAO schedule = new ScheduleDAO();
-        Date currentDate = dateFormat.parse(inputDateStr);
+        List<ScheduleTempDTO> listScheduleHv = schedule.readScheduleTemp();
+        boolean hasSchedule = false;
+        List<String> a = new ArrayList<>();
+        String maLopHoc = "";
+        String tenLopHoc = "";
+        LopHocDAO lopHocDAO = new LopHocDAO();
 
-        // Create a calendar instance
-        Calendar calendar = Calendar.getInstance();
+        for (ScheduleTempDTO ScheduleTempDTO : listScheduleHv) {
+            if (ScheduleTempDTO.getMaSlot().equals("SL001")) {
+                hasSchedule = true;
+                maLopHoc = ScheduleTempDTO.getMaLopHoc();
+                tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(ScheduleTempDTO.getMaLopHoc()));
+                a.add(maLopHoc);
 
-        // Set the calendar's time to the current date
-        calendar.setTime(currentDate);
-
-        // Add one week to the calendar
-        calendar.add(Calendar.WEEK_OF_YEAR, 1);
-
-        // Get the date after adding one week
-        Date dateAfterOneWeek = calendar.getTime();
-//        schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
-        String[] week = {"MONDAY", "WEDNESDAY"};
-        List<DateAndDay> listDate = schedule.listDateAndDay(week, currentDate, 3);
-        for (DateAndDay x : listDate) {
-
-            System.out.println(x);
+            }
 
         }
-//         List<ScheduleHvDTO> listScheduleHv =schedule.readScheduleHvDTO("HV0001");
-//         
-//        for(ScheduleHvDTO x :listScheduleHv ){
+        for (String x : a) {
+            System.out.println(x);
+//            System.out.println(x.getNgayHoc());
+
+//            Date ld = Date.valueOf("2023-06-05");
+//            x.getNgayHoc().compareTo(ld);
+//            System.out.println(x.getNgayHoc().equals(ld));
+        }
+
+//        for (ScheduleTempDTO x : listScheduleHv) {
 //            System.out.println(x.toString());
 ////            System.out.println(x.getNgayHoc());
-//            
+//
 ////            Date ld = Date.valueOf("2023-06-05");
 ////            x.getNgayHoc().compareTo(ld);
 ////            System.out.println(x.getNgayHoc().equals(ld));
-//            
-//            
 //        }
 //        System.out.println(schedule.readScheduleHvDTO("HV0001").toString());
     }

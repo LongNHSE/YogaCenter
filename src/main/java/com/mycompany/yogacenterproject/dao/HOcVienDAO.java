@@ -44,9 +44,10 @@ public class HocVienDAO {
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
                 //////DEFINE LOCALDATE AND RECEIVING DATA
-                DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-mm-yyyy").toFormatter(Locale.ENGLISH);
-                LocalDate dob = LocalDate.parse("dob", df);
-
+                Date date = rs.getDate("dob");
+//                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
+                LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                //////////////////////////////////////////////////////////////////
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -77,11 +78,10 @@ public class HocVienDAO {
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
                 ///////DATE
-                Date date=rs.getDate("dob");
+                Date date = rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
-                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-                
-                
+                LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
 
@@ -182,7 +182,7 @@ public class HocVienDAO {
                 ////////CONVERT DATE TO LOCALDATE
                 Date date = rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
-                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
                 //////////////////////////////////////////////////////////////////
                 HocVienDTO loginUser = new HocVienDTO(maHV, ho, ten, dob, user, phone, psw, maLoaiTk, email, gender);
                 return loginUser;

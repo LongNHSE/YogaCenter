@@ -5,18 +5,21 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.PhongHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMG;
+import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
@@ -25,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -57,26 +61,34 @@ public class ClassController extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
-        if (action.equals("CreateClassPage")) {
-            thongTinLopHocPage(request, response);
-        } else if (action.equals("CreateClass")) {
-            createLopHoc(request, response);
-            response.sendRedirect("Admin/Class/ClassController.jsp");
-        } else if (action.equals("Assign Trainer")) {
-            thongTinAssignPage(request, response);
-        }else if (action.equals("AssignTrainer")){
-            assignTrainer(request, response);
-        }
+        try (PrintWriter out = response.getWriter()) {
+            if (action.equals("CreateClassPage")) {
+                thongTinLopHocPage(request, response);
+            } else if (action.equals("CreateClass")) {
+//                PhongHocDAO phongHocDAO = new PhongHocDAO();
+//                String slot = request.getParameter("slot");
+//                String[] weekdays = request.getParameterValues("weekdays");
+//                out.print(slot);
+//                out.print(weekdays[0].toUpperCase());
+//                out.print(weekdays[1].toUpperCase());
+//                out.print(phongHocDAO.getEmptyRoom(slot, weekdays[0].toUpperCase(), weekdays[1].toUpperCase()));
+                createLopHoc(request, response);
+                response.sendRedirect("Admin/Class/ClassController.jsp");
+            } else if (action.equals("Assign Trainer")) {
+                thongTinAssignPage(request, response);
+            } else if (action.equals("AssignTrainer")) {
+                assignTrainer(request, response);
+            } else if (action.equals("Check Empty Room")) {
+                checkPhongTrong(request, response);
+                RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/ClassSchedule.jsp");
+                rd.forward(request, response);
+            } 
 
 //        if (action.equals("CreateClassType")) {
 //            createLoaiLopHoc(request, response);
 //
 //        }
-
-        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
         }
     }
 
@@ -86,11 +98,14 @@ public class ClassController extends HttpServlet {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
         listLoaiLopHoc = loaiLopHocDAO.readLoaiLopHoc();
         request.setAttribute("listLoaiLopHoc", listLoaiLopHoc);
+        String[] weekdays = request.getParameterValues("weekday");
+        String slot = request.getParameter("slot");
 
         SlotDAO slotDAO = new SlotDAO();
         List<SlotDTO> listSlot = slotDAO.readSlot();
         request.setAttribute("listSlot", listSlot);
-
+        request.setAttribute("weekdays", weekdays);
+        request.setAttribute("slot", slot);
         RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/CreateClassPage.jsp");
         rd.forward(request, response);
 
@@ -174,9 +189,9 @@ public class ClassController extends HttpServlet {
         String maLoaiLopHoc = request.getParameter("listLoaiLopHoc");
         int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
         int soBuoi = Integer.parseInt(request.getParameter("soBuoi"));
-        String maSlot = request.getParameter("listSlot");
+        String maSlot = request.getParameter("slot");
         String date = request.getParameter("initializeDate");
-        String[] weekdays = request.getParameterValues("weekday");
+        String[] weekdays = request.getParameterValues("weekdays");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Parse the string into a LocalDate object
@@ -212,7 +227,7 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
-        listTrainer = trainerDAO.readListTrainerByType(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc(maLopHoc)));
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc(maLopHoc)));
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
@@ -226,14 +241,12 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         String maTrainer = request.getParameter("listTrainer");
         LopHocDAO lopHocDAO = new LopHocDAO();
-        
+        TrainerDAO trainerDAO = new TrainerDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
-        
+        trainerDAO.updateTrainerStatus(maTrainer, true);
         response.sendRedirect("Admin/Class/ClassController.jsp");
-        
-        
-        
+
     }
 
     //Tao ScheduleHv
@@ -241,14 +254,78 @@ public class ClassController extends HttpServlet {
     public void createScheduleHv(HttpServletRequest request, HttpServletResponse response) {
 
     }
+
     // Show Class
-    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-          List<LopHocIMG> listCate = new ArrayList<>();
-          LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();  
-          listCate = loaiLopHocDAO.getAllCategories();
-          request.setAttribute("listCate", listCate);
-          RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
-          rd.forward(request, response);        
+    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<LopHocIMG> listCate = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        listCate = loaiLopHocDAO.getAllCategories();
+        request.setAttribute("listCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
+        rd.forward(request, response);
+    }
+
+    //Chon phong gom thuoc tinh slot va thu
+    public void chooseRoom(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
+    public void checkPhongTrong(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+
+        SlotDAO slotDAO = new SlotDAO();
+
+        List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listSlot", listSlot);
+
+        String weekRange = request.getParameter("weekRange");
+        LocalDate today = LocalDate.now();
+        if (weekRange != null) {
+
+            LocalDate localDate = LocalDate.parse(weekRange);
+            today = localDate; // Get the current date
+        }
+
+        LocalDate monday = today.with(DayOfWeek.MONDAY);
+
+        List<LocalDate> days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            String a = (monday.plusDays(i).toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate datea = LocalDate.parse(a, formatter);
+            days.add(datea);
+
+        }
+        request.setAttribute("listDate", days);
+        date(request, response);
+    }
+
+    public void date(HttpServletRequest request, HttpServletResponse response) {
+        LocalDate currentDateNow = LocalDate.now();
+        LocalDate startDateOfMonth = currentDateNow.withDayOfMonth(1);
+        LocalDate startDate = startDateOfMonth;
+        LocalDate endDate = startDate.plusMonths(3).minusDays(1);
+
+        List<DateStartAndDateEnd> weekRanges = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+            DateStartAndDateEnd date = new DateStartAndDateEnd();
+            LocalDate weekStart = currentDate.with(DayOfWeek.MONDAY);
+
+            LocalDate weekEnd = currentDate.with(DayOfWeek.SUNDAY);
+
+            String formattedStartDate = weekStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String formattedEndDate = weekEnd.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            date.setDateStart(weekStart);
+            date.setDateEnd(weekEnd);
+            date.setFormattedStartDate(formattedStartDate);
+            date.setFormattedEndDate(formattedEndDate);
+            weekRanges.add(date);
+
+            currentDate = currentDate.plusWeeks(1);
+        }
+
+        request.setAttribute("weekRanges", weekRanges);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

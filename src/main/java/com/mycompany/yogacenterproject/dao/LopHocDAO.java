@@ -57,7 +57,7 @@ public class LopHocDAO {
                 int soLuongHV = rs.getInt("soLuongHV");
                 int soBuoi = rs.getInt("soBuoi");
                 String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
-          
+
                 String maRoom = rs.getString("maRoom");
                 Date ngay = rs.getDate("ngay");
                 LopHocDTO foundClass = new LopHocDTO();
@@ -164,7 +164,6 @@ public class LopHocDAO {
     }
 
     //LAY TEN LOAI LOP HOC 
-
     public String tenLoaiLopHoc(String maLopHoc) {
         try {
             String sql = "SELECT tenLoaiLopHoc from [dbo].[lopHoc] where maLopHoc = ?";
@@ -184,6 +183,7 @@ public class LopHocDAO {
 
     }
 //LAY LOAI LOP BEN BAN LOAILOPHOC
+
     public String tenLopHoc(String maLoaiLopHoc) {
         try {
             String sql = "SELECT tenLoaiLopHoc from [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
@@ -228,10 +228,11 @@ public class LopHocDAO {
     //LAY LIST LOP UNASSIGNED
     public List<LopHocDTO> listLopTemp() {
         List<LopHocDTO> listLopHoc = new ArrayList();
-        String sql = "Select  lopHoc.maLopHoc,lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom ,ScheduleTemp.maSlot, lopHoc.ngay\n"
-                + "From lopHoc\n"
-                + "inner join [dbo].[ScheduleTemp] on lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "group BY lopHoc.maLopHoc,lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom ,ScheduleTemp.maSlot, lopHoc.ngay";
+        String sql = "SELECT lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay\n"
+                + "FROM lopHoc\n"
+                + "INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+                + "WHERE lopHoc.maLopHoc NOT IN (SELECT maLopHoc FROM ScheduleTrainer)\n"
+                + "GROUP BY lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay";
 
         try {
             Connection conn = DBUtils.getConnection();
@@ -248,6 +249,7 @@ public class LopHocDAO {
                 listLopHoc.add(lopHocDTO);
 
             }
+
             rs.close();
             ps.close();
             conn.close();
@@ -260,6 +262,7 @@ public class LopHocDAO {
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
         a.lastIDIndex();
+        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
 //        Date aa = Date.valueOf(LocalDate.now());
 //        LopHocDTO lopHocDTO = new LopHocDTO();
 //        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
@@ -268,7 +271,10 @@ public class LopHocDAO {
 //        lopHocDTO.setNgayBatDau(aa);
 
 //        a.addClass(lopHocDTO);
-System.out.println(a.searchClassById("LOP0003"));
+        for (LopHocDTO x : listLopHocTemp) {
+            System.out.println(x);
+        }
+        System.out.println(a.searchClassById("LOP0003"));
 
     }
 

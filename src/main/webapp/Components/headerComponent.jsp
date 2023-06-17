@@ -36,7 +36,7 @@
                         <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
                         <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                    <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>
                         <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                     
             </c:if>
