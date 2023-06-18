@@ -10,6 +10,7 @@ import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.Utils;
+import com.nimbusds.oauth2.sdk.util.DateUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -175,13 +176,7 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setGender(gender);
             hocVienDTO.setEmail(email);
             
-            // Convert Date to Instant
-            Instant instant = dateOfBirth.toInstant();
-            // Convert Instant to ZonedDateTime using system default time zone
-            ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
-            // Extract LocalDate from ZonedDateTime
-            LocalDate dob = zonedDateTime.toLocalDate();
-            ////////////////////////////////////
+           LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
             hocVienDTO.setDob(dob);
            
             hocVienDAO.addHocVien(hocVienDTO);

@@ -325,14 +325,14 @@ public class HocVienDAO {
 
     public static void main(String[] args) {
 
-        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
+//        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hocVienDTO = new HocVienDTO();
-//        hocVienDTO = hocVienDAO.login("longNiger", "123456");
-//        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
-//        hocVienDAO.updateHocVien(hocVienDTO);
-        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-        System.out.println(hocVienDTO.getMaHV());
+////        hocVienDTO = hocVienDAO.login("longNiger", "123456");
+////        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
+////        hocVienDAO.updateHocVien(hocVienDTO);
+//        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
+//        System.out.println(hocVienDTO.getMaHV());
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
@@ -342,20 +342,30 @@ public class HocVienDAO {
 //        }
 //        System.out.println(hocVienDTO.toString());
 //        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
-//        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
-//Date a = Date.valueOf("2003-02-13");
-//            hocVienDTO.setUsername("A");
-//            hocVienDTO.setTen("Long");
-//            hocVienDTO.setPsw("1234");
-//            hocVienDTO.setPhone("123");
-//            hocVienDTO.setMaLopHoc(null);
-//            hocVienDTO.setMaLoaiTK("HOCVIEN");
-//            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
-//            hocVienDTO.setHo("Nguyen");
-//            hocVienDTO.setGender("Male");
-//            hocVienDTO.setEmail("huylong2");
-//            hocVienDTO.setDob(a);
-//            hocVienDAO.addHocVien(hocVienDTO);
+        LocalDate localDate = LocalDate.of(2023, 6, 18);
+
+        // Convert LocalDate to Date
+        Date dateOfBirth = java.sql.Date.valueOf(localDate);
+       
+       
+        // Convert Instant to ZonedDateTime using system default time zone
+
+        // Extract LocalDate from ZonedDateTime
+//        LocalDate dob = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();;
+        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex() + 1);
+        LocalDate specificDate = LocalDate.of(2023, 6, 18);
+        hocVienDTO.setUsername("A");
+        hocVienDTO.setTen("Long");
+        hocVienDTO.setPsw("1234");
+        hocVienDTO.setPhone("123");
+        hocVienDTO.setMaLopHoc(null);
+        hocVienDTO.setMaLoaiTK("HOCVIEN");
+        hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
+        hocVienDTO.setHo("Nguyen");
+        hocVienDTO.setGender("Male");
+        hocVienDTO.setEmail("huylong2");
+        hocVienDTO.setDob(localDate);
+        hocVienDAO.addHocVien(hocVienDTO);
 //        System.out.println(AUTO_HOCVIEN_ID);
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
 //        int a = hocVienDAO.lastIDIndex();
