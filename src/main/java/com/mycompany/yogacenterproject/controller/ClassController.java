@@ -57,7 +57,7 @@ public class ClassController extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
+       
         if (action.equals("CreateClassPage")) {
             thongTinLopHocPage(request, response);
         } else if (action.equals("CreateClass")) {
@@ -65,7 +65,7 @@ public class ClassController extends HttpServlet {
             response.sendRedirect("Admin/Class/ClassController.jsp");
         } else if (action.equals("Assign Trainer")) {
             thongTinAssignPage(request, response);
-        }else if (action.equals("AssignTrainer")){
+        } else if (action.equals("AssignTrainer")) {
             assignTrainer(request, response);
         }
 
@@ -73,13 +73,12 @@ public class ClassController extends HttpServlet {
 //            createLoaiLopHoc(request, response);
 //
 //        }
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
         }
     }
-
+    
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
     public void thongTinLopHocPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
@@ -226,15 +225,12 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         String maTrainer = request.getParameter("listTrainer");
         LopHocDAO lopHocDAO = new LopHocDAO();
-        
+
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
-        
+
         response.sendRedirect("Admin/Class/ClassController.jsp");
-        
-        
-        
-    }
+}
 
     //Tao ScheduleHv
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
@@ -242,13 +238,13 @@ public class ClassController extends HttpServlet {
 
     }
     // Show Class
-    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-          List<LopHocIMG> listCate = new ArrayList<>();
-          LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();  
-          listCate = loaiLopHocDAO.getAllCategories();
-          request.setAttribute("listCate", listCate);
-          RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
-          rd.forward(request, response);        
+    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<LopHocIMG> listCate = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        listCate = loaiLopHocDAO.getAllCategories();
+        request.setAttribute("listCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

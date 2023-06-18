@@ -7,17 +7,15 @@ package com.mycompany.yogacenterproject.dao;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DBUtils;
+import com.mycompany.yogacenterproject.util.DateUtils;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
@@ -79,7 +77,7 @@ public class HocVienDAO {
                 ///////DATE
                 Date date=rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
-                LocalDate dob=Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dob=DateUtils.asLocalDate(date);
                 
                 
                 String username = rs.getString("username");
@@ -328,11 +326,12 @@ public class HocVienDAO {
         List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
         HocVienDTO hocVienDTO = new HocVienDTO();
+        DateUtils dateUtils= new DateUtils();
 //        hocVienDTO = hocVienDAO.login("longNiger", "123456");
 //        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
 //        hocVienDAO.updateHocVien(hocVienDTO);
-        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-        System.out.println(hocVienDTO.getMaHV());
+//        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
+//        System.out.println(hocVienDTO.getMaHV());
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
@@ -343,19 +342,20 @@ public class HocVienDAO {
 //        System.out.println(hocVienDTO.toString());
 //        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
-//Date a = Date.valueOf("2003-02-13");
-//            hocVienDTO.setUsername("A");
-//            hocVienDTO.setTen("Long");
-//            hocVienDTO.setPsw("1234");
-//            hocVienDTO.setPhone("123");
-//            hocVienDTO.setMaLopHoc(null);
-//            hocVienDTO.setMaLoaiTK("HOCVIEN");
-//            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
-//            hocVienDTO.setHo("Nguyen");
-//            hocVienDTO.setGender("Male");
-//            hocVienDTO.setEmail("huylong2");
-//            hocVienDTO.setDob(a);
-//            hocVienDAO.addHocVien(hocVienDTO);
+            Date date=Date.valueOf("2004-09-11");
+            LocalDate a=dateUtils.asLocalDate(date);
+            hocVienDTO.setTen("Long");
+            hocVienDTO.setPsw("12345");
+            hocVienDTO.setPhone("123");
+            hocVienDTO.setMaLopHoc(null);
+            hocVienDTO.setMaLoaiTK("HOCVIEN");
+            hocVienDTO.setMaHV("HV0004");
+            hocVienDTO.setHo("Nguyen");
+            hocVienDTO.setGender("Male");
+            hocVienDTO.setEmail("huylong2");
+            hocVienDTO.setDob(a);
+            hocVienDTO.setUsername("huyhuy");
+            hocVienDAO.addHocVien(hocVienDTO);
 //        System.out.println(AUTO_HOCVIEN_ID);
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
 //        int a = hocVienDAO.lastIDIndex();
