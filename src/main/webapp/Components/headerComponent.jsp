@@ -7,16 +7,17 @@
 <%
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+
 <!-- header section start -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="logo"><a href="home.jsp"><img src="images/logo.png"></a></div>
+    <div class="logo"><a href="home.jsp"><img src="<%= baseUrl %>/images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="home.jsp">Home</a>
+            <a class="nav-item nav-link" href="<%=baseUrl%>/home.jsp">Home</a>
             <a class="nav-item nav-link" href="about.jsp">About</a>
             <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
             <a class="nav-item nav-link" href="schedule.html">Schedule</a>
@@ -32,11 +33,13 @@
                         <span>${sessionScope.hocVienDTO.username}</span>
                     </button>
                     <div class="dropdown-menu btn-menu">
-                        <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
+
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/Home/profile.jsp">Profile</a>
                         <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                    <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
                         <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/?action=logout"><b style="color: black">Logout</b></a>
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
+
                     </div>
                 </div>                     
             </c:if>
