@@ -152,7 +152,7 @@ public class LoaiLopHocDAO {
             ps = conn.prepareStatement(query);
             rs=ps.executeQuery(); 
             while(rs.next()){
-                  list.add(new LopHocIMG(rs.getString(1), rs.getString(2), rs.getString(3)));
+                  list.add(new LopHocIMG(rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4)));
             }
           } catch (Exception e) {
           }
@@ -160,10 +160,9 @@ public class LoaiLopHocDAO {
     }
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
-        System.out.println(a.searchTenLoaiLopHoc("TYPE0001"));
-
-//        System.out.println(a.readLoaiLopHoc());
-        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
+       
+////        System.out.println(a.readLoaiLopHoc());
+//        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
 //        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO("TYPE0003", " Iyengar yoga", b);
 //        a.createLoaiLopHoc(loaiLopHocDTO);

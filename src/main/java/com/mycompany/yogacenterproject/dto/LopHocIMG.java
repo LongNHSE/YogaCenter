@@ -9,47 +9,59 @@ package com.mycompany.yogacenterproject.dto;
  * @author devli
  */
 public class LopHocIMG {
-      private String maIMG;
-      private String tenIMG;
-      private String UrlIMG;
 
-      public LopHocIMG() {
-      }
+    private String maIMG;
+    private String tenIMG;
+    private String UrlIMG;
+    private String maLoaiLopHoc;
 
-      public LopHocIMG(String maIMG, String tenIMG, String UrlIMG) {
-            this.maIMG = maIMG;
-            this.tenIMG = tenIMG;
-            this.UrlIMG = UrlIMG;
-      }
+    public String getMaLoaiLopHoc() {
+        return maLoaiLopHoc;
+    }
 
-      public String getMaIMG() {
-            return maIMG;
-      }
+    public void setMaLoaiLopHoc(String maLoaiLopHoc) {
+        this.maLoaiLopHoc = maLoaiLopHoc;
+    }
 
-      public void setMaIMG(String maIMG) {
-            this.maIMG = maIMG;
-      }
+    public LopHocIMG() {
+    }
 
-      public String getTenIMG() {
-            return tenIMG;
-      }
+    public LopHocIMG(String maIMG, String tenIMG, String UrlIMG, String maLoaiLopHoc) {
+        this.maIMG = maIMG;
+        this.tenIMG = tenIMG;
+        this.UrlIMG = UrlIMG;
+        this.maLoaiLopHoc = maLoaiLopHoc;
+    }
 
-      public void setTenIMG(String tenIMG) {
-            this.tenIMG = tenIMG;
-      }
+    public String getMaIMG() {
+        return maIMG;
+    }
 
-      public String getUrlIMG() {
-            return UrlIMG;
-      }
+    public void setMaIMG(String maIMG) {
+        this.maIMG = maIMG;
+    }
 
-      public void setUrlIMG(String UrlIMG) {
-            this.UrlIMG = UrlIMG;
-      }
+    public String getTenIMG() {
+        return tenIMG;
+    }
 
-      @Override
-      public String toString() {
-            return "LopHocIMG{" + "maIMG=" + maIMG + ", tenIMG=" + tenIMG + ", UrlIMG=" + UrlIMG + '}';
-      }
-      
-      
+    public void setTenIMG(String tenIMG) {
+        this.tenIMG = tenIMG;
+    }
+
+    public String getUrlIMG() {
+        return UrlIMG;
+    }
+
+    public void setUrlIMG(String UrlIMG) {
+        this.UrlIMG = UrlIMG;
+    }
+
+    @Override
+    public String toString() {
+        return "LopHocIMG{" + "maIMG=" + maIMG + ", tenIMG=" + tenIMG + ", UrlIMG=" + UrlIMG + ", maLoaiLopHoc=" + maLoaiLopHoc + '}';
+    }
+
+
+
 }

@@ -8,6 +8,7 @@ import com.mycompany.yogacenterproject.dto.DateAndDay;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 
@@ -60,6 +61,34 @@ public class ScheduleDAO {
         return listScheduleHv;
     }
 
+    //LIST SCHEDULE DA ASSIGN, CUA TRAINER
+    public List<ScheduleTrainerDTO> readScheduleTrainer() throws SQLException {
+        List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[ScheduleTrainer] ";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        try {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                ScheduleTrainerDTO scheduleTrainerDTO = new ScheduleTrainerDTO();
+                scheduleTrainerDTO.setMaTrainer(rs.getString("maTrainer"));
+                scheduleTrainerDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                scheduleTrainerDTO.setMaSlot(rs.getString("maSlot"));
+                scheduleTrainerDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                scheduleTrainerDTO.setThu(rs.getString("thu"));
+                listScheduleTrainer.add(scheduleTrainerDTO);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return listScheduleTrainer;
+    }
+
+    //LIST SCHEDULE CHAU ASSIGN TRAINER
     public List<ScheduleTempDTO> readScheduleTemp() throws SQLException {
         List<ScheduleTempDTO> listScheduleTemp = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[ScheduleTemp] ";
@@ -119,6 +148,18 @@ public class ScheduleDAO {
 
         ps.setString(1, maTrainer);
         ps.setString(2, lopHocDTO.getMaLopHoc());
+
+        ps.executeUpdate();
+
+        return false;
+    }
+
+    //DELETE SCHEDULE TEMP AFTER ASIGN
+    public boolean deleteScheduleTemp(String maLopHoc) throws SQLException {
+        String sql = "DELETE FROM [dbo].[ScheduleTemp] where maLopHoc = ?";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maLopHoc);
 
         ps.executeUpdate();
 
@@ -252,30 +293,26 @@ public class ScheduleDAO {
 //
         ScheduleDAO schedule = new ScheduleDAO();
         List<ScheduleTempDTO> listScheduleHv = schedule.readScheduleTemp();
-        boolean hasSchedule = false;
-        List<String> a = new ArrayList<>();
-        String maLopHoc = "";
-        String tenLopHoc = "";
-        LopHocDAO lopHocDAO = new LopHocDAO();
+        List<ScheduleTrainerDTO> listScheduleTrainer = schedule.readScheduleTrainer();
+//        boolean hasSchedule = false;
+//        List<String> a = new ArrayList<>();
+//        String maLopHoc = "";
+//        String tenLopHoc = "";
+//        LopHocDAO lopHocDAO = new LopHocDAO();
 
-        for (ScheduleTempDTO ScheduleTempDTO : listScheduleHv) {
-            if (ScheduleTempDTO.getMaSlot().equals("SL001")) {
-                hasSchedule = true;
-                maLopHoc = ScheduleTempDTO.getMaLopHoc();
-                tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(ScheduleTempDTO.getMaLopHoc()));
-                a.add(maLopHoc);
+        for (ScheduleTrainerDTO ScheduleTempDTO : listScheduleTrainer) {
 
-            }
+            System.out.println(ScheduleTempDTO);
 
         }
-        for (String x : a) {
-            System.out.println(x);
+//        for (String x : a) {
+//            System.out.println(x);
 //            System.out.println(x.getNgayHoc());
 
 //            Date ld = Date.valueOf("2023-06-05");
 //            x.getNgayHoc().compareTo(ld);
 //            System.out.println(x.getNgayHoc().equals(ld));
-        }
+    }
 
 //        for (ScheduleTempDTO x : listScheduleHv) {
 //            System.out.println(x.toString());
@@ -286,5 +323,4 @@ public class ScheduleDAO {
 ////            System.out.println(x.getNgayHoc().equals(ld));
 //        }
 //        System.out.println(schedule.readScheduleHvDTO("HV0001").toString());
-    }
 }

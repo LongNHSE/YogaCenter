@@ -1,4 +1,4 @@
-
+﻿
 use master
 go
 drop database YogaCenter
@@ -22,7 +22,11 @@ CREATE TABLE slot(
 	[timeStart] Time NOT NULL,
 	[timeEnd] Time NOT NULL
 )
-
+CREATE TABLE lopHocImg(
+	[maAnh] NVARCHAR(10) primary key,
+	[tenAnh] NVARCHAR(25) NOT NULL,
+	[URLAnh] TEXT NOT NULL
+	)
 
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
@@ -191,3 +195,15 @@ CREATE TABLE paySlip(
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
 	)
 
+	INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG001', 'Surya Kriya', 'https://sundariyogacenter.com/admin/sanpham/Surya-Kriya-Inside_4018_anh1.jpg')
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG002', 'Angamardana', 'https://sundariyogacenter.com/admin/sanpham/Angamardana-Ben-Trong_4021_anh1.jpg')
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG003', 'Yogasanas', 'https://sundariyogacenter.com/admin/sanpham/Yogasanas-Ben-Trong_4016_anh1.jpg')
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG004', 'Bhuta Shuddhi', 'https://sundariyogacenter.com/admin/sanpham/Bhuta-Shuddhi-Ben-Trong_4020_anh1.jpg')
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG005', 'Surya Shakti', 'https://sundariyogacenter.com/admin/sanpham/Surya-Shakti-Ben-Trong_4026_anh1.jpg')
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+VALUES('YG006', 'Khóa Thiền Định', 'https://sundariyogacenter.com/admin/sanpham/Thien-Dinh-Ben-Trong_4013_anh1.jpg')

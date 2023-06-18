@@ -250,6 +250,7 @@ public class ClassController extends HttpServlet {
         TrainerDAO trainerDAO = new TrainerDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
+        scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
         response.sendRedirect("Admin/Class/ClassController.jsp");
 

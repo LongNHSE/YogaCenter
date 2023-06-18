@@ -261,20 +261,21 @@ public class LopHocDAO {
 
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
-        a.lastIDIndex();
-        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
-//        Date aa = Date.valueOf(LocalDate.now());
-//        LopHocDTO lopHocDTO = new LopHocDTO();
-//        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
-//        lopHocDTO.setMaLopHoc("TYPE0001");
-//        lopHocDTO.setMaRoom("RO0001");
-//        lopHocDTO.setNgayBatDau(aa);
-
-//        a.addClass(lopHocDTO);
-        for (LopHocDTO x : listLopHocTemp) {
-            System.out.println(x);
-        }
-        System.out.println(a.searchClassById("LOP0003"));
+        
+        System.out.println(a.lastIDIndex());
+//        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
+////        Date aa = Date.valueOf(LocalDate.now());
+////        LopHocDTO lopHocDTO = new LopHocDTO();
+////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
+////        lopHocDTO.setMaLopHoc("TYPE0001");
+////        lopHocDTO.setMaRoom("RO0001");
+////        lopHocDTO.setNgayBatDau(aa);
+//
+////        a.addClass(lopHocDTO);
+//        for (LopHocDTO x : listLopHocTemp) {
+//            System.out.println(x);
+//        }
+//        System.out.println(a.searchClassById("LOP0003"));
 
     }
 
