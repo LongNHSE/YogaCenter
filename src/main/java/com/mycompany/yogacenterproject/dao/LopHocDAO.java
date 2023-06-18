@@ -202,6 +202,40 @@ public class LopHocDAO {
         return null;
 
     }
+    
+    public List<LopHocDTO> searchByType (String maLoaiLopHoc) {
+        try {
+            List<LopHocDTO> listClass = new ArrayList<>();
+            String sql = "SELECT * from [dbo].[lopHoc] where maLoaiLopHoc = ?";
+            PreparedStatement stm;
+            stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLoaiLopHoc);
+            ResultSet rs;
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String maLopHoc = rs.getString("maLopHoc");
+                int soLuongHV = rs.getInt("soLuongHV");
+                int soBuoi = rs.getInt("soBuoi");
+                String maRoom = rs.getString("maRoom");
+                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
+                Date ngay = rs.getDate("ngay");
+                LopHocDTO e = new LopHocDTO();
+                e.setMaLopHoc(maLopHoc);
+                e.setSoLuongHV(soLuongHV);
+                e.setSoBuoi(soBuoi);
+                e.setMaRoom(maRoom);
+                e.setSoLuongHvHienTai(soLuongHvHienTai);
+                e.setNgayBatDau(ngay);
+                listClass.add(e);
+            }
+            return listClass;
+        } catch (SQLException ex) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+    }
 
     //LAY ID CUOI LIST
     public int lastIDIndex() {
@@ -261,21 +295,24 @@ public class LopHocDAO {
 
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
-        a.lastIDIndex();
-        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
-//        Date aa = Date.valueOf(LocalDate.now());
-//        LopHocDTO lopHocDTO = new LopHocDTO();
-//        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
-//        lopHocDTO.setMaLopHoc("TYPE0001");
-//        lopHocDTO.setMaRoom("RO0001");
-//        lopHocDTO.setNgayBatDau(aa);
+//        a.lastIDIndex();
+//        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
+////        Date aa = Date.valueOf(LocalDate.now());
+////        LopHocDTO lopHocDTO = new LopHocDTO();
+////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
+////        lopHocDTO.setMaLopHoc("TYPE0001");
+////        lopHocDTO.setMaRoom("RO0001");
+////        lopHocDTO.setNgayBatDau(aa);
+//
+////        a.addClass(lopHocDTO);
+//        for (LopHocDTO x : listLopHocTemp) {
+//            System.out.println(x);
+//        }
+//        System.out.println(a.searchClassById("LOP0003"));
 
-//        a.addClass(lopHocDTO);
-        for (LopHocDTO x : listLopHocTemp) {
-            System.out.println(x);
-        }
-        System.out.println(a.searchClassById("LOP0003"));
-
+    
+    List<LopHocDTO> list = a.searchByType("TYPE0001");
+        System.out.println(list);
     }
 
 }

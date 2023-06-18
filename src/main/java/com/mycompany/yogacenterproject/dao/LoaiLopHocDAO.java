@@ -145,7 +145,8 @@ public class LoaiLopHocDAO {
 
     // PRINT CLASSES' CATEGORIES
     public List<LopHocIMG> getAllCategories() throws SQLException{
-          List<LopHocIMG> listImg = new ArrayList();
+          
+          List<LopHocIMG> list = new ArrayList();
           String sql = "SELECT * FROM dbo.lopHocImg";
           PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
           ResultSet rs = stm.executeQuery();
@@ -153,8 +154,15 @@ public class LoaiLopHocDAO {
                 String maAnh = rs.getString("maAnh");
                 String tenAnh = rs.getString("tenAnh");
                 String URLAnh = rs.getString("URLAnh");
+                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+                LopHocIMG e = new LopHocIMG();
+                e.setMaIMG(maAnh);
+                e.setTenIMG(tenAnh);
+                e.setUrlIMG(URLAnh);
+                e.setMaLoaiLopHoc(maLoaiLopHoc);
+                list.add(e);
           }
-          return listImg;
+          return list;
     }
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();

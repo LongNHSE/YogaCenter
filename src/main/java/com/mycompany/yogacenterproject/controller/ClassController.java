@@ -62,7 +62,7 @@ public class ClassController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
 
-        try (PrintWriter out = response.getWriter()) {
+        try {
             if (action.equals("CreateClassPage")) {
                 thongTinLopHocPage(request, response);
             } else if (action.equals("CreateClass")) {
@@ -85,8 +85,13 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
+            } else if (action.equals("checkID")){
+                checkAvailability(request, response);
+                    
+            } else if (action.equals("assignTrainee")){
+                dangKyLopHoc(request, response);
             }
-
+            
 
 //        if (action.equals("CreateClassType")) {
 //            createLoaiLopHoc(request, response);
@@ -94,9 +99,11 @@ public class ClassController extends HttpServlet {
 //        }
 
             /* TODO output your page here. You may use following sample code. */
-        }
+        }catch(Exception e){
+                    
+                    }
+
     }
-    
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
     public void thongTinLopHocPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
@@ -117,14 +124,15 @@ public class ClassController extends HttpServlet {
     }
 
     //DANG KY LOP 
-    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("maHV");
+    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        try{
+            HttpSession session = request.getSession();
+            
+        HocVienDTO   hocVienDTO = (HocVienDTO) session.getAttribute("maHV");   
+        LoaiLopHocDTO LoaiLopHocDTO = (LoaiLopHocDTO)session.getAttribute("hocPhi");
         String maLopHoc = request.getParameter("maLopHoc");
-        Date ngayThanhToan = null;
-        ngayThanhToan = Date.valueOf(request.getParameter("ngayThanhToan"));
-        long giaTien = Long.parseLong(request.getParameter("giaTien"));
-
+        Date ngayThanhToan = Date.valueOf(LocalDate.now());
+        
         HoaDonDAO hoaDonDAO = new HoaDonDAO();
         String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
         String maHoaDon = AUTO_HOADON_ID;
@@ -133,13 +141,17 @@ public class ClassController extends HttpServlet {
         hoaDonDTO.setMahoaDon(maHoaDon);
         hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
         hoaDonDTO.setMaLopHoc(maLopHoc);
-        hoaDonDTO.setGiaTien(giaTien);
+        hoaDonDTO.setGiaTien((long)LoaiLopHocDTO.getHocPhi());
         hoaDonDTO.setNgayThanhToan(ngayThanhToan);
-        try {
+        
+       
             hoaDonDAO.createHoaDonDTO(hoaDonDTO);
-        } catch (SQLException e) {
+            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+            rd.forward(request, response);
         }
-
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     //TAO LOAI LOP HOC
@@ -276,7 +288,7 @@ public class ClassController extends HttpServlet {
 }
 
     // Show Class
-    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<LopHocIMG> listCate = new ArrayList<>();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         listCate = loaiLopHocDAO.getAllCategories();
@@ -291,6 +303,25 @@ public class ClassController extends HttpServlet {
 
     }
 
+    public void checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+        LopHocDAO LopHocDAO = new LopHocDAO();
+        String maLoaiLopHoc = request.getParameter("returnID");
+        List<LopHocDTO> list = LopHocDAO.searchByType(maLoaiLopHoc);
+        String error="";
+        for (LopHocDTO x : list) {
+            if(x.getSoLuongHvHienTai() < x.getSoLuongHV()){
+                dangKyLopHoc(request, response);
+                break;
+            }
+            
+                 error = "Classes are fully reserved.";
+                 request.setAttribute("error", error);
+                 RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+                 rd.forward(request, response);
+        }
+        
+    }
+    
     public void checkPhongTrong(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 
         SlotDAO slotDAO = new SlotDAO();
