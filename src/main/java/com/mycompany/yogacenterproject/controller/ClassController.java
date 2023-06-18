@@ -251,9 +251,22 @@ public class ClassController extends HttpServlet {
 
     //Tao ScheduleHv
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response) {
+    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    String maHV = request.getParameter("maHV");
+    String maLopHoc = request.getParameter("maLopHoc");
+    String maSlot = request.getParameter("maSlot");
 
-    }
+    ScheduleDAO scheduleDAO = new ScheduleDAO();
+    ScheduleHvDTO scheduleHvDTO = new ScheduleHvDTO();
+
+    scheduleHvDTO.setMaHV(maHV);
+    scheduleHvDTO.setMaLopHoc(maLopHoc);
+    scheduleHvDTO.setMaSlot(maSlot);
+
+    scheduleDAO.createScheduleHV(scheduleHvDTO);
+
+    response.sendRedirect("Admin/Class/ClassController.jsp");
+}
 
     // Show Class
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

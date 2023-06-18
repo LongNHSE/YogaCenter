@@ -86,7 +86,7 @@ public class ScheduleDAO {
     }
 
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
-    public boolean createScheduleHV(String maLopHoc, String maHV, String maSlot) throws SQLException {
+    public boolean createScheduleHV(ScheduleHvDTO ScheduleHvDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[ScheduleHV](maHV,maLopHoc, ngayHoc,maSlot, thu) "
                 + "VALUES(?,?,?,?,?)";
         Connection conn = DBUtils.getConnection();
@@ -96,10 +96,10 @@ public class ScheduleDAO {
 //        listDate = listDateAndDay();
 
         for (DateAndDay x : listDate) {
-            ps.setString(1, maHV);
-            ps.setString(2, maLopHoc);
+            ps.setString(1, ScheduleHvDTO.getMaHV());
+            ps.setString(2, ScheduleHvDTO.getMaLopHoc());
             ps.setString(3, x.getDate());
-            ps.setString(4, maSlot);
+            ps.setString(4, ScheduleHvDTO.getMaSlot());
             ps.setString(5, x.getDay());
             ps.executeUpdate();
 
