@@ -116,7 +116,7 @@ public class ClassController extends HttpServlet {
     //DANG KY LOP 
     public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("user");
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("maHV");
         String maLopHoc = request.getParameter("maLopHoc");
         Date ngayThanhToan = null;
         ngayThanhToan = Date.valueOf(request.getParameter("ngayThanhToan"));

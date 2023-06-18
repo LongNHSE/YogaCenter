@@ -267,20 +267,21 @@
       <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
       <div class="row">
             <c:forEach items="${requestScope.listCate}" var="a">
-              <div class="col-xs-6 col-md-4">
-                  <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
-                      <a href="ClassController">
-                          <img src="${a.getUrlIMG()}" alt="" style="width: 100%; height: 100%;">
-                      </a>
-                      <div class="caption text-center">
-                          <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h2>
-                          <span class="price"></span>
-                          <button class="button ">
-                              <span class="button-content">DETAILS</span>
-                          </button>                     
-                      </div>
-                  </div>
-              </div>            
+                    <div class="col-xs-6 col-md-4">
+                        <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
+                            <a href="ClassController">
+                                <img src="${a.UrlIMG}" alt="" style="width: 100%; height: 100%;">
+                            </a>
+                            <div class="caption text-center">
+                                <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h2>
+                                <span class="price"></span>
+<!--                                <input type="hidden" value="">-->
+                                <button class="button " type="submit" name="action" value="id">
+                                    <span class="button-content">DETAILS</span>
+                                </button>                     
+                            </div>
+                        </div>
+                    </div>       
           </c:forEach>
       </div>      
       </div>
