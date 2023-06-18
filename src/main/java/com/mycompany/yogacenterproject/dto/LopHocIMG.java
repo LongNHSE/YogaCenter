@@ -12,14 +12,24 @@ public class LopHocIMG {
       private String maIMG;
       private String tenIMG;
       private String UrlIMG;
+      private String maLoaiLopHoc;
+
+    public String getMaLoaiLopHoc() {
+        return maLoaiLopHoc;
+    }
+
+    public void setMaLoaiLopHoc(String maLoaiLopHoc) {
+        this.maLoaiLopHoc = maLoaiLopHoc;
+    }
 
       public LopHocIMG() {
       }
 
-      public LopHocIMG(String maIMG, String tenIMG, String UrlIMG) {
+      public LopHocIMG(String maIMG, String tenIMG, String UrlIMG, String maLoaiLopHoc) {
             this.maIMG = maIMG;
             this.tenIMG = tenIMG;
             this.UrlIMG = UrlIMG;
+            this.maLoaiLopHoc = maLoaiLopHoc;
       }
 
       public String getMaIMG() {

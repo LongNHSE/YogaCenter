@@ -15,7 +15,16 @@ public class LopHocDTO {
     private String maLoaiLopHoc;
     private String maSlot;
     private String maRoom;
-    private Date ngayBatDau;
+    private int soLuongHvHienTai;
+
+    public int getSoLuongHvHienTai() {
+        return soLuongHvHienTai;
+    }
+
+    public void setSoLuongHvHienTai(int soLuongHvHienTai) {
+        this.soLuongHvHienTai = soLuongHvHienTai;
+    }
+    private Date ngayBatDau;    
 
     private String[] thu;
 

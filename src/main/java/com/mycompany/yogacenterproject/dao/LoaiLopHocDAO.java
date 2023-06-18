@@ -144,17 +144,23 @@ public class LoaiLopHocDAO {
     }
 
     // PRINT CLASSES' CATEGORIES
-    public List<LopHocIMG> getAllCategories(){
-          List<LopHocIMG> list = new ArrayList<>();
-          String query = "SELECT * FROM dbo.lopHocImg";
-          try {
-            conn = new DBUtils().getConnection(); // connect DB
-            ps = conn.prepareStatement(query);
-            rs=ps.executeQuery(); 
-            while(rs.next()){
-                  list.add(new LopHocIMG(rs.getString(1), rs.getString(2), rs.getString(3)));
-            }
-          } catch (Exception e) {
+    public List<LopHocIMG> getAllCategories() throws SQLException{
+          
+          List<LopHocIMG> list = new ArrayList();
+          String sql = "SELECT * FROM dbo.lopHocImg";
+          PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+          ResultSet rs = stm.executeQuery();
+          while(rs.next()){
+                String maAnh = rs.getString("maAnh");
+                String tenAnh = rs.getString("tenAnh");
+                String URLAnh = rs.getString("URLAnh");
+                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+                LopHocIMG e = new LopHocIMG();
+                e.setMaIMG(maAnh);
+                e.setTenIMG(tenAnh);
+                e.setUrlIMG(URLAnh);
+                e.setMaLoaiLopHoc(maLoaiLopHoc);
+                list.add(e);
           }
           return list;
     }

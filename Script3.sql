@@ -1,9 +1,6 @@
-﻿
- use master 
- go
 
- alter database YogaCenter set single_user with rollback immediate
-
+use master
+go
 drop database YogaCenter
 go
 
@@ -26,20 +23,13 @@ CREATE TABLE slot(
 	[timeEnd] Time NOT NULL
 )
 
-CREATE TABLE lopHocImg(
-	[maAnh] NVARCHAR(10) primary key,
-	[tenAnh] NVARCHAR(25) NOT NULL,
-	[URLAnh] TEXT NOT NULL
-	)
+
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-	[hocPhi] DECIMAL(10,2) NOT NULL,
-	[subTitle] TEXT NOT NULL,
-	[description] TEXT NOT NULL,
-	[maAnh] NVARCHAR(10) NOT NULL --CONSTRAINT
-	CONSTRAINT fk_maAnh_loailopHoc FOREIGN KEY([maAnh]) REFERENCES lopHocImg(maAnh)
+	[hocPhi] DECIMAL(10,2) NOT NULL
 	)
+
 CREATE TABLE Trainer(
 	[maTrainer] NVARCHAR(10) primary key,
 	[Ho] NVARCHAR(10) NOT NULL,
@@ -69,8 +59,6 @@ CREATE TABLE lopHoc(
 	
 	CONSTRAINT fk_maRoom_lopHoc FOREIGN KEY([maRoom]) REFERENCES room(maRoom)
 	)
-
-
 
 CREATE TABLE [admin](
 	[maAdmin] NVARCHAR(10) primary key,
@@ -200,9 +188,6 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
-
-)
-
+	)
 

@@ -27,7 +27,8 @@ public class TrainerDAO {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String maTrainer = rs.getString("maTrainer");
-                String HoVaTen = rs.getString("HoVaTen");
+                String Ho = rs.getString("Ho");
+                String Ten = rs.getString("Ten");
                 Date dob = rs.getDate("dob");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
