@@ -8,9 +8,40 @@
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
 
+<style>
+    /* CSS for the dropdown menu */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+</style>
 <!-- header section start -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="logo"><a href="home.jsp"><img src="<%= baseUrl %>/images/logo.png"></a></div>
+    <div class="logo"><a href="home.jsp"><img src="<%= baseUrl%>/images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,21 +58,18 @@
                 <a class="nav-item nav-link" href="<%=baseUrl%>/Authentication/signin.jsp">Login</a>              
             </c:if>
             <c:if test = "${sessionScope.hocVienDTO != null}">
-                <div class="btn-group btn-user-menu">
-                    <button style=" margin-left: 100px; background: #be2532 " class=" btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
+                <div class="dropdown">
+                    <button style="margin-top: 10px; margin-left: 100px; background: #be2532" class="btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>${sessionScope.hocVienDTO.username}</span>
                     </button>
-                    <div class="dropdown-menu btn-menu">
-
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/Home/profile.jsp">Profile</a>
-                        <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
-                        <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
-                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
-
+                    <div class="dropdown-content">
+                        <a class="btn-menu-item" href="<%=baseUrl%>/Home/profile.jsp">Profile</a>
+                        <a class="btn-menu-item" href="changePassword.jsp">Change password</a>
+                        <a class="btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="btn-menu-item" href="profile.jsp">View my profile</a>
+                        <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
-                </div>                     
+                </div>                  
             </c:if>
         </div>
     </div>
