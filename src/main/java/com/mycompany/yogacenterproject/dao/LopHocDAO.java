@@ -202,8 +202,8 @@ public class LopHocDAO {
         return null;
 
     }
-    
-    public List<LopHocDTO> searchByType (String maLoaiLopHoc) {
+
+    public List<LopHocDTO> searchByType(String maLoaiLopHoc) {
         try {
             List<LopHocDTO> listClass = new ArrayList<>();
             String sql = "SELECT * from [dbo].[lopHoc] where maLoaiLopHoc = ?";
@@ -293,6 +293,20 @@ public class LopHocDAO {
         return listLopHoc;
     }
 
+    public void increase(String maLopHoc) {
+        String sql = "update [dbo].[lopHoc]\n"
+                + "set soLuongHvHienTai = soLuongHvHienTai + 1\n"
+                + "where maLopHoc = ?";
+        try{
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLopHoc);
+            ps.executeUpdate();
+        }catch(SQLException e){
+            
+        }
+    }
+
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
 //        a.lastIDIndex();
@@ -310,8 +324,7 @@ public class LopHocDAO {
 //        }
 //        System.out.println(a.searchClassById("LOP0003"));
 
-    
-    List<LopHocDTO> list = a.searchByType("TYPE0001");
+        List<LopHocDTO> list = a.searchByType("TYPE0001");
         System.out.println(list);
     }
 
