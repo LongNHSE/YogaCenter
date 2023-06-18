@@ -82,7 +82,9 @@ public class ClassController extends HttpServlet {
                 checkPhongTrong(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
-            } 
+            } else if (action.equals("classes")) {
+                showClass(request, response);
+            }
 
 //        if (action.equals("CreateClassType")) {
 //            createLoaiLopHoc(request, response);
