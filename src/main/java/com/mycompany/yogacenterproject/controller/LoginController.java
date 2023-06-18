@@ -9,8 +9,8 @@ import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.mycompany.yogacenterproject.util.DateUtils;
 import com.mycompany.yogacenterproject.util.Utils;
-import com.nimbusds.oauth2.sdk.util.DateUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -175,10 +175,12 @@ public class LoginController extends HttpServlet {
             hocVienDTO.setHo(ho);
             hocVienDTO.setGender(gender);
             hocVienDTO.setEmail(email);
-            
-           LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
+
+            ////////SET DATE
+            LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
+
             hocVienDTO.setDob(dob);
-           
+            
             hocVienDAO.addHocVien(hocVienDTO);
             RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
             rd.forward(request, response);
