@@ -7,6 +7,7 @@ package com.mycompany.yogacenterproject.dao;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -97,8 +98,15 @@ public class HoaDonDAO {
         return index;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         HoaDonDAO hoaDonDAO = new HoaDonDAO();
-        System.out.println(hoaDonDAO.listHoaDon("HV001"));
+        HoaDonDTO x = new HoaDonDTO();
+        x.setMahoaDon("RC0001");
+        x.setMaHV("HV0001");
+        x.setGiaTien(20);
+        x.setNgayThanhToan(Date.valueOf("2023-06-30"));
+        x.setMaLopHoc("LOP0003");
+        hoaDonDAO.createHoaDonDTO(x);
+        System.out.println(hoaDonDAO.listHoaDon("HV0001"));
     }
 }

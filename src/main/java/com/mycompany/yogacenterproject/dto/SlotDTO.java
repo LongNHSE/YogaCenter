@@ -62,17 +62,17 @@ public class SlotDTO {
     
  
     
-    public static void main(String[] args) {
-         Date javaDate = new Date();
-
-        // Convert Java Date to SQL Time
-        Time sqlTime = new Time(20,20,30);
-
-        // Use the SQL Time in your SQL query or insert it into the database
-        // Example: INSERT INTO your_table (time_column) VALUES (?)
-        // Use a prepared statement to set the SQL Time value in the query.
-
-        // Print the converted SQL Time
-        System.out.println("SQL Time: " + sqlTime);
-    }
+//    public static void main(String[] args) {
+//         Date javaDate = new Date();
+//
+//        // Convert Java Date to SQL Time
+//        Time sqlTime = new Time(20,20,30);
+//
+//        // Use the SQL Time in your SQL query or insert it into the database
+//        // Example: INSERT INTO your_table (time_column) VALUES (?)
+//        // Use a prepared statement to set the SQL Time value in the query.
+//
+//        // Print the converted SQL Time
+//        System.out.println("SQL Time: " + sqlTime);
+//    }
 }
