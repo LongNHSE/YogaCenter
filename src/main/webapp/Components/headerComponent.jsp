@@ -7,6 +7,10 @@
 <%
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3e8cdaa92e318d466d8087b829aa9aa37c7fb067
 <!-- header section start -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="logo"><a href="home.jsp"><img src="images/logo.png"></a></div>
@@ -32,11 +36,19 @@
                         <span>${sessionScope.hocVienDTO.username}</span>
                     </button>
                     <div class="dropdown-menu btn-menu">
+<<<<<<< HEAD
                         <a class="dropdown-item btn-menu-item" href="profile.jsp">Profile</a>
                         <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
                         <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                    <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>
                         <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
                         <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/?action=logout"><b style="color: black">Logout</b></a>
+=======
+                        <a class="dropdown-item btn-menu-item" href="Home/profile.jsp">Profile</a>
+                        <a class="dropdown-item btn-menu-item" href="changePassword.jsp">Change password</a>
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="dropdown-item btn-menu-item" href="profile.jsp">View my profile</a>
+                        <a class="dropdown-item btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
+>>>>>>> 3e8cdaa92e318d466d8087b829aa9aa37c7fb067
                     </div>
                 </div>                     
             </c:if>
