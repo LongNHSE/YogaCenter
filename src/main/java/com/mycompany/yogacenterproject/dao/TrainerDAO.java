@@ -50,10 +50,10 @@ public class TrainerDAO {
     }
 ////Read list cua cac trainer nhung dua tren dieu kien loai trainer
 
-    public List<TrainerDTO> readListTrainerByType(String trainerType) {
+    public List<TrainerDTO> readListTrainerByTypeAndStatus(String trainerType) {
         List<TrainerDTO> listTrainer = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM Trainer where trainerType = ?";
+            String sql = "SELECT * FROM Trainer where trainerType = ? and status ='false'";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, trainerType);
             ResultSet rs = stm.executeQuery();
@@ -72,10 +72,10 @@ public class TrainerDAO {
                 boolean status = rs.getBoolean("status");
                 String trainerTypeGet = rs.getString("trainerType");
                 String maLoaiTK = rs.getString("maLoaiTK");
-                
+
                 trainerDTO.setMaTrainer(maTrainer);
                 trainerDTO.setHo(Ho);
-                trainerDTO.setTen(Ten);     
+                trainerDTO.setTen(Ten);
                 trainerDTO.setEmail(email);
                 trainerDTO.setPhone(phone);
                 trainerDTO.setPsw(psw);
@@ -85,7 +85,7 @@ public class TrainerDAO {
                 trainerDTO.setTrainerType(trainerType);
                 trainerDTO.setUsername(username);
                 trainerDTO.setMaLoaiTK(maLoaiTK);
-                
+
                 listTrainer.add(trainerDTO);
             }
             return listTrainer;
@@ -177,22 +177,39 @@ public class TrainerDAO {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+//Update Trainer Status
+
+    public void updateTrainerStatus(String maTrainer, boolean status) {
+        try {
+            String sql = "Update Trainer set status = ? "
+                    + "where maTrainer=? ";
+            PreparedStatement stmt = DBUtils.getConnection().prepareStatement(sql);
+//            stmt.setString(1, upTrainer.getHoVaTen());
+            stmt.setBoolean(1, status);
+            stmt.setString(2, maTrainer);
+
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void main(String[] args) {
 //        TrainerDAO trainerDAO = new TrainerDAO();
 //        System.out.println(trainerDAO.readListTrainer().get(0).getSalary());
-        
-          LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         LopHocDAO lopHocDAO = new LopHocDAO();
-        
+
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
-        
-        listTrainer = trainerDAO.readListTrainerByType(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc("LOP0003")));
-        System.out.println(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc("LOP0003")));
-        System.out.println(lopHocDAO.IDLoaiLopHoc("LOP0003"));
-        for(TrainerDTO x : listTrainer){
-            System.out.println(x.getTen());
-        }
+
+//        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc("LOP0001")));
+//        System.out.println(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc("LOP0003")));
+//        System.out.println(lopHocDAO.IDLoaiLopHoc("LOP0003"));
+//        for (TrainerDTO x : listTrainer) {
+//            System.out.println(x.getTen());
+//        }
+        trainerDAO.updateTrainerStatus("TR0003", true);
     }
 }

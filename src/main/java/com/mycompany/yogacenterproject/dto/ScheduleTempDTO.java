@@ -59,5 +59,10 @@ public class ScheduleTempDTO {
     public void setThu(String thu) {
         this.thu = thu;
     }
+
+    @Override
+    public String toString() {
+        return "ScheduleTempDTO{" + "maLopHoc=" + maLopHoc + ", ngayHoc=" + ngayHoc + ", maSlot=" + maSlot + ", thu=" + thu + '}';
+    }
     
 }

@@ -207,6 +207,7 @@ public class LoginController extends HttpServlet {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
             session.setAttribute("hocVienDTO", hocVienDTO);
             // Lấy URL trang trước đó từ localStorage (nếu có)
+            session.setMaxInactiveInterval(300);
             String redirectUrl = (String) session.getAttribute("redirectUrl");
             if (redirectUrl != null && !redirectUrl.isEmpty()) {
                 response.sendRedirect(redirectUrl);
@@ -270,7 +271,7 @@ public class LoginController extends HttpServlet {
 //    Logout
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.removeAttribute("user");
+        session.removeAttribute("hocVienDTO");
         String referer = request.getHeader("Referer");
         if(referer == null || referer.isEmpty()){
               referer = "../home.jsp";

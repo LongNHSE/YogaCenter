@@ -20,15 +20,15 @@
 
 
     <body>
+        <form action="<%=url%>/ClassController" method="POST">
+            <section class="vh-100 gradient-custom">
+                <div class="container py-5 h-100">
+                    <div class="row justify-content-center align-items-center h-100">
+                        <div class="col-12 col-lg-9 col-xl-7">
+                            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                                <div class="card-body p-4 p-md-5">
+                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
 
-        <section class="vh-100 gradient-custom">
-            <div class="container py-5 h-100">
-                <div class="row justify-content-center align-items-center h-100">
-                    <div class="col-12 col-lg-9 col-xl-7">
-                        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                            <div class="card-body p-4 p-md-5">
-                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
-                                <form action="<%=url%>/ClassController" method="POST">
 
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
@@ -67,12 +67,11 @@
 
                                             <div class="form-outline">
 
-                                                <select id="Slot" name="listSlot"  onchange="checkAvailability()" class="selected-control" required="">
-                                                    <option class="form-label" value=""> Please choose Slot</option>
-                                                    <c:forEach items="${listSlot}" var="Slot" varStatus="loop" >
-                                                        <option  class="form-label" value="${Slot.maSlot}">SLOT ${loop.index + 1}: ${Slot.timeStart}-${Slot.timeEnd}</option>
-                                                    </c:forEach>
-                                                </select>
+
+                                                <c:forEach items="${weekdays}" var="weekdays" varStatus="loop" >
+                                                    <input type="text" id="weekdays" class="form-control form-control-lg" name="weekdays" value="${weekdays}"  readonly/>
+                                                </c:forEach>
+
                                                 <label class="form-label" for="Slot">Slot</label>
                                             </div>
 
@@ -81,80 +80,44 @@
 
 
 
-                                            <div class="form-outline"id="dayInput" name="weekdays" onchange="checkAvailability()" >
+                                            <input type="text" id="slot" class="form-control form-control-lg" name="slot" value="${slot}" readonly />
 
-                                                <div class="form-check form-check-inline ">
-                                                    <input class=" weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Monday" required />
-                                                    <label class="form-check-label" for="weekday">Monday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline ">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Tuesday"  />
-                                                    <label class="form-check-label" for="weekday">Tuesday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline ">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Wednesday"  />
-                                                    <label class="form-check-label" for="weekday">Wednesday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline ">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Thursday"  />
-                                                    <label class="form-check-label weekday" for="weekday">Thursday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Friday"  />
-                                                    <label class="form-check-label" for="weekday">Friday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline ">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Saturday"  />
-                                                    <label class="form-check-label" for="weekday">Saturday</label>
-                                                </div>
-                                                <div class="form-check form-check-inline ">
-                                                    <input class="weekday" type="checkbox" name="weekday" id="weekday"
-                                                           value="Sunday"  />
-                                                    <label class="form-check-label" for="weekday">Sunday</label>
-                                                </div>
-
-
-
-
-                                            </div>
 
 
                                         </div>
+
+
                                     </div>
-                                    <p class="form-check-label"  id="checkRoom"></p>
-                                    <div style="margin-bottom: 50px"></div>
-                                    <div class="row">
-                                        <div class="form-outline datepicker w-100">
-                                            <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" onchange="checkDate()" />
-                                            <label for="initializeDate" class="form-label">Initialize Date</label>
-                                            <div style="color: red; font-weight: BOLD">
-                                                <p id="checkDate"></p>
-                                            </div>
+                                </div>
+                                <p class="form-check-label"  id="checkRoom"></p>
+                                <div style="margin-bottom: 50px"></div>
+                                <div class="row">
+                                    <div class="form-outline datepicker w-100">
+                                        <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" onchange="checkDate()" />
+                                        <label for="initializeDate" class="form-label">Initialize Date</label>
+                                        <div style="color: red; font-weight: BOLD">
+                                            <p id="checkDate"></p>
                                         </div>
                                     </div>
+                                </div>
 
 
-                                    <div class="mt-4 pt-2">
-                                        <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
-                                        <input class="btn btn-outline-danger" type="hidden" value="CreateClass" id="submit" name="action"  />
-                                    </div>
+                                <div class="mt-4 pt-2">
+                                    <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
+                                    <input class="btn btn-outline-danger" type="hidden" value="CreateClass" id="submit" name="action"  />
+                                </div>
 
 
 
-                                </form>
 
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+                </div>
+            </section>
+        </form>
+
     </body>
 
     <script>
@@ -238,38 +201,38 @@
                 checkDateElement.textContent = '';
             }
         }
-//        function checkAvailability() {
-//            var slot = document.getElementById("Slot").value;
-//            var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
-//            var selectedDays = Array.from(checkboxes).map(function (checkbox) {
-//                return checkbox.value;
-//
-//            });
-//
-//            if (slot !== '' && selectedDays.length == 2) {
-//            var xhr = new XMLHttpRequest();
-//                    xhr.open('GET', 'Admin/Class/checkAvailability.jsp?slot=' + slot + "&weekday=" + selectedDays.join(','), true);
-//                    xhr.onreadystatechange = function () {
-//                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-//                    var checkRoomElement = document.getElementById('checkRoom');
-//                            var availabilityElement = responseXml.querySelector('check');
-//                            if (availabilityElement) {
-//                    var availability = availabilityElement.textContent === 'true';
-//                            // Now you can use the 'availability' boolean as needed
-//                            if (availability) {
-//                    console.log('The room is available.');
-//                    } else {
-//                    console.log('The room is not available.');
-//                    }
-//
-//                    }
-//                    };
-//                            xhr.send();
-//                    } else {
-//            var checkRoomElement = document.getElementById('checkRoom');
-//            checkRoomElement.textContent = '';
-//            }
-//        }
+    //        function checkAvailability() {
+    //            var slot = document.getElementById("Slot").value;
+    //            var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
+    //            var selectedDays = Array.from(checkboxes).map(function (checkbox) {
+    //                return checkbox.value;
+    //
+    //            });
+    //
+    //            if (slot !== '' && selectedDays.length == 2) {
+    //            var xhr = new XMLHttpRequest();
+    //                    xhr.open('GET', 'Admin/Class/checkAvailability.jsp?slot=' + slot + "&weekday=" + selectedDays.join(','), true);
+    //                    xhr.onreadystatechange = function () {
+    //                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+    //                    var checkRoomElement = document.getElementById('checkRoom');
+    //                            var availabilityElement = responseXml.querySelector('check');
+    //                            if (availabilityElement) {
+    //                    var availability = availabilityElement.textContent === 'true';
+    //                            // Now you can use the 'availability' boolean as needed
+    //                            if (availability) {
+    //                    console.log('The room is available.');
+    //                    } else {
+    //                    console.log('The room is not available.');
+    //                    }
+    //
+    //                    }
+    //                    };
+    //                            xhr.send();
+    //                    } else {
+    //            var checkRoomElement = document.getElementById('checkRoom');
+    //            checkRoomElement.textContent = '';
+    //            }
+    //        }
         function getHocPhi(maLoaiLopHoc) {
             if (maLoaiLopHoc !== '') {
                 var xhr = new XMLHttpRequest();

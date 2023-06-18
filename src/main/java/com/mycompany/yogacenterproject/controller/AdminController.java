@@ -4,21 +4,32 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
+import com.mycompany.yogacenterproject.dao.ScheduleDAO;
+import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
+import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +53,7 @@ public class AdminController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -63,19 +74,24 @@ public class AdminController extends HttpServlet {
 
             } else if (action.equals("detailLopHoc")) {
 
-            }else if (action.equals("listClassUnassigned")){
+            } else if (action.equals("listClassUnassigned")) {
                 listClassUnassigned(request, response);
-            }
+            } else if (action.equals("View Schedule")) {
+                listSchedule(request, response);
+                date(request, response);
+                RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/Schedule.jsp");
+                rd.forward(request, response);
 
-//            
-//            
-//            switch (action) {
-//                case "listHocVienDTO":
-//                    listHocVienDTO(request,response);
-//                    break;
-//                default:
-//                    throw new AssertionError();
-//            }
+            }
+            //            
+            //            
+            //            switch (action) {
+            //                case "listHocVienDTO":
+            //                    listHocVienDTO(request,response);
+            //                    break;
+            //                default:
+            //                    throw new AssertionError();
+            //            }
         }
     }
 
@@ -102,27 +118,90 @@ public class AdminController extends HttpServlet {
     }
 
     public void listReceipt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
         List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
         HoaDonDAO hoaDonDAO = new HoaDonDAO();
-       
+
         listHoaDon = hoaDonDAO.listHoaDon(request.getParameter("maHV"));
-         
+
         request.setAttribute("listHoaDon", listHoaDon);
         RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HoaDonList.jsp");
         rs.forward(request, response);
 
     }
-    
-    public void listClassUnassigned(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public void listClassUnassigned(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<LopHocDTO> listLopHocTemp = new ArrayList();
         LopHocDAO lopHocDAO = new LopHocDAO();
         listLopHocTemp = lopHocDAO.listLopTemp();
-        
+
         request.setAttribute("listLopHocTemp", listLopHocTemp);
         RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/ListClassUnassigned.jsp");
         rd.forward(request, response);
-        
+
+    }
+
+    public void listSchedule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<ScheduleTempDTO> listScheduleTemp = new ArrayList();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        listScheduleTemp = scheduleDAO.readScheduleTemp();
+
+        SlotDAO slotDAO = new SlotDAO();
+
+        List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listSlot", listSlot);
+        request.setAttribute("listScheduleTemp", listScheduleTemp);
+        String weekRange = request.getParameter("weekRange");
+        LocalDate today = LocalDate.now();
+        if (weekRange != null) {
+
+            LocalDate localDate = LocalDate.parse(weekRange);
+            today = localDate; // Get the current date
+        }
+
+        LocalDate monday = today.with(DayOfWeek.MONDAY);
+
+        List<LocalDate> days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            String a = (monday.plusDays(i).toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate datea = LocalDate.parse(a, formatter);
+            days.add(datea);
+
+        }
+        request.setAttribute("listDate", days);
+
+    }
+
+    public void date(HttpServletRequest request, HttpServletResponse response) {
+        LocalDate currentDateNow = LocalDate.now();
+        LocalDate startDateOfMonth = currentDateNow.withDayOfMonth(1);
+        LocalDate startDate = startDateOfMonth;
+        LocalDate endDate = startDate.plusMonths(3).minusDays(1);
+
+        List<DateStartAndDateEnd> weekRanges = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+            DateStartAndDateEnd date = new DateStartAndDateEnd();
+            LocalDate weekStart = currentDate.with(DayOfWeek.MONDAY);
+
+            LocalDate weekEnd = currentDate.with(DayOfWeek.SUNDAY);
+
+            String formattedStartDate = weekStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String formattedEndDate = weekEnd.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            date.setDateStart(weekStart);
+            date.setDateEnd(weekEnd);
+            date.setFormattedStartDate(formattedStartDate);
+            date.setFormattedEndDate(formattedEndDate);
+            weekRanges.add(date);
+
+            currentDate = currentDate.plusWeeks(1);
+        }
+
+        request.setAttribute("weekRanges", weekRanges);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -137,7 +216,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -151,7 +234,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
