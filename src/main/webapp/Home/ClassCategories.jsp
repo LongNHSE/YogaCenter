@@ -267,20 +267,25 @@
       <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
       <div class="row">
             <c:forEach items="${requestScope.listCate}" var="a">
-              <div class="col-xs-6 col-md-4">
-                  <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
-                      <a href="ClassController">
-                          <img src="${a.urlIMG}" alt="" style="width: 100%; height: 100%;">
-                      </a>
-                      <div class="caption text-center">
-                          <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h2>
-                          <span class="price">${a.maLoaiLopHoc}</span>
-                          <button class="button ">
-                              <span class="button-content">DETAILS</span>
-                          </button>                     
-                      </div>
-                  </div>
-              </div>            
+
+                    <div class="col-xs-6 col-md-4">
+                        <form>
+                            <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
+                                <a href="ClassController">
+                                    <img src="${a.urlIMG}" alt="" style="width: 100%; height: 100%;">
+                                </a>
+                                <div class="caption text-center">
+                                    <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenIMG()}</a></h2>
+                                    <span class="price"></span>
+                                    <input type="hidden" value="${a.getMaLoaiLopHoc()}" name="returnID">
+                                    <button class="button " type="submit" name="action" value="checkID">
+                                        <span class="button-content">DETAILS</span>
+                                    </button>
+                                    ${error}<!-- LAM THEO MESSAGE -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>       
           </c:forEach>
       </div>      
       </div>

@@ -62,6 +62,4 @@ public class LopHocIMG {
         return "LopHocIMG{" + "maIMG=" + maIMG + ", tenIMG=" + tenIMG + ", UrlIMG=" + UrlIMG + ", maLoaiLopHoc=" + maLoaiLopHoc + '}';
     }
 
-
-
 }

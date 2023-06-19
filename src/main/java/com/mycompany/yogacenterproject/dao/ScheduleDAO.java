@@ -115,24 +115,18 @@ public class ScheduleDAO {
     }
 
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
-    public boolean createScheduleHV(String maLopHoc, String maHV, String maSlot) throws SQLException {
-        String sql = "INSERT INTO [dbo].[ScheduleHV](maHV,maLopHoc, ngayHoc,maSlot, thu) "
-                + "VALUES(?,?,?,?,?)";
+    public boolean createScheduleHV(String maHV, String maLopHoc) throws SQLException {
+        String sql = "INSERT INTO ScheduleHV([maHV], [maLopHoc], [ngayHoc], [maSlot], [thu])\n"
+                + "SELECT ?, [maLopHoc], [ngayHoc], [maSlot], [thu]\n"
+                + "FROM [YogaCenter].[dbo].[ScheduleTemp]\n"
+                + "WHERE ScheduleTemp.maLopHoc=? ;";
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        List<DateAndDay> listDate = new ArrayList();
-//        listDate = listDateAndDay();
+        ps.setString(1, maHV    );
+        ps.setString(2, maLopHoc);
 
-        for (DateAndDay x : listDate) {
-            ps.setString(1, maHV);
-            ps.setString(2, maLopHoc);
-            ps.setString(3, x.getDate());
-            ps.setString(4, maSlot);
-            ps.setString(5, x.getDay());
-            ps.executeUpdate();
-
-        }
+        ps.executeUpdate();
 
         return false;
     }
@@ -234,64 +228,9 @@ public class ScheduleDAO {
     }
 
     public static void main(String[] args) throws SQLException, ParseException {
-        // Get the current week's calendar
-//        LocalDate startDate = LocalDate.of(2023,6,5); // Get the current date
-//        LocalDate endDate = startDate.plusWeeks(5); // Calculate the end date
-//
-//        LocalDate date = startDate;
-//        List<DateAndDay> listDate = new ArrayList();
-//        String a = "monday";
-//        String b = "saturday";
-//        while (date.isBefore(endDate)) {
-//            LocalDate monday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(a.toUpperCase())));
-//            LocalDate wednesday = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(b.toUpperCase())));
-//
-//            System.out.println(monday.getDayOfWeek() +" "+ monday);
-//            System.out.println(wednesday.getDayOfWeek() +" "+ wednesday);
-//            
-//           
-//            DateAndDay DateofA = new DateAndDay(monday.getDayOfWeek().toString(), monday.toString());
-//             DateAndDay DateofB = new DateAndDay(wednesday.getDayOfWeek().toString(), wednesday.toString());
-//            listDate.add(DateofA);
-//            listDate.add(DateofB);
-//            
-//            date = date.plusWeeks(1); // Move to the next week
-//        }
-//        
-//        
-//        
-//        
-//        for(DateAndDay x : listDate){
-//            System.out.println(x.getDay());
-//            System.out.println(x.getDate());
-//            
-//        }
 
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String inputDateStr = "2023-06-17";
-//        ScheduleDAO schedule = new ScheduleDAO();
-//        Date currentDate = dateFormat.parse(inputDateStr);
-//
-//        // Create a calendar instance
-//        Calendar calendar = Calendar.getInstance();
-//
-//        // Set the calendar's time to the current date
-//        calendar.setTime(currentDate);
-//
-//        // Add one week to the calendar
-//        calendar.add(Calendar.WEEK_OF_YEAR, 1);
-//
-//        // Get the date after adding one week
-//        Date dateAfterOneWeek = calendar.getTime();
-////        schedule.createScheduleHV("LOP0002", "HV0001", "SL002");
-//        String[] week = {"MONDAY", "WEDNESDAY", "TUESDAY"};
-//        List<DateAndDay> listDate = schedule.listDateAndDay(week, currentDate, 5);
-//        System.out.println(listDate.size());
-//        for (DateAndDay x : listDate) {
-//
-//            System.out.println(x);
-//
         ScheduleDAO schedule = new ScheduleDAO();
+
         List<ScheduleTempDTO> listScheduleHv = schedule.readScheduleTemp();
         List<ScheduleTrainerDTO> listScheduleTrainer = schedule.readScheduleTrainer();
 //        boolean hasSchedule = false;
@@ -313,6 +252,7 @@ public class ScheduleDAO {
 //            x.getNgayHoc().compareTo(ld);
 //            System.out.println(x.getNgayHoc().equals(ld));
     }
+
 
 //        for (ScheduleTempDTO x : listScheduleHv) {
 //            System.out.println(x.toString());

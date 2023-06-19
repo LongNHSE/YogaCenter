@@ -179,17 +179,17 @@
                                     List<String> a = new ArrayList<String>();
                                     boolean hasSchedule = false;
                                     LopHocDAO lopHocDAO = new LopHocDAO();
-                                    String maLopHoc = "";
-                                    String tenLopHoc = "";
+                                    String maLopHoc ="";
+                                    String tenLopHoc ="";
                                     boolean hasTrainerSchedule = false;
-                                    String maLopHocTrainer = "";
-                                    String tenTrainer = "";
+                                    String maLopHocTrainer ="";
+                                    String tenTrainer ="";
                                     String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                     for (ScheduleTempDTO ScheduleTempDTO : listScheduleTemp) {
                                         if (ScheduleTempDTO.getThu().equalsIgnoreCase(dayOfWeek) && ScheduleTempDTO.getMaSlot().equals(slot) && ScheduleTempDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
                                             hasSchedule = true;
-                                            maLopHoc = ScheduleTempDTO.getMaLopHoc();
-                                            tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(ScheduleTempDTO.getMaLopHoc()));
+                                            maLopHoc +=ScheduleTempDTO.getMaLopHoc();
+                                            tenLopHoc +=lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(ScheduleTempDTO.getMaLopHoc()));
                                             a.add(maLopHoc);
 
                                         }

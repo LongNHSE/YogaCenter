@@ -203,6 +203,40 @@ public class LopHocDAO {
 
     }
 
+    public List<LopHocDTO> searchByType(String maLoaiLopHoc) {
+        try {
+            List<LopHocDTO> listClass = new ArrayList<>();
+            String sql = "SELECT * from [dbo].[lopHoc] where maLoaiLopHoc = ?";
+            PreparedStatement stm;
+            stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLoaiLopHoc);
+            ResultSet rs;
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String maLopHoc = rs.getString("maLopHoc");
+                int soLuongHV = rs.getInt("soLuongHV");
+                int soBuoi = rs.getInt("soBuoi");
+                String maRoom = rs.getString("maRoom");
+                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
+                Date ngay = rs.getDate("ngay");
+                LopHocDTO e = new LopHocDTO();
+                e.setMaLopHoc(maLopHoc);
+                e.setSoLuongHV(soLuongHV);
+                e.setSoBuoi(soBuoi);
+                e.setMaRoom(maRoom);
+                e.setSoLuongHvHienTai(soLuongHvHienTai);
+                e.setNgayBatDau(ngay);
+                listClass.add(e);
+            }
+            return listClass;
+        } catch (SQLException ex) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+    }
+
     //LAY ID CUOI LIST
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 maLopHoc FROM [dbo].[lopHoc] ORDER BY maLopHoc DESC";
@@ -259,10 +293,26 @@ public class LopHocDAO {
         return listLopHoc;
     }
 
+    public void increase(String maLopHoc) {
+        String sql = "update [dbo].[lopHoc]\n"
+                + "set soLuongHvHienTai = soLuongHvHienTai + 1\n"
+                + "where maLopHoc = ?";
+        try{
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLopHoc);
+            ps.executeUpdate();
+        }catch(SQLException e){
+            
+        }
+    }
+
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
+
         
         System.out.println(a.lastIDIndex());
+
 //        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
 ////        Date aa = Date.valueOf(LocalDate.now());
 ////        LopHocDTO lopHocDTO = new LopHocDTO();
@@ -277,6 +327,8 @@ public class LopHocDAO {
 //        }
 //        System.out.println(a.searchClassById("LOP0003"));
 
+        List<LopHocDTO> list = a.searchByType("TYPE0001");
+        System.out.println(list);
     }
 
 }
