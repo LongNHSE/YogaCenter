@@ -160,16 +160,18 @@ public class LoaiLopHocDAO {
     }
     public static void main(String[] args) throws SQLException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
+        ;
+        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
        
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
 //        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO("TYPE0003", " Iyengar yoga", b);
 //        a.createLoaiLopHoc(loaiLopHocDTO);
-      List<LopHocIMG> listIMG = a.getAllCategories();
-      for (LopHocIMG o: listIMG){
-            System.out.println(o.toString());
-      }
+//      List<LopHocIMG> listIMG = a.getAllCategories();
+//      for (LopHocIMG o: listIMG){
+//            System.out.println(o.toString());
+//      }
       
     }
 }
