@@ -83,15 +83,6 @@ public class AdminController extends HttpServlet {
                 rd.forward(request, response);
 
             }
-            //            
-            //            
-            //            switch (action) {
-            //                case "listHocVienDTO":
-            //                    listHocVienDTO(request,response);
-            //                    break;
-            //                default:
-            //                    throw new AssertionError();
-            //            }
         }
     }
 
