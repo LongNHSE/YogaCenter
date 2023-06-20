@@ -10,6 +10,7 @@ USE YogaCenter
 GO
 
 --CREATE TABLE--
+ALTER DATABASE YogaCenter SET COMPATIBILITY_LEVEL = 160;
 
 
 CREATE TABLE room(
@@ -22,15 +23,19 @@ CREATE TABLE slot(
 	[timeStart] Time NOT NULL,
 	[timeEnd] Time NOT NULL
 )
-CREATE TABLE lopHocImg(
-	[maAnh] NVARCHAR(10) primary key,
-	[tenAnh] NVARCHAR(25) NOT NULL,
-	[URLAnh] TEXT NOT NULL
-	)
+CREATE TABLE lopHocImg (
+    [maAnh] NVARCHAR(25) primary key,
+    [image] VARBINARY(MAX) NOT NULL,
+    [maLoaiLopHoc] NVARCHAR(25) NOT NULL,
+    [maHV] NVARCHAR(25) NULL,
+    [maLopHoc] NVARCHAR(25) NULL,
+	[maTrainer] NVARCHAR(25) NULL,
+);
 
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
+	[description] NVARCHAR(max) null,
 	[hocPhi] DECIMAL(10,2) NOT NULL
 	)
 

@@ -18,15 +18,22 @@ public class LoaiLopHocDTO {
     private String maLoaiLopHoc;
     private String tenLoaiLopHoc;
     private double hocPhi;
+    private String description;
+
+  
 
     public LoaiLopHocDTO() {
     }
 
-    public LoaiLopHocDTO(String maLoaiLopHoc, String tenLoaiLopHoc, double hocPhi) {
-        this.maLoaiLopHoc = maLoaiLopHoc;
-        this.tenLoaiLopHoc = tenLoaiLopHoc;
-        this.hocPhi = hocPhi;
+    public String getDescription() {
+        return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+   
 
     public String getMaLoaiLopHoc() {
         return maLoaiLopHoc;

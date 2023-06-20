@@ -94,11 +94,12 @@ public class AdminDAO {
 
     //TESTING
     public static void main(String[] args) {
-        AdminDAO adminDAO = new AdminDAO();
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO = adminDAO.login("admin1", "1234");
-        System.out.println(adminDTO);
+//        AdminDAO adminDAO = new AdminDAO();
+//        AdminDTO adminDTO = new AdminDTO();
+//        adminDTO = adminDAO.login("admin1", "1234");
+//        System.out.println(adminDTO);
 //adminDAO.deleteAdmin("AD0001");
 //        adminDAO.createAdmin("sa2", "123123", "AD0002");
+
     }
 }

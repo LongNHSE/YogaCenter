@@ -1,0 +1,22 @@
+.deleteButton{
+    background-color:red;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.class{
+    width: 100px;
+    height: 100px;
+}
+.imageStyle{
+    width: 200px;
+    height: 200px;
+}
+.imageListStyle{
+    float: left;
+    position: relative;
+}
+.preview{
+     width: 600px;
+    height: 100%;
+}
