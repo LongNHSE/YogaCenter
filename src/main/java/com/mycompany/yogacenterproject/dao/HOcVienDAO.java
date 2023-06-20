@@ -331,12 +331,12 @@ public class HocVienDAO {
         HocVienDTO hocVienDTO = new HocVienDTO();
 
         DateUtils dateUtils= new DateUtils();
-//        hocVienDTO = hocVienDAO.login("longNiger", "123456");
+        hocVienDTO = hocVienDAO.login("admin", "12345");
 //        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
 //        hocVienDAO.updateHocVien(hocVienDTO);
 
 //        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-//        System.out.println(hocVienDTO.getMaHV());
+        System.out.println(hocVienDTO);
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
@@ -348,20 +348,20 @@ public class HocVienDAO {
 //        System.out.println(hocVienDAO.selectByHocVienEmail("Oalskad1904@gmail.com"));
 
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
-            Date date=Date.valueOf("2004-09-11");
-            LocalDate a=dateUtils.asLocalDate(date);
-            hocVienDTO.setTen("Long");
-            hocVienDTO.setPsw("12345");
-            hocVienDTO.setPhone("123");
-            hocVienDTO.setMaLopHoc(null);
-            hocVienDTO.setMaLoaiTK("HOCVIEN");
-            hocVienDTO.setMaHV("HV0004");
-            hocVienDTO.setHo("Nguyen");
-            hocVienDTO.setGender("Male");
-            hocVienDTO.setEmail("huylong2");
-            hocVienDTO.setDob(a);
-            hocVienDTO.setUsername("huyhuy");
-            hocVienDAO.addHocVien(hocVienDTO);
+//            Date date=Date.valueOf("2004-09-11");
+//            LocalDate a=dateUtils.asLocalDate(date);
+//            hocVienDTO.setTen("Long");
+//            hocVienDTO.setPsw("12345");
+//            hocVienDTO.setPhone("123");
+//            hocVienDTO.setMaLopHoc(null);
+//            hocVienDTO.setMaLoaiTK("HOCVIEN");
+//            hocVienDTO.setMaHV("HV0004");
+//            hocVienDTO.setHo("Nguyen");
+//            hocVienDTO.setGender("Male");
+//            hocVienDTO.setEmail("huylong2");
+//            hocVienDTO.setDob(a);
+//            hocVienDTO.setUsername("huyhuy");
+//            hocVienDAO.addHocVien(hocVienDTO);
 
 //        System.out.println(AUTO_HOCVIEN_ID);
 //        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
