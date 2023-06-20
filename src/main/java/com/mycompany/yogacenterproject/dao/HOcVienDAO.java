@@ -44,7 +44,7 @@ public class HocVienDAO {
                 //////DEFINE LOCALDATE AND RECEIVING DATA
                 Date date = rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
-                LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dob = DateUtils.asLocalDate(date);
                 //////////////////////////////////////////////////////////////////
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
