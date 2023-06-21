@@ -103,7 +103,7 @@ public class LoaiLopHocDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
-                tenLoai = rs.getString("tenLoaiLopHoc");
+                tenLoai = rs.getString("maLoaiLopHoc");
                 return tenLoai.trim();
             }
             rs.close();
@@ -225,10 +225,11 @@ public class LoaiLopHocDAO {
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
-        listCate = a.getAllLoaiLopHoc();
-        for (LoaiLopHocDTO c : listCate) {
-            System.out.println(c);
-        }
+        System.out.println(a.searchIdLoaiLopHoc("Hot Yoga"));
+//        listCate = a.getAllLoaiLopHoc();
+//        for (LoaiLopHocDTO c : listCate) {
+//            System.out.println(c);
+//        }
 
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));

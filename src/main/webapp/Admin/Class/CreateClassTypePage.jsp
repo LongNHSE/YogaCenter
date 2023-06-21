@@ -70,6 +70,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
+                                            <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
+                                            <input type="hidden" id="Thumbnails" name="Thumbnails"  >
+                                            <label class="form-label" for="Thumbnail">Thumbnail</label>
+                                            <div id="previewThumb" class="previewThumb"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+
+                                        <div class="col-md-6 mb-4">
                                             <input type="file" id="fileInput" name="fileInput"  onchange="addImage(this)">
                                             <input type="hidden" id="listImage" name="listImage"> <!-- Hidden input for listImage parameter -->
                                         </div>
@@ -127,6 +137,48 @@
 
                         // Update the hidden input value with the image data
                         document.getElementById('listImage').value = images.join(" ");
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+
+
+        function addThumbnailImage(fileInput) {
+            var files = fileInput.files;
+
+            // Clear the previewThumb container
+            var previewThumb = document.getElementById('previewThumb');
+            previewThumb.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                // Đọc file ảnh
+                reader.onload = (function (file) {
+                    return function (e) {
+                        var imgData = e.target.result;
+
+                        var imgElement = document.createElement('img');
+                        imgElement.className = 'imageStyle';
+                        imgElement.src = imgData;
+                        var deleteButton = document.createElement('button');
+                        deleteButton.className = 'deleteButton';
+                        deleteButton.textContent = 'Xóa';
+                        deleteButton.addEventListener('click', function () {
+                            var imageContainer = this.parentNode;
+                            imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                            document.getElementById('Thumbnails').value = '';
+                        });
+                        var imageContainer = document.createElement('div');
+                        imageContainer.className = 'imageListStyle';
+                        imageContainer.appendChild(imgElement);
+                        imageContainer.appendChild(deleteButton);
+                        previewThumb.appendChild(imageContainer); // Hiển thị ảnh và nút xóa trên giao diện
+                        document.getElementById('Thumbnails').value = imgData;
                     };
                 })(file);
 

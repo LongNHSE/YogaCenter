@@ -99,8 +99,9 @@ public class ClassController extends HttpServlet {
             }
 
             if (action.equals("CreateClassType")) {
-                insertImg(request, response);
                 createLoaiLopHoc(request, response);
+                insertImg(request, response);
+                insertThumbImg(request, response);
 
             }
 
@@ -112,6 +113,34 @@ public class ClassController extends HttpServlet {
     }
 
     //ADD Image danh cho Create Class Type
+    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        List<byte[]> imageList = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+
+        //HOCVIEN CONSTRUCTOR
+        String maAnh = AUTO_IMG_ID;
+        lopHocImageDTO.setMaAnh(maAnh);
+        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+        lopHocImageDTO.setTenAnh("THUMBNAIL");
+        
+        
+        String imageThumbArray = request.getParameter("Thumbnails");
+        List<String> listAnhThumb = new ArrayList<>();
+        List<byte[]> imageListThumb = new ArrayList<>();
+     
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageListThumb.add(imageData);
+         
+       
+        lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+    }
+
     private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
         List<byte[]> imageList = new ArrayList<>();
@@ -134,6 +163,7 @@ public class ClassController extends HttpServlet {
             listAnh.add(a);
         }
         lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
+
     }
 
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
