@@ -22,9 +22,9 @@
                <!--site metas--> 
               <title>Yogasan</title>
             <!--CSS-->
-            <%@ include file="../Components/CSSComponent.jsp" %>
+            <%@ include file="Components/CSSComponent.jsp" %>
             <!--Javascript-->
-            <%@ include file="../Components/JsComponent.jsp" %>            
+            <%@ include file="Components/JsComponent.jsp" %>            
                 <style type="text/css">
 
 
@@ -258,7 +258,7 @@
       </head>
       <body>
        <!--navbar : Start-->
-            <jsp:include page="../Components/headerComponent.jsp" />       
+            <jsp:include page="Components/headerComponent.jsp" />       
        <!--navbar: End-->
        
        <!--Container: Start-->
@@ -289,6 +289,6 @@
       </div>      
       </div>
        <!--Container: End-->
-              
+        <jsp:include page="Components/footerComponent.jsp" />                  
       </body>
 </html>
