@@ -37,6 +37,7 @@ public class LopHocDAO {
                 String maRoom = rs.getString("maRoom");
                 Date ngay = rs.getDate("ngay");
                 LopHocDTO displayClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
+                displayClass.setSoLuongHvHienTai(rs.getInt("soLuongHvHienTai"));
                 listClass.add(displayClass);
             }
             return listClass;
@@ -262,11 +263,11 @@ public class LopHocDAO {
     //LAY LIST LOP UNASSIGNED
     public List<LopHocDTO> listLopTemp() {
         List<LopHocDTO> listLopHoc = new ArrayList();
-        String sql = "SELECT lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay\n"
+        String sql = "SELECT lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay,lopHoc.soLuongHvHienTai\n"
                 + "FROM lopHoc\n"
                 + "INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
                 + "WHERE lopHoc.maLopHoc NOT IN (SELECT maLopHoc FROM ScheduleTrainer)\n"
-                + "GROUP BY lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay";
+                + "GROUP BY lopHoc.maLopHoc, lopHoc.maLoaiLopHoc, lopHoc.soLuongHV, lopHoc.maRoom, ScheduleTemp.maSlot, lopHoc.ngay,lopHoc.soLuongHvHienTai";
 
         try {
             Connection conn = DBUtils.getConnection();
@@ -280,6 +281,7 @@ public class LopHocDAO {
                 lopHocDTO.setMaSlot(rs.getString("maSlot"));
                 lopHocDTO.setNgayBatDau(rs.getDate("ngay"));
                 lopHocDTO.setSoLuongHV(rs.getInt("soLuongHV"));
+                lopHocDTO.setSoLuongHvHienTai(rs.getInt("soLuongHvHienTai"));
                 listLopHoc.add(lopHocDTO);
 
             }
@@ -293,23 +295,44 @@ public class LopHocDAO {
         return listLopHoc;
     }
 
+    //DELETE CLASS UNASSIGN
+    public void deleteClassUnassign(String maLopHoc) {
+        String sql = "BEGIN TRANSACTION; "
+                + "DELETE FROM ScheduleTemp WHERE maLopHoc = ?; "
+                + "DELETE FROM lopHoc WHERE maLopHoc = ?; "
+                + "COMMIT;";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLopHoc);
+            ps.setString(2, maLopHoc);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
+    }
+
     public void increase(String maLopHoc) {
         String sql = "update [dbo].[lopHoc]\n"
                 + "set soLuongHvHienTai = soLuongHvHienTai + 1\n"
                 + "where maLopHoc = ?";
-        try{
+        try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, maLopHoc);
             ps.executeUpdate();
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
         }
     }
 
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
-//        a.lastIDIndex();
+        a.deleteClassUnassign("LOP0007");
+        System.out.println(a.lastIDIndex());
+
 //        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
 ////        Date aa = Date.valueOf(LocalDate.now());
 ////        LopHocDTO lopHocDTO = new LopHocDTO();
@@ -323,7 +346,6 @@ public class LopHocDAO {
 //            System.out.println(x);
 //        }
 //        System.out.println(a.searchClassById("LOP0003"));
-
         List<LopHocDTO> list = a.searchByType("TYPE0001");
         System.out.println(list);
     }

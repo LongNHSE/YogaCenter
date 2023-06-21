@@ -76,6 +76,7 @@
                     <th scope="col">Ma Lop Hoc</th>
                     <th scope="col">Ma Loai Lop Hoc</th>
                     <th scope="col">So Luong Hoc Vien</th>
+                    <th scope="col">So Luong Hoc Vien Hien Tai</th>
                     <th scope="col">Ma Phong</th>
                     <th scope="col">Ma Slot</th>
 
@@ -93,16 +94,22 @@
                     <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
                     <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
                     <td><%= lopHocDTO.getSoLuongHV()%> </td>
+                    <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                     <td><%= lopHocDTO.getMaRoom()%> </td>
                     <td><%= lopHocDTO.getMaSlot()%> </td>
                     <td><%= lopHocDTO.getNgayBatDau()%> </td>
 
                     <td>  <input class="btn btn-outline-danger" type='submit'value="Assign Trainer"name="action" ></td>
-                    <td>  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
-                    <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
-                <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
-                </tr>
+                    <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
             </form>
+            <form action="<%=url%>/ClassUnassignedController" method="POST">
+                <td>  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
+                <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
+                <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
+            </form>
+            
+            </tr>
+
             <% }
             } else {%>
             <tr>

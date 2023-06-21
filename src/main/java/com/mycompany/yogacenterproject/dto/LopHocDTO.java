@@ -114,11 +114,14 @@ public class LopHocDTO {
         this.maRoom = maRoom;
     }
 
-   
-
     @Override
     public String toString() {
-        return "ClassDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", ngayBatDau=" + ngayBatDau + '}';
+        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
     }
+
+   
+
+    
+   
 
 }
