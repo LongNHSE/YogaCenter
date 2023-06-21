@@ -25,8 +25,9 @@ CREATE TABLE slot(
 )
 CREATE TABLE lopHocImg (
     [maAnh] NVARCHAR(25) primary key,
+	[tenAnh] NVARCHAR(50) NULL,
     [image] VARBINARY(MAX) NOT NULL,
-    [maLoaiLopHoc] NVARCHAR(25) NOT NULL,
+    [maLoaiLopHoc] NVARCHAR(25)NULL,
     [maHV] NVARCHAR(25) NULL,
     [maLopHoc] NVARCHAR(25) NULL,
 	[maTrainer] NVARCHAR(25) NULL,

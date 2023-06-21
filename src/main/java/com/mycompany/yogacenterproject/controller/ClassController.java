@@ -115,6 +115,7 @@ public class ClassController extends HttpServlet {
     private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
         List<byte[]> imageList = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
         String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
         String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
@@ -122,7 +123,7 @@ public class ClassController extends HttpServlet {
         //HOCVIEN CONSTRUCTOR
         String maAnh = AUTO_IMG_ID;
         lopHocImageDTO.setMaAnh(maAnh);
-        lopHocImageDTO.setMaLoaiLopHoc(tenLoaiLopHoc);
+        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
 
         String[] imageArray = request.getParameter("listImage").split("\\s+");
         List<String> listAnh = new ArrayList<>();
@@ -321,9 +322,9 @@ public class ClassController extends HttpServlet {
 
     // Show Class
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<LopHocIMGDTO> listCate = new ArrayList<>();
+        List<LoaiLopHocDTO> listCate = new ArrayList<>();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        listCate = loaiLopHocDAO.getAllCategories();
+        listCate = loaiLopHocDAO.getAllLoaiLopHoc();
         request.setAttribute("listCate", listCate);
         RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
         rd.forward(request, response);

@@ -70,7 +70,7 @@ public class LopHocIMGDTO {
 
     @Override
     public String toString() {
-        return "LopHocIMG{" + "maAnh=" + maAnh + ", tenAnh=" + tenAnh + ", image=" + image + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maHV=" + maHV + ", maLopHoc=" + maLopHoc + '}';
+        return "LopHocIMGDTO{" + "maAnh=" + maAnh + ", tenAnh=" + tenAnh + ", image=" + image + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maHV=" + maHV + ", maLopHoc=" + maLopHoc + '}';
     }
 
     public LopHocIMGDTO(String maAnh, String tenAnh, String image, String maLoaiLopHoc, String maHV, String maLopHoc) {
@@ -81,6 +81,11 @@ public class LopHocIMGDTO {
         this.maHV = maHV;
         this.maLopHoc = maLopHoc;
     }
+
+    
+   
+
+   
 
     
 

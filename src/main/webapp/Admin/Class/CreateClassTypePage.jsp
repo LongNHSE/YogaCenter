@@ -76,11 +76,6 @@
 
 
                                         <div id="preview" class="preview"></div>
-
-
-
-
-
                                         <div class="mb-1">
                                             <div class="mt-4 pt-2">
                                                 <input type="hidden" name="action" value="CreateClassType" />

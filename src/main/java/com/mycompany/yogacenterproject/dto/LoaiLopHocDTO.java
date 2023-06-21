@@ -7,6 +7,7 @@ package com.mycompany.yogacenterproject.dto;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -19,7 +20,15 @@ public class LoaiLopHocDTO {
     private String tenLoaiLopHoc;
     private double hocPhi;
     private String description;
+    private List<LopHocIMGDTO> image;
 
+    public List<LopHocIMGDTO> getImage() {
+        return image;
+    }
+
+    public void setImage(List<LopHocIMGDTO> image) {
+        this.image = image;
+    }
   
 
     public LoaiLopHocDTO() {

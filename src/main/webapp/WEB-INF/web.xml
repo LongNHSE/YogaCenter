@@ -32,6 +32,10 @@
         <servlet-name>ImageController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ImageController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ClassUnassignedController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.ClassUnassignedController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>ImageController</servlet-name>
         <url-pattern>/ImageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClassUnassignedController</servlet-name>
+        <url-pattern>/ClassUnassignedController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

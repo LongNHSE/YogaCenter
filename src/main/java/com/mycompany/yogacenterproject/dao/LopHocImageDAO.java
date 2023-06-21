@@ -51,6 +51,43 @@ public class LopHocImageDAO {
         return listAnh;
     }
 
+    //GET IMAGE BASED ON LOAILOPHOC ID
+    public List<LopHocIMGDTO> getImageBasedOnTypeID(String maLoaiLopHoc) throws SQLException, IOException {
+        byte[] imageData = null;
+        List<LopHocIMGDTO> listAnh = new ArrayList<>();
+        try {
+            // Load the JDBC driver (replace "your-driver-class" with the appropriate driver class for your database)
+
+            // Create a connection to the database (replace "your-database-url", "username", and "password" with your actual connection details)
+            Connection conn = DBUtils.getConnection();
+            String sql = "SELECT * FROM lopHocImg where maLoaiLopHoc = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, maLoaiLopHoc);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                LopHocIMGDTO lopHocIMGDTO = new LopHocIMGDTO();
+                lopHocIMGDTO.setMaAnh(rs.getString("maAnh"));
+                lopHocIMGDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                lopHocIMGDTO.setTenAnh(rs.getString("tenAnh"));
+
+                imageData = rs.getBytes("image");
+                String base64Image = Base64.getEncoder().encodeToString(imageData);
+                lopHocIMGDTO.setImage(base64Image);
+                listAnh.add(lopHocIMGDTO);
+
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return listAnh;
+    }
+
     public void insertImageDataFromDatabase(List<byte[]> imageList, LopHocIMGDTO lopHocIMG) throws SQLException, IOException {
 
         List<String> listAnh = new ArrayList<>();
@@ -114,20 +151,27 @@ public class LopHocImageDAO {
 
     public static void main(String[] args) throws SQLException, IOException {
         LopHocIMGDTO test = new LopHocIMGDTO();
+        System.out.println(test);
         test.setMaAnh("ads");
         LopHocImageDAO a = new LopHocImageDAO();
-        List<String> b = a.getImageDataFromDatabase();
-        for (String c : b) {
-            System.out.println(c);
+        List<LopHocIMGDTO> b = a.getImageBasedOnTypeID("TYPE0004");
+        for (LopHocIMGDTO c : b) {
+            System.out.println(c.getTenAnh());
+            if (c.getTenAnh() != null) {
+                if (c.getTenAnh().equalsIgnoreCase("THUMBNAIL")) {
+                    System.out.println(c);
+                }
+            }
+
         }
-        byte[] imageList = {123};
-        String randomString = generateRandomString();
-        byte[] byteData = randomString.getBytes();
-
-        List<byte[]> imageList2 = new ArrayList<>();
-
-        imageList2.add(byteData);
-        a.insertImageDataFromDatabase(imageList2, test);
+//        byte[] imageList = {123};
+//        String randomString = generateRandomString();
+//        byte[] byteData = randomString.getBytes();
+//
+//        List<byte[]> imageList2 = new ArrayList<>();
+//
+//        imageList2.add(byteData);
+//        a.insertImageDataFromDatabase(imageList2, test);
 
     }
 }
