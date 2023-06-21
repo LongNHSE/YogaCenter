@@ -92,6 +92,29 @@ public class LoaiLopHocDAO {
         return null;
     }
 
+    //SEARCH ID TYPE 
+    public String searchIdLoaiLopHoc(String tenLoaiLopHoc) {
+        String sql = "SELECT  maLoaiLopHoc FROM [dbo].[loaiLopHoc] where tenLoaiLopHoc = ?  ";
+        String tenLoai = "";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, tenLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                tenLoai = rs.getString("tenLoaiLopHoc");
+                return tenLoai.trim();
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
+
     //READ LIST LOAI LOP HOC 
     public List<LoaiLopHocDTO> readLoaiLopHoc() {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
@@ -172,10 +195,40 @@ public class LoaiLopHocDAO {
         return list;
     }
 
+    //LAY LIST LOAI LOP HOC GOM IMAGE
+    public List<LoaiLopHocDTO> getAllLoaiLopHoc() throws SQLException, IOException {
+        List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        String sql = "SELECT * FROM loaiLopHoc";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+            String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+            String description = rs.getString("description");
+            double hocPhi = rs.getDouble("hocPhi");
+            List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+            loaiLopHocDTO.setDescription(description);
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setImage(lopHocIMGDTO);
+
+            listLoaiLopHoc.add(loaiLopHocDTO);
+
+        }
+        return listLoaiLopHoc;
+
+    }
+
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
-
-        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
+        List<LoaiLopHocDTO> listCate = new ArrayList<>();
+        listCate = a.getAllLoaiLopHoc();
+        for (LoaiLopHocDTO c : listCate) {
+            System.out.println(c);
+        }
 
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
