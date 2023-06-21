@@ -5,8 +5,10 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
-import com.mycompany.yogacenterproject.dto.LopHocIMG;
+import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
+import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +16,8 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,17 +26,20 @@ import java.util.Locale;
  * @author Oalskad
  */
 public class LoaiLopHocDAO {
+
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
-        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc, hocPhi)"
-                + "VALUES(?,?,?)";
+        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[description], hocPhi)"
+                + "VALUES(?,?,?,?)";
         int row = 0;
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         stm.setString(1, loaiLopHocDTO.getMaLoaiLopHoc());
         stm.setString(2, loaiLopHocDTO.getTenLoaiLopHoc());
-        stm.setDouble(3, loaiLopHocDTO.getHocPhi());
+        stm.setString(3, loaiLopHocDTO.getDescription());
+        stm.setDouble(4, loaiLopHocDTO.getHocPhi());
 
         row = stm.executeUpdate();
 
@@ -122,8 +129,7 @@ public class LoaiLopHocDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
-                 hocPhi = rs.getDouble("hocPhi");
-                 
+                hocPhi = rs.getDouble("hocPhi");
 
 // Create a DecimalFormatSymbols instance for the default locale
                 DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
@@ -144,39 +150,41 @@ public class LoaiLopHocDAO {
     }
 
     // PRINT CLASSES' CATEGORIES
-    public List<LopHocIMG> getAllCategories() throws SQLException{
-          
-          List<LopHocIMG> list = new ArrayList();
-          String sql = "SELECT * FROM dbo.lopHocImg";
-          PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
-          ResultSet rs = stm.executeQuery();
-          while(rs.next()){
-                String maAnh = rs.getString("maAnh");
-                String tenAnh = rs.getString("tenAnh");
-                String URLAnh = rs.getString("URLAnh");
-                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
-                LopHocIMG e = new LopHocIMG();
-                e.setMaIMG(maAnh);
-                e.setTenIMG(tenAnh);
-                e.setUrlIMG(URLAnh);
-                e.setMaLoaiLopHoc(maLoaiLopHoc);
-                list.add(e);
-          }
-          return list;
-    }
-    public static void main(String[] args) throws SQLException {
-        LoaiLopHocDAO a = new LoaiLopHocDAO();
-        System.out.println(a.searchTenLoaiLopHoc("TYPE0001"));
+    public List<LopHocIMGDTO> getAllCategories() throws SQLException {
 
-//        System.out.println(a.readLoaiLopHoc());
+        List<LopHocIMGDTO> list = new ArrayList();
+        String sql = "SELECT * FROM dbo.lopHocImg";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            String maAnh = rs.getString("maAnh");
+            String tenAnh = rs.getString("tenAnh");
+            String URLAnh = rs.getString("image");
+            String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+            LopHocIMGDTO e = new LopHocIMGDTO();
+            e.setMaAnh(maAnh);
+            e.setTenAnh(tenAnh);
+            e.setImage(URLAnh);
+            e.setMaLoaiLopHoc(maLoaiLopHoc);
+            list.add(e);
+
+        }
+        return list;
+    }
+
+    public static void main(String[] args) throws SQLException, IOException {
+        LoaiLopHocDAO a = new LoaiLopHocDAO();
+
         System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
+
+////        System.out.println(a.readLoaiLopHoc());
+//        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
 //        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO("TYPE0003", " Iyengar yoga", b);
 //        a.createLoaiLopHoc(loaiLopHocDTO);
-      List<LopHocIMG> listIMG = a.getAllCategories();
-      for (LopHocIMG o: listIMG){
-            System.out.println(o.toString());
-      }
-      
+//      List<LopHocIMG> listIMG = a.getAllCategories();
+//      for (LopHocIMG o: listIMG){
+//            System.out.println(o.toString());
+//      }
     }
 }

@@ -309,7 +309,10 @@ public class LopHocDAO {
 
     public static void main(String[] args) {
         LopHocDAO a = new LopHocDAO();
-//        a.lastIDIndex();
+
+        
+        System.out.println(a.lastIDIndex());
+
 //        List<LopHocDTO> listLopHocTemp = a.listLopTemp();
 ////        Date aa = Date.valueOf(LocalDate.now());
 ////        LopHocDTO lopHocDTO = new LopHocDTO();

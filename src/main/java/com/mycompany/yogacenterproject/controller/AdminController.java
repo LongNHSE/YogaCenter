@@ -18,6 +18,7 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
@@ -135,14 +136,16 @@ public class AdminController extends HttpServlet {
     public void listSchedule(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<ScheduleTempDTO> listScheduleTemp = new ArrayList();
         LopHocDAO lopHocDAO = new LopHocDAO();
-
+        List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         listScheduleTemp = scheduleDAO.readScheduleTemp();
-
+        listScheduleTrainer = scheduleDAO.readScheduleTrainer();
         SlotDAO slotDAO = new SlotDAO();
 
         List<SlotDTO> listSlot = slotDAO.readSlot();
         request.setAttribute("listSlot", listSlot);
+        request.setAttribute("listScheduleTrainer", listScheduleTrainer);
+
         request.setAttribute("listScheduleTemp", listScheduleTemp);
         String weekRange = request.getParameter("weekRange");
         LocalDate today = LocalDate.now();

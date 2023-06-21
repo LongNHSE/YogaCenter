@@ -267,6 +267,7 @@
       <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
       <div class="row">
             <c:forEach items="${requestScope.listCate}" var="a">
+
                     <div class="col-xs-6 col-md-4">
                         <form>
                             <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
