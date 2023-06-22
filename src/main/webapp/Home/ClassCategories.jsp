@@ -217,7 +217,7 @@
             .quantity [class*="fa-"]:hover {
                 color: #455a64;
             }
-            .button {
+/*            .button {
                 position: relative;
                 overflow: hidden;
                 height: 3rem;
@@ -254,7 +254,51 @@
                     rgba(99, 88, 238, 1) 94.3%
                     );
                 transition: all 0.475s;
+            }*/
+            .button {
+              cursor: pointer;
+              position: relative;
+              padding: 10px 24px;
+              font-size: 18px;
+              color: rgb(193, 163, 98);
+              border: 2px solid rgb(193, 163, 98);
+              border-radius: 34px;
+              background-color: transparent;
+              font-weight: 600;
+              transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+              overflow: hidden;
             }
+
+            .button::before {
+              content: '';
+              position: absolute;
+              inset: 0;
+              margin: auto;
+              width: 50px;
+              height: 50px;
+              border-radius: inherit;
+              scale: 0;
+              z-index: -1;
+              background-color: rgb(193, 163, 98);
+              transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
+
+            .button:hover::before {
+              scale: 3;
+            }
+
+            .button:hover {
+              color: #212121;
+              scale: 1.1;
+              box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+            }
+
+            .button:active {
+              scale: 1;
+            }
+
+
+            
         </style>            
     </head>
     <body>
@@ -270,10 +314,10 @@
             <div class="row">
                 <c:forEach items="${requestScope.listCate}" var="a">
                     <div class="col-xs-6 col-md-4">
-                        <form>
+<!--                        <form action="<%=url%>/ImageController}">-->
                             <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
                                 <c:forEach items="${a.image}" var ="imageData">
-                                    <a href="ClassController">
+                                    <a href="ClassController?returnID=${a.getMaLoaiLopHoc()}">
                                         <c:if test="${not empty imageData.tenAnh and imageData.tenAnh.equalsIgnoreCase('THUMBNAIL')}">
                                             <img src="data:image/jpeg;base64,${imageData.image}" alt="" style="width: 100%; height: 100%;">
                                         </c:if>
@@ -282,15 +326,28 @@
                                 </c:forEach>
                                 <div class="caption text-center">
                                     <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenLoaiLopHoc()}</a></h2>
-                                    <span class="price"></span>
+                                    <span class="price"></span
                                     <input type="hidden" value="${a.getMaLoaiLopHoc()}" name="returnID">
-                                    <button class="button " type="submit" name="action" value="checkID">
+<!--                                          <button class="button" type="submit" name="action" value="showDetails"></button>
+                                              <span class="button-content">DETAILS</span>
+                                          </button>  
+-->
+                                    <form action="<%=url%>/ClassController" method="GET">
+                                      <input type="hidden" name="returnID" value="${a.getMaLoaiLopHoc()}" />
+                                      <input type="hidden" name="action" value="showDetails" />
+                                      <button class="button" type="submit">Details</button>
+                                    </form>
+
+
+                                      <!-- Pass the class ID as a hidden input field -->
+                                      <!--<input type="hidden" name="classID" value="${classID}" />-->
+<!--                                    <button class="button " type="submit" name="action" value="checkID">
                                         <span class="button-content">DETAILS</span>
-                                    </button>
-                                    ${error}<!-- LAM THEO MESSAGE -->
+                                    </button>-->
+<!--                                    ${error} LAM THEO MESSAGE -->
                                 </div>
                             </div>
-                        </form>
+<!--                        </form>-->
                     </div>       
           </c:forEach>
       </div>      
