@@ -331,7 +331,7 @@ public class HocVienDAO {
         HocVienDTO hocVienDTO = new HocVienDTO();
 
         DateUtils dateUtils= new DateUtils();
-        hocVienDTO = hocVienDAO.login("admin", "12345");
+//        hocVienDTO = hocVienDAO.login("huyhuy", "12345");
 //        hocVienDTO = hocVienDAO.searchHocVienById("HV0002");
 //        hocVienDAO.updateHocVien(hocVienDTO);
 
@@ -350,21 +350,21 @@ public class HocVienDAO {
 //        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, hocVienDAO.lastIDIndex()+1 );
 //            Date date=Date.valueOf("2004-09-11");
 //            LocalDate a=dateUtils.asLocalDate(date);
-//            hocVienDTO.setTen("Long");
+//            hocVienDTO.setTen("adminy");
 //            hocVienDTO.setPsw("12345");
 //            hocVienDTO.setPhone("123");
 //            hocVienDTO.setMaLopHoc(null);
 //            hocVienDTO.setMaLoaiTK("HOCVIEN");
-//            hocVienDTO.setMaHV("HV0004");
-//            hocVienDTO.setHo("Nguyen");
+//            hocVienDTO.setMaHV(AUTO_HOCVIEN_ID);
+//            hocVienDTO.setHo("Hoooas");
 //            hocVienDTO.setGender("Male");
-//            hocVienDTO.setEmail("huylong2");
+//            hocVienDTO.setEmail("namaste");
 //            hocVienDTO.setDob(a);
 //            hocVienDTO.setUsername("huyhuy");
 //            hocVienDAO.addHocVien(hocVienDTO);
 
 //        System.out.println(AUTO_HOCVIEN_ID);
-//        HocVienDTO login = hocVienDAO.login("HV001", "abcd1234");
+//        HocVienDTO login = hocVienDAO.login("huyhuy", "12345");
 //        int a = hocVienDAO.lastIDIndex();
 //        System.out.println(a);
     }
