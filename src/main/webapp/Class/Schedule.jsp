@@ -4,6 +4,7 @@
     Author     : Oalskad
 --%>
 
+<%@page import="com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -60,9 +61,9 @@
 
 
 
-    
+
 </head>
-  
+
 <div class="container">
     <form action="ScheduleController" method="post">
         <select name="weekRange" id="weekRange" class="weekRange unaffected-style">
@@ -116,9 +117,11 @@
                     <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
                         <% for (int day = 0; day < 7; day++) {
                                 boolean hasSchedule = false;
+                               
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
+                             
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                 for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
                                     if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
@@ -128,7 +131,8 @@
                                         break;
 
                                     }
-                                }%>
+                                }
+                        %>
 
 
 
@@ -139,9 +143,10 @@
                         <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
 
                         <% }%>
+                        
                     </td>
                     <%  calendar.add(Calendar.DAY_OF_WEEK, 1);
-                                } %>
+                        } %>
 
 
 
@@ -296,27 +301,27 @@
 <script src="../js/owl.carousel.js"></script>
 <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 <script>
-      $('#myCarousel').carousel({
-          interval: false
-      });
+    $('#myCarousel').carousel({
+        interval: false
+    });
 
-      //scroll slides on swipe for touch enabled devices
+    //scroll slides on swipe for touch enabled devices
 
-      $("#myCarousel").on("touchstart", function (event) {
+    $("#myCarousel").on("touchstart", function (event) {
 
-          var yClick = event.originalEvent.touches[0].pageY;
-          $(this).one("touchmove", function (event) {
+        var yClick = event.originalEvent.touches[0].pageY;
+        $(this).one("touchmove", function (event) {
 
-              var yMove = event.originalEvent.touches[0].pageY;
-              if (Math.floor(yClick - yMove) > 1) {
-                  $(".carousel").carousel('next');
-              } else if (Math.floor(yClick - yMove) < -1) {
-                  $(".carousel").carousel('prev');
-              }
-          });
-          $(".carousel").on("touchend", function () {
-              $(this).off("touchmove");
-          });
-      });
+            var yMove = event.originalEvent.touches[0].pageY;
+            if (Math.floor(yClick - yMove) > 1) {
+                $(".carousel").carousel('next');
+            } else if (Math.floor(yClick - yMove) < -1) {
+                $(".carousel").carousel('prev');
+            }
+        });
+        $(".carousel").on("touchend", function () {
+            $(this).off("touchmove");
+        });
+    });
 </script>    
 </html>

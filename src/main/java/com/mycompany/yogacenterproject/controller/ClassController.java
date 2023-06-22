@@ -8,6 +8,7 @@ import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
+import com.mycompany.yogacenterproject.dao.LopHocImageDAO;
 import com.mycompany.yogacenterproject.dao.PhongHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
@@ -18,7 +19,7 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
-import com.mycompany.yogacenterproject.dto.LopHocIMG;
+import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
@@ -32,11 +33,13 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +49,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Oalskad
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class ClassController extends HttpServlet {
 
     /**
@@ -88,17 +94,75 @@ public class ClassController extends HttpServlet {
                 showClass(request, response);
             } else if (action.equals("checkID")) {
                 checkAvailability(request, response);
+            } else if (action.equals("Class category information")) {
+
             }
 
-//        if (action.equals("CreateClassType")) {
-//            createLoaiLopHoc(request, response);
-//
-//        }
+            if (action.equals("CreateClassType")) {
+                createLoaiLopHoc(request, response);
+                insertImg(request, response);
+                insertThumbImg(request, response);
+
+            }
 
             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
 
         }
+
+    }
+
+    //ADD Image danh cho Create Class Type
+    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        List<byte[]> imageList = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+
+        //HOCVIEN CONSTRUCTOR
+        String maAnh = AUTO_IMG_ID;
+        lopHocImageDTO.setMaAnh(maAnh);
+        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+        lopHocImageDTO.setTenAnh("THUMBNAIL");
+        
+        
+        String imageThumbArray = request.getParameter("Thumbnails");
+        List<String> listAnhThumb = new ArrayList<>();
+        List<byte[]> imageListThumb = new ArrayList<>();
+     
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageListThumb.add(imageData);
+         
+       
+        lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+    }
+
+    private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        List<byte[]> imageList = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+
+        //HOCVIEN CONSTRUCTOR
+        String maAnh = AUTO_IMG_ID;
+        lopHocImageDTO.setMaAnh(maAnh);
+        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+
+        String[] imageArray = request.getParameter("listImage").split("\\s+");
+        List<String> listAnh = new ArrayList<>();
+        for (String a : imageArray) {
+            String base64String = a.substring(a.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageList.add(imageData);
+            listAnh.add(a);
+        }
+        lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
 
     }
 
@@ -146,7 +210,7 @@ public class ClassController extends HttpServlet {
             hoaDonDAO.createHoaDonDTO(hoaDonDTO);
             LopHocDAO lopHocDAO = new LopHocDAO();
             lopHocDAO.increase(maLopHoc);
-            
+
             createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc);
 
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
@@ -178,7 +242,7 @@ public class ClassController extends HttpServlet {
             loaiLopHocDTO.setHocPhi(hocPhi);
             loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-
+            loaiLopHocDTO.setDescription(request.getParameter("description").trim());
             loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
             response.sendRedirect("Admin/Class/ClassController.jsp");
         } else {
@@ -264,6 +328,7 @@ public class ClassController extends HttpServlet {
         TrainerDAO trainerDAO = new TrainerDAO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
+        scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
         response.sendRedirect("Admin/Class/ClassController.jsp");
 
@@ -278,7 +343,7 @@ public class ClassController extends HttpServlet {
 
         scheduleHvDTO.setMaHV(maHV);
         scheduleHvDTO.setMaLopHoc(maLopHoc);
-        
+
         scheduleDAO.createScheduleHV(maHV, maLopHoc);
 
         RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
@@ -287,9 +352,9 @@ public class ClassController extends HttpServlet {
 
     // Show Class
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        List<LopHocIMG> listCate = new ArrayList<>();
+        List<LoaiLopHocDTO> listCate = new ArrayList<>();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        listCate = loaiLopHocDAO.getAllCategories();
+        listCate = loaiLopHocDAO.getAllLoaiLopHoc();
         request.setAttribute("listCate", listCate);
         RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
         rd.forward(request, response);
@@ -313,10 +378,10 @@ public class ClassController extends HttpServlet {
                 dangKyLopHoc(request, response, transfer);
             }
         }
-                error = "Classes are fully reserved.";
-                request.setAttribute("error", error);
-                RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-                rd.forward(request, response);
+        error = "Classes are fully reserved.";
+        request.setAttribute("error", error);
+        RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+        rd.forward(request, response);
 
     }
 
@@ -376,6 +441,10 @@ public class ClassController extends HttpServlet {
         }
 
         request.setAttribute("weekRanges", weekRanges);
+
+    }
+
+    public void createClassInformation(HttpServletRequest request, HttpServletResponse response) {
 
     }
 

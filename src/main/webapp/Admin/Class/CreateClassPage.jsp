@@ -201,38 +201,38 @@
                 checkDateElement.textContent = '';
             }
         }
-    //        function checkAvailability() {
-    //            var slot = document.getElementById("Slot").value;
-    //            var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
-    //            var selectedDays = Array.from(checkboxes).map(function (checkbox) {
-    //                return checkbox.value;
-    //
-    //            });
-    //
-    //            if (slot !== '' && selectedDays.length == 2) {
-    //            var xhr = new XMLHttpRequest();
-    //                    xhr.open('GET', 'Admin/Class/checkAvailability.jsp?slot=' + slot + "&weekday=" + selectedDays.join(','), true);
-    //                    xhr.onreadystatechange = function () {
-    //                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-    //                    var checkRoomElement = document.getElementById('checkRoom');
-    //                            var availabilityElement = responseXml.querySelector('check');
-    //                            if (availabilityElement) {
-    //                    var availability = availabilityElement.textContent === 'true';
-    //                            // Now you can use the 'availability' boolean as needed
-    //                            if (availability) {
-    //                    console.log('The room is available.');
-    //                    } else {
-    //                    console.log('The room is not available.');
-    //                    }
-    //
-    //                    }
-    //                    };
-    //                            xhr.send();
-    //                    } else {
-    //            var checkRoomElement = document.getElementById('checkRoom');
-    //            checkRoomElement.textContent = '';
-    //            }
-    //        }
+        //        function checkAvailability() {
+        //            var slot = document.getElementById("Slot").value;
+        //            var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
+        //            var selectedDays = Array.from(checkboxes).map(function (checkbox) {
+        //                return checkbox.value;
+        //
+        //            });
+        //
+        //            if (slot !== '' && selectedDays.length == 2) {
+        //            var xhr = new XMLHttpRequest();
+        //                    xhr.open('GET', 'Admin/Class/checkAvailability.jsp?slot=' + slot + "&weekday=" + selectedDays.join(','), true);
+        //                    xhr.onreadystatechange = function () {
+        //                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+        //                    var checkRoomElement = document.getElementById('checkRoom');
+        //                            var availabilityElement = responseXml.querySelector('check');
+        //                            if (availabilityElement) {
+        //                    var availability = availabilityElement.textContent === 'true';
+        //                            // Now you can use the 'availability' boolean as needed
+        //                            if (availability) {
+        //                    console.log('The room is available.');
+        //                    } else {
+        //                    console.log('The room is not available.');
+        //                    }
+        //
+        //                    }
+        //                    };
+        //                            xhr.send();
+        //                    } else {
+        //            var checkRoomElement = document.getElementById('checkRoom');
+        //            checkRoomElement.textContent = '';
+        //            }
+        //        }
         function getHocPhi(maLoaiLopHoc) {
             if (maLoaiLopHoc !== '') {
                 var xhr = new XMLHttpRequest();
