@@ -56,7 +56,7 @@
                         <button class="btn bkg">Sign In</button>                      
                         <input type="hidden" id="thisField" name="action" value="login">
                         <br>
-                        <a href="<%=url%>/Admin/adminLogin.jsp">Sign in as an Admin</a>
+                        <a href="<%=url%>/Authentication/adminLogin.jsp">Sign in as an Admin</a>
                     </form>
                     
                 </div>

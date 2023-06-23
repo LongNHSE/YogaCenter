@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.filter;
 
+import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import java.io.IOException;
 
@@ -46,21 +47,29 @@ public class Authentication implements Filter {
 //		this.context.log("Requested Resource::"+uri);
 
         HttpSession session = req.getSession(false);
-
+        AdminDTO adminDTO = null;
         HocVienDTO hocVienDTO = null;
         try {
+            adminDTO = (AdminDTO) session.getAttribute("adminDTO");
             hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
             this.context.log("Run to here and hocVienDTO: " + hocVienDTO);
+            this.context.log("Run to here and adminDTO: " + adminDTO);
         } catch (Exception ex) {
             hocVienDTO = null;
+            adminDTO=null;
         }
 
-        if (hocVienDTO == null && uri.contains("Admin")) {
-            this.context.log("Unauthorized access request");
-            res.sendRedirect("/YogaCenter/Authentication/signin.jsp");
-        } else {
+        if (adminDTO != null) {
             // pass the request along the filter chain
             chain.doFilter(request, response);
+        } else {
+            if (hocVienDTO == null && uri.contains("Admin")) {
+                this.context.log("Unauthorized access request");
+                res.sendRedirect("/YogaCenter/Authentication/signin.jsp");
+            } else {
+                // pass the request along the filter chain
+                chain.doFilter(request, response);
+            }
         }
     }
 

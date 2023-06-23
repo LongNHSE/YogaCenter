@@ -254,7 +254,7 @@ public class LoginController extends HttpServlet {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO = adminDAO.login(username, password);
         if (adminDTO == null) {
-            request.getRequestDispatcher("/Admin/adminLogin.jsp").forward(request, response);
+            request.getRequestDispatcher("/Authentication/adminLogin.jsp").forward(request, response);
 
         } else {
             session.setAttribute("adminDTO", adminDTO);
