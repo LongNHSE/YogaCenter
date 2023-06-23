@@ -78,7 +78,10 @@ public class LoginController extends HttpServlet {
                 newPass(request, response);
             } else if (action.equals("logout")) {
                 logout(request, response);
-            } else {
+            } 
+            else if (action.equals("adminLogout")) {
+                adminLogout(request, response);
+            }else {
 
                 signup(request, response);
             }
@@ -180,7 +183,7 @@ public class LoginController extends HttpServlet {
             LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
 
             hocVienDTO.setDob(dob);
-            
+
             hocVienDAO.addHocVien(hocVienDTO);
             RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
             rd.forward(request, response);
@@ -213,8 +216,7 @@ public class LoginController extends HttpServlet {
                 response.sendRedirect("../home.jsp");
             }
         }
-      }
-    
+    }
 
     //RESET PASSWORD
     public void resetPsw(HttpServletRequest request, HttpServletResponse response) throws EmailException, MalformedURLException, ServletException, IOException {
@@ -241,8 +243,7 @@ public class LoginController extends HttpServlet {
         String newPass = request.getParameter("newPass");
         HocVienDAO hocVienDAO = new HocVienDAO();
         hocVienDAO.changePsw(newPass, email);
-        RequestDispatcher rd = request.getRequestDispatcher("/Authentication/success.jsp");
-        rd.forward(request, response);
+        response.sendRedirect("../home.jsp");
     }
 
     //LOGIN CUA ADMIN 
@@ -262,16 +263,28 @@ public class LoginController extends HttpServlet {
             session.setMaxInactiveInterval(300);
 
             request.getRequestDispatcher("/Admin/AdminHomepage.jsp").forward(request, response);
+           
         }
     }
+//
 
+    public void adminLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("adminDTO");
+        String referer = request.getHeader("Referer");
+        if (referer == null || referer.isEmpty()) {
+            referer = "Admin/adminLogin.jsp";
+        }
+         response.sendRedirect("Admin/adminLogin.jsp");
+    }
 //    Logout
+
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("hocVienDTO");
         String referer = request.getHeader("Referer");
-        if(referer == null || referer.isEmpty()){
-              referer = "../home.jsp";
+        if (referer == null || referer.isEmpty()) {
+            referer = "../home.jsp";
         }
         response.sendRedirect(referer);
     }

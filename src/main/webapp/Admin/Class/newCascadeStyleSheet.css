@@ -1,5 +1,5 @@
 nav {
-    position: absolute;
+    position: relative;
     height: 100%;
     width: 250px;
 
@@ -50,11 +50,23 @@ nav ul li ul li a:hover {
 
     border-left: 4px solid #3498db;
 }
-#Controller{
-    height: 100%;
+.Controller{
+    display: flex;
+    position: relative;
 }
+
 #active-element{
     background: #1d4f71;
     color: #fff;
 
 }
+.wrapper{
+    position:fixed;
+    height: 100%;
+    color: #fff;
+}
+.Controller .content{
+  margin-left:250px; 
+}
+
+
