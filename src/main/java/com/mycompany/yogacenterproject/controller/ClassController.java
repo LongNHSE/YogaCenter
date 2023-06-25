@@ -191,7 +191,7 @@ public class ClassController extends HttpServlet {
     }
 
     //DANG KY LOP 
-    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response, String maLopHoc) throws ServletException, IOException {
+    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response, String maLopHoc, String maSlot) throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
 
@@ -216,7 +216,7 @@ public class ClassController extends HttpServlet {
             LopHocDAO lopHocDAO = new LopHocDAO();
             lopHocDAO.increase(maLopHoc);
 
-            createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc);
+            createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc, maSlot);
 
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
             rd.forward(request, response);
@@ -341,13 +341,14 @@ public class ClassController extends HttpServlet {
 
     //Tao ScheduleHv
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc) throws SQLException, IOException, ServletException {
+    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc, String maSlot) throws SQLException, IOException, ServletException {
 
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         ScheduleHvDTO scheduleHvDTO = new ScheduleHvDTO();
-
+        
         scheduleHvDTO.setMaHV(maHV);
         scheduleHvDTO.setMaLopHoc(maLopHoc);
+        scheduleHvDTO.setMaSlot(maSlot);
 
         scheduleDAO.createScheduleHV(maHV, maLopHoc);
 
@@ -376,14 +377,15 @@ public class ClassController extends HttpServlet {
     public void checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         LopHocDAO LopHocDAO = new LopHocDAO();
         String maLoaiLopHoc = request.getParameter("returnID");
+        
         List<LopHocDTO> list = LopHocDAO.searchByType(maLoaiLopHoc);
         String error = "";
-        String transfer = "";
+        String maSlot = request.getParameter("returnSlotID");
         for (LopHocDTO x : list) {
             
                 if (x.getSoLuongHvHienTai() < x.getSoLuongHV()) {
-                    transfer = x.getMaLopHoc();
-                    dangKyLopHoc(request, response, transfer);
+                    maLoaiLopHoc = x.getMaLopHoc();
+                    dangKyLopHoc(request, response, maLoaiLopHoc, maSlot);
                 }
             
         }
