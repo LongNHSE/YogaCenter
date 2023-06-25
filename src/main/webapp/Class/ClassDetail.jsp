@@ -510,7 +510,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
                                     <div class="box">
-                                        <select>
+                                        <select name="maLopHoc">
                                             <option  value=""> Please choose Slot</option>
                                             <c:forEach items="${requestScope.listLopHocDTO}" var="lopHocDTO" varStatus="status" >
                                                 <option name="maLopHoc" value="${lopHocDTO.maLopHoc}">
