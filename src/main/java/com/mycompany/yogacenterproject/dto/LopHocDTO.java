@@ -48,6 +48,8 @@ public class LopHocDTO {
 
     private String[] thu;
 
+
+
     public Date getNgayBatDau() {
         return ngayBatDau;
     }
@@ -144,7 +146,9 @@ public class LopHocDTO {
 
     @Override
     public String toString() {
+
         return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
+
     }
 
    

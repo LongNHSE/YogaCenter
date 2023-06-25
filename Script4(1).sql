@@ -54,7 +54,8 @@ CREATE TABLE Trainer(
 	[soNgayNghi] INTEGER NOT NULL,
 	[status] BIT NOT NULL,
 	[trainerType] VARCHAR(255) NOT NULL,
-	[maLoaiTK] NVARCHAR(10) NOT NULL
+	[maLoaiTK] NVARCHAR(10) NOT NULL,
+	[gender] NVARCHAR(10) NOT NULL
 	)
 
 CREATE TABLE lopHoc(

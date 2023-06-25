@@ -283,7 +283,8 @@ public class LopHocDAO {
     }
 
     public List<LopHocDTO> showClassesByType(String maLoaiLopHoc) {
-        String sql = "Select ScheduleTrainer.maSlot,maTrainer,ScheduleTrainer.maLopHoc,slot.timeStart,slot.timeEnd  from lopHoc\n"
+        String sql = "Select ScheduleTrainer.maSlot,maTrainer,ScheduleTrainer.maLopHoc,"
+                + "CAST(slot.timeStart AS VARCHAR(5)) AS timeStart ,CAST(slot.timeEnd AS VARCHAR(5)) AS timeEnd   from lopHoc\n"
                 + "inner join ScheduleTrainer on ScheduleTrainer.maLopHoc = lopHoc.maLopHoc\n"
                 + "inner join slot on slot.maSlot = ScheduleTrainer.maSlot\n"
                 + "Where maLoaiLopHoc = ?\n"
@@ -433,7 +434,11 @@ public class LopHocDAO {
         return count;
     }
 
-    public static void main(String[] args) throws SQLException {
+
+  
+
+    public static void main(String[] args) {
+
         LopHocDAO a = new LopHocDAO();
  
 
@@ -442,7 +447,28 @@ public class LopHocDAO {
 //        System.out.println(Math.ceil((a.countRecord() + 5 - 1) / 5));
 //        double dividend = 9.0;
 //        double divisor = 5.0;
-//
+
+
+//        double result = Math.ceil(dividend / divisor);
+//        System.out.println(result);
+        List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0003");
+//////        Date aa = Date.valueOf(LocalDate.now());
+//////        LopHocDTO lopHocDTO = new LopHocDTO();
+//////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
+//////        lopHocDTO.setMaLopHoc("TYPE0001");
+//////        lopHocDTO.setMaRoom("RO0001");
+//////        lopHocDTO.setNgayBatDau(aa);
+////
+//////        a.addClass(lopHocDTO);
+        for (LopHocDTO x : listLopHocTemp) {
+            System.out.println(x);
+        }
+
+//        List<String> stringList = new ArrayList<>();
+//        stringList.add("Hello");
+//        stringList.add("World");
+//        stringList.add("OpenAI");
+
 //        double result = Math.ceil(dividend / divisor);
 //        System.out.println(result);
 //        List<LopHocDTO> listLopHocTemp = a.readListClassRecord(6, 5);
@@ -452,10 +478,14 @@ public class LopHocDAO {
 ////        lopHocDTO.setMaLopHoc("TYPE0001");
 ////        lopHocDTO.setMaRoom("RO0001");
 ////        lopHocDTO.setNgayBatDau(aa);
+
 //
-////        a.addClass(lopHocDTO);
-//        for (LopHocDTO x : listLopHocTemp) {
-//            System.out.println(x);
+//        String[] stringArray = stringList.toArray(new String[0]);
+//
+//// Print the elements of the string array
+//        for (String str : stringArray) {
+//            System.out.print(str);
+//            System.out.println(stringArray.length);
 //        }
 //        System.out.println(a.searchClassById("LOP0003"));
 //        List<LopHocDTO> list = a.searchByType("TYPE0001");

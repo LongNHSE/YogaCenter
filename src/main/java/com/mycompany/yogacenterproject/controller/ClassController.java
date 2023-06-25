@@ -96,11 +96,14 @@ public class ClassController extends HttpServlet {
                 payment(request, response);
             } else if (action.equals("Class category information")) {
 
-            }else if(action.equals("Register")){
+            } else if (action.equals("Register")) {
                 checkAvailability(request, response);
-            }else if(action.equals("showDetails")){
-                  showDetails(request, response);
-           
+//                String maLoaiLopHoc = request.getParameter("returnID");
+//                out.print(maLoaiLopHoc);
+//                log(maLoaiLopHoc);
+            } else if (action.equals("showDetails")) {
+                showDetails(request, response);
+
             } else if (action.equals("CreateClassType")) {
 //                out.print(action);
                 createLoaiLopHoc(request, response);
@@ -112,7 +115,7 @@ public class ClassController extends HttpServlet {
                 classDetail(request, response);
 
             }
-             /* TODO output your page here. You may use following sample code. */
+            /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
 
         }
@@ -281,7 +284,9 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
-        listTrainer = trainerDAO.readListTrainerByTypeAndStatus((lopHocDAO.IDLoaiLopHoc(maLopHoc)));
+
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(lopHocDAO.IDLoaiLopHoc(maLopHoc));
+
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
@@ -369,10 +374,11 @@ public class ClassController extends HttpServlet {
             e.printStackTrace();
         }
     }
- 
+
 
     public boolean checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         LopHocDAO LopHocDAO = new LopHocDAO();
+
         String maLopHoc = request.getParameter("maLopHoc");
         
         LopHocDTO list = LopHocDAO.searchClassById(maLopHoc);
@@ -382,9 +388,8 @@ public class ClassController extends HttpServlet {
                     return true;
                 }
             return false;
+
     }
-    
-        
 
     public void checkPhongTrong(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 
@@ -447,17 +452,23 @@ public class ClassController extends HttpServlet {
 
     
 
+
 //    Show classes' details
+
     public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String cid = request.getParameter("returnID");
+        LopHocDAO lopHocDAO = new LopHocDAO();
 //          Get class information
         LoaiLopHocDAO dao = new LoaiLopHocDAO();
         LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
+//        LopHocDTO lopHocDTO = new LopHocDTO();
+        List<LopHocDTO> listLopHocDTO = lopHocDAO.showClassesByType(cid);
         request.setAttribute("details", classDetails);
 //          Get class images
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        request.setAttribute("listLopHocDTO", listLopHocDTO);
         RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
         rd.forward(request, response);
     }
