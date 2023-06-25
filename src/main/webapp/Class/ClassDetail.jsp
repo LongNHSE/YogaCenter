@@ -15,12 +15,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-            <!--CSS-->
-            <%@ include file="../Components/CSSComponent.jsp" %>
-            <!--Javascript-->
-            <%@ include file="../Components/JsComponent.jsp" %>
-            <style type="text/css">
-                   body{
+        <!--CSS-->
+        <%@ include file="../Components/CSSComponent.jsp" %>
+        <!--Javascript-->
+        <%@ include file="../Components/JsComponent.jsp" %>
+        <style type="text/css">
+            body{
                 background:#eee;
                 font-family: "Arial Unicode MS", Arial, sans-serif;
             }
@@ -275,7 +275,7 @@
             }
 
             .profile-message ul {
-              list-style: none ;  
+                list-style: none ;
             }
 
             .product-deatil .certified {
@@ -347,130 +347,201 @@
                 height:40px;
             }
             .button {
-            cursor: pointer;
-            position: relative;
-            padding: 10px 24px;
-            font-size: 18px;
-            color: rgb(193, 163, 98);
-            border: 2px solid rgb(193, 163, 98);
-            border-radius: 34px;
-            background-color: transparent;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-            overflow: hidden;
-          }
+                cursor: pointer;
+                position: relative;
+                padding: 10px 24px;
+                font-size: 18px;
+                color: rgb(193, 163, 98);
+                border: 2px solid rgb(193, 163, 98);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+                overflow: hidden;
+            }
 
-          .button::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            margin: auto;
-            width: 50px;
-            height: 50px;
-            border-radius: inherit;
-            scale: 0;
-            z-index: -1;
-            background-color: rgb(193, 163, 98);
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-          }
+            .button::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                border-radius: inherit;
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(193, 163, 98);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
 
-          .button:hover::before {
-            scale: 3.5;
-          }
+            .button:hover::before {
+                scale: 3.5;
+            }
 
-          .button:hover {
-            color: #212121;
-            scale: 1.1;
-            box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
-          }
+            .button:hover {
+                color: #212121;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+            }
 
-          .button:active {
-            scale: 1;
-          }
+            .button:active {
+                scale: 1;
+            }
 
 
+            .box {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
 
-                </style>            
+            .box select {
+                background-color: rgb(193, 163, 98);
+                color: white;
+                padding: 12px;
+                padding-top: 20px;
+                width: 350px;
+                border: none;
+                font-size: 20px;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+                outline: none;
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                appearance: none;
+
+            }
+
+            .box::before {
+                content: "\f13a";
+                font-family: FontAwesome;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 20%;
+                height: 100%;
+                text-align: center;
+                font-size: 28px;
+                line-height: 75px;
+                color: rgba(255, 255, 255, 0.5);
+                background-color: rgba(255, 255, 255, 0.1);
+                pointer-events: none;
+            }
+
+            .box:hover::before {
+                color: rgba(255, 255, 255, 0.6);
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .box select option {
+                padding: 30px;
+            }
+            .box select option p {
+                color: greenyellow;
+                font-size: 16px
+            }
+
+        </style>            
     </head>
-    
+
     <body>
-       <!--navbar : Start-->
-            <jsp:include page="../Components/headerComponent.jsp" />       
-       <!--navbar: End-->
-      <div class="container">
+        <!--navbar : Start-->
+        <jsp:include page="../Components/headerComponent.jsp" />       
+        <!--navbar: End-->
+        <div class="container">
 
-      <div class="product-content product-wrap clearfix product-deatil">
-      <div class="row">
+            <div class="product-content product-wrap clearfix product-deatil">
+                <div class="row">
 
-            <div class="col-md-5 col-sm-12 col-xs-12">
-                  <div class="product-image">
-                        <div id="myCarousel-2" class="carousel slide">
-                            <ol class="carousel-indicators">
-                                <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
-                                    <li data-target="#myCarousel-2" data-slide-to="${status.index}" class="${status.index == 0 ? 'active' : ''}"></li>
-                                </c:forEach>
-                            </ol>
-                            <div class="carousel-inner">
-                                <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
-                                    <div class="item ${status.index == 0 ? 'active' : ''}">
-                                        <img src="data:image/jpeg;base64,${imageData.image}" class="img-responsive" alt="" style="width: 100%; height: 400px;">
-                                    </div>
-                                </c:forEach>
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="product-image">
+                            <div id="myCarousel-2" class="carousel slide">
+                                <ol class="carousel-indicators">
+                                    <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
+                                        <li data-target="#myCarousel-2" data-slide-to="${status.index}" class="${status.index == 0 ? 'active' : ''}"></li>
+                                        </c:forEach>
+                                </ol>
+                                <div class="carousel-inner">
+                                    <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
+                                        <div class="item ${status.index == 0 ? 'active' : ''}">
+                                            <img src="data:image/jpeg;base64,${imageData.image}" class="img-responsive" alt="" style="width: 100%; height: 400px;">
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                                <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                <a class="right carousel-control" href="#myCarousel-2" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                            </div>            
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                        <h1 class="name">
+                            ${requestScope.details.getTenLoaiLopHoc()}
+                        </h1>
+                        <hr/>
+                        <h3 class="price-container">
+                            <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
+                            ${formattedHocPhi}
+                        </h3>
+                        <hr/>
+                        <div class="description description-tabs">
+                            <h3 href="#more-information" data-toggle="tab" class="no-margin">Class descriptions</h3>
+                            <div id="myTabContent" class="tab-content">
+                                <div class="" id="">
+                                    <span>
+                                        ${requestScope.details.getDescription()}
+                                    </span>
+                                </div>
                             </div>
-                            <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-                            <a class="right carousel-control" href="#myCarousel-2" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-                        </div>            
-                  </div>
-            </div>
+                        </div>
+                        <hr/>
 
+                        <form action="<%=url%>/ClassController">
+                            <div class="row">
 
+                                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
+                                    <div class="box">
+                                        <select>
+                                            <option  value=""> Please choose Slot</option>
+                                            <c:forEach items="${requestScope.listLopHocDTO}" var="lopHocDTO" varStatus="status" >
+                                                <option name="maLopHoc" value="${lopHocDTO.maLopHoc}">
+                                                ${lopHocDTO.maLopHoc}:  ${lopHocDTO.timeStart}-${lopHocDTO.timeEnd}, ${lopHocDTO.thuList}
+                                                </option>                                           
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
+                                </div>
 
+                                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+                                    <button class="button" type="submit" name="action" value="Register">
+                                        Register now!
+                                    </button>
+                                    <input type="hidden" name="returnID" value="${details.getMaLoaiLopHoc()}">
+                                </div>
 
+                            </div>
+                        </form>
 
-
-            
-      <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
-            <h1 class="name">
-                  ${requestScope.details.getTenLoaiLopHoc()}
-            </h1>
-      <hr/>
-      <h3 class="price-container">
-          <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
-          ${formattedHocPhi}
-      </h3>
-      <hr/>
-      <div class="description description-tabs">
-             <h3 href="#more-information" data-toggle="tab" class="no-margin">Class descriptions</h3>
-            <div id="myTabContent" class="tab-content">
-                  <div class="" id="">
-                        <span>
-                              ${requestScope.details.getDescription()}
-                        </span>
-                  </div>
-            </div>
-      </div>
-      <hr/>
-      
-            <div class="row">
-                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
-                    <button class="button">
-                        Register now!
-                    </button>
+                    </div>
                 </div>
+
             </div>
 
-      </div>
-      </div>
-                        
-      </div>
+        </div>
 
-      </div>
-                        
-                      
-                        
-                        
+
+
+
     </body>
-   
+
 </html>

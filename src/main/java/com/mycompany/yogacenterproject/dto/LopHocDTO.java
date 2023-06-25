@@ -17,10 +17,8 @@ public class LopHocDTO {
     private String maSlot;
     private String maRoom;
     private int soLuongHvHienTai;
-
-    private Date ngayBatDau;
+    private String timeStart, timeEnd;
     private List<String> thuList;
-    private String[] thu;
 
     public List<String> getThuList() {
         return thuList;
@@ -29,6 +27,28 @@ public class LopHocDTO {
     public void setThuList(List<String> thuList) {
         this.thuList = thuList;
     }
+    
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    private Date ngayBatDau;
+
+    private String[] thu;
+
+
 
     public Date getNgayBatDau() {
         return ngayBatDau;
@@ -126,7 +146,9 @@ public class LopHocDTO {
 
     @Override
     public String toString() {
-        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", ngayBatDau=" + ngayBatDau + ", thuList=" + thuList + ", thu=" + thu + '}';
+
+        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
+
     }
 
    

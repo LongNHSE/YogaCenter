@@ -68,7 +68,6 @@ public class ClassController extends HttpServlet {
         String maLopHoc = "";
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
         try {
             PrintWriter out = response.getWriter();
             if (action.equals("CreateClassPage")) {
@@ -93,12 +92,18 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("checkID")) {
-                checkAvailability(request, response);
+            } else if (action.equals("payment")) {
+                payment(request, response);
             } else if (action.equals("Class category information")) {
 
+            } else if (action.equals("Register")) {
+                checkAvailability(request, response);
+//                String maLoaiLopHoc = request.getParameter("returnID");
+//                out.print(maLoaiLopHoc);
+//                log(maLoaiLopHoc);
             } else if (action.equals("showDetails")) {
-                showDetais(request, response);
+                showDetails(request, response);
+
             } else if (action.equals("CreateClassType")) {
 //                out.print(action);
                 createLoaiLopHoc(request, response);
@@ -110,7 +115,7 @@ public class ClassController extends HttpServlet {
                 classDetail(request, response);
 
             }
-             /* TODO output your page here. You may use following sample code. */
+            /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
 
         }
@@ -189,7 +194,7 @@ public class ClassController extends HttpServlet {
     }
 
     //DANG KY LOP 
-    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response, String maLopHoc) throws ServletException, IOException {
+    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response, String maLopHoc, String maSlot) throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
 
@@ -214,7 +219,7 @@ public class ClassController extends HttpServlet {
             LopHocDAO lopHocDAO = new LopHocDAO();
             lopHocDAO.increase(maLopHoc);
 
-            createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc);
+            createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc, maSlot);
 
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
             rd.forward(request, response);
@@ -313,7 +318,9 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
+
         listTrainer = trainerDAO.readListTrainerByTypeAndStatus(lopHocDAO.IDLoaiLopHoc(maLopHoc));
+
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
@@ -339,13 +346,14 @@ public class ClassController extends HttpServlet {
 
     //Tao ScheduleHv
     //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc) throws SQLException, IOException, ServletException {
+    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc, String maSlot) throws SQLException, IOException, ServletException {
 
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         ScheduleHvDTO scheduleHvDTO = new ScheduleHvDTO();
 
         scheduleHvDTO.setMaHV(maHV);
         scheduleHvDTO.setMaLopHoc(maLopHoc);
+        scheduleHvDTO.setMaSlot(maSlot);
 
         scheduleDAO.createScheduleHV(maHV, maLopHoc);
 
@@ -365,21 +373,24 @@ public class ClassController extends HttpServlet {
     }
 
     //Chon phong gom thuoc tinh slot va thu
-    public void chooseRoom(HttpServletRequest request, HttpServletResponse response) {
+    public void payment(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
     public void checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         LopHocDAO LopHocDAO = new LopHocDAO();
         String maLoaiLopHoc = request.getParameter("returnID");
+
         List<LopHocDTO> list = LopHocDAO.searchByType(maLoaiLopHoc);
         String error = "";
-        String transfer = "";
+        String maSlot = request.getParameter("returnSlotID");
         for (LopHocDTO x : list) {
+
             if (x.getSoLuongHvHienTai() < x.getSoLuongHV()) {
-                transfer = x.getMaLopHoc();
-                dangKyLopHoc(request, response, transfer);
+                maLoaiLopHoc = x.getMaLopHoc();
+                dangKyLopHoc(request, response, maLoaiLopHoc, maSlot);
             }
+
         }
         error = "Classes are fully reserved.";
         request.setAttribute("error", error);
@@ -451,17 +462,21 @@ public class ClassController extends HttpServlet {
 
     }
 
-//    Show classes' details
-    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+//    Show classes' details FOR PAGE CLASSDETAIL REGISTER
+    public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String cid = request.getParameter("returnID");
+        LopHocDAO lopHocDAO = new LopHocDAO();
 //          Get class information
         LoaiLopHocDAO dao = new LoaiLopHocDAO();
         LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
+//        LopHocDTO lopHocDTO = new LopHocDTO();
+        List<LopHocDTO> listLopHocDTO = lopHocDAO.showClassesByType(cid);
         request.setAttribute("details", classDetails);
 //          Get class images
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        request.setAttribute("listLopHocDTO", listLopHocDTO);
         RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
         rd.forward(request, response);
     }
