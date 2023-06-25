@@ -138,13 +138,29 @@ public class PhongHocDAO {
 //RETURN PHONG HOC DANG TRONG 
 
     public PhongHocDTO getEmptyRoom(String maSlot, String thu1, String thu2) {
+//        String sql = "SELECT room.maRoom\n"
+//                + "    FROM room\n"
+//                + "    WHERE room.maRoom NOT IN (\n"
+//                + "    SELECT lopHoc.maRoom\n"
+//                + "    FROM lopHoc\n"
+//                + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+//                + "    WHERE maSlot = ? AND (thu = ? or thu= ?))";
+
         String sql = "SELECT room.maRoom\n"
-                + "    FROM room\n"
-                + "    WHERE room.maRoom NOT IN (\n"
+                + "FROM room\n"
+                + "WHERE room.maRoom NOT IN (\n"
                 + "    SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE maSlot = ? AND (thu = ? or thu= ?))";
+                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?)\n"
+                + "	union\n"
+                + "	SELECT lopHoc.maRoom\n"
+                + "    FROM lopHoc\n"
+                + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
+                + "	\n"
+                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?)\n"
+                + "	\n"
+                + ")";
         PhongHocDTO phongHocDTO = new PhongHocDTO();
         try {
 
@@ -153,6 +169,9 @@ public class PhongHocDAO {
             ps.setString(1, maSlot);
             ps.setString(2, thu1);
             ps.setString(3, thu2);
+            ps.setString(4, maSlot);
+            ps.setString(5, thu1);
+            ps.setString(6, thu2);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 phongHocDTO = new PhongHocDTO(rs.getString("maRoom"), true);
@@ -169,20 +188,95 @@ public class PhongHocDAO {
         return phongHocDTO;
     }
 
-    //RETURN SO PHONG TRONG
-    public int soPhongTrong(String maSlot, String thu) throws SQLException {
-        String sql = "SELECT count(room.maRoom) as soPhongTrong\n"
+    public PhongHocDTO getEmptyRoom2(String maSlot, String[] thuList) {
+        StringBuilder thuParams = new StringBuilder();
+        for (int i = 0; i < thuList.length; i++) {
+            thuParams.append("?,");
+        }
+        thuParams.deleteCharAt(thuParams.length() - 1); // Remove the trailing comma
+
+        String sql = "SELECT room.maRoom\n"
                 + "FROM room\n"
                 + "WHERE room.maRoom NOT IN (\n"
                 + "    SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE maSlot = ? AND thu = ? \n"
+                + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+
+        if (thuList.length > 1) {
+            sql += "    UNION\n"
+                    + "    SELECT lopHoc.maRoom\n"
+                    + "    FROM lopHoc\n"
+                    + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
+                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+        }
+
+        sql += ")";
+
+        PhongHocDTO phongHocDTO = new PhongHocDTO();
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            int index = 1;
+            ps.setString(index++, maSlot);
+            for (int i = 0; i < thuList.length; i++) {
+                ps.setString(index++, thuList[i]);
+            }
+
+            if (thuList.length > 1) {
+                ps.setString(index++, maSlot);
+                for (int i = 0; i < thuList.length; i++) {
+                    ps.setString(index++, thuList[i]);
+                }
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                phongHocDTO = new PhongHocDTO(rs.getString("maRoom"), true);
+                return phongHocDTO;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return phongHocDTO;
+    }
+
+    //RETURN SO PHONG TRONG
+    public int soPhongTrong(String maSlot, String thu) throws SQLException {
+//        String sql = "SELECT count(room.maRoom) as soPhongTrong\n"
+//                + "FROM room\n"
+//                + "WHERE room.maRoom NOT IN (\n"
+//                + "    SELECT lopHoc.maRoom\n"
+//                + "    FROM lopHoc\n"
+//                + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+//                + "    WHERE maSlot = ? AND thu = ? \n"
+//                + ")";
+
+        String sql = "SELECT COUNT(room.maRoom) AS soPhongTrong\n"
+                + "FROM room\n"
+                + "WHERE room.maRoom NOT IN (\n"
+                + "    SELECT lopHoc.maRoom\n"
+                + "    FROM lopHoc\n"
+                + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
+                + "	\n"
+                + "    WHERE ScheduleTrainer.maSlot = ? AND ScheduleTrainer.thu = ?\n"
+                + "	union\n"
+                + "	SELECT lopHoc.maRoom\n"
+                + "    FROM lopHoc\n"
+                + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+                + "    WHERE ScheduleTemp.maSlot = ? AND ScheduleTemp.thu = ?\n"
                 + ")";
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, maSlot);
         ps.setString(2, thu);
+        ps.setString(3, maSlot);
+        ps.setString(4, thu);
 
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
@@ -196,8 +290,8 @@ public class PhongHocDAO {
     public static void main(String[] args) throws SQLException {
         PhongHocDAO a = new PhongHocDAO();
 //        Boolean b = a.checkRoomEmpty("RO0001", "SL001", "MONDAY", "WEDNESDAY");
-        System.out.println(a.getEmptyRoom("SL002", "TUESDAY", "WEDNESDAY").toString());
-
-        System.out.println(a.soPhongTrong("SL001", "MONDAY"));
+//        System.out.println(a.getEmptyRoom("SL002", "TUESDAY", "WEDNESDAY").toString());
+        String[] b = {"MONDAY", "TUESDAY"};
+        System.out.println(a.getEmptyRoom2("SL001", b));
     }
 }

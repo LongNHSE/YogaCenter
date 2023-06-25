@@ -5,13 +5,14 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 public class TrainerDTO {
 private String maTrainer;    
 private String ho;
 private String ten;
-private Date dob;
+private LocalDate dob;
 private String phone;    
 private String email;
 private long salary;
@@ -21,8 +22,25 @@ private int soNgayNghi;
 private Boolean status;
 private String trainerType;
 private String maLoaiTK;
+private String maLopHoc;
+private String gender;
 
-    public TrainerDTO(String maTrainer, String ho, String ten, Date dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getMaLopHoc() {
+        return maLopHoc;
+    }
+
+    public void setMaLopHoc(String maLopHoc) {
+        this.maLopHoc = maLopHoc;
+    }
+    public TrainerDTO(String maTrainer, String ho, String ten, LocalDate dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
         this.maTrainer = maTrainer;
         this.ho = ho;
         this.ten = ten;
@@ -76,11 +94,11 @@ private String maLoaiTK;
     }
 
    
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

@@ -6,7 +6,7 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -18,15 +18,30 @@ public class LoaiLopHocDTO {
     private String maLoaiLopHoc;
     private String tenLoaiLopHoc;
     private double hocPhi;
+    private String description;
+    private List<LopHocIMGDTO> image;
+
+    public List<LopHocIMGDTO> getImage() {
+        return image;
+    }
+
+    public void setImage(List<LopHocIMGDTO> image) {
+        this.image = image;
+    }
+  
 
     public LoaiLopHocDTO() {
     }
 
-    public LoaiLopHocDTO(String maLoaiLopHoc, String tenLoaiLopHoc, double hocPhi) {
-        this.maLoaiLopHoc = maLoaiLopHoc;
-        this.tenLoaiLopHoc = tenLoaiLopHoc;
-        this.hocPhi = hocPhi;
+    public String getDescription() {
+        return description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+   
 
     public String getMaLoaiLopHoc() {
         return maLoaiLopHoc;
@@ -66,10 +81,10 @@ public class LoaiLopHocDTO {
         return decimalFormat.format(hocPhi);
     }
 
-    @Override
-    public String toString() {
-        DecimalFormat decimalFormat = new DecimalFormat("#");
-        return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + getHocPhiWithDot() + '}';
-    }
+      @Override
+      public String toString() {
+            return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + hocPhi + ", description=" + description + '}';
+      }
 
+    
 }
