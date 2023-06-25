@@ -526,7 +526,6 @@
                                     <button class="button" type="submit" name="action" value="Register">
                                         Register now!
                                     </button>
-                                    <input type="hidden" name="returnID" value="${details.getMaLoaiLopHoc()}">
                                 </div>
 
                             </div>
