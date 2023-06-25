@@ -453,14 +453,17 @@
       </div>
       <hr/>
       
+      <form>
             <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
-                    <button class="button">
+                    <button class="button" type="submit" name="action" value="Register">
                         Register now!
                     </button>
+                    <input type="hidden" name="returnID" value="${details.getMaLoaiLopHoc()}">
                 </div>
             </div>
-
+      </form>
+          
       </div>
       </div>
                         

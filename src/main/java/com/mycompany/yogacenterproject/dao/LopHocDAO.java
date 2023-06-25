@@ -238,6 +238,11 @@ public class LopHocDAO {
 
     }
 
+    public List<LopHocDTO> showClassesByType(){
+        
+    
+}
+    
     //LAY ID CUOI LIST
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 maLopHoc FROM [dbo].[lopHoc] ORDER BY maLopHoc DESC";

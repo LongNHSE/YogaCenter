@@ -5,7 +5,6 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocImageDAO;
@@ -68,7 +67,6 @@ public class ClassController extends HttpServlet {
         String maLopHoc = "";
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
         try {
             if (action.equals("CreateClassPage")) {
                 thongTinLopHocPage(request, response);
@@ -92,12 +90,14 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("checkID")) {
-                checkAvailability(request, response);
+            } else if (action.equals("payment")) {
+                payment(request, response);
             } else if (action.equals("Class category information")) {
                   
+            }else if(action.equals("Register")){
+                checkAvailability(request, response);
             }else if(action.equals("showDetails")){
-                  showDetais(request, response);
+                  showDetails(request, response);
             }
 
             if (action.equals("CreateClassType")) {
@@ -364,8 +364,12 @@ public class ClassController extends HttpServlet {
     }
 
     //Chon phong gom thuoc tinh slot va thu
-    public void chooseRoom(HttpServletRequest request, HttpServletResponse response) {
+    public void payment(HttpServletRequest request, HttpServletResponse response) {
 
+    }
+    
+    public void chooseSlot(){
+        
     }
 
     public void checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -375,10 +379,12 @@ public class ClassController extends HttpServlet {
         String error = "";
         String transfer = "";
         for (LopHocDTO x : list) {
-            if (x.getSoLuongHvHienTai() < x.getSoLuongHV()) {
-                transfer = x.getMaLopHoc();
-                dangKyLopHoc(request, response, transfer);
-            }
+            
+                if (x.getSoLuongHvHienTai() < x.getSoLuongHV()) {
+                    transfer = x.getMaLopHoc();
+                    dangKyLopHoc(request, response, transfer);
+                }
+            
         }
         error = "Classes are fully reserved.";
         request.setAttribute("error", error);
@@ -386,6 +392,8 @@ public class ClassController extends HttpServlet {
         rd.forward(request, response);
 
     }
+    
+        
 
     public void checkPhongTrong(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 
@@ -451,7 +459,7 @@ public class ClassController extends HttpServlet {
     }
     
 //    Show classes' details
-    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+    public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
           String cid = request.getParameter("returnID");
 //          Get class information
           LoaiLopHocDAO dao = new LoaiLopHocDAO();
