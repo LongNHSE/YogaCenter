@@ -6,6 +6,9 @@
 
 
 
+<%@page import="com.mycompany.yogacenterproject.dao.LoaiLopHocDAO"%>
+<%@page import="com.mycompany.yogacenterproject.dto.TrainerDTO"%>
+<%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.HocVienDTO"%>
 <%@page import="java.util.List"%>
 
@@ -111,11 +114,12 @@
             margin-left:250px;
         }
         .Table{
-
-
+            position: relative;
+            left: 250px;
+            width: 1456px;
         }
         table {
-            margin-left: 250px;
+
             width: 100%; /* Set the width of the table */
             border-collapse: collapse; /* Collapse the borders of table cells */
 
@@ -138,11 +142,77 @@
 
         tr:hover {
             background-color: #e6e6e6; /* Set background color for hovered rows */
-        }</style>
-        <%
-            List<HocVienDTO> listHocVienDTO = (List<HocVienDTO>) request.getAttribute("listHocVienDTO");
+        }
+        .ClassDetail{
+            margin-bottom: 100px;
+        }
+        /* === CODFE HEADING STYLE #3 === */
+        .class-properties {
+            width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }/* === CODFE HEADING STYLE #3 === */
+        .class-properties h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .class-properties ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
 
-        %>
+        .class-properties li {
+            margin-bottom: 10px;
+        }
+
+        .property-name {
+            font-weight: bold;
+        }
+
+        .property-value {
+            color: #555;
+        }
+
+        .cf-title-03 h3 {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 0;
+            line-height: 1.5em;
+            padding-bottom: 15px;
+            position: relative;
+        }
+        .cf-title-03 h3:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 5px;
+            width: 55px;
+            background-color: #111;
+        }
+        .cf-title-03 h3:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 2px;
+            height: 1px;
+            width: 95%;
+            max-width: 255px;
+            background-color: #333;
+        }
+
+    </style>
+    <%
+        List<HocVienDTO> listHocVienDTO = (List<HocVienDTO>) request.getAttribute("listHocVienDTO");
+        LopHocDTO lopHocDTO = (LopHocDTO) request.getAttribute("lopHocDTO");
+        TrainerDTO trainerDTO = (TrainerDTO) request.getAttribute("trainerDTO");
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+
+    %>
 
     <body>
         <div class="Controller">
@@ -184,11 +254,58 @@
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                     </ul>
                 </nav>
+
+
             </div>
 
-            <div class="Table">
-                <table class="table">
 
+
+
+
+
+
+
+
+            <div class="Table">
+                <div class="ClassDetail">
+                    <div class="ClassName">
+                        <div class="class-properties">
+                            <div class="cf-title-03">
+                                <h3>Class <%=lopHocDTO.getMaLopHoc()%> </h3>
+                            </div>
+                            <ul>
+                                <li>
+                                    <span class="property-name">Yoga:</span>
+                                    <span class="property-value"><%=loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDTO.getMaLoaiLopHoc())%></span>
+                                </li>
+                                <li>
+                                    <span class="property-name">Trainer: </span>
+                                    <span class="property-value"><%=trainerDTO.getHo()%> <%=trainerDTO.getTen()%></span>
+                                </li>
+                                <li>
+                                    <span class="property-name">Number of Slots: </span>
+                                    <span class="property-value"><%=lopHocDTO.getSoBuoi()%></span>
+                                </li>
+                                <li>
+                                    <span class="property-name">Start date: </span>
+                                    <span class="property-value"><%=lopHocDTO.getNgayBatDau()%></span>
+                                </li>
+                                <li>
+                                    <span class="property-name">End date: </span>
+                                    <span class="property-value"></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="TrainerDetail">
+
+                    </div>
+                </div>
+                <table class="table">
+                    <div class="cf-title-03">
+                        <h3>Number of trainees <%=listHocVienDTO.size() %>/<%=lopHocDTO.getSoLuongHV()%> </h3>
+                    </div>
                     <thead>
                         <tr class="Test">
 
@@ -203,7 +320,7 @@
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Ma Lop Hoc</th>
+
 
                         </tr>
                     </thead>
@@ -221,13 +338,7 @@
                             <td><%= hocVienDTO.getEmail()%> </td>
                             <td><%= hocVienDTO.getPhone()%> </td>
                             <td><%= hocVienDTO.getGender()%> </td>
-                            <td>
-                                <% for (String maLopHoc : hocVienDTO.getMaLopHoc()) {
-                                %>
-                                <a href="<%=url%>/ClassController?action=Class Detail&maLopHoc=<%= maLopHoc%>"><%= maLopHoc%></a> 
-                                </br>
-                                <% }%>
-                            </td>
+
                             <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action" ></td>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
                         <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >

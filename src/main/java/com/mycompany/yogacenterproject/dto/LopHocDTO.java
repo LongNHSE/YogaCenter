@@ -17,19 +17,20 @@ public class LopHocDTO {
     private String maRoom;
     private int soLuongHvHienTai;
 
+    private Date ngayBatDau;
+
+    private String[] thu;
+
+    public Date getNgayBatDau() {
+        return ngayBatDau;
+    }
+
     public int getSoLuongHvHienTai() {
         return soLuongHvHienTai;
     }
 
     public void setSoLuongHvHienTai(int soLuongHvHienTai) {
         this.soLuongHvHienTai = soLuongHvHienTai;
-    }
-    private Date ngayBatDau;    
-
-    private String[] thu;
-
-    public Date getNgayBatDau() {
-        return ngayBatDau;
     }
 
     public void setNgayBatDau(Date ngayBatDau) {
@@ -118,10 +119,5 @@ public class LopHocDTO {
     public String toString() {
         return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
     }
-
-   
-
-    
-   
 
 }

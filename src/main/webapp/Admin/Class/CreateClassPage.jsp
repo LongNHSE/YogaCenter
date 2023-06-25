@@ -11,11 +11,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="Admin/cssAdmin/style.css" rel="stylesheet" type="text/css"/>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Create class</title>
+
+        <meta charset="utf-8">
+        <title>YogaCenter Admin</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <script class="u-script" type="text/javascript" src="home2.js" defer=""></script>
+        <link href="<%=url%>/Admin/Class/newCascadeStyleSheet.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script class="u-script" type="text/javascript" src="home1.js" defer=""></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
     </head>
 
 
@@ -91,36 +100,51 @@
                 margin-left:250px;
             }
             .Class{
-               
+
                 width: 100%;
-                
+
             }
-        
+
         </style>
 
 
         <div class="Controller">
-          
+
             <div class="wrapper">
                 <nav class='animated bounceInDown bg-dark'>
                     <ul>
                         <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
                         <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                             <ul id="active">
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
                                 <li id="active-element"><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                                 <li><a href='Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
                             </ul>
                         </li>
-                        <li class='sub-menu'><a href='#message'>Help<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
                             <ul>
-                                <li><a href='#settings'>FAQ's</a></li>
+                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
                                 <li><a href='#settings'>Submit a Ticket</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                        <li><a href='#message'>Logout</a></li>
+                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                                <li><a href="">Add Trainer</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                     </ul>
                 </nav>
             </div>
@@ -228,6 +252,21 @@
     </body>
 
     <script>
+
+
+
+
+        $(document).ready(function () {
+            $('.sub-menu ul#active').show();
+            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+
+        $('.sub-menu ul').hide();
+
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
         function checkAvailability() {
             var slot = document.getElementById("Slot").value;
             var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
@@ -308,38 +347,7 @@
                 checkDateElement.textContent = '';
             }
         }
-        //        function checkAvailability() {
-        //            var slot = document.getElementById("Slot").value;
-        //            var checkboxes = document.querySelectorAll('#dayInput input[type="checkbox"]:checked');
-        //            var selectedDays = Array.from(checkboxes).map(function (checkbox) {
-        //                return checkbox.value;
-        //
-        //            });
-        //
-        //            if (slot !== '' && selectedDays.length == 2) {
-        //            var xhr = new XMLHttpRequest();
-        //                    xhr.open('GET', 'Admin/Class/checkAvailability.jsp?slot=' + slot + "&weekday=" + selectedDays.join(','), true);
-        //                    xhr.onreadystatechange = function () {
-        //                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-        //                    var checkRoomElement = document.getElementById('checkRoom');
-        //                            var availabilityElement = responseXml.querySelector('check');
-        //                            if (availabilityElement) {
-        //                    var availability = availabilityElement.textContent === 'true';
-        //                            // Now you can use the 'availability' boolean as needed
-        //                            if (availability) {
-        //                    console.log('The room is available.');
-        //                    } else {
-        //                    console.log('The room is not available.');
-        //                    }
-        //
-        //                    }
-        //                    };
-        //                            xhr.send();
-        //                    } else {
-        //            var checkRoomElement = document.getElementById('checkRoom');
-        //            checkRoomElement.textContent = '';
-        //            }
-        //        }
+
         function getHocPhi(maLoaiLopHoc) {
             if (maLoaiLopHoc !== '') {
                 var xhr = new XMLHttpRequest();

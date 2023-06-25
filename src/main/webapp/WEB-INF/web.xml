@@ -36,6 +36,10 @@
         <servlet-name>ClassUnassignedController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ClassUnassignedController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TrainerController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.TrainerController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -72,6 +76,10 @@
         <servlet-name>ClassUnassignedController</servlet-name>
         <url-pattern>/ClassUnassignedController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrainerController</servlet-name>
+        <url-pattern>/TrainerController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -80,4 +88,12 @@
     <welcome-file-list>
         <welcome-file>Authentication/signin.jsp</welcome-file>
     </welcome-file-list>
+    <!--     <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.mycompany.yogacenterproject.filter.Authentication</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
 </web-app>

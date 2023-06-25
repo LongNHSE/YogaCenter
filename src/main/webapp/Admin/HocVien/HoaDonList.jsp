@@ -154,7 +154,8 @@
                         <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
                         <li  class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                             <ul >
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                              <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
                                 <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                                 <li><a href='Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
@@ -226,10 +227,6 @@
                     $(this).parent(".sub-menu").children("ul").slideToggle("100");
                     $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
                 });</script>
-
-
-
-
 
     </body>
 </html>
