@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class LopHocDTO {
 
@@ -16,6 +17,32 @@ public class LopHocDTO {
     private String maSlot;
     private String maRoom;
     private int soLuongHvHienTai;
+    private String timeStart, timeEnd;
+    private List<String> thuList;
+
+    public List<String> getThuList() {
+        return thuList;
+    }
+
+    public void setThuList(List<String> thuList) {
+        this.thuList = thuList;
+    }
+    
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
 
     private Date ngayBatDau;
 
@@ -117,7 +144,9 @@ public class LopHocDTO {
 
     @Override
     public String toString() {
-        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
+        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
     }
+
+   
 
 }
