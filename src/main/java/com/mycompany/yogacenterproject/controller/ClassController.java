@@ -313,7 +313,7 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
-        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(loaiLopHocDAO.searchIdLoaiLopHoc(lopHocDAO.IDLoaiLopHoc(maLopHoc)));
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(lopHocDAO.IDLoaiLopHoc(maLopHoc));
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
