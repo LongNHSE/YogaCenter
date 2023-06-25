@@ -92,15 +92,10 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("payment")) {
-                payment(request, response);
             } else if (action.equals("Class category information")) {
 
             } else if (action.equals("Register")) {
-                checkAvailability(request, response);
-//                String maLoaiLopHoc = request.getParameter("returnID");
-//                out.print(maLoaiLopHoc);
-//                log(maLoaiLopHoc);
+                payment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
 
@@ -309,17 +304,6 @@ public class ClassController extends HttpServlet {
         response.sendRedirect("Admin/Class/ClassController.jsp");
 
     }
-
-    //Tao ScheduleHv sau khi generate duoc hoa don
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc) throws SQLException, IOException, ServletException {
-
-        ScheduleDAO scheduleDAO = new ScheduleDAO();
-        scheduleDAO.createScheduleHV(maHV, maLopHoc);
-
-        RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-        rd.forward(request, response);
-    }
-
     // Show Class
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
@@ -341,7 +325,7 @@ public class ClassController extends HttpServlet {
             HoaDonDAO hoaDonDAO = new HoaDonDAO();
             String maLopHoc = request.getParameter("maLopHoc");
             String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
-            
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
             //check availability before registering
             if(checkAvailability(request, response) == true){
                 Date ngayThanhToan = Date.valueOf(LocalDate.now());
@@ -360,7 +344,10 @@ public class ClassController extends HttpServlet {
                 hoaDonDAO.createHoaDonDTO(hoaDonDTO);
                 
                 lopHocDAO.increase(maLopHoc);
-                createScheduleHv(request, response, maLopHoc,hocVienDTO.getMaHV());
+                
+                
+                scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
+
                 
                 RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
                 rd.forward(request, response);
