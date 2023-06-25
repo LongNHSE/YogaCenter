@@ -20,25 +20,22 @@
     </head>
 
     <body>
-        
-        
-  
         <div class="Controller">
             <div class="wrapper">
                 <nav class='animated bounceInDown bg-dark'>
                     <ul>
-                        <li id="active-element"><a href='./ClassController.jsp'>Profile</a></li>
+                        <li><a href='#profile'>Profile</a></li>
                         <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                             <ul id="active">
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                                <li id="active-element"><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
                                 <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                                 <li><a href='./CreateClassTypePage.jsp'>Create Class Type</a></li>
                             </ul>
                         </li>
-                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Help<div class='fa fa-caret-down right'></div></a>
                             <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
+                                <li><a href='#settings'>FAQ's</a></li>
                                 <li><a href='#settings'>Submit a Ticket</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
@@ -52,7 +49,10 @@
                                 </div>         
         </div>
         <script>
-         
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
 
             $('.sub-menu ul').hide();
 

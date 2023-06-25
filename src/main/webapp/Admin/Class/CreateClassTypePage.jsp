@@ -13,14 +13,46 @@
         %>
         <link href="css/signupCSS.css" rel="stylesheet" type="text/css"/>
         <link href="image.css" rel="stylesheet" type="text/css"/>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>YogaCenter Admin</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <link href="newCascadeStyleSheet.css" rel="stylesheet" type="text/css"/>
+        <script class="u-script" type="text/javascript" src="home2.js" defer=""></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script class="u-script" type="text/javascript" src="home1.js" defer=""></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <title>Create Class Type</title>
     </head>
     <body>
-        <section class="vh-100 gradient-custom">
+
+        <div class="Controller">
+            <div class="wrapper">
+                <nav class='animated bounceInDown bg-dark'>
+                    <ul>
+                        <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
+                        <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
+                            <ul id="active">
+                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                                <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
+                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
+                                <li id="active-element"><a href='./CreateClassTypePage.jsp'>Create Class Type</a></li>
+                            </ul>
+                        </li>
+                        <li class='sub-menu'><a href='#message'>Help<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href='#settings'>FAQ's</a></li>
+                                <li><a href='#settings'>Submit a Ticket</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li><a href='#message'>Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+
             <div class="container py-5 h-100">
                 <div class="row justify-content-center align-items-center h-100">
                     <div class="col-12 col-lg-9 col-xl-7">
@@ -98,7 +130,8 @@
                     </div>
                 </div>
             </div>
-        </section>
+
+        </div>
     </body>
     <script>
         var images = []; // Mảng chứa danh sách ảnh tải lên
@@ -185,5 +218,16 @@
                 reader.readAsDataURL(file);
             }
         }
+        $(document).ready(function () {
+            $('.sub-menu ul#active').show();
+            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+
+        $('.sub-menu ul').hide();
+
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
     </script>
 </html>

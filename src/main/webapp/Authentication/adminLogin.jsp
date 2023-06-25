@@ -50,16 +50,19 @@
                         </div>
 
                         <div class="forgot">
-                            <span>Forgot your password?</span>
+                           <a href="<%=url%>/Authentication/signin.jsp">Sign in as an User</a>
                         </div>
                         <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
 
                         <button class="btn bkg" type="submit">Sign In</button>
                         <input type="hidden" id="thisField" name="action" value="adminLogin">
+                        
                     </form>
+                    
                 </div>
-
+                    
             </div>
+                    
         </div>
 
         <!-- link script -->

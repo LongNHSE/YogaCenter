@@ -66,7 +66,6 @@
                         <a class="btn-menu-item" href="<%=baseUrl%>/Home/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="changePassword.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
-                        <a class="btn-menu-item" href="profile.jsp">View my profile</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  

@@ -86,7 +86,7 @@ public class ClassController extends HttpServlet {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
                 assignTrainer(request, response);
-            } else if (action.equals("Check Empty Room")) {
+            } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
@@ -95,7 +95,9 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("checkID")) {
                 checkAvailability(request, response);
             } else if (action.equals("Class category information")) {
-
+                  
+            }else if(action.equals("showDetails")){
+                  showDetais(request, response);
             }
 
             if (action.equals("CreateClassType")) {
@@ -446,6 +448,21 @@ public class ClassController extends HttpServlet {
 
     public void createClassInformation(HttpServletRequest request, HttpServletResponse response) {
 
+    }
+    
+//    Show classes' details
+    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+          String cid = request.getParameter("returnID");
+//          Get class information
+          LoaiLopHocDAO dao = new LoaiLopHocDAO();
+          LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
+          request.setAttribute("details", classDetails);
+//          Get class images
+          LopHocImageDAO imgdao = new LopHocImageDAO();
+          List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
+          request.setAttribute("imageListByID", list);
+          RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+          rd.forward(request, response);          
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
