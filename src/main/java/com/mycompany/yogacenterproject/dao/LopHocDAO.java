@@ -258,39 +258,7 @@ public class LopHocDAO {
 
     }
 
-    public List<LopHocDTO> searchByType(String maLoaiLopHoc) {
-        try {
-            List<LopHocDTO> listClass = new ArrayList<>();
-            String sql = "SELECT * from [dbo].[lopHoc] where maLoaiLopHoc = ?";
-            PreparedStatement stm;
-            stm = DBUtils.getConnection().prepareStatement(sql);
-            stm.setString(1, maLoaiLopHoc);
-            ResultSet rs;
-            rs = stm.executeQuery();
-            while (rs.next()) {
-                String maLopHoc = rs.getString("maLopHoc");
-                int soLuongHV = rs.getInt("soLuongHV");
-                int soBuoi = rs.getInt("soBuoi");
-                String maRoom = rs.getString("maRoom");
-                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
-                Date ngay = rs.getDate("ngay");
-                LopHocDTO e = new LopHocDTO();
-                e.setMaLopHoc(maLopHoc);
-                e.setSoLuongHV(soLuongHV);
-                e.setSoBuoi(soBuoi);
-                e.setMaRoom(maRoom);
-                e.setSoLuongHvHienTai(soLuongHvHienTai);
-                e.setNgayBatDau(ngay);
-                listClass.add(e);
-            }
-            return listClass;
-        } catch (SQLException ex) {
-            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-
-    }
+ 
 
     public List<String> showThu(String maLopHoc) throws SQLException {
         String sql = "select thu from [dbo].[ScheduleTrainer]\n"
@@ -467,7 +435,7 @@ public class LopHocDAO {
 
     public static void main(String[] args) throws SQLException {
         LopHocDAO a = new LopHocDAO();
-        a.showClassesByType("TYPE0003");
+ 
 
 //        a.deleteClassUnassign("LOP0007");
 //        System.out.println(a.lastIDIndex());

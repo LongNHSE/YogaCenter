@@ -190,41 +190,7 @@ public class ClassController extends HttpServlet {
 
     }
 
-    //DANG KY LOP 
-    public void dangKyLopHoc(HttpServletRequest request, HttpServletResponse response, String maLopHoc, String maSlot) throws ServletException, IOException {
-        try {
-            HttpSession session = request.getSession();
-
-            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-            Date ngayThanhToan = Date.valueOf(LocalDate.now());
-            String maLoaiLopHoc = request.getParameter("returnID");
-            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
-
-            HoaDonDAO hoaDonDAO = new HoaDonDAO();
-            String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
-            String maHoaDon = AUTO_HOADON_ID;
-
-            HoaDonDTO hoaDonDTO = new HoaDonDTO();
-            hoaDonDTO.setMahoaDon(maHoaDon);
-            hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
-            hoaDonDTO.setMaLopHoc(maLopHoc);
-            hoaDonDTO.setGiaTien(hocPhi);
-            hoaDonDTO.setNgayThanhToan(ngayThanhToan);
-
-            hoaDonDAO.createHoaDonDTO(hoaDonDTO);
-            LopHocDAO lopHocDAO = new LopHocDAO();
-            lopHocDAO.increase(maLopHoc);
-
-            createScheduleHv(request, response, hocVienDTO.getMaHV(), maLopHoc, maSlot);
-
-            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-            rd.forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    
     //TAO LOAI LOP HOC
     public void createLoaiLopHoc(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
@@ -339,17 +305,10 @@ public class ClassController extends HttpServlet {
 
     }
 
-    //Tao ScheduleHv
-    //!!!SAU KHI TAO HOA DON XONG SE TAO SCHEDULEHv
-    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc, String maSlot) throws SQLException, IOException, ServletException {
+    //Tao ScheduleHv sau khi generate duoc hoa don
+    public void createScheduleHv(HttpServletRequest request, HttpServletResponse response, String maHV, String maLopHoc) throws SQLException, IOException, ServletException {
 
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-        ScheduleHvDTO scheduleHvDTO = new ScheduleHvDTO();
-        
-        scheduleHvDTO.setMaHV(maHV);
-        scheduleHvDTO.setMaLopHoc(maLopHoc);
-        scheduleHvDTO.setMaSlot(maSlot);
-
         scheduleDAO.createScheduleHV(maHV, maLopHoc);
 
         RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
@@ -367,33 +326,62 @@ public class ClassController extends HttpServlet {
 
     }
 
-    //Chon phong gom thuoc tinh slot va thu
+    //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
     public void payment(HttpServletRequest request, HttpServletResponse response) {
+          try {
+            HttpSession session = request.getSession();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            LopHocDAO lopHocDAO = new LopHocDAO();
+            HoaDonDAO hoaDonDAO = new HoaDonDAO();
+            String maLopHoc = request.getParameter("maLopHoc");
+            String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
+            
+            //check availability before registering
+            if(checkAvailability(request, response) == true){
+                Date ngayThanhToan = Date.valueOf(LocalDate.now());
+                long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
+                String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
+                String maHoaDon = AUTO_HOADON_ID;
+
+                HoaDonDTO hoaDonDTO = new HoaDonDTO();
+                hoaDonDTO.setMahoaDon(maHoaDon);
+                hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
+                hoaDonDTO.setMaLopHoc(maLopHoc);
+                hoaDonDTO.setGiaTien(hocPhi);
+                hoaDonDTO.setNgayThanhToan(ngayThanhToan);
+
+                hoaDonDAO.createHoaDonDTO(hoaDonDTO);
+                
+                lopHocDAO.increase(maLopHoc);
+                createScheduleHv(request, response, maLopHoc,hocVienDTO.getMaHV());
+                
+                RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+                rd.forward(request, response);
+            } else {
+                String error = "Classes are fully reserved.";
+                request.setAttribute("error", error);
+                RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+                rd.forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
  
 
-    public void checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    public boolean checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         LopHocDAO LopHocDAO = new LopHocDAO();
-        String maLoaiLopHoc = request.getParameter("returnID");
+        String maLopHoc = request.getParameter("maLopHoc");
         
-        List<LopHocDTO> list = LopHocDAO.searchByType(maLoaiLopHoc);
+        LopHocDTO list = LopHocDAO.searchClassById(maLopHoc);
         String error = "";
-        String maSlot = request.getParameter("returnSlotID");
-        for (LopHocDTO x : list) {
-            
-                if (x.getSoLuongHvHienTai() < x.getSoLuongHV()) {
-                    maLoaiLopHoc = x.getMaLopHoc();
-                    dangKyLopHoc(request, response, maLoaiLopHoc, maSlot);
+        
+                if (list.getSoLuongHvHienTai() < list.getSoLuongHV()) {
+                    return true;
                 }
-            
-        }
-        error = "Classes are fully reserved.";
-        request.setAttribute("error", error);
-        RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-        rd.forward(request, response);
-
+            return false;
     }
     
         
@@ -457,12 +445,9 @@ public class ClassController extends HttpServlet {
 
     }
 
-    public void createClassInformation(HttpServletRequest request, HttpServletResponse response) {
-
-    }
+    
 
 //    Show classes' details
-
     public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String cid = request.getParameter("returnID");
 //          Get class information
