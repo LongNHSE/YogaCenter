@@ -182,7 +182,9 @@ public class LoginController extends HttpServlet {
             ////////SET DATE
             LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
 
+            
             hocVienDTO.setDob(dob);
+            log(String.valueOf(hocVienDTO));
 
             hocVienDAO.addHocVien(hocVienDTO);
             RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");

@@ -1,56 +1,63 @@
 <%-- 
-    Document   : newjsp
-    Created on : May 23, 2023, 1:56:24 PM
+    Document   : ListClass
+    Created on : Jun 23, 2023, 7:36:18 PM
     Author     : Oalskad
 --%>
-
-
-
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
-<%@page import="com.mycompany.yogacenterproject.dto.HocVienDTO"%>
-<%@page import="java.util.List"%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
 
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
-        <title>YogaCenter</title>
+        <title>YogaCenter Admin</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
-
-        <!-- Favicons -->
-        <link href="img/favicon.ico" rel="icon">
-        <link href="img/apple-favicon.png" rel="apple-touch-icon">
-
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet"> 
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+        <link href="newCascadeStyleSheet.css" rel="stylesheet" type="text/css"/>
         <script class="u-script" type="text/javascript" src="home2.js" defer=""></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script class="u-script" type="text/javascript" src="<%=url%>/home1.js" defer=""></script>
+        <script class="u-script" type="text/javascript" src="home1.js" defer=""></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
-
-
-        <!-- Vendor CSS File -->
-
     </head>
-    <%
-        List<LopHocDTO> listLopHocTemp = (List<LopHocDTO>) request.getAttribute("listLopHocTemp");
-
-    %>
-
     <body>
-        <style>nav {
+
+        <style>
+
+            .center {
+                text-align: center;
+            }
+
+            .pagination {
+                display: inline-block;
+            }
+
+            .pagination a {
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+                transition: background-color .3s;
+                border: 1px solid #ddd;
+                margin: 0 4px;
+            }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+            nav {
                 position: relative;
                 height: 100%;
                 width: 250px;
@@ -148,39 +155,40 @@
                 background-color: #e6e6e6; /* Set background color for hovered rows */
             }</style>
 
-
-
+        <%
+            List<LopHocDTO> listLopHocDTO = (List<LopHocDTO>) request.getAttribute("listLopHocDTO");
+            int count = (int) request.getAttribute("count");
+            int pageCount = (int) request.getAttribute("pageCount");
+        %>
         <div class="Controller">
-
             <div class="wrapper">
                 <nav class='animated bounceInDown bg-dark'>
                     <ul>
                         <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
                         <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                             <ul id="active">
-                                <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                                <li id="active-element" ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                              
-                                <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
+                                <li id="active-element"><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
+                                <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                                <li><a href='Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
+                                <li><a href='./CreateClassTypePage.jsp'>Create Class Type</a></li>
                             </ul>
                         </li>
-                         <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
                                 <li><a href='#settings'>Submit a Ticket</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                         <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                         <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href="">Add Trainer</a></li>
@@ -188,10 +196,10 @@
                             </ul>
                         </li>
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
+
                     </ul>
                 </nav>
             </div>
-
             <div class="Table">
                 <table class="table">
 
@@ -203,6 +211,7 @@
                             <th scope="col">Ma Loai Lop Hoc</th>
                             <th scope="col">So Luong Hoc Vien</th>
                             <th scope="col">So Luong Hoc Vien Hien Tai</th>
+                            <th scope="col">Ma Trainer</th>
                             <th scope="col">Ma Phong</th>
                             <th scope="col">Ma Slot</th>
 
@@ -212,8 +221,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% if (listLopHocTemp != null) {
-                                for (LopHocDTO lopHocDTO : listLopHocTemp) {
+                        <% if (listLopHocDTO != null) {
+                                for (LopHocDTO lopHocDTO : listLopHocDTO) {
                         %>
                     <form action="<%=url%>/ClassController" method="POST">
                         <tr>
@@ -221,14 +230,17 @@
                             <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
                             <td><%= lopHocDTO.getSoLuongHV()%> </td>
                             <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
+                            <td><%= lopHocDTO.getMaTrainer()%> </td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
                             <td><%= lopHocDTO.getNgayBatDau()%> </td>
 
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Assign Trainer"name="action" ></td>
+                           
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Class Detail"name="action" ></td>
                         <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
                     </form>
                     <form action="<%=url%>/ClassUnassignedController" method="POST">
+
                         <td>  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
                         <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
                         <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
@@ -253,22 +265,40 @@
                     </tbody>
                     <% }%>
                 </table>
+            </div>      
+        </div>
+        <div class="center">
+            <div class="pagination">
+
+                <div class="pagination">
+                    <a href="#">&laquo;</a>
+
+
+
+
+                    <% for (int i = 1; i <= count; i++) {%>
+                    <% if (i == pageCount) {%>
+                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>' class="active"><%=i%></a>
+                    <% } else {%>
+                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>'><%=i%></a>
+                    <% }
+                        }%>
+                    <a href="#">&raquo;</a>
+                </div>
             </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
 
+            $('.sub-menu ul').hide();
 
-            <script>
-
-                $(document).ready(function () {
-                    $('.sub-menu ul#active').show();
-                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
-                $('.sub-menu ul').hide();
-
-                $(".sub-menu a").click(function () {
-                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
-            </script>
-
+            $(".sub-menu a").click(function () {
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
+        </script>
     </body>
 </html>

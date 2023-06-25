@@ -247,11 +247,11 @@ public class LoaiLopHocDAO {
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
 
         listCate = a.getAllLoaiLopHoc();
-//        for (LoaiLopHocDTO c : listCate) {
-//            System.out.println(c);
-//        }
-          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
-          System.out.println(DTO.toString());
+        for (LoaiLopHocDTO c : listCate) {
+            System.out.println(c);
+        }
+//          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
+//          System.out.println(DTO.toString());
 
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));

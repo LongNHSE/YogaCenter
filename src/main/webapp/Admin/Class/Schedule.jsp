@@ -147,7 +147,8 @@
                     <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
                     <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                         <ul id="active">
-                            <li><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                            <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
+                            <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
                             <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                             <li  id="active-element"><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                             <li><a href='Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
@@ -160,7 +161,21 @@
                             <li><a href='#settings'>Network Status</a></li>
                         </ul>
                     </li>
-                    <li><a href='#message'>Logout</a></li>
+                    <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                        <ul>
+                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                            <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
+                            <li><a href='#settings'>Network Status</a></li>
+                        </ul>
+                    </li>
+                    <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                        <ul>
+                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                            <li><a href="">Add Trainer</a></li>
+                            <li><a href='#settings'>Network Status</a></li>
+                        </ul>
+                    </li>
+                    <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -285,13 +300,13 @@
                             <td>
 
                                 <% if (hasSchedule) {
-                                    for (String x : listClassTemp) {%>
+                                        for (String x : listClassTemp) {%>
 
                                 <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=x%></span>
 
 
                                 <% }
-                                }%>
+                                    }%>
                                 <% if (hasTrainerSchedule) {%>
                                 <% for (TrainerDTO trainer : listClassTrainer) {%>
                                 <div class  
@@ -303,11 +318,11 @@
                                 </div>
 
                                 <% }
-                                }%> 
+                                    }%> 
 
                             </td>
                             <%  calendar.add(Calendar.DAY_OF_WEEK, 1);
-                            } %>
+                                } %>
 
 
 

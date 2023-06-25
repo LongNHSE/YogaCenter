@@ -70,6 +70,7 @@ public class ClassController extends HttpServlet {
         String action = request.getParameter("action");
 
         try {
+            PrintWriter out = response.getWriter();
             if (action.equals("CreateClassPage")) {
                 thongTinLopHocPage(request, response);
             } else if (action.equals("CreateClass")) {
@@ -95,19 +96,21 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("checkID")) {
                 checkAvailability(request, response);
             } else if (action.equals("Class category information")) {
-                  
-            }else if(action.equals("showDetails")){
-                  showDetais(request, response);
-            }
 
-            if (action.equals("CreateClassType")) {
+            } else if (action.equals("showDetails")) {
+                showDetais(request, response);
+            } else if (action.equals("CreateClassType")) {
+//                out.print(action);
                 createLoaiLopHoc(request, response);
                 insertImg(request, response);
                 insertThumbImg(request, response);
 
-            }
+            } else if (action.equals("Class Detail")) {
+//                out.print(action);
+                classDetail(request, response);
 
-            /* TODO output your page here. You may use following sample code. */
+            }
+             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
 
         }
@@ -129,17 +132,15 @@ public class ClassController extends HttpServlet {
         lopHocImageDTO.setMaAnh(maAnh);
         lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
         lopHocImageDTO.setTenAnh("THUMBNAIL");
-        
-        
+
         String imageThumbArray = request.getParameter("Thumbnails");
         List<String> listAnhThumb = new ArrayList<>();
         List<byte[]> imageListThumb = new ArrayList<>();
-     
-            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
-            byte[] imageData = Base64.getDecoder().decode(base64String);
-            imageListThumb.add(imageData);
-         
-       
+
+        String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+        byte[] imageData = Base64.getDecoder().decode(base64String);
+        imageListThumb.add(imageData);
+
         lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
     }
 
@@ -312,7 +313,7 @@ public class ClassController extends HttpServlet {
         String maLopHoc = request.getParameter("maLopHoc");
         TrainerDAO trainerDAO = new TrainerDAO();
         List<TrainerDTO> listTrainer = new ArrayList();
-        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDAO.IDLoaiLopHoc(maLopHoc)));
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(loaiLopHocDAO.searchIdLoaiLopHoc(lopHocDAO.IDLoaiLopHoc(maLopHoc)));
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
@@ -449,20 +450,38 @@ public class ClassController extends HttpServlet {
     public void createClassInformation(HttpServletRequest request, HttpServletResponse response) {
 
     }
-    
+
 //    Show classes' details
-    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
-          String cid = request.getParameter("returnID");
+    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        String cid = request.getParameter("returnID");
 //          Get class information
-          LoaiLopHocDAO dao = new LoaiLopHocDAO();
-          LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
-          request.setAttribute("details", classDetails);
+        LoaiLopHocDAO dao = new LoaiLopHocDAO();
+        LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
+        request.setAttribute("details", classDetails);
 //          Get class images
-          LopHocImageDAO imgdao = new LopHocImageDAO();
-          List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
-          request.setAttribute("imageListByID", list);
-          RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
-          rd.forward(request, response);          
+        LopHocImageDAO imgdao = new LopHocImageDAO();
+        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
+        request.setAttribute("imageListByID", list);
+        RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+        rd.forward(request, response);
+    }
+
+    public void classDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO = lopHocDAO.searchClassById(classID);
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV(classID);
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.searchTrainerByClassID(classID);
+
+        request.setAttribute("listHocVienDTO", listHocVienDTO);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        request.setAttribute("trainerDTO", trainerDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("/Admin/Class/ClassDetail.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
