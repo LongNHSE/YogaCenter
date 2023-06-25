@@ -8,13 +8,15 @@
 <%
      String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-   <!--bootstrap css--> 
+   <!--bootstrap css-->
+  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">   
   <link rel="stylesheet" href="<%=baseUrl%>/css/bootstrap.min.css">
    <!--style css--> 
   <link href="<%=baseUrl%>/css/style.css" rel="stylesheet" type="text/css"/>
    <!--Responsive-->
   <link rel="stylesheet" href="<%=baseUrl%>/css/responsive.css">
-   <!--fevicon--> 
+   <!--fevicon-->
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
   <link rel="icon" href="<%=baseUrl%>/images/fevicon.png" type="image/gif" />
    <!--Scrollbar Custom CSS--> 
   <link rel="stylesheet" href="<%=baseUrl%>/css/jquery.mCustomScrollbar.min.css">

@@ -86,7 +86,7 @@ public class ClassController extends HttpServlet {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
                 assignTrainer(request, response);
-            } else if (action.equals("Check Empty Room")) {
+            } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
@@ -95,12 +95,15 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("checkID")) {
                 checkAvailability(request, response);
             } else if (action.equals("Class category information")) {
-
+                  
+            }else if(action.equals("showDetails")){
+                  showDetais(request, response);
             }
 
             if (action.equals("CreateClassType")) {
-                insertImg(request, response);
                 createLoaiLopHoc(request, response);
+                insertImg(request, response);
+                insertThumbImg(request, response);
 
             }
 
@@ -112,6 +115,34 @@ public class ClassController extends HttpServlet {
     }
 
     //ADD Image danh cho Create Class Type
+    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        List<byte[]> imageList = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+
+        //HOCVIEN CONSTRUCTOR
+        String maAnh = AUTO_IMG_ID;
+        lopHocImageDTO.setMaAnh(maAnh);
+        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+        lopHocImageDTO.setTenAnh("THUMBNAIL");
+        
+        
+        String imageThumbArray = request.getParameter("Thumbnails");
+        List<String> listAnhThumb = new ArrayList<>();
+        List<byte[]> imageListThumb = new ArrayList<>();
+     
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageListThumb.add(imageData);
+         
+       
+        lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+    }
+
     private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
         List<byte[]> imageList = new ArrayList<>();
@@ -134,6 +165,7 @@ public class ClassController extends HttpServlet {
             listAnh.add(a);
         }
         lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
+
     }
 
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
@@ -416,6 +448,21 @@ public class ClassController extends HttpServlet {
 
     public void createClassInformation(HttpServletRequest request, HttpServletResponse response) {
 
+    }
+    
+//    Show classes' details
+    public void showDetais(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
+          String cid = request.getParameter("returnID");
+//          Get class information
+          LoaiLopHocDAO dao = new LoaiLopHocDAO();
+          LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
+          request.setAttribute("details", classDetails);
+//          Get class images
+          LopHocImageDAO imgdao = new LopHocImageDAO();
+          List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
+          request.setAttribute("imageListByID", list);
+          RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+          rd.forward(request, response);          
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

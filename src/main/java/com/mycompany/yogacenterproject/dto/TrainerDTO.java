@@ -21,7 +21,15 @@ private int soNgayNghi;
 private Boolean status;
 private String trainerType;
 private String maLoaiTK;
+private String maLopHoc;
 
+    public String getMaLopHoc() {
+        return maLopHoc;
+    }
+
+    public void setMaLopHoc(String maLopHoc) {
+        this.maLopHoc = maLopHoc;
+    }
     public TrainerDTO(String maTrainer, String ho, String ten, Date dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
         this.maTrainer = maTrainer;
         this.ho = ho;

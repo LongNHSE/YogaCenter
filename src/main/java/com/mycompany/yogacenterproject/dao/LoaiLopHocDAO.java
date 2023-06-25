@@ -91,7 +91,27 @@ public class LoaiLopHocDAO {
         }
         return null;
     }
-
+    
+//    Select ID to get information
+    public LoaiLopHocDTO getClassCateByID(String maLoaiLopHoc){
+          String sql = "select * from [dbo].[loaiLopHoc] where [maLoaiLopHoc] = ?";
+          try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+                loaiLopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                loaiLopHocDTO.setTenLoaiLopHoc(rs.getString("tenLoaiLopHoc"));
+                loaiLopHocDTO.setDescription(rs.getString("description"));                
+                loaiLopHocDTO.setHocPhi(rs.getDouble("hocPhi"));
+                return loaiLopHocDTO;
+            }
+          } catch (Exception e) {
+          }
+          return null;
+    }
     //SEARCH ID TYPE 
     public String searchIdLoaiLopHoc(String tenLoaiLopHoc) {
         String sql = "SELECT  maLoaiLopHoc FROM [dbo].[loaiLopHoc] where tenLoaiLopHoc = ?  ";
@@ -103,7 +123,7 @@ public class LoaiLopHocDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
-                tenLoai = rs.getString("tenLoaiLopHoc");
+                tenLoai = rs.getString("maLoaiLopHoc");
                 return tenLoai.trim();
             }
             rs.close();
@@ -225,10 +245,13 @@ public class LoaiLopHocDAO {
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
+
         listCate = a.getAllLoaiLopHoc();
-        for (LoaiLopHocDTO c : listCate) {
-            System.out.println(c);
-        }
+//        for (LoaiLopHocDTO c : listCate) {
+//            System.out.println(c);
+//        }
+          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
+          System.out.println(DTO.toString());
 
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));

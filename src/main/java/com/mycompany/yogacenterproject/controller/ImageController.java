@@ -48,9 +48,15 @@ public class ImageController extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+              String action = request.getParameter("action");
+              try {
+                    if(action.equals("showDetails")){
+                          viewImgByID(request, response);
+                    }
+              } catch (Exception e) {
+              }
 //            insertImg(request, response);
-            viewImg(request, response);
+//            viewImg(request, response);
 //            String action = request.getParameter("action");
 //
 //            if (action.equals("insertImg")) {
@@ -92,7 +98,15 @@ public class ImageController extends HttpServlet {
         RequestDispatcher rs = request.getRequestDispatcher("/image.jsp");
         rs.forward(request, response);
     }
-
+    private void viewImgByID(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+          String cid = request.getParameter("returnID");
+          LopHocImageDAO dao = new LopHocImageDAO();
+          List<LopHocIMGDTO> list = dao.getImageBasedOnTypeID(cid);
+            request.setAttribute("imageListByID", list);
+            RequestDispatcher rs = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+            rs.forward(request, response);        
+    }
+    
     private String getFileName(Part part) {
         String header = part.getHeader("content-disposition");
         for (String headerPart : header.split(";")) {
@@ -103,6 +117,7 @@ public class ImageController extends HttpServlet {
         }
         return part.getName();
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

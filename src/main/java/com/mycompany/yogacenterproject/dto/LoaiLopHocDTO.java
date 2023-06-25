@@ -6,7 +6,6 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,10 +81,10 @@ public class LoaiLopHocDTO {
         return decimalFormat.format(hocPhi);
     }
 
-    @Override
-    public String toString() {
-        DecimalFormat decimalFormat = new DecimalFormat("#");
-        return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + getHocPhiWithDot() + '}';
-    }
+      @Override
+      public String toString() {
+            return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + hocPhi + ", description=" + description + '}';
+      }
 
+    
 }

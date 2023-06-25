@@ -96,22 +96,24 @@ public class LopHocImageDAO {
 
             // Create a connection to the database (replace "your-database-url", "username", and "password" with your actual connection details)
             Connection conn = DBUtils.getConnection();
-            String sql = "insert into [dbo].[lopHocImg]( maAnh ,[image], maLoaiLopHoc,maHV, maLopHoc, maTrainer)"
-                    + "VALUES( ?, ?, ?, ?, ?,?) ";
+            String sql = "insert into [dbo].[lopHocImg]( maAnh,tenAnh ,[image], maLoaiLopHoc,maHV, maLopHoc, maTrainer)"
+                    + "VALUES( ?, ?, ?, ?, ?,?,?) ";
             PreparedStatement ps = conn.prepareStatement(sql);
             for (byte[] imageData : imageList) {
+
                 String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lastIDIndex() + 1));
 
                 //HOCVIEN CONSTRUCTOR
                 String maAnh = AUTO_IMG_ID;
                 lopHocIMG.setMaAnh(maAnh);
                 ps.setString(1, lopHocIMG.getMaAnh());
+                ps.setString(2, lopHocIMG.getTenAnh());
 
-                ps.setBytes(2, imageData);
-                ps.setString(3, lopHocIMG.getMaLoaiLopHoc());
-                ps.setString(4, lopHocIMG.getMaHV());
-                ps.setString(5, lopHocIMG.getMaLopHoc());
-                ps.setString(6, null);
+                ps.setBytes(3, imageData);
+                ps.setString(4, lopHocIMG.getMaLoaiLopHoc());
+                ps.setString(5, lopHocIMG.getMaHV());
+                ps.setString(6, lopHocIMG.getMaLopHoc());
+                ps.setString(7, null);
                 ps.executeUpdate();
 
             }

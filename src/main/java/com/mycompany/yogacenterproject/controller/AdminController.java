@@ -77,7 +77,7 @@ public class AdminController extends HttpServlet {
 
             } else if (action.equals("listClassUnassigned")) {
                 listClassUnassigned(request, response);
-            } else if (action.equals("View Schedule")) {
+            } else if (action.equals("ViewSchedule")) {
                 listSchedule(request, response);
                 date(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/Schedule.jsp");

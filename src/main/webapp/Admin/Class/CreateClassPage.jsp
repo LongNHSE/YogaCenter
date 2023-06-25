@@ -20,103 +20,210 @@
 
 
     <body>
-        <form action="<%=url%>/ClassController" method="POST">
-            <section class="vh-100 gradient-custom">
-                <div class="container py-5 h-100">
-                    <div class="row justify-content-center align-items-center h-100">
-                        <div class="col-12 col-lg-9 col-xl-7">
-                            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                                <div class="card-body p-4 p-md-5">
-                                    <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
+        <style>nav {
+                position: relative;
+                height: 100%;
+                width: 250px;
+
+            }
+            body{
+                height: 100%;
+            }
+            nav ul {
+                position: relative;
+                height: 100%;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav ul li {
+                /* Sub Menu */
+            }
+            nav ul li a {
+                display: block;
+                padding: 10px 15px;
+                color: #fff;
+                text-decoration: none;
+                -webkit-transition: 0.2s linear;
+                -moz-transition: 0.2s linear;
+                -ms-transition: 0.2s linear;
+                -o-transition: 0.2s linear;
+                transition: 0.2s linear;
+            }
+            nav ul li a:hover {
+                background: #1d4f71;
+                color: #fff;
+            }
+            nav ul li a .fa {
+                width: 16px;
+                text-align: center;
+                margin-right: 5px;
+                float:right;
+            }
+            nav ul ul {
+                background: rgba(0, 0, 0, 0.2);
+            }
+            nav ul li ul li a {
+
+                border-left: 4px solid transparent;
+                padding: 10px 20px;
+            }
+            nav ul li ul li a:hover {
+
+                border-left: 4px solid #3498db;
+            }
+            .Controller{
+                display: flex;
+                position: relative;
+            }
+
+            #active-element{
+                background: #1d4f71;
+                color: #fff;
+
+            }
+            .wrapper{
+                position:fixed;
+                height: 100%;
+                color: #fff;
+            }
+            .Controller .content{
+                margin-left:250px;
+            }
+            .Class{
+               
+                width: 100%;
+                
+            }
+        
+        </style>
 
 
-                                    <div class="row">
-                                        <div class="col-md-6 mb-4">
+        <div class="Controller">
+          
+            <div class="wrapper">
+                <nav class='animated bounceInDown bg-dark'>
+                    <ul>
+                        <li><a href='<%=url%>/Admin/AdminHomepage.jsp'>Profile</a></li>
+                        <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
+                            <ul id="active">
+                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>Class Unassigned</a></li>
+                                <li id="active-element"><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
+                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
+                                <li><a href='Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
+                            </ul>
+                        </li>
+                        <li class='sub-menu'><a href='#message'>Help<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href='#settings'>FAQ's</a></li>
+                                <li><a href='#settings'>Submit a Ticket</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li><a href='#message'>Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="Class">
 
-                                            <div class="form-outline">
+                <form action="<%=url%>/ClassController" method="POST">
+                    <section class="vh-100 gradient-custom">
+                        <div class="container py-5 h-100">
+                            <div class="row justify-content-center align-items-center h-100">
+                                <div class="col-12 col-lg-9 col-xl-7">
+                                    <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                                        <div class="card-body p-4 p-md-5">
+                                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
 
-                                                <select name="listLoaiLopHoc"  onchange="getHocPhi(this.value)" class="selected-control " onchange="getHocPhi(this.value)" required>
-                                                    <option class="form-label" value=""> Please choose type of class</option>
-                                                    <c:forEach items="${listLoaiLopHoc}" var="LoaiLopHoc">
-                                                        <option class="form-label" value="${LoaiLopHoc.maLoaiLopHoc}">${LoaiLopHoc.tenLoaiLopHoc}</option>
-                                                    </c:forEach>
-                                                </select>
-                                                <label class="form-label" for="LoaiLopHoc">Type of class</label>
+
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+
+                                                    <div class="form-outline">
+
+                                                        <select name="listLoaiLopHoc"  onchange="getHocPhi(this.value)" class="selected-control " onchange="getHocPhi(this.value)" required>
+                                                            <option class="form-label" value=""> Please choose type of class</option>
+                                                            <c:forEach items="${listLoaiLopHoc}" var="LoaiLopHoc">
+                                                                <option class="form-label" value="${LoaiLopHoc.maLoaiLopHoc}">${LoaiLopHoc.tenLoaiLopHoc}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                        <label class="form-label" for="LoaiLopHoc">Type of class</label>
+                                                    </div>
+                                                    <div class="form-outline">
+                                                        <input type="number" id="soLuongHV" class="form-control form-control-lg" name="soLuongHV" required="required" />
+                                                        <label class="form-label" for="soLuongHV">Number of Trainees</label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6 mb-4">
+
+                                                    <div class="form-outline">
+                                                        <p id="price" class="form-control-lg form-control"></p>
+                                                        <label class="form-label" for="price">Price</label>
+                                                    </div>
+                                                    <div class="form-outline">
+                                                        <input type="number" id="soBuoi" class="form-control form-control-lg" name="soBuoi" required="required" />
+                                                        <label class="form-label" for="soBuoi">Number of Slots</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="form-outline">
-                                                <input type="number" id="soLuongHV" class="form-control form-control-lg" name="soLuongHV" required="required" />
-                                                <label class="form-label" for="soLuongHV">Number of Trainees</label>
-                                            </div>
+                                            <div class="row" id="lichHoc" >
+                                                <div class="col-md-6 mb-4 ">
 
+
+                                                    <div class="form-outline">
+
+
+                                                        <c:forEach items="${weekdays}" var="weekdays" varStatus="loop" >
+                                                            <input type="text" id="weekdays" class="form-control form-control-lg" name="weekdays" value="${weekdays}"  readonly/>
+                                                        </c:forEach>
+
+                                                        <label class="form-label" for="Slot">Slot</label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6 mb-4 ">
+
+
+
+                                                    <input type="text" id="slot" class="form-control form-control-lg" name="slot" value="${slot}" readonly />
+
+
+
+                                                </div>
+
+
+                                            </div>
                                         </div>
-                                        <div class="col-md-6 mb-4">
-
-                                            <div class="form-outline">
-                                                <p id="price" class="form-control-lg form-control"></p>
-                                                <label class="form-label" for="price">Price</label>
-                                            </div>
-                                            <div class="form-outline">
-                                                <input type="number" id="soBuoi" class="form-control form-control-lg" name="soBuoi" required="required" />
-                                                <label class="form-label" for="soBuoi">Number of Slots</label>
+                                        <p class="form-check-label"  id="checkRoom"></p>
+                                        <div style="margin-bottom: 50px"></div>
+                                        <div class="row">
+                                            <div class="form-outline datepicker w-100">
+                                                <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" onchange="checkDate()" />
+                                                <label for="initializeDate" class="form-label">Initialize Date</label>
+                                                <div style="color: red; font-weight: BOLD">
+                                                    <p id="checkDate"></p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row" id="lichHoc" >
-                                        <div class="col-md-6 mb-4 ">
 
 
-                                            <div class="form-outline">
-
-
-                                                <c:forEach items="${weekdays}" var="weekdays" varStatus="loop" >
-                                                    <input type="text" id="weekdays" class="form-control form-control-lg" name="weekdays" value="${weekdays}"  readonly/>
-                                                </c:forEach>
-
-                                                <label class="form-label" for="Slot">Slot</label>
-                                            </div>
-
+                                        <div class="mt-4 pt-2">
+                                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
+                                            <input class="btn btn-outline-danger" type="hidden" value="CreateClass" id="submit" name="action"  />
                                         </div>
-                                        <div class="col-md-6 mb-4 ">
 
 
-
-                                            <input type="text" id="slot" class="form-control form-control-lg" name="slot" value="${slot}" readonly />
-
-
-
-                                        </div>
 
 
                                     </div>
                                 </div>
-                                <p class="form-check-label"  id="checkRoom"></p>
-                                <div style="margin-bottom: 50px"></div>
-                                <div class="row">
-                                    <div class="form-outline datepicker w-100">
-                                        <input type="Date" class="form-control form-control-lg" id="initializeDate" name="initializeDate" required="required" onchange="checkDate()" />
-                                        <label for="initializeDate" class="form-label">Initialize Date</label>
-                                        <div style="color: red; font-weight: BOLD">
-                                            <p id="checkDate"></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="mt-4 pt-2">
-                                    <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
-                                    <input class="btn btn-outline-danger" type="hidden" value="CreateClass" id="submit" name="action"  />
-                                </div>
-
-
-
-
                             </div>
                         </div>
-                    </div>
-                </div>
-                </div>
-            </section>
-        </form>
+                        </div>
+                    </section>
+                </form>
+            </div>
 
     </body>
 
