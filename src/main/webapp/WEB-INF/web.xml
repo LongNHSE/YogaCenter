@@ -86,14 +86,14 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Authentication/signin.jsp</welcome-file>
+        <welcome-file>Public/signin.jsp</welcome-file>
     </welcome-file-list>
-    <!--     <filter>
+     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.mycompany.yogacenterproject.filter.Authentication</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
 </web-app>

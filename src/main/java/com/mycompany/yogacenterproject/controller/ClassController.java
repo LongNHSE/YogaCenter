@@ -81,14 +81,14 @@ public class ClassController extends HttpServlet {
 //                out.print(weekdays[1].toUpperCase());
 //                out.print(phongHocDAO.getEmptyRoom(slot, weekdays[0].toUpperCase(), weekdays[1].toUpperCase()));
                 createLopHoc(request, response);
-                response.sendRedirect("Admin/Class/ClassController.jsp");
+                response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
             } else if (action.equals("Assign Trainer")) {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
                 assignTrainer(request, response);
             } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
-                RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/ClassSchedule.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
@@ -183,7 +183,7 @@ public class ClassController extends HttpServlet {
         request.setAttribute("listSlot", listSlot);
         request.setAttribute("weekdays", weekdays);
         request.setAttribute("slot", slot);
-        RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/CreateClassPage.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassPage.jsp");
         rd.forward(request, response);
 
     }
@@ -213,10 +213,10 @@ public class ClassController extends HttpServlet {
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
             loaiLopHocDTO.setDescription(request.getParameter("description").trim());
             loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
-            response.sendRedirect("Admin/Class/ClassController.jsp");
+            response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
         } else {
             request.setAttribute("errorMessage", errorMessage);
-            RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/CreateClassTypePage.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
             rd.forward(request, response);
             try {
                 rd.forward(request, response);
@@ -285,7 +285,7 @@ public class ClassController extends HttpServlet {
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("maLopHoc", maLopHoc);
 
-        RequestDispatcher rd = request.getRequestDispatcher("Admin/Class/AssignTrainer.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/AssignTrainer.jsp");
         rd.forward(request, response);
 
     }
@@ -301,7 +301,7 @@ public class ClassController extends HttpServlet {
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
         scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
-        response.sendRedirect("Admin/Class/ClassController.jsp");
+        response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
 
     }
     // Show Class
@@ -310,7 +310,7 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         listCate = loaiLopHocDAO.getAllLoaiLopHoc();
         request.setAttribute("listCate", listCate);
-        RequestDispatcher rd = request.getRequestDispatcher("/Home/ClassCategories.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/Authentication/ClassCategories.jsp");
         rd.forward(request, response);
 
     }
@@ -456,7 +456,7 @@ public class ClassController extends HttpServlet {
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
         request.setAttribute("listLopHocDTO", listLopHocDTO);
-        RequestDispatcher rd = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
         rd.forward(request, response);
     }
 
@@ -474,7 +474,7 @@ public class ClassController extends HttpServlet {
         request.setAttribute("listHocVienDTO", listHocVienDTO);
         request.setAttribute("lopHocDTO", lopHocDTO);
         request.setAttribute("trainerDTO", trainerDTO);
-        RequestDispatcher rd = request.getRequestDispatcher("/Admin/Class/ClassDetail.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
         rd.forward(request, response);
     }
 

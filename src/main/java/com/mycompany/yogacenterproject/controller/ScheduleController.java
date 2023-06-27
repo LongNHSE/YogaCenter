@@ -53,7 +53,7 @@ public class ScheduleController extends HttpServlet {
             Schedule(request, response);
             date(request, response);
 
-            request.getRequestDispatcher("/Class/Schedule.jsp").forward(request, response);
+            request.getRequestDispatcher("/Authorization/Admin/Class/Schedule.jsp").forward(request, response);
 
         }
     }
