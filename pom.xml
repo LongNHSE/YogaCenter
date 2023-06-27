@@ -5,7 +5,7 @@
     <artifactId>YogaCenterProject</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>YogaCenterProject-1.0-SNAPSHOT</name>
+    <name>Yoga Center Project</name>
     
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

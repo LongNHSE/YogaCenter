@@ -117,13 +117,13 @@ public class ScheduleDAO {
     //TAO SCHEDULEHV voi THAM SO MALOPHOC, MAHV, MASLOT
     public boolean createScheduleHV(String maHV, String maLopHoc) throws SQLException {
         String sql = "INSERT INTO ScheduleHV([maHV], [maLopHoc], [ngayHoc], [maSlot], [thu])\n"
-                + "SELECT ?, [maLopHoc], [ngayHoc], [maSlot], [thu]\n"
-                + "FROM [YogaCenter].[dbo].[ScheduleTemp]\n"
-                + "WHERE ScheduleTemp.maLopHoc=? ;";
+                + "               SELECT ?, [maLopHoc], [ngayHoc], [maSlot], [thu]\n"
+                + "               FROM [YogaCenter].[dbo].[ScheduleTrainer]\n"
+                + "               WHERE ScheduleTrainer.maLopHoc = ?";
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, maHV    );
+        ps.setString(1, maHV);
         ps.setString(2, maLopHoc);
 
         ps.executeUpdate();
@@ -252,7 +252,6 @@ public class ScheduleDAO {
 //            x.getNgayHoc().compareTo(ld);
 //            System.out.println(x.getNgayHoc().equals(ld));
     }
-
 
 //        for (ScheduleTempDTO x : listScheduleHv) {
 //            System.out.println(x.toString());

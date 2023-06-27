@@ -39,10 +39,8 @@ public class Authentication implements Filter {
     public void doFilter(ServletRequest request,
             ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
         String uri = req.getRequestURI();
 //		this.context.log("Requested Resource::"+uri);
 
@@ -59,13 +57,13 @@ public class Authentication implements Filter {
             adminDTO=null;
         }
 
-        if (adminDTO != null) {
+        if (adminDTO != null && uri.contains("Authorization")) {
             // pass the request along the filter chain
             chain.doFilter(request, response);
         } else {
-            if (hocVienDTO == null && uri.contains("Admin")) {
+            if (hocVienDTO == null && uri.contains("Authentication")) {
                 this.context.log("Unauthorized access request");
-                res.sendRedirect("/YogaCenter/Authentication/signin.jsp");
+                res.sendRedirect("/YogaCenter/Public/signin.jsp");
             } else {
                 // pass the request along the filter chain
                 chain.doFilter(request, response);

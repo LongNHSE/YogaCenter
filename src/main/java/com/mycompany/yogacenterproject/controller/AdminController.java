@@ -72,7 +72,7 @@ public class AdminController extends HttpServlet {
             } else if (action.equals("detailTrainer")) {
 
             } else if (action.equals("listLopHoc")) {
-
+                listClass(request, response);
             } else if (action.equals("detailLopHoc")) {
 
             } else if (action.equals("listClassUnassigned")) {
@@ -80,7 +80,7 @@ public class AdminController extends HttpServlet {
             } else if (action.equals("ViewSchedule")) {
                 listSchedule(request, response);
                 date(request, response);
-                RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/Schedule.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/Schedule.jsp");
                 rd.forward(request, response);
 
             }
@@ -92,8 +92,8 @@ public class AdminController extends HttpServlet {
         HocVienDAO hocVienDAO = new HocVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
         request.setAttribute("listHocVienDTO", listHocVienDTO);
-//        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
-        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HocVienList.jsp");
+//        response.sendRedirect("./Authorization/Admin/Trainee/HocVienList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Authorization/Admin/Trainee/HocVienList.jsp");
         rs.forward(request, response);
 
     }
@@ -101,12 +101,24 @@ public class AdminController extends HttpServlet {
     public void listTrainerDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<TrainerDTO> listTrainerDTO = new ArrayList<TrainerDTO>();
         TrainerDAO trainerDAO = new TrainerDAO();
-        listTrainerDTO = trainerDAO.readListTrainer();
-        request.setAttribute("listTrainerDTO", listTrainerDTO);
-//        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
-        RequestDispatcher rs = request.getRequestDispatcher("./Admin/Trainer/TrainerList.jsp");
-        rs.forward(request, response);
 
+        int pageID = Integer.parseInt(request.getParameter("page"));
+        // 1 Page has 10 classes
+        int total = 5;
+        int pageCount = pageID;
+        if (pageID == 1) {
+
+        } else {
+            pageID = pageID - 1;
+            pageID = pageID * total + 1;
+        }
+        listTrainerDTO = trainerDAO.readListTrainerWithRecord(pageID, total);
+        int count = (int) Math.ceil((trainerDAO.countRecord() + total - 1) / total);
+        request.setAttribute("listTrainerDTO", listTrainerDTO);
+        request.setAttribute("count", count);
+        request.setAttribute("pageCount", pageCount);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Trainer/TrainerList.jsp");
+        rd.forward(request, response);
     }
 
     public void listReceipt(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -117,7 +129,7 @@ public class AdminController extends HttpServlet {
         listHoaDon = hoaDonDAO.listHoaDon(request.getParameter("maHV"));
 
         request.setAttribute("listHoaDon", listHoaDon);
-        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HoaDonList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Authorization/Admin/Trainee/HoaDonList.jsp");
         rs.forward(request, response);
 
     }
@@ -128,7 +140,31 @@ public class AdminController extends HttpServlet {
         listLopHocTemp = lopHocDAO.listLopTemp();
 
         request.setAttribute("listLopHocTemp", listLopHocTemp);
-        RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/ListClassUnassigned.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClassUnassigned.jsp");
+        rd.forward(request, response);
+
+    }
+
+    //THIS CLASS USE PAGINATION METHOD
+    public void listClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<LopHocDTO> listLopHocDTO = new ArrayList<>();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        int pageID = Integer.parseInt(request.getParameter("page"));
+        // 1 Page has 10 classes
+        int total = 5;
+        int pageCount = pageID;
+        if (pageID == 1) {
+
+        } else {
+            pageID = pageID - 1;
+            pageID = pageID * total + 1;
+        }
+        listLopHocDTO = lopHocDAO.readListClassRecord(pageID, total);
+        int count = (int) Math.ceil((lopHocDAO.countRecord() + total - 1) / total);
+        request.setAttribute("listLopHocDTO", listLopHocDTO);
+        request.setAttribute("count", count);
+        request.setAttribute("pageCount", pageCount);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClass.jsp");
         rd.forward(request, response);
 
     }

@@ -22,7 +22,7 @@ public class HocVienDTO {
     private String email;
     private String gender;
 
-    public List getMaLopHoc() {
+    public List<String> getMaLopHoc() {
         if (maLopHoc != null) {
             return maLopHoc;
         } else {

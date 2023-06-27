@@ -1,6 +1,7 @@
 ﻿
 use master
 go
+
 drop database YogaCenter
 go
 
@@ -53,7 +54,8 @@ CREATE TABLE Trainer(
 	[soNgayNghi] INTEGER NOT NULL,
 	[status] BIT NOT NULL,
 	[trainerType] VARCHAR(255) NOT NULL,
-	[maLoaiTK] NVARCHAR(10) NOT NULL
+	[maLoaiTK] NVARCHAR(10) NOT NULL,
+	[gender] NVARCHAR(10) NOT NULL
 	)
 
 CREATE TABLE lopHoc(
@@ -198,10 +200,10 @@ CREATE TABLE paySlip(
 	Deductions DECIMAL(10, 2),
 	Total DECIMAL(10, 2),
 	[Date] DATE,
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong]
+	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
 	)
 
-	INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
+INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
 VALUES('YG001', 'Surya Kriya', 'https://sundariyogacenter.com/admin/sanpham/Surya-Kriya-Inside_4018_anh1.jpg')
 INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
 VALUES('YG002', 'Angamardana', 'https://sundariyogacenter.com/admin/sanpham/Angamardana-Ben-Trong_4021_anh1.jpg')
