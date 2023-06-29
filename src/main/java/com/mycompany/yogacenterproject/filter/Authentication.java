@@ -54,14 +54,14 @@ public class Authentication implements Filter {
             this.context.log("Run to here and adminDTO: " + adminDTO);
         } catch (Exception ex) {
             hocVienDTO = null;
-            adminDTO=null;
+            adminDTO = null;
         }
 
-        if (adminDTO != null && uri.contains("Authorization")) {
-            // pass the request along the filter chain
-            chain.doFilter(request, response);
+        if (adminDTO == null && uri.contains("Authorization/Admin")) {
+            res.sendRedirect("/YogaCenter/Public/adminLogin.jsp");
+            this.context.log("Unauthorized access request");
         } else {
-            if (hocVienDTO == null && uri.contains("Authentication")) {
+            if (hocVienDTO == null && uri.contains("Authentication") || hocVienDTO == null && uri.contains("Authorization/TraineePrivilege")) {
                 this.context.log("Unauthorized access request");
                 res.sendRedirect("/YogaCenter/Public/signin.jsp");
             } else {
