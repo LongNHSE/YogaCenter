@@ -65,7 +65,7 @@
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=baseUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="#<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
                         <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  
