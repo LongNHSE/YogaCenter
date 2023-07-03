@@ -3,6 +3,9 @@
     Created on : Jun 8, 2023, 8:10:20 AM
     Author     : Oalskad
 --%>
+<%@page import="com.mycompany.yogacenterproject.dao.LopHocDAO"%>
+<%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
+<%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
@@ -441,6 +444,20 @@
                 font-size: 16px
             }
 
+            .title{
+                width: 500px;
+                height: auto;
+            }
+            .title h1 {
+                border-bottom: 5px solid #554c86
+            }
+            .Description .description{
+                font-size: 25px;
+                display: block;
+                text-align: center;
+                margin: 20px;
+                line-height: 30px;
+            }
         </style>            
     </head>
 
@@ -464,7 +481,8 @@
                                 <div class="carousel-inner">
                                     <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
                                         <div class="item ${status.index == 0 ? 'active' : ''}">
-                                            <img src="data:image/jpeg;base64,${imageData.image}" class="img-responsive" alt="" style="width: 100%; height: 400px;">
+                                            <img src="data:image/jpeg;base64,${imageData.image}" class="img-responsive" alt="" style="width: 100%;
+                                                 height: 400px;">
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -492,16 +510,7 @@
                             ${formattedHocPhi}
                         </h3>
                         <hr/>
-                        <div class="description description-tabs">
-                            <h3 href="#more-information" data-toggle="tab" class="no-margin">Class descriptions</h3>
-                            <div id="myTabContent" class="tab-content">
-                                <div class="" id="">
-                                    <span>
-                                        ${requestScope.details.getDescription()}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+
                         <hr/>
 
                         <form action="<%=url%>/ClassController">
@@ -510,15 +519,37 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
                                     <div class="box">
-                                        <select name="maLopHoc">
+                                        <select name="maSlot">
                                             <option  value=""> Please choose Slot</option>
-                                            <c:forEach items="${requestScope.listLopHocDTO}" var="lopHocDTO" varStatus="status" >
-                                                <option name="maLopHoc" value="${lopHocDTO.maLopHoc}">
-                                                ${lopHocDTO.maLopHoc}:  ${lopHocDTO.timeStart}-${lopHocDTO.timeEnd}, ${lopHocDTO.thuList}
-                                                </option>                                           
-                                            </c:forEach>
+                                            <%  List<LopHocDTO> listLopHocDTO = (List<LopHocDTO>) request.getAttribute("listLopHocDTO");
+                                                LopHocDAO lopHocDAO = new LopHocDAO();
+                                                for (int i = 0; i < listLopHocDTO.size(); i++) {
+                                                    if (i != 0) {
+                                                        if (!lopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(i - 1).getThuList()) || !listLopHocDTO.get(i).getMaSlot().equals(listLopHocDTO.get(i - 1).getMaSlot())) {
+                                            %>
+                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
+                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%> - <%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
+                                            
+                                            </option>  
+                                            <%
+                                                }
+                                            } else {
+                                            %>
+
+                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
+                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%>-<%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
+                                            
+                                            </option>  
+                                            <%
+                                                    }
+                                                }
+                                            %>
                                         </select>
                                     </div>
+
+
+
+
 
                                 </div>
 
@@ -526,6 +557,8 @@
                                     <button class="button" type="submit" name="action" value="Register">
                                         Register now!
                                     </button>
+                                    <% String cid = (String) request.getAttribute("cid");%>
+                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                 </div>
 
                             </div>
@@ -533,8 +566,19 @@
 
                     </div>
                 </div>
-
+                <c:set var="descriptionDTO" value="${descriptionDTO}" />
             </div>
+
+            <div class="Description product-content product-wrap clearfix product-deatil">
+                <div class="title">
+                    <h1> ${descriptionDTO.title}</h1>
+                </div>
+                <div class="description">
+                    ${descriptionDTO.content}
+                </div>
+            </div>
+
+
 
         </div>
 

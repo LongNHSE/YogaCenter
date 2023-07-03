@@ -257,8 +257,8 @@ public class LoginController extends HttpServlet {
 
         } else {
             session.setAttribute("adminDTO", adminDTO);
-            // set lại session time out là 5p
-            session.setMaxInactiveInterval(300);
+//            // set lại session time out là 5p
+            session.setMaxInactiveInterval(1900);
 
             request.getRequestDispatcher("/Authorization/Admin/AdminHomepage.jsp").forward(request, response);
            

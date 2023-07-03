@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
@@ -11,16 +12,20 @@ import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocImageDAO;
 import com.mycompany.yogacenterproject.dao.PhongHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
+import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
+import com.mycompany.yogacenterproject.dto.DescriptionDTO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
+import com.mycompany.yogacenterproject.dto.PhongHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
+import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
@@ -29,14 +34,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Schedule;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -73,13 +82,27 @@ public class ClassController extends HttpServlet {
             if (action.equals("CreateClassPage")) {
                 thongTinLopHocPage(request, response);
             } else if (action.equals("CreateClass")) {
-//                PhongHocDAO phongHocDAO = new PhongHocDAO();
-//                String slot = request.getParameter("slot");
+
+//                ScheduleDAO scheduleDAO = new ScheduleDAO();
+//                SemesterDAO semesterDAO = new SemesterDAO();
+//                SemesterDTO semesterDTO = new SemesterDTO();
+//                semesterDTO = semesterDAO.getCurrentSemester();
+//                String date = request.getParameter("initializeDate");
 //                String[] weekdays = request.getParameterValues("weekdays");
-//                out.print(slot);
-//                out.print(weekdays[0].toUpperCase());
-//                out.print(weekdays[1].toUpperCase());
-//                out.print(phongHocDAO.getEmptyRoom(slot, weekdays[0].toUpperCase(), weekdays[1].toUpperCase()));
+//                String maSlot = request.getParameter("slot");
+//                int soBuoi = Integer.parseInt(request.getParameter("soBuoi"));
+//                Date date2 = Date.valueOf(request.getParameter("initializeDate"));
+//
+//                boolean check = scheduleDAO.getLastDate(weekdays, date2, soBuoi).after(semesterDTO.getStartDate());
+//                boolean check2 = scheduleDAO.getLastDate(weekdays, date2, soBuoi).before(semesterDTO.getStartDate());
+//                out.print(check);
+//                out.print(check2);
+//                out.print(scheduleDAO.getLastDate(weekdays, date2, soBuoi).after(semesterDTO.getEndDate()));
+//                out.print(scheduleDAO.getLastDate(weekdays, date2, soBuoi).before(semesterDTO.getEndDate()));
+//
+//                out.println(semesterDTO.getEndDate());
+//                out.println(scheduleDAO.getLastDate(weekdays, date2, soBuoi));
+                //
                 createLopHoc(request, response);
                 response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
             } else if (action.equals("Assign Trainer")) {
@@ -95,6 +118,28 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("Class category information")) {
 
             } else if (action.equals("Register")) {
+//                LopHocDAO lopHocDAO = new LopHocDAO();
+//                String selectedValue = request.getParameter("maSlot");
+//
+//                // Split the selected value to retrieve maSlot and thuList
+//                String[] parts = selectedValue.split("\\|");
+//                String selectedMaSlot = parts[0];
+//                String selectedThuList = parts[1];
+//
+//                // Remove the square brackets and spaces from the string
+//                String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
+//
+//// Split the cleaned value into individual elements
+//                String[] elements = cleanedValue.split(",");
+//
+//// Convert the array to a List<String>
+//                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+//                String maSlot = selectedMaSlot;
+//                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+//
+//                maLopHoc =lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+//                out.print(lopHocDAO.searchClassById(maLopHoc));
+//               out.print( checkAvailability(request, response, maLopHoc));
                 payment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
@@ -109,6 +154,13 @@ public class ClassController extends HttpServlet {
 //                out.print(action);
                 classDetail(request, response);
 
+            } else if (action.equals("Update")) {
+
+                updateClassPage(request, response);
+            } else if (action.equals("UpdateClass")) {
+                updateClass(request, response);
+            } else if (action.equals("Delete")) {
+                deleteClass(request, response);
             }
             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
@@ -173,6 +225,8 @@ public class ClassController extends HttpServlet {
     public void thongTinLopHocPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        SemesterDAO semesterDAO = new SemesterDAO();
+        SemesterDTO semesterDTO = semesterDAO.getCurrentSemester();
         listLoaiLopHoc = loaiLopHocDAO.readLoaiLopHoc();
         request.setAttribute("listLoaiLopHoc", listLoaiLopHoc);
         String[] weekdays = request.getParameterValues("weekday");
@@ -180,6 +234,7 @@ public class ClassController extends HttpServlet {
 
         SlotDAO slotDAO = new SlotDAO();
         List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("semesterDTO", semesterDTO);
         request.setAttribute("listSlot", listSlot);
         request.setAttribute("weekdays", weekdays);
         request.setAttribute("slot", slot);
@@ -188,14 +243,17 @@ public class ClassController extends HttpServlet {
 
     }
 
-    
     //TAO LOAI LOP HOC
     public void createLoaiLopHoc(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+        DescriptionDAO descriptionDAO = new DescriptionDAO();
+        DescriptionDTO descriptionDTO = new DescriptionDTO();
 
         String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
         String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
+        String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (descriptionDAO.lastIDIndex() + 1));
+        String maDescription = AUTO_DESCRIPTION_ID;
         String errorMessage = "";
         boolean check = true;
 
@@ -211,8 +269,12 @@ public class ClassController extends HttpServlet {
             loaiLopHocDTO.setHocPhi(hocPhi);
             loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-            loaiLopHocDTO.setDescription(request.getParameter("description").trim());
+            loaiLopHocDTO.setMaDescription(maDescription);
+            descriptionDTO.setMaDescription(maDescription);
+            descriptionDTO.setTitle(request.getParameter("title").trim());
+            descriptionDTO.setContent(request.getParameter("description").trim());
             loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
+            descriptionDAO.createDescriptionDTO(descriptionDTO);
             response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
         } else {
             request.setAttribute("errorMessage", errorMessage);
@@ -232,7 +294,11 @@ public class ClassController extends HttpServlet {
         LopHocDAO lopHocDAO = new LopHocDAO();
         LopHocDTO lopHocDTO = new LopHocDTO();
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-        String dateErrorMessage = "";
+        String errorMessage = "";
+        SemesterDAO semesterDAO = new SemesterDAO();
+        SemesterDTO semesterDTO = new SemesterDTO();
+        semesterDTO = semesterDAO.getCurrentSemester();
+        String dateLimit = "";
         boolean error = true;
 
         String AUTO_MALOPHOC_ID = String.format(Constants.MA_LOPHOC_FORMAT, (lopHocDAO.lastIDIndex() + 1));
@@ -241,32 +307,57 @@ public class ClassController extends HttpServlet {
         String maLoaiLopHoc = request.getParameter("listLoaiLopHoc");
         int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
         int soBuoi = Integer.parseInt(request.getParameter("soBuoi"));
-        String maSlot = request.getParameter("slot");
+
         String date = request.getParameter("initializeDate");
         String[] weekdays = request.getParameterValues("weekdays");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Parse the string into a LocalDate object
-        LocalDate initializeDate = LocalDate.parse(date, formatter);
-
-        PhongHocDAO phongHocDAO = new PhongHocDAO();
+        String maSlot = request.getParameter("slot");
         Date date2 = Date.valueOf(request.getParameter("initializeDate"));
-        lopHocDTO.setMaLopHoc(maLopHoc);
-        lopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
-        lopHocDTO.setMaSlot(maSlot);
-        lopHocDTO.setMaRoom(phongHocDAO.getEmptyRoom(maSlot, weekdays[0].toUpperCase(), weekdays[1].toUpperCase()).getMaRoom());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (scheduleDAO.getLastDate(weekdays, date2, soBuoi).before(semesterDTO.getEndDate())) {
+            // Parse the string into a LocalDate object
+            LocalDate initializeDate = LocalDate.parse(date, formatter);
 
-        lopHocDTO.setSoBuoi(soBuoi);
-        lopHocDTO.setSoLuongHV(soLuongHV);
-        lopHocDTO.setNgayBatDau(date2);
-        lopHocDTO.setThu(weekdays);
+            PhongHocDAO phongHocDAO = new PhongHocDAO();
 
-        lopHocDAO.addClass(lopHocDTO);
-        scheduleDAO.createScheduleTemp(lopHocDTO);
-        if (error == true) {
+            lopHocDTO.setMaLopHoc(maLopHoc);
+            lopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            lopHocDTO.setMaSlot(maSlot);
+            lopHocDTO.setMaRoom(phongHocDAO.getEmptyRoom(maSlot, weekdays[0].toUpperCase(), weekdays[1].toUpperCase()).getMaRoom());
 
+            lopHocDTO.setSoBuoi(soBuoi);
+            lopHocDTO.setSoLuongHV(soLuongHV);
+            lopHocDTO.setNgayBatDau(date2);
+            lopHocDTO.setThu(weekdays);
+
+            lopHocDAO.addClass(lopHocDTO);
+            scheduleDAO.createScheduleTemp(lopHocDTO);
+            if (error == true) {
+
+            } else {
+                thongTinLopHocPage(request, response);
+            }
         } else {
-            thongTinLopHocPage(request, response);
+            errorMessage += "The last date of this class exceeds the ending date of this semester.";
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+            listLoaiLopHoc = loaiLopHocDAO.readLoaiLopHoc();
+            request.setAttribute("listLoaiLopHoc", listLoaiLopHoc);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String dateString = dateFormat.format(scheduleDAO.getLastDate(weekdays, date2, soBuoi));
+
+            System.out.println("Formatted date string: " + dateString);
+            String slot = request.getParameter("slot");
+
+            SlotDAO slotDAO = new SlotDAO();
+            List<SlotDTO> listSlot = slotDAO.readSlot();
+            request.setAttribute("semesterDTO", semesterDTO);
+            request.setAttribute("listSlot", listSlot);
+            request.setAttribute("weekdays", weekdays);
+            request.setAttribute("slot", slot);
+            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("dateString", dateString);
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassPage.jsp");
+            rd.forward(request, response);
         }
 
     }
@@ -304,6 +395,7 @@ public class ClassController extends HttpServlet {
         response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
 
     }
+
     // Show Class
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
@@ -317,17 +409,37 @@ public class ClassController extends HttpServlet {
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
     public void payment(HttpServletRequest request, HttpServletResponse response) {
-          try {
+        try {
             HttpSession session = request.getSession();
             LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
             HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
             LopHocDAO lopHocDAO = new LopHocDAO();
             HoaDonDAO hoaDonDAO = new HoaDonDAO();
-            String maLopHoc = request.getParameter("maLopHoc");
-            String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
+
+//
+            String selectedValue = request.getParameter("maSlot");
+
+            // Split the selected value to retrieve maSlot and thuList
+            String[] parts = selectedValue.split("\\|");
+            String selectedMaSlot = parts[0];
+            String selectedThuList = parts[1];
+
+            // Remove the square brackets and spaces from the string
+            String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
+
+// Split the cleaned value into individual elements
+            String[] elements = cleanedValue.split(",");
+
+// Convert the array to a List<String>
+            String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+            String maSlot = selectedMaSlot;
+            List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+
+            String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             //check availability before registering
-            if(checkAvailability(request, response) == true){
+            if (checkAvailability(request, response, maLopHoc) == true) {
                 Date ngayThanhToan = Date.valueOf(LocalDate.now());
                 long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
@@ -342,13 +454,11 @@ public class ClassController extends HttpServlet {
                 hoaDonDTO.setNgayThanhToan(ngayThanhToan);
 
                 hoaDonDAO.createHoaDonDTO(hoaDonDTO);
-                
+
                 lopHocDAO.increase(maLopHoc);
-                
-                
+
                 scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
 
-                
                 RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
                 rd.forward(request, response);
             } else {
@@ -362,19 +472,16 @@ public class ClassController extends HttpServlet {
         }
     }
 
+    public boolean checkAvailability(HttpServletRequest request, HttpServletResponse response, String maLopHoc) throws ServletException, IOException, SQLException {
+        LopHocDAO lopHocDAO = new LopHocDAO();
 
-    public boolean checkAvailability(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-        LopHocDAO LopHocDAO = new LopHocDAO();
-
-        String maLopHoc = request.getParameter("maLopHoc");
-        
-        LopHocDTO list = LopHocDAO.searchClassById(maLopHoc);
+        LopHocDTO list =lopHocDAO.searchClassById(maLopHoc);
         String error = "";
-        
-                if (list.getSoLuongHvHienTai() < list.getSoLuongHV()) {
-                    return true;
-                }
-            return false;
+
+        if (list.getSoLuongHvHienTai() < list.getSoLuongHV()) {
+            return true;
+        }
+        return false;
 
     }
 
@@ -437,11 +544,7 @@ public class ClassController extends HttpServlet {
 
     }
 
-    
-
-
 //    Show classes' details
-
     public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String cid = request.getParameter("returnID");
         LopHocDAO lopHocDAO = new LopHocDAO();
@@ -450,13 +553,21 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
 //        LopHocDTO lopHocDTO = new LopHocDTO();
         List<LopHocDTO> listLopHocDTO = lopHocDAO.showClassesByType(cid);
+        DescriptionDTO descriptionDTO = new DescriptionDTO();
+        DescriptionDAO descriptionDAO = new DescriptionDAO();
+
+        descriptionDTO = descriptionDAO.readDescription(cid);
+        request.setAttribute("descriptionDTO", descriptionDTO);
         request.setAttribute("details", classDetails);
 //          Get class images
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        //
         request.setAttribute("listLopHocDTO", listLopHocDTO);
-        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
+        request.setAttribute("cid", cid);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/Authentication/ClassDetail.jsp");
         rd.forward(request, response);
     }
 
@@ -475,6 +586,57 @@ public class ClassController extends HttpServlet {
         request.setAttribute("lopHocDTO", lopHocDTO);
         request.setAttribute("trainerDTO", trainerDTO);
         RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
+        rd.forward(request, response);
+    }
+
+    public void updateClassPage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = lopHocDAO.searchClassById(classID);
+        PhongHocDAO phongHocDAO = new PhongHocDAO();
+        List<PhongHocDTO> listPhongHocDTO = new ArrayList<>();
+
+        listPhongHocDTO = phongHocDAO.getListEmptyRoom(lopHocDAO.maSlotClass(lopHocDTO.getMaLopHoc()), lopHocDAO.showThuWithStringArray(classID));
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.searchTrainerByClassID(classID);
+
+        List<TrainerDTO> listTrainer = new ArrayList();
+
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(lopHocDAO.IDLoaiLopHoc(classID));
+        request.setAttribute("trainerDTO", trainerDTO);
+        request.setAttribute("listTrainer", listTrainer);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        request.setAttribute("listPhongHocDTO", listPhongHocDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassUpdate.jsp");
+        rd.forward(request, response);
+    }
+
+    public void updateClass(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+
+        String maRoom = request.getParameter("listPhongHocDTO");
+        int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
+        String listTrainer = request.getParameter("listTrainer");
+
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = lopHocDAO.searchClassById(classID);
+        lopHocDTO.setMaRoom(maRoom);
+        lopHocDTO.setMaTrainer(listTrainer);
+        lopHocDTO.setSoLuongHV(soLuongHV);
+        lopHocDAO.updateClass(lopHocDTO);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/AdminController?action=listLopHoc&page=1");
+        rd.forward(request, response);
+    }
+
+    public void deleteClass(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        scheduleDAO.deleteScheduleTrainer(classID);
+        lopHocDAO.deleteClassById(classID);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/AdminController?action=listLopHoc&page=1");
         rd.forward(request, response);
     }
 

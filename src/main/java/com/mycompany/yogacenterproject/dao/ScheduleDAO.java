@@ -10,6 +10,7 @@ import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
+import com.mycompany.yogacenterproject.util.DateUtils;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -160,6 +161,18 @@ public class ScheduleDAO {
         return false;
     }
 
+    //DELETE SCHEDULE TRAINER (OR SCHEDULE OF COMPLETE CLASS)
+    public void deleteScheduleTrainer(String maLopHoc) throws SQLException {
+        String sql = "DELETE FROM [dbo].[ScheduleTrainer] where maLopHoc = ?";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maLopHoc);
+
+        ps.executeUpdate();
+
+       
+    }
+
     public boolean createScheduleTemp(LopHocDTO lopHocDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[ScheduleTemp](maLopHoc, ngayHoc,maSlot, thu) "
                 + "VALUES(?,?,?,?)";
@@ -227,27 +240,96 @@ public class ScheduleDAO {
 
     }
 
+    public List<Date> listDate(String[] thu, Date initDate, int slot) {
+        DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter(Locale.ENGLISH);
+
+        //DOI DATE THANH LOCALDATE
+        LocalDate localDate;
+        if (initDate != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(initDate);
+            localDate = LocalDate.of(calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH));
+        } else {
+            // Handle the case when date is null
+            localDate = null;
+        }
+
+        LocalDate startDate = localDate;
+//        LocalDate endDate = startDate.plusWeeks(weeksInterval); // Calculate the end date
+
+        LocalDate date = startDate;
+        List<Date> listDate = new ArrayList();
+        while (listDate.size() < slot) {
+
+            for (int a = 0; a < thu.length; a++) {
+                if (!date.isAfter(date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase()))))) {
+                    LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase())));
+                    Date dateConvert = DateUtils.asDate(date1);
+                    DateAndDay DateofA = new DateAndDay(date1.getDayOfWeek().toString(), date1.toString());
+                    listDate.add(dateConvert);
+                    if (listDate.size() >= slot) {
+                        break;
+                    }
+                } else {
+                    LocalDate date1 = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(thu[a].toUpperCase())));
+
+                }
+            }
+            date = date.plusWeeks(1); // Move to the next week
+
+        }
+
+        return listDate;
+
+    }
+
+    //GET LAST DAY
+    public Date getLastDate(String[] thu, Date initDate, int slot) {
+        List<Date> listDate = new ArrayList();
+        listDate = listDate(thu, initDate, slot);
+        Date oldestDate = listDate.get(0);
+        for (Date date2 : listDate) {
+            if (date2.after(oldestDate)) {
+                oldestDate = date2;
+            }
+        }
+
+        return oldestDate;
+    }
+
     public static void main(String[] args) throws SQLException, ParseException {
 
         ScheduleDAO schedule = new ScheduleDAO();
 
         List<ScheduleTempDTO> listScheduleHv = schedule.readScheduleTemp();
         List<ScheduleTrainerDTO> listScheduleTrainer = schedule.readScheduleTrainer();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO = lopHocDAO.searchClassById("LOP0003");
+        System.out.println(lopHocDTO);
+//        Date date = new Date();
+//        List<Date> listDate = new ArrayList<Date>();
+//        for (ScheduleTempDTO scheduleTempDTO : listScheduleHv) {
+//            listDate.add(scheduleTempDTO.getNgayHoc());
+//        }
+//         Date oldestDate = listDate.get(0);
+//        for (Date date2 : listDate) {
+//            if (date2.after(oldestDate )) {
+//                oldestDate = date2;
+//            }
+//
+//        }
 //        boolean hasSchedule = false;
 //        List<String> a = new ArrayList<>();
 //        String maLopHoc = "";
 //        String tenLopHoc = "";
 //        LopHocDAO lopHocDAO = new LopHocDAO();
-
-        for (ScheduleTrainerDTO ScheduleTempDTO : listScheduleTrainer) {
-
-            System.out.println(ScheduleTempDTO);
-
-        }
+//        System.out.println(oldestDate);
 //        for (String x : a) {
 //            System.out.println(x);
 //            System.out.println(x.getNgayHoc());
-
 //            Date ld = Date.valueOf("2023-06-05");
 //            x.getNgayHoc().compareTo(ld);
 //            System.out.println(x.getNgayHoc().equals(ld));

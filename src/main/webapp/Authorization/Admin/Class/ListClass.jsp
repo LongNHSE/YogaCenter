@@ -217,6 +217,7 @@
 
 
                             <th scope="col">Ngay bat dau</th>
+                            <th scope="col">Status</th>
 
                         </tr>
                     </thead>
@@ -234,15 +235,18 @@
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
                             <td><%= lopHocDTO.getNgayBatDau()%> </td>
-
-                           
+                            <% if (lopHocDTO.isStatus() == true) {%>
+                            <td style="background-color: #3FFF00"><%= lopHocDTO.isStatus()%> </td> <%} else {%>
+                            <td style="background-color: red"><%= lopHocDTO.isStatus()%> </td> <% }%>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Class Detail"name="action" ></td>
-                        <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
-                    </form>
-                    <form action="<%=url%>/ClassUnassignedController" method="POST">
 
-                        <td>  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
-                        <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
+                            <td >  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
+
+                            <% if (lopHocDTO.isStatus() == false || lopHocDTO.getSoLuongHvHienTai() < 1) {%>
+                            <td >  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"    ></td> <%} else {%>
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"    disabled=""></td> <% }%>
+
+
                         <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
                     </form>
 

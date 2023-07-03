@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
 import com.mycompany.yogacenterproject.dto.PhongTrong;
@@ -187,6 +188,7 @@ public class PhongHocDAO {
         }
         return phongHocDTO;
     }
+//RETURN PHONG HOC DANG TRONG 
 
     public PhongHocDTO getEmptyRoom2(String maSlot, String[] thuList) {
         StringBuilder thuParams = new StringBuilder();
@@ -246,6 +248,67 @@ public class PhongHocDAO {
         return phongHocDTO;
     }
 
+    //
+    public List<PhongHocDTO> getListEmptyRoom(String maSlot, String[] thuList) {
+        StringBuilder thuParams = new StringBuilder();
+        List<PhongHocDTO> listPhongHocDTO = new ArrayList<>();
+        for (int i = 0; i < thuList.length; i++) {
+            thuParams.append("?,");
+        }
+        thuParams.deleteCharAt(thuParams.length() - 1); // Remove the trailing comma
+
+        String sql = "SELECT room.maRoom\n"
+                + "FROM room\n"
+                + "WHERE room.maRoom NOT IN (\n"
+                + "    SELECT lopHoc.maRoom\n"
+                + "    FROM lopHoc\n"
+                + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
+                + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+
+        if (thuList.length > 1) {
+            sql += "    UNION\n"
+                    + "    SELECT lopHoc.maRoom\n"
+                    + "    FROM lopHoc\n"
+                    + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
+                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+        }
+
+        sql += ")";
+
+        PhongHocDTO phongHocDTO = new PhongHocDTO();
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            int index = 1;
+            ps.setString(index++, maSlot);
+            for (int i = 0; i < thuList.length; i++) {
+                ps.setString(index++, thuList[i]);
+            }
+
+            if (thuList.length > 1) {
+                ps.setString(index++, maSlot);
+                for (int i = 0; i < thuList.length; i++) {
+                    ps.setString(index++, thuList[i]);
+                }
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                phongHocDTO = new PhongHocDTO(rs.getString("maRoom"), true);
+                listPhongHocDTO.add(phongHocDTO);
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+            return listPhongHocDTO;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listPhongHocDTO;
+    }
+
     //RETURN SO PHONG TRONG
     public int soPhongTrong(String maSlot, String thu) throws SQLException {
 //        String sql = "SELECT count(room.maRoom) as soPhongTrong\n"
@@ -289,9 +352,16 @@ public class PhongHocDAO {
 
     public static void main(String[] args) throws SQLException {
         PhongHocDAO a = new PhongHocDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO = lopHocDAO.searchClassById("LOP0014");
 //        Boolean b = a.checkRoomEmpty("RO0001", "SL001", "MONDAY", "WEDNESDAY");
 //        System.out.println(a.getEmptyRoom("SL002", "TUESDAY", "WEDNESDAY").toString());
-        String[] b = {"MONDAY", "TUESDAY"};
-        System.out.println(a.getEmptyRoom2("SL001", b));
+        String[] b = {"MONDAY2", "sWEDNESDAY"};
+        
+        System.out.println(a.getListEmptyRoom(lopHocDAO.maSlotClassUnassigned(lopHocDTO.getMaLopHoc()), lopHocDAO.showThuWithStringArrayOfClassUnassigned("LOP0014")));
+//        System.out.println(lopHocDTO.getMaSlot());
+//        System.out.println(lopHocDAO.showThuWithStringArray("LOP0001"));
+//        System.out.println(a.getListEmptyRoom("SLOT0001", b));
     }
 }

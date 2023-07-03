@@ -32,13 +32,13 @@ public class LoaiLopHocDAO {
     ResultSet rs = null;
 
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
-        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[description], hocPhi)"
+        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[maDescription], hocPhi)"
                 + "VALUES(?,?,?,?)";
         int row = 0;
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         stm.setString(1, loaiLopHocDTO.getMaLoaiLopHoc());
         stm.setString(2, loaiLopHocDTO.getTenLoaiLopHoc());
-        stm.setString(3, loaiLopHocDTO.getDescription());
+        stm.setString(3, loaiLopHocDTO.getMaDescription());
         stm.setDouble(4, loaiLopHocDTO.getHocPhi());
 
         row = stm.executeUpdate();
@@ -104,7 +104,7 @@ public class LoaiLopHocDAO {
                 LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
                 loaiLopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
                 loaiLopHocDTO.setTenLoaiLopHoc(rs.getString("tenLoaiLopHoc"));
-                loaiLopHocDTO.setDescription(rs.getString("description"));                
+                loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));                
                 loaiLopHocDTO.setHocPhi(rs.getDouble("hocPhi"));
                 return loaiLopHocDTO;
             }
@@ -226,12 +226,12 @@ public class LoaiLopHocDAO {
             LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
             String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
             String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
-            String description = rs.getString("description");
+
             double hocPhi = rs.getDouble("hocPhi");
             List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
             loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-            loaiLopHocDTO.setDescription(description);
+        
             loaiLopHocDTO.setHocPhi(hocPhi);
             loaiLopHocDTO.setImage(lopHocIMGDTO);
 

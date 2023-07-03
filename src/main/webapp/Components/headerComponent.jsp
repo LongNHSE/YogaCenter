@@ -50,7 +50,7 @@
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="<%= baseUrl%>/Public/home.jsp">Home</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/about.jsp">About</a>
-        <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
+        <a class="nav-item nav-link" href="<%= baseUrl%>/ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/Authentiation/schedule.jsp">Schedule</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/trainer.jsp">Trainer</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/contact.jsp">Contact us</a>

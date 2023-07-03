@@ -110,6 +110,12 @@
 
                                         <div class="form-outline">
                                             <div class="align-self-xl-center">        
+                                                <label for="title">Title:</label>
+                                                <input type="text" id="title" name="title" required><br>
+                                            </div>
+                                        </div>
+                                        <div class="form-outline">
+                                            <div class="align-self-xl-center">        
                                                 <textarea name="description" id="description" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px"></textarea>
                                             </div>
                                         </div>

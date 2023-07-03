@@ -21,10 +21,6 @@
         <servlet-class>com.mycompany.yogacenterproject.controller.ScheduleController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ClassController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ClassController</servlet-class>
     </servlet>
@@ -39,6 +35,10 @@
     <servlet>
         <servlet-name>TrainerController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.TrainerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
@@ -61,10 +61,6 @@
         <url-pattern>/ScheduleController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ClassController</servlet-name>
         <url-pattern>/ClassController</url-pattern>
     </servlet-mapping>
@@ -80,15 +76,19 @@
         <servlet-name>TrainerController</servlet-name>
         <url-pattern>/TrainerController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-           60
+           600
         </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>Public/signin.jsp</welcome-file>
     </welcome-file-list>
-     <filter>
+    <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.mycompany.yogacenterproject.filter.Authentication</filter-class>
     </filter>
