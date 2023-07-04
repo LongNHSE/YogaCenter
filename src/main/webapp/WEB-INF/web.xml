@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>EventListener.AppContextListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>OTPController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.OTPController</servlet-class>
@@ -40,6 +44,10 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SystemController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.SystemController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -79,6 +87,10 @@
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SystemController</servlet-name>
+        <url-pattern>/SystemController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

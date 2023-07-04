@@ -3,6 +3,10 @@
     Created on : Jun 8, 2023, 8:10:20 AM
     Author     : Oalskad
 --%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="com.mycompany.yogacenterproject.dto.DayAndSlot"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.mycompany.yogacenterproject.dao.LopHocDAO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
 <%@page import="java.util.List"%>
@@ -513,38 +517,21 @@
 
                         <hr/>
 
-                        <form action="<%=url%>/ClassController">
+                        <form action="<%=url%>/ClassController" method="POST">
                             <div class="row">
 
                                 <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
                                     <div class="box">
-                                        <select name="maSlot">
+                                        <select name="maSlot" required>
                                             <option  value=""> Please choose Slot</option>
-                                            <%  List<LopHocDTO> listLopHocDTO = (List<LopHocDTO>) request.getAttribute("listLopHocDTO");
-                                                LopHocDAO lopHocDAO = new LopHocDAO();
-                                                for (int i = 0; i < listLopHocDTO.size(); i++) {
-                                                    if (i != 0) {
-                                                        if (!lopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(i - 1).getThuList()) || !listLopHocDTO.get(i).getMaSlot().equals(listLopHocDTO.get(i - 1).getMaSlot())) {
-                                            %>
-                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
-                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%> - <%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
-                                            
-                                            </option>  
-                                            <%
-                                                }
-                                            } else {
-                                            %>
-
-                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
-                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%>-<%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
-                                            
-                                            </option>  
-                                            <%
-                                                    }
-                                                }
-                                            %>
+                                            <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
+                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
+                                                    ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
+                                                </option>  
+                                            </c:forEach>
                                         </select>
+
                                     </div>
 
 
@@ -559,7 +546,19 @@
                                     </button>
                                     <% String cid = (String) request.getAttribute("cid");%>
                                     <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                    <input type="hidden" name="returnID" value="<%=cid%>" />
                                 </div>
+
+                            </div>
+                            <div style="width: 357px;
+                                 position: absolute;
+                                 margin-top: 10px;
+                                 right: 223px;
+                                 color: red;
+                                 font-weight: BOLD;">
+
+                                <% String errorMessage = (String) request.getAttribute("error");%>
+                                <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                             </div>
                         </form>

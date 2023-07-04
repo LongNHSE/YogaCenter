@@ -284,7 +284,7 @@ public class LoginController extends HttpServlet {
         if (referer == null || referer.isEmpty()) {
             referer = "../home.jsp";
         }
-        response.sendRedirect(referer);
+        response.sendRedirect("/YogaCenter/home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

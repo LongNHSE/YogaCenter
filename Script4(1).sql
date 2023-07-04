@@ -97,7 +97,8 @@ create TABLE ScheduleHV(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
@@ -109,7 +110,8 @@ CREATE TABLE ScheduleTrainer(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maTrainer,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleTR foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -121,7 +123,8 @@ CREATE TABLE ScheduleTemp(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleT foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -203,6 +206,15 @@ VALUES
     (2, '2023-04-01', '2023-06-30', 'Semester 2'),
     (3, '2023-07-01', '2023-09-30', 'Semester 3'),
     (4, '2023-10-01', '2023-12-31', 'Semester 4');
+
+ALTER TABLE [dbo].[ScheduleHV]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTemp]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTrainer]
+ADD [status] bit NULL;
+
+
 
 	--ALTER TABLE lopHoc
 --ADD [status] bit NULL;

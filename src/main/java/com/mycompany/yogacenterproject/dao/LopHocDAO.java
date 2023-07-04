@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
@@ -16,7 +17,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,12 +35,12 @@ public class LopHocDAO {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
-                int soLuongHV = rs.getInt("soLuongHV");
-                int soBuoi = rs.getInt("soBuoi");
-
-                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
-                String maRoom = rs.getString("maRoom");
-                Date ngay = rs.getDate("ngay");
+//                int soLuongHV = rs.getInt("soLuongHV");
+//                int soBuoi = rs.getInt("soBuoi");
+//
+//                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+//                String maRoom = rs.getString("maRoom");
+//                Date ngay = rs.getDate("ngay");
 //                LopHocDTO displayClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
 //                displayClass.setSoLuongHvHienTai(rs.getInt("soLuongHvHienTai"));
 //                listClass.add(displayClass);
@@ -46,6 +50,72 @@ public class LopHocDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //Lay tat ca cac ma lop hoc co status true
+    public List<String> readListIDClass() {
+        List<String> listClass = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM lopHoc where status ='true'";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maLopHoc = rs.getString("maLopHoc");
+//                int soLuongHV = rs.getInt("soLuongHV");
+//                int soBuoi = rs.getInt("soBuoi");
+//
+//                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+//                String maRoom = rs.getString("maRoom");
+//                Date ngay = rs.getDate("ngay");
+//                LopHocDTO displayClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
+//                displayClass.setSoLuongHvHienTai(rs.getInt("soLuongHvHienTai"));
+                listClass.add(maLopHoc);
+            }
+            return listClass;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //AUTO CHECK CLASS AVAILABILITY BASED ON LAST DATE OF SCHEDULE
+    public void CheckClass() {
+        List<String> listMaLopHoc = readListIDClass();
+        try {
+            String sql = "SELECT top 1 [status] FROM [dbo].[ScheduleTrainer]\n"
+                    + "where maLopHoc=?\n"
+                    + "order by ngayHoc desc";
+            for (String maLopHoc : listMaLopHoc) {
+                PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+                stm.setString(1, maLopHoc);
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    boolean status = rs.getBoolean("status");
+                    if (status == false) {
+                        updateClassStatus(maLopHoc, false);
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateClassStatus(String maLopHoc, boolean status) {
+        try {
+            String sql = "UPDATE [dbo].[lopHoc] SET [status] = ? where maLopHoc= ? ";
+
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setBoolean(1, status);
+            stm.setString(2, maLopHoc);
+            int rowsUpdated = stm.executeUpdate();
+            System.out.println(rowsUpdated + " rows updated. Status set to false for past dates.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 //LAY DANH SACH THEO RECORD
 
@@ -139,8 +209,8 @@ public class LopHocDAO {
 //////Insert a class
     public void addClass(LopHocDTO newClass) {
         try {
-            String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maLoaiLopHoc,maRoom,ngay,soLuongHvHienTai)"
-                    + "values(?,?,?,?,?,?,?)";
+            String sql = "insert into lopHoc(maLopHoc,soLuongHV,soBuoi,maLoaiLopHoc,maRoom,ngay,soLuongHvHienTai,[status])"
+                    + "values(?,?,?,?,?,?,?,?)";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, newClass.getMaLopHoc());
             stm.setInt(2, newClass.getSoLuongHV());
@@ -150,6 +220,7 @@ public class LopHocDAO {
             stm.setString(5, newClass.getMaRoom());
             stm.setDate(6, newClass.getNgayBatDau());
             stm.setInt(7, 0);
+            stm.setBoolean(8, true);
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -534,32 +605,41 @@ public class LopHocDAO {
     public String searchForPayment(String maSlot, String maLoaiLopHoc, List<String> thuList) {
         try {
 
-            String sql = "SELECT top 1 lopHoc.maLopHoc \n"
+            String sql = "SELECT lopHoc.maLopHoc\n"
                     + "FROM lopHoc\n"
                     + "INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
-                    + "WHERE maSlot = ? AND maLoaiLopHoc = ? AND thu IN (";
+                    + "WHERE maSlot = ?\n"
+                    + "  AND maLoaiLopHoc = ?\n"
+                    + "  AND thu IN (";
             for (int i = 0; i < thuList.size(); i++) {
                 sql += "?";
                 if (i < thuList.size() - 1) {
                     sql += ",";
                 }
             }
-            sql += ") AND lopHoc.soLuongHvHienTai < lopHoc.soLuongHV\n"
+            sql += ") AND lopHoc.soLuongHvHienTai < lopHoc.soLuongHV AND lopHoc.[status] ='true'\n"
+                    + "  \n"
+                    + "GROUP BY lopHoc.maLopHoc, lopHoc.soLuongHvHienTai\n"
+                    + "HAVING COUNT(DISTINCT thu) = ? "
                     + "\n"
-                    + "GROUP BY lopHoc.maLopHoc,lopHoc.soLuongHvHienTai\n"
-                    + "order by lopHoc.soLuongHvHienTai desc";
+                    + "ORDER BY lopHoc.soLuongHvHienTai DESC;";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, maSlot);
             stm.setString(2, maLoaiLopHoc);
+            int count = 0;
             for (int i = 0; i < thuList.size(); i++) {
                 stm.setString(i + 3, thuList.get(i));
                 System.out.println(thuList.get(i));
+                count = i + 4;
             }
+            stm.setInt(count, thuList.size());
             ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
-
-                return maLopHoc;
+                LopHocDTO lopHocDTO = searchClassById(maLopHoc);
+                if (compareLists(thuList, showThu(maLopHoc))) {
+                    return maLopHoc;
+                }
             }
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -634,6 +714,9 @@ public class LopHocDAO {
     public static void main(String[] args) throws SQLException {
 
         LopHocDAO a = new LopHocDAO();
+
+        a.CheckClass();
+
 //        String[] b = a.showThuWithStringArrayOfClassUnassigned("LOP0014");
 //        System.out.println(b);
 //        System.out.println(a.searchClassById("LOP0001"));
@@ -643,15 +726,15 @@ public class LopHocDAO {
 //        double dividend = 9.0;
 //        double divisor = 5.0;
 //        double result = Math.ceil(dividend / divisor);
-//        System.out.println(result);
+////        System.out.println(result);
         List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0001");
-
+//
         // Split the selected value to retrieve maSlot and thuList
         String selectedMaSlot = "SL001";
-        String selectedThuList = "[MONDAY,TUESDAY]";
+        String selectedThuList = "[ MONDAY, WEDNESDAY]";
 
         // Remove the square brackets and spaces from the string
-        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]","");
+        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
 
 // Split the cleaned value into individual elements
         String[] elements = cleanedValue.split(",");
@@ -663,7 +746,6 @@ public class LopHocDAO {
 
         LopHocDAO lopHocDAO = new LopHocDAO();
         System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
-
 ////////        Date aa = Date.valueOf(LocalDate.now());
 //////        LopHocDTO lopHocDTO = new LopHocDTO();
 //////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
@@ -675,21 +757,97 @@ public class LopHocDAO {
 //        System.out.println(listLopHocTemp.get(0).getThuList().equals(listLopHocTemp.get(1).getThuList()));
 //        System.out.println(listLopHocTemp.get(0).getThuList());
 //        System.out.println(listLopHocTemp.get(1).getThuList());
+
+//        for (int i = 0; i < listLopHocTemp.size(); i++) {
+//            List<String> currentThuList = listLopHocTemp.get(i).getThuList();
+//            String currentSlot = listLopHocTemp.get(i).getMaSlot();
+//            boolean isDuplicate = false;
+//            for (String existingSlot : listSlot) {
+//                if (existingSlot.equals(currentSlot)) {
+//                    for (List<String> existingThuList : thulist) {
+//                        if (compareLists(existingThuList, currentThuList)) {
+//                            isDuplicate = true;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            if (!isDuplicate) {
+//                thulist.add(currentThuList);
+//                listSlot.add(currentSlot);
+//
+//                dayAndSlot.setSlot(currentSlot);
+//                listDayAndSlot.add(dayAndSlot);
+//            }
+////        }
+//        LopHocDAO lopHocDAO = new LopHocDAO();
+//        System.out.println(listLopHocTemp);
+//        for (int i = 0; i < listLopHocTemp.size(); i++) {
+//            boolean isDuplicate = false;
+//            for (int j = 0; j < i; j++) {
+//                if (!compareLists(listLopHocTemp.get(i).getThuList(), listLopHocTemp.get(j).getThuList())
+//                        ) {
+//                    isDuplicate = true;
+//                    break;
+//                }
+//            }
+//
+//            if (!isDuplicate) {
+//                System.out.println(listLopHocTemp.get(i).getThuList());
+//            }
+//        }
+//        List<DayAndSlot> listDayAndSlot = new ArrayList<>();
+//        for (int i = 0; i < listLopHocTemp.size(); i++) {
+//            DayAndSlot dayAndSlot = new DayAndSlot();
+//            String currentSlot = listLopHocTemp.get(i).getMaSlot();
+//            List<String> thu = listLopHocTemp.get(i).getThuList();
+//            if (i != 0) {
+//                for (int j = 1; j < i; j++) {
+//                    if (currentSlot.equals(listLopHocTemp.get(j).getMaSlot())) {
+//                        if (compareLists(listLopHocTemp.get(i).getThuList(), listLopHocTemp.get(j).getThuList())) {
+////                            System.out.println(currentSlot + thu);
+//                        }
+//                    } else {
+//
+//                        dayAndSlot.setSlot(currentSlot);
+//
+//                        dayAndSlot.setDay(thu);
+//                        dayAndSlot.setTimeStart(listLopHocTemp.get(i).getTimeStart());
+//                        dayAndSlot.setTimeEnd(listLopHocTemp.get(i).getTimeEnd());
+//                        listDayAndSlot.add(dayAndSlot);
+//                    }
+//                }
+//            } else {
+//
+//                dayAndSlot.setSlot(currentSlot);
+//                dayAndSlot.setTimeStart(listLopHocTemp.get(i).getTimeStart());
+//                dayAndSlot.setTimeEnd(listLopHocTemp.get(i).getTimeEnd());
+//                dayAndSlot.setDay(thu);
+//                listDayAndSlot.add(dayAndSlot);
+//            }
+//
+//        }
+//        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
+//        for (DayAndSlot x : distinctDayAndSlots) {
+//            System.out.println(x);
+//        }
+//        List<List<String>> thulist = new ArrayList<>();
 //        for (int i = 0; i < listLopHocTemp.size(); i++) {
 //
 //            if (i != 0) {
+//                for (List<String> xx : thulist) {
+//                    if (!compareLists(xx, listLopHocTemp.get(i).getThuList())) {
+//                        thulist.add(listLopHocTemp.get(i).getThuList());
+//                    }
 //
-//                if (!compareLists(listLopHocTemp.get(i).getThuList(), listLopHocTemp.get(i - 1).getThuList()) || !listLopHocTemp.get(i).getMaSlot().equals(listLopHocTemp.get(i - 1).getMaSlot())) {
-//                    System.out.println(listLopHocTemp.get(i).getThuList());
-//                    System.out.println(listLopHocTemp.get(i).getMaSlot());
-//                    System.out.println("a");
 //                }
-//
 //            } else {
-//                System.out.println("ab");
-//                System.out.println(listLopHocTemp.get(i).getThuList());
-//                System.out.println(listLopHocTemp.get(i).getMaSlot());
+//                thulist.add(listLopHocTemp.get(i).getThuList());
 //            }
+//        }
+//        for (DayAndSlot x : listDayAndSlot) {
+//            System.out.println(x);
 //        }
 //        for (LopHocDTO x : listLopHocTemp) {
 //            System.out.println(x.getThuList());
@@ -720,5 +878,4 @@ public class LopHocDAO {
 //        List<LopHocDTO> list = a.searchByType("TYPE0001");
 //        System.out.println(list);
     }
-
 }

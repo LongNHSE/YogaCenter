@@ -16,6 +16,7 @@ import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
+import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -42,7 +43,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Schedule;
@@ -410,72 +413,92 @@ public class ClassController extends HttpServlet {
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
     public void payment(HttpServletRequest request, HttpServletResponse response) {
         try {
+            boolean error = true;
             HttpSession session = request.getSession();
             LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-            LopHocDAO lopHocDAO = new LopHocDAO();
-            HoaDonDAO hoaDonDAO = new HoaDonDAO();
+            if (session.getAttribute("hocVienDTO") != null) {
+                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
 
+                LopHocDAO lopHocDAO = new LopHocDAO();
+                HoaDonDAO hoaDonDAO = new HoaDonDAO();
+                String errorMessage = "";
 //
-            String selectedValue = request.getParameter("maSlot");
+                String selectedValue = request.getParameter("maSlot");
 
-            // Split the selected value to retrieve maSlot and thuList
-            String[] parts = selectedValue.split("\\|");
-            String selectedMaSlot = parts[0];
-            String selectedThuList = parts[1];
+                // Split the selected value to retrieve maSlot and thuList
+                String[] parts = selectedValue.split("\\|");
+                String selectedMaSlot = parts[0];
+                String selectedThuList = parts[1];
 
-            // Remove the square brackets and spaces from the string
-            String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
+                // Remove the square brackets and spaces from the string
+                String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
 
 // Split the cleaned value into individual elements
-            String[] elements = cleanedValue.split(",");
+                String[] elements = cleanedValue.split(",");
 
 // Convert the array to a List<String>
-            String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
-            String maSlot = selectedMaSlot;
-            List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+                String maSlot = selectedMaSlot;
+                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
-            String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+                String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
 
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
-            //check availability before registering
-            if (checkAvailability(request, response, maLopHoc) == true) {
-                Date ngayThanhToan = Date.valueOf(LocalDate.now());
-                long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+                ScheduleDAO scheduleDAO = new ScheduleDAO();
+                if (!checkAvailability(request, response, maLopHoc)) {
+                    error = false;
+                    errorMessage += "Classes are fully reserved.";
+                }
+                if (!checkTraineeSchedule(request, response, maSlot, thuList, hocVienDTO.getMaHV())) {
+                    error = false;
+                    errorMessage += "You already have a class scheduled for this time slot.";
+                }
+                //check availability before registering
+                if (error) {
+                    Date ngayThanhToan = Date.valueOf(LocalDate.now());
+                    long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
-                String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
-                String maHoaDon = AUTO_HOADON_ID;
+                    String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
+                    String maHoaDon = AUTO_HOADON_ID;
 
-                HoaDonDTO hoaDonDTO = new HoaDonDTO();
-                hoaDonDTO.setMahoaDon(maHoaDon);
-                hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
-                hoaDonDTO.setMaLopHoc(maLopHoc);
-                hoaDonDTO.setGiaTien(hocPhi);
-                hoaDonDTO.setNgayThanhToan(ngayThanhToan);
+                    HoaDonDTO hoaDonDTO = new HoaDonDTO();
+                    hoaDonDTO.setMahoaDon(maHoaDon);
+                    hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
+                    hoaDonDTO.setMaLopHoc(maLopHoc);
+                    hoaDonDTO.setGiaTien(hocPhi);
+                    hoaDonDTO.setNgayThanhToan(ngayThanhToan);
 
-                hoaDonDAO.createHoaDonDTO(hoaDonDTO);
+                    hoaDonDAO.createHoaDonDTO(hoaDonDTO);
 
-                lopHocDAO.increase(maLopHoc);
+                    lopHocDAO.increase(maLopHoc);
 
-                scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
+                    scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
 
-                RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-                rd.forward(request, response);
+                    RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+                    rd.forward(request, response);
+                } else {
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
+                }
             } else {
-                String error = "Classes are fully reserved.";
-                request.setAttribute("error", error);
-                RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+                RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
                 rd.forward(request, response);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
+    public boolean checkTraineeSchedule(HttpServletRequest request, HttpServletResponse response, String maSlot, List<String> thuList, String maHocVien) {
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        return scheduleDAO.checkTraineeSchedule(maSlot, maHocVien, thuList);
+    }
+
     public boolean checkAvailability(HttpServletRequest request, HttpServletResponse response, String maLopHoc) throws ServletException, IOException, SQLException {
         LopHocDAO lopHocDAO = new LopHocDAO();
 
-        LopHocDTO list =lopHocDAO.searchClassById(maLopHoc);
+        LopHocDTO list = lopHocDAO.searchClassById(maLopHoc);
         String error = "";
 
         if (list.getSoLuongHvHienTai() < list.getSoLuongHV()) {
@@ -563,8 +586,42 @@ public class ClassController extends HttpServlet {
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+
+        List<DayAndSlot> listDayAndSlot = new ArrayList<>();
+        for (int i = 0; i < listLopHocDTO.size(); i++) {
+            DayAndSlot dayAndSlot = new DayAndSlot();
+            String currentSlot = listLopHocDTO.get(i).getMaSlot();
+            List<String> thu = listLopHocDTO.get(i).getThuList();
+            if (i != 0) {
+                for (int j = 1; j < i; j++) {
+                    if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
+                        if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
+//                            System.out.println(currentSlot + thu);
+                        }
+                    } else {
+
+                        dayAndSlot.setSlot(currentSlot);
+                        dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
+                        dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
+                        dayAndSlot.setDay(thu);
+                        listDayAndSlot.add(dayAndSlot);
+                    }
+                }
+            } else {
+
+                dayAndSlot.setSlot(currentSlot);
+                dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
+                dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
+                dayAndSlot.setDay(thu);
+                listDayAndSlot.add(dayAndSlot);
+            }
+
+        }
+        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+        List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
+
         //
-        request.setAttribute("listLopHocDTO", listLopHocDTO);
+        request.setAttribute("distinctDayAndSlots", distinctDayAndSlots);
         request.setAttribute("cid", cid);
 
         RequestDispatcher rd = request.getRequestDispatcher("/Authentication/ClassDetail.jsp");
@@ -634,6 +691,7 @@ public class ClassController extends HttpServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         LopHocDAO lopHocDAO = new LopHocDAO();
         scheduleDAO.deleteScheduleTrainer(classID);
+        scheduleDAO.deleteScheduleHV(classID);
         lopHocDAO.deleteClassById(classID);
 
         RequestDispatcher rd = request.getRequestDispatcher("/AdminController?action=listLopHoc&page=1");

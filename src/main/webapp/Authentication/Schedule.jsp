@@ -50,7 +50,7 @@
     <body>
 
         <!-- header section start -->
-     
+
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
     </nav>
     <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
@@ -118,15 +118,16 @@
                     <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
                         <% for (int day = 0; day < 7; day++) {
                                 boolean hasSchedule = false;
-                               
+
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
-                             
+                                boolean check = true;
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                 for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
                                     if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
                                         hasSchedule = true;
+                                        check = scheduleHocVienDTO.isStatus();
                                         maLopHoc = scheduleHocVienDTO.getMaLopHoc();
                                         tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(scheduleHocVienDTO.getMaLopHoc()));
                                         break;
@@ -140,11 +141,17 @@
                     <td>
 
                         <% if (hasSchedule) {%>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                        <% if (check) {%>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
                         <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
 
-                        <% }%>
-                        
+
+                        <% } else {%>
+                        <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                        <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
+                        <%         }
+                            }%>
+
                     </td>
                     <%  calendar.add(Calendar.DAY_OF_WEEK, 1);
                         } %>
