@@ -48,21 +48,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-<<<<<<< HEAD
-            <a class="nav-item nav-link" href="<%=baseUrl%>/home.jsp">Home</a>
-            <a class="nav-item nav-link" href="about.jsp">About</a>
-            <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
-            <a class="nav-item nav-link" href="schedule.html">Schedule</a>
-            <a class="nav-item nav-link" href="trainer.html">Blog</a>
-            <a class="nav-item nav-link" href="contact.html">Contact us</a>
-=======
-            <a class="nav-item nav-link" href="<%= baseUrl%>/Public/home.jsp">Home</a>
+
+         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/home.jsp">Home</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/about.jsp">About</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/Authentiation/schedule.jsp">Schedule</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/trainer.jsp">Trainer</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/contact.jsp">Contact us</a>
->>>>>>> 2524dd7c16821f5e9f9df90d5e35f69a95eee4d2
             <c:if test = "${sessionScope.hocVienDTO == null}">
                 <a class="nav-item nav-link" href="<%=baseUrl%>/Authentication/signin.jsp">Login</a>              
             </c:if>

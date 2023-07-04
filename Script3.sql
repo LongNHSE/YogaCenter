@@ -191,3 +191,24 @@ CREATE TABLE paySlip(
 	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
 	)
 
+-- Blog
+CREATE TABLE blogImg(
+	[maAnh] NVARCHAR(10) primary key,
+	[tenAnh] NVARCHAR NOT NULL,
+	[image] VARBINARY(MAX) NOT NULL,
+	[maBlog] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	CONSTRAINT fk_maBlog_blogImg FOREIGN KEY ([maBlog]) REFERENCES blogPost([maBlog])
+)
+CREATE TABLE blogCategories(
+	[maCate] NVARCHAR(10) primary key,
+	[tenCate] NVARCHAR(50) NOT NULL,
+)
+CREATE TABLE blogPost(
+	[maBlog] NVARCHAR(10) primary key,
+	[tieuDe] NVARCHAR(10) NOT NULL,
+	[noiDung] NVARCHAR(MAX) NOT NULL,
+	[tacGia] NVARCHAR(100) NOT NULL,
+	[ngayTaoPost] DATE NOT NULL,
+	[maHV] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	CONSTRAINT fk_maHV_Blog FOREIGN KEY ([maHV]) REFERENCES hocVien([maHV])
+)
