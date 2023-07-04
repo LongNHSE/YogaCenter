@@ -52,7 +52,7 @@
             <a class="nav-item nav-link" href="about.jsp">About</a>
             <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
             <a class="nav-item nav-link" href="schedule.html">Schedule</a>
-            <a class="nav-item nav-link" href="trainer.html">Trainer</a>
+            <a class="nav-item nav-link" href="trainer.html">Blog</a>
             <a class="nav-item nav-link" href="contact.html">Contact us</a>
             <c:if test = "${sessionScope.hocVienDTO == null}">
                 <a class="nav-item nav-link" href="<%=baseUrl%>/Authentication/signin.jsp">Login</a>              
