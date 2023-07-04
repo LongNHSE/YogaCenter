@@ -119,10 +119,10 @@ public class TrainerController extends HttpServlet {
             trainerDTO.setGender(gender);
 
             trainerDAO.addTrainer(trainerDTO);
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
             rd.forward(request, response);
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signup.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/signup.jsp");
             rd.forward(request, response);
         }
     }
