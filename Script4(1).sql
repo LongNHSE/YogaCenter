@@ -37,8 +37,9 @@ CREATE TABLE lopHocImg (
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-	[description] NVARCHAR(max) null,
+	[maDescription] NVARCHAR(max) null,
 	[hocPhi] DECIMAL(10,2) NOT NULL
+	CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription]),
 	)
 
 CREATE TABLE Trainer(
@@ -65,8 +66,8 @@ CREATE TABLE lopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) NOT NULL, --CONSTRAINT--
 	[maRoom] NVARCHAR(10) NOT NULL, --CONSTRAINT
 	[soLuongHvHienTai] int not null,
-	[ngay] NVARCHAR(20) NOT NULL 
-
+	[ngay] NVARCHAR(20) NOT NULL,
+	[status] bit null
 	CONSTRAINT fk_loaiLopHoc_lopHoc FOREIGN KEY([maLoaiLopHoc]) REFERENCES loaiLopHoc([maLoaiLopHoc]),
 	
 	CONSTRAINT fk_maRoom_lopHoc FOREIGN KEY([maRoom]) REFERENCES room(maRoom)
@@ -96,7 +97,8 @@ create TABLE ScheduleHV(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
@@ -108,7 +110,8 @@ CREATE TABLE ScheduleTrainer(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maTrainer,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleTR foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -120,7 +123,8 @@ CREATE TABLE ScheduleTemp(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleT foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -173,6 +177,58 @@ CREATE TABLE hopDongGiaoVien(
 	[mucLuong] DECIMAL(10,2) NOT NULL,
 	CONSTRAINT fk_maTrainer_hopDong FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer])
 	)
+
+
+
+CREATE TABLE [description](
+	maDescription  NVARCHAR(10) primary key,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+)
+CREATE TABLE [descriptionIMG] (
+    [maAnh] NVARCHAR(25) primary key,
+	[tenAnh] NVARCHAR(50) NULL,
+    [image] VARBINARY(MAX) NOT NULL,
+    maDescription NVARCHAR(10)NULL,
+	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
+);
+
+
+CREATE TABLE Semester (
+    quarterID INT PRIMARY KEY,
+    startDate DATE,
+    endDate DATE,
+    courses VARCHAR(255)
+);
+INSERT INTO Semester (quarterID, startDate, endDate, courses)
+VALUES
+    (1, '2023-01-01', '2023-03-31', 'Semester 1'),
+    (2, '2023-04-01', '2023-06-30', 'Semester 2'),
+    (3, '2023-07-01', '2023-09-30', 'Semester 3'),
+    (4, '2023-10-01', '2023-12-31', 'Semester 4');
+
+ALTER TABLE [dbo].[ScheduleHV]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTemp]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTrainer]
+ADD [status] bit NULL;
+
+
+
+	--ALTER TABLE lopHoc
+--ADD [status] bit NULL;
+
+--ALTER TABLE loaiLopHoc
+--ADD [maDescription] NVARCHAR(10) NULL;
+
+-- Add foreign key constraint
+--ALTER TABLE loaiLopHoc
+--ADD CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY ([maDescription]) REFERENCES [description] ([maDescription]);
+--ALTER TABLE loaiLopHoc
+--DROP COLUMN [description];
+
+
 
 /*
 CREATE TABLE hopDongTrainer(

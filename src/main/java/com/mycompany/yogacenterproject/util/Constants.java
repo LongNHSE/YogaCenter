@@ -19,5 +19,5 @@ public class Constants {
     public static final String MA_LOPHOC_FORMAT = "LOP%04d";
     public static final String MA_IMG_FORMAT = "IMG%04d";
     public static final String MA_TRAINER_FORMAT = "TR%04d";
-
+    public static final String MA_DESCRIPTION_FORMAT = "DES%04d";
 }

@@ -12,11 +12,22 @@ import java.sql.Date;
  */
 public class ScheduleTempDTO {
 
-    
     private String maLopHoc;
     private Date ngayHoc;
     private String maSlot;
     private String thu;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    
+    
 
     public ScheduleTempDTO(String maLopHoc, Date ngayHoc, String maSlot, String thu) {
         this.maLopHoc = maLopHoc;
@@ -64,5 +75,5 @@ public class ScheduleTempDTO {
     public String toString() {
         return "ScheduleTempDTO{" + "maLopHoc=" + maLopHoc + ", ngayHoc=" + ngayHoc + ", maSlot=" + maSlot + ", thu=" + thu + '}';
     }
-    
+
 }

@@ -11,11 +11,21 @@ import java.sql.Date;
  * @author Oalskad
  */
 public class ScheduleHvDTO {
+
     private String maHV;
     private String maLopHoc;
     private Date ngayHoc;
     private String maSlot;
     private String thu;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public ScheduleHvDTO() {
     }
@@ -72,6 +82,5 @@ public class ScheduleHvDTO {
     public String toString() {
         return "ScheduleHvDTO{" + "maHV=" + maHV + ", maLopHoc=" + maLopHoc + ", ngayHoc=" + ngayHoc + ", maSlot=" + maSlot + ", thu=" + thu + '}';
     }
-    
-    
+
 }

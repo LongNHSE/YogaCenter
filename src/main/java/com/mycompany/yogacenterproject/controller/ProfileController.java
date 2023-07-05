@@ -64,7 +64,7 @@ public class ProfileController extends HttpServlet {
         //   log(hvDTO.getHo());////////////////////
         //   hvDTO.setHo(hvDTO.getHo());
         session.setAttribute("maHV", hvDTO.getMaHV());
-        RequestDispatcher rd = request.getRequestDispatcher("/Home/profile.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/profile.jsp");
         rd.forward(request, response);
     }
 
@@ -113,7 +113,7 @@ public class ProfileController extends HttpServlet {
         ///set Attribute
         session.setAttribute("hocVienDTO", hvDTO);
         session.setAttribute("listHoaDon", listHoaDon);
-        RequestDispatcher rd = request.getRequestDispatcher("./Authentication/transaction.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/transaction.jsp");
         rd.forward(request, response);
     }
 

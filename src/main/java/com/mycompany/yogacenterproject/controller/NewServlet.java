@@ -74,7 +74,7 @@ public class NewServlet extends HttpServlet {
 
         }
         request.setAttribute("listDate", days);
-            request.getRequestDispatcher("/Class/Schedule.jsp").forward(request, response);
+            request.getRequestDispatcher("/Authentication/Schedule.jsp").forward(request, response);
         }
     }
 
