@@ -331,8 +331,7 @@ public class ClassController extends HttpServlet {
                 Date ngayThanhToan = Date.valueOf(LocalDate.now());
                 long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
-                String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
-                String maHoaDon = AUTO_HOADON_ID;
+                String maHoaDon = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
 
                 HoaDonDTO hoaDonDTO = new HoaDonDTO();
                 hoaDonDTO.setMahoaDon(maHoaDon);
