@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
@@ -121,6 +122,10 @@ public class SlotDAO {
         }
         return slotDTO;
     }
+    
+    
+    
+    
     
     //DELETE SLOT WITH maSLot
 //    public boolean deleteSlot(String maSlot){

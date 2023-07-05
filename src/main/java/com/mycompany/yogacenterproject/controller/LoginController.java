@@ -205,7 +205,7 @@ public class LoginController extends HttpServlet {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
             session.setAttribute("hocVienDTO", hocVienDTO);
             // Lấy URL trang trước đó từ localStorage (nếu có)
-            session.setMaxInactiveInterval(300);
+            session.setMaxInactiveInterval(1800);
             String redirectUrl = (String) session.getAttribute("redirectUrl");
             if (redirectUrl != null && !redirectUrl.isEmpty()) {
                 response.sendRedirect(redirectUrl);
@@ -257,8 +257,8 @@ public class LoginController extends HttpServlet {
 
         } else {
             session.setAttribute("adminDTO", adminDTO);
-            // set lại session time out là 5p
-            session.setMaxInactiveInterval(300);
+//            // set lại session time out là 5p
+            session.setMaxInactiveInterval(1900);
 
             request.getRequestDispatcher("/Authorization/Admin/AdminHomepage.jsp").forward(request, response);
            
@@ -271,9 +271,9 @@ public class LoginController extends HttpServlet {
         session.removeAttribute("adminDTO");
         String referer = request.getHeader("Referer");
         if (referer == null || referer.isEmpty()) {
-            referer = "Authorization/Admin/adminLogin.jsp";
+            referer = "./Public/adminLogin.jsp";
         }
-         response.sendRedirect("Authorization/Admin/adminLogin.jsp");
+         response.sendRedirect("./Public/adminLogin.jsp");
     }
 //    Logout
 
@@ -284,7 +284,7 @@ public class LoginController extends HttpServlet {
         if (referer == null || referer.isEmpty()) {
             referer = "../home.jsp";
         }
-        response.sendRedirect(referer);
+        response.sendRedirect("/YogaCenter/home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

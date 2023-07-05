@@ -50,7 +50,7 @@
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="<%= baseUrl%>/Public/home.jsp">Home</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/about.jsp">About</a>
-        <a class="nav-item nav-link" href="ClassController?action=classes">Classes</a>
+        <a class="nav-item nav-link" href="<%= baseUrl%>/ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/Authentiation/schedule.jsp">Schedule</a>
         <a class="nav-item nav-link" href="<%=baseUrl%>/trainer.jsp">Trainer</a>
         <a class="nav-item nav-link" href="<%= baseUrl%>/Public/contact.jsp">Contact us</a>
@@ -65,7 +65,7 @@
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=baseUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="#<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
                         <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  

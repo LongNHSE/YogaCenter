@@ -19,6 +19,15 @@ public class LopHocDTO {
     private int soLuongHvHienTai;
     private String timeStart, timeEnd;
     private List<String> thuList;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public List<String> getThuList() {
         return thuList;

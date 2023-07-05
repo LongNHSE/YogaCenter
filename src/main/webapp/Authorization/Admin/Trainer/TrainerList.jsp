@@ -199,16 +199,16 @@
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li ><a href="<%=url%>/AdminController?action=listTrainer&page=1">List Trainer</a></li>
-                                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
+                        <li id="active" class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                            <ul id="active">
+                                <li id="active-element"><a href="<%=url%>/AdminController?action=listTrainer&page=1">List Trainer</a></li>
+                                <li ><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                        <li id="active" class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                            <ul id="active">
-                                <li id="active-element"><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                        <li  class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                            <ul >
+                                <li ><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href="<%=url%>/Admin/Trainer/AddTrainer.jsp">Add Trainer</a></li>
                         
                                 <li><a href='#settings'>Network Status</a></li>

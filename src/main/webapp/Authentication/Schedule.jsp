@@ -25,31 +25,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="<%=url%>/css/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
         <!-- bootstrap css -->
-        <link rel="stylesheet" href="<%=url%>/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
         <!-- style css -->
-        <link href="<%=url%>/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
         <!-- Responsive-->
-        <link rel="stylesheet" href="<%=url%>/css/responsive.css">
+        <link rel="stylesheet" href="../css/responsive.css">
         <!-- fevicon -->
-        <link rel="icon" href="<%=url%>/images/fevicon.png" type="image/gif" />
+        <link rel="icon" href="images/fevicon.png" type="image/gif" />
         <!-- Scrollbar Custom CSS -->
-        <link rel="stylesheet" href="<%=url%>/css/jquery.mCustomScrollbar.min.css">
+        <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
         <!-- Tweaks for older IEs-->
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
         <!-- owl stylesheets -->
-        <link rel="stylesheet" href="<%=url%>/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="<%=url%>/css/owl.theme.default.min.css">
+        <link rel="stylesheet" href="../css/owl.carousel.min.css">
+        <link rel="stylesheet" href="../css/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">        
     </head>
     <body>
 
         <!-- header section start -->
+
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
     </nav>
     <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
@@ -76,7 +77,7 @@
         <input type="submit" value="Submit">
     </form>
     <div class="timetable-img text-center">
-        <img src="<%=url%>/img/content/timetable.png" alt="">
+        <img src="img/content/timetable.png" alt="">
     </div>
     <div class="table-responsive">
         <table class="table table-bordered text-center">
@@ -117,15 +118,16 @@
                     <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
                         <% for (int day = 0; day < 7; day++) {
                                 boolean hasSchedule = false;
-                               
+
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
-                             
+                                boolean check = true;
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                 for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
                                     if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
                                         hasSchedule = true;
+                                        check = scheduleHocVienDTO.isStatus();
                                         maLopHoc = scheduleHocVienDTO.getMaLopHoc();
                                         tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(scheduleHocVienDTO.getMaLopHoc()));
                                         break;
@@ -139,11 +141,17 @@
                     <td>
 
                         <% if (hasSchedule) {%>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                        <% if (check) {%>
+                        <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
                         <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
 
-                        <% }%>
-                        
+
+                        <% } else {%>
+                        <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                        <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
+                        <%         }
+                            }%>
+
                     </td>
                     <%  calendar.add(Calendar.DAY_OF_WEEK, 1);
                         } %>
@@ -289,16 +297,16 @@
 
 </body>
 <!-- Javascript files-->
-<script src="<%=url%>/js/jquery.min.js"></script>
-<script src="<%=url%>/js/popper.min.js"></script>
-<script src="<%=url%>/js/bootstrap.bundle.min.js"></script>
-<script src="<%=url%>/js/jquery-3.0.0.min.js"></script>
-<script src="<%=url%>/js/plugin.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/jquery-3.0.0.min.js"></script>
+<script src="../js/plugin.js"></script>
 <!-- sidebar -->
-<script src="<%=url%>/js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="<%=url%>/js/custom.js"></script>
+<script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="../js/custom.js"></script>
 <!-- javascript -->
-<script src="<%=url%>/js/owl.carousel.js"></script>
+<script src="../js/owl.carousel.js"></script>
 <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 <script>
     $('#myCarousel').carousel({
