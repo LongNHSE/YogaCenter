@@ -4,6 +4,7 @@
     Author     : Oalskad
 --%>
 
+<%@page import="com.mycompany.yogacenterproject.dto.AttendanceDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -57,6 +58,7 @@
         List<SlotDTO> listSlot = (List<SlotDTO>) request.getAttribute("listSlot");
         List<LocalDate> listDate = (List<LocalDate>) request.getAttribute("listDate");
         List<DateStartAndDateEnd> weekRanges = (List<DateStartAndDateEnd>) request.getAttribute("weekRanges");
+        List<AttendanceDTO> listAttendanceDTO = (List<AttendanceDTO>) request.getAttribute("listAttendanceDTO");
 
     %>
 
@@ -122,10 +124,16 @@
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
+                                String status = "";
                                 boolean check = true;
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                 for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
                                     if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
+                                        for (AttendanceDTO attendanceDTO : listAttendanceDTO) {
+                                            if (attendanceDTO.getMaSlot().equals(slot) && attendanceDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
+                                                status = attendanceDTO.getStatus();
+                                            }
+                                        }
                                         hasSchedule = true;
                                         check = scheduleHocVienDTO.isStatus();
                                         maLopHoc = scheduleHocVienDTO.getMaLopHoc();
@@ -144,14 +152,41 @@
                         <% if (check) {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>">
                             <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
-                            <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
+                            <div class="margin-10px-top font-size14"><%=maLopHoc%>  
+                                <%if (status.equalsIgnoreCase("ABSENT")) {%> 
+                                <div class="bg-danger">
+                                    <%=status%>
+                                </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
+                                <div class="bg-yellow">
+                                    <%=status%>
+                                </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
+                                <div class="bg-green">
+                                    <%=status%>
+                                </div>
+                                <%} %>
+                            </div>
                         </a>
 
                         <% } else {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>">
-                            <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
-                            <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
+                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                            <div class="margin-10px-top font-size14"><%=maLopHoc%> 
+                                <%if (status.equalsIgnoreCase("ABSENT")) {%> 
+                                <div class="bg-danger">
+                                    <%=status%>
+                                </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
+                                <div class="bg-yellow">
+                                    <%=status%>
+                                </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
+                                <div class="bg-green">
+                                    <%=status%>
+                                </div>
+                                <%} %>
+
+                            </div>
+
                         </a>
+
                         <%         }
                             }%>
 

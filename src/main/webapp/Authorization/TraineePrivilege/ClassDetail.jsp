@@ -215,9 +215,7 @@
                             <td><%= hocVienDTO.getDob()%> </td>
 
                             <td><%= hocVienDTO.getGender()%> </td>
-                            <td><select name="Status" >
-                                    <option    value="${trainerDTO.maTrainer}">Recent trainer : ${trainerDTO.ho} ${trainerDTO.ten}</option>
-                                </select> </td>
+                           
 
 
                         <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >

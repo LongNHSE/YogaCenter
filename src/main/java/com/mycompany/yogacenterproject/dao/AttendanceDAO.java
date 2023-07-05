@@ -46,6 +46,35 @@ public class AttendanceDAO {
 
     }
 
+    public List<AttendanceDTO> readTraineeAttendance(String maHocVien) throws SQLException {
+        List<AttendanceDTO> listAttendanceDTO = new ArrayList<>();
+        String sql = "SELECT * from [dbo].[Attendance]  "
+                + "where maHV = ?\n";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, maHocVien);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                AttendanceDTO attendanceDTO = new AttendanceDTO();
+                attendanceDTO.setAttendanceID(rs.getString("attendanceID"));
+                attendanceDTO.setMaHV(rs.getString("maHV"));
+                attendanceDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                attendanceDTO.setMaSlot(rs.getString("maSlot"));
+                attendanceDTO.setStatus(rs.getString("status"));
+                attendanceDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                listAttendanceDTO.add(attendanceDTO);
+            }
+            return listAttendanceDTO;
+        } catch (SQLException e) {
+        }
+
+        return null;
+
+    }
+
     public List<AttendanceDTO> readAttendance(Date ngayHoc, String maSlot, String maLopHoc) throws SQLException {
         List<AttendanceDTO> listAttendanceDTO = new ArrayList<>();
         String sql = "SELECT * from [dbo].[Attendance] where ngayHoc = ? and maSlot = ? and maLopHoc = ? ";
@@ -150,6 +179,7 @@ public class AttendanceDAO {
     public static void main(String[] args) throws SQLException {
         AttendanceDAO attendanceDAO = new AttendanceDAO();
         LocalDate date = LocalDate.now();
-        System.out.println(attendanceDAO.readAttendance(Date.valueOf(date), "SL002", "LOP0003"));
+//        System.out.println(attendanceDAO.readAttendance(Date.valueOf(date), "SL002", "LOP0003"));
+System.out.println(attendanceDAO.readTraineeAttendance("HV0001"));
     }
 }
