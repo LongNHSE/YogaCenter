@@ -20,7 +20,7 @@
 <%@page import="com.mycompany.yogacenterproject.dto.HocVienDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.SlotDTO"%>
 <%@page import="java.util.List"%>
-<%@page import="com.mycompany.yogacenterproject.dto.ScheduleHvDTO"%>
+<%@page import="com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -53,7 +53,7 @@
 
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
     </nav>
-    <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
+    <% List<ScheduleTrainerDTO> listScheduleTrainer = (List<ScheduleTrainerDTO>) request.getAttribute("listScheduleTrainer");
         List<SlotDTO> listSlot = (List<SlotDTO>) request.getAttribute("listSlot");
         List<LocalDate> listDate = (List<LocalDate>) request.getAttribute("listDate");
         List<DateStartAndDateEnd> weekRanges = (List<DateStartAndDateEnd>) request.getAttribute("weekRanges");
@@ -66,7 +66,8 @@
 </head>
 
 <div class="container">
-    <form action="ScheduleController" method="post">
+    <form action="TrainerScheduleController" method="post">
+
         <select name="weekRange" id="weekRange" class="weekRange unaffected-style">
             <% for (DateStartAndDateEnd weekRange : weekRanges) {%>
             <option id="schedule" class="weekRange unaffected-style" value="<%=weekRange.getDateStart()%>" <% if (weekRange.getDateStart().equals(listDate.get(0))) {%> selected <% }%>>
@@ -75,6 +76,7 @@
             <% } %>
         </select>
         <input type="submit" value="Submit">
+        <input type="hidden" value="TrainerSchedule" name="action" >
     </form>
     <div class="timetable-img text-center">
         <img src="img/content/timetable.png" alt="">
@@ -122,14 +124,18 @@
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
+                                String maSlot = "";
+                                Date ngayHoc = null;
                                 boolean check = true;
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-                                for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
-                                    if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
+                                for (ScheduleTrainerDTO scheduleTrainerDTO : listScheduleTrainer) {
+                                    if (scheduleTrainerDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleTrainerDTO.getMaSlot().equals(slot) && scheduleTrainerDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
                                         hasSchedule = true;
-                                        check = scheduleHocVienDTO.isStatus();
-                                        maLopHoc = scheduleHocVienDTO.getMaLopHoc();
-                                        tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(scheduleHocVienDTO.getMaLopHoc()));
+                                        check = scheduleTrainerDTO.isStatus();
+                                        maLopHoc = scheduleTrainerDTO.getMaLopHoc();
+                                        tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(scheduleTrainerDTO.getMaLopHoc()));
+                                        ngayHoc = scheduleTrainerDTO.getNgayHoc();
+                                        maSlot = scheduleTrainerDTO.getMaSlot();
                                         break;
 
                                     }
@@ -142,13 +148,13 @@
 
                         <% if (hasSchedule) {%>
                         <% if (check) {%>
-                        <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>">
+                        <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>">
                             <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
                         </a>
 
                         <% } else {%>
-                        <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>">
+                        <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>">
                             <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
                         </a>
