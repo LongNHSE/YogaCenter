@@ -11,18 +11,7 @@
 <!DOCTYPE html>
 <html>
       <head>
-            <!--   basic 
-            --><meta charset="utf-8">
-              <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <!--   mobile metas -->
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-               <!--site metas--> 
             <title>Yogasan</title>
-            <!--CSS-->
-            <%@ include file="../Components/CSSComponent.jsp" %>
-            <!--Javascript-->
-            <%@ include file="../Components/JsComponent.jsp" %>
       </head>
 
 
