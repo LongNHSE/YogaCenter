@@ -104,6 +104,27 @@ public class LopHocDAO {
 
     }
 
+    public Date getLastDay(String maLopHoc) {
+
+        try {
+            String sql = "SELECT top 1 ngayHoc FROM [dbo].[ScheduleTrainer]\n"
+                    + "where maLopHoc=?\n"
+                    + "order by ngayHoc desc";
+
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLopHoc);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getDate("ngayHoc");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void updateClassStatus(String maLopHoc, boolean status) {
         try {
             String sql = "UPDATE [dbo].[lopHoc] SET [status] = ? where maLopHoc= ? ";

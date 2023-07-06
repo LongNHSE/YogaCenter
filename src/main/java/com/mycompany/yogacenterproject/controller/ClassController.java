@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
@@ -15,6 +16,7 @@ import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.AttendanceDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
@@ -164,7 +166,14 @@ public class ClassController extends HttpServlet {
                 updateClass(request, response);
             } else if (action.equals("Delete")) {
                 deleteClass(request, response);
+            } else if (action.equals("ClassDetailTrainee")) {
+                classDetailTrainee(request, response);
+            } else if (action.equals("ClassDetailTrainer")) {
+//                 Date ngayHoc = Date.valueOf(request.getParameter("ngayHoc"));
+//                out.print(ngayHoc);
+                classDetailTrainer(request, response);
             }
+
             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
 
@@ -416,6 +425,7 @@ public class ClassController extends HttpServlet {
             boolean error = true;
             HttpSession session = request.getSession();
             LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
             if (session.getAttribute("hocVienDTO") != null) {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
 
@@ -472,7 +482,7 @@ public class ClassController extends HttpServlet {
                     lopHocDAO.increase(maLopHoc);
 
                     scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
-
+                    attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
                     RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
                     rd.forward(request, response);
                 } else {
@@ -638,8 +648,9 @@ public class ClassController extends HttpServlet {
         listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV(classID);
         TrainerDAO trainerDAO = new TrainerDAO();
         TrainerDTO trainerDTO = trainerDAO.searchTrainerByClassID(classID);
-
+        Date lastDay = lopHocDAO.getLastDay(classID);
         request.setAttribute("listHocVienDTO", listHocVienDTO);
+        request.setAttribute("lastDay", lastDay);
         request.setAttribute("lopHocDTO", lopHocDTO);
         request.setAttribute("trainerDTO", trainerDTO);
         RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
@@ -695,6 +706,51 @@ public class ClassController extends HttpServlet {
         lopHocDAO.deleteClassById(classID);
 
         RequestDispatcher rd = request.getRequestDispatcher("/AdminController?action=listLopHoc&page=1");
+        rd.forward(request, response);
+    }
+
+    public void classDetailTrainee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO = lopHocDAO.searchClassById(classID);
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV(classID);
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.searchTrainerByClassID(classID);
+        Date lastDay = lopHocDAO.getLastDay(classID);
+        request.setAttribute("listHocVienDTO", listHocVienDTO);
+        request.setAttribute("lastDay", lastDay);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        request.setAttribute("trainerDTO", trainerDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TraineePrivilege/ClassDetail.jsp");
+        rd.forward(request, response);
+    }
+
+    public void classDetailTrainer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        String classID = request.getParameter("maLopHoc");
+        String maSlot = request.getParameter("maSlot");
+        Date ngayHoc = Date.valueOf(request.getParameter("ngayHoc"));
+        AttendanceDAO attendanceDAO = new AttendanceDAO();
+        List<AttendanceDTO> listAttendanceDTO = attendanceDAO.readAttendance(ngayHoc, maSlot, classID);
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        lopHocDTO = lopHocDAO.searchClassById(classID);
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV(classID);
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.searchTrainerByClassID(classID);
+        Date lastDay = lopHocDAO.getLastDay(classID);
+        request.setAttribute("ngayHoc", ngayHoc);
+        request.setAttribute("maSlot", maSlot);
+        request.setAttribute("listHocVienDTO", listHocVienDTO);
+        request.setAttribute("listAttendanceDTO", listAttendanceDTO);
+        request.setAttribute("lastDay", lastDay);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        request.setAttribute("trainerDTO", trainerDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/ClassDetail.jsp");
         rd.forward(request, response);
     }
 

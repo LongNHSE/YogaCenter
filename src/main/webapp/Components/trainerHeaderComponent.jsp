@@ -1,4 +1,10 @@
 <%-- 
+    Document   : trainerHeaderComponent
+    Created on : Jul 5, 2023, 1:04:23 PM
+    Author     : Oalskad
+--%>
+
+<%-- 
     Document   : headerComponent
     Created on : Jun 13, 2023, 3:06:10 PM
     Author     : devli
@@ -54,7 +60,7 @@
             <a class="nav-item nav-link" href="<%=baseUrl%>/Authentiation/schedule.jsp">Schedule</a>
             <a class="nav-item nav-link" href="<%=baseUrl%>/trainer.jsp">Trainer</a>
             <a class="nav-item nav-link" href="<%= baseUrl%>/Public/contact.jsp">Contact us</a>
-            <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
+            <c:if test = "${sessionScope.hocVienDTO == null}">
                 <a class="nav-item nav-link" href="<%=baseUrl%>/Authentication/signin.jsp">Login</a>              
             </c:if>
             <c:if test = "${sessionScope.hocVienDTO != null}">
@@ -66,19 +72,6 @@
                         <a class="btn-menu-item" href="<%=baseUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=baseUrl%>/ScheduleController">View my schedule</a>                                                  
-                        <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
-                    </div>
-                </div>                  
-            </c:if>
-            <c:if test = "${sessionScope.trainerDTO != null}">
-                <div class="dropdown">
-                    <button style="margin-top: 10px; margin-left: 100px; background: #be2532" class="btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span>${sessionScope.trainerDTO.username}</span>
-                    </button>
-                    <div class="dropdown-content">
-                        <a class="btn-menu-item" href="<%=baseUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
-                        <a class="btn-menu-item" href="<%=baseUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="<%=baseUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>                                                  
                         <a class="btn-menu-item" href="<%=baseUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  

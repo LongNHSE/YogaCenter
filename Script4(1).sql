@@ -216,6 +216,18 @@ ADD [status] bit NULL;
 
 
 
+CREATE TABLE Attendance (
+  attendanceID nvarchar(20) primary key,
+  [maHV] NVARCHAR(10) not null,
+  [maLopHoc] NVARCHAR(10) not null,
+  [ngayHoc] Date NOT NULL,
+  [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+  [status] bit null
+constraint fk_maLopHoc_Attendance foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
+constraint fk_maHocVien_Attendance foreign key([maHV]) references [hocVien]([maHV])
+);
+
+
 	--ALTER TABLE lopHoc
 --ADD [status] bit NULL;
 

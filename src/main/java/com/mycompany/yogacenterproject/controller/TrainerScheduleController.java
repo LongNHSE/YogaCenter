@@ -4,22 +4,22 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
-import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
-import com.mycompany.yogacenterproject.dto.AttendanceDTO;
+import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Oalskad
  */
-public class ScheduleController extends HttpServlet {
+public class TrainerScheduleController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,32 +48,28 @@ public class ScheduleController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-            Schedule(request, response);
-            date(request, response);
-
-            request.getRequestDispatcher("/Authentication/Schedule.jsp").forward(request, response);
-
+            String action = request.getParameter("action");
+            if (action.equals("TrainerSchedule")) {
+                Schedule(request, response);
+                date(request, response);
+                request.getRequestDispatcher("/Authorization/TrainerPrivilege/Schedule.jsp").forward(request, response);
+            }
         }
     }
 
     public void Schedule(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         HttpSession session = request.getSession();
-        HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
         ScheduleDAO scheduleDAO = new ScheduleDAO();
-        List<ScheduleHvDTO> listScheduleHv = scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV());
+        List<ScheduleTrainerDTO> listScheduleTrainer = scheduleDAO.readScheduleTrainer(trainerDTO.getMaTrainer());
         SlotDAO slotDAO = new SlotDAO();
-        AttendanceDAO attendanceDAO = new AttendanceDAO();
-        List<AttendanceDTO> listAttendanceDTO = attendanceDAO.readTraineeAttendance(hocVienDTO.getMaHV());
 
         List<SlotDTO> listSlot = slotDAO.readSlot();
-        request.setAttribute("listAttendanceDTO", listAttendanceDTO);
         request.setAttribute("listSlot", listSlot);
-        request.setAttribute("listScheduleHv", listScheduleHv);
+        request.setAttribute("listScheduleTrainer", listScheduleTrainer);
         String weekRange = request.getParameter("weekRange");
         LocalDate today = LocalDate.now();
         if (weekRange != null) {
@@ -139,7 +135,7 @@ public class ScheduleController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TrainerScheduleController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -157,7 +153,7 @@ public class ScheduleController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ScheduleController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TrainerScheduleController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
