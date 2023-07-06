@@ -59,6 +59,13 @@
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
+                         <li class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                     </ul>
                 </nav>

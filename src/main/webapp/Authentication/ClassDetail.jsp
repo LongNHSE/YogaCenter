@@ -23,9 +23,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <!--CSS-->
-        <%@ include file="../Components/CSSComponent.jsp" %>
-        <!--Javascript-->
-        <%@ include file="../Components/JsComponent.jsp" %>
+
         <style type="text/css">
             body{
                 background:#eee;
@@ -398,8 +396,8 @@
 
             .box {
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                top: 300px;
+            right: 400px;
                 transform: translate(-50%, -50%);
             }
 

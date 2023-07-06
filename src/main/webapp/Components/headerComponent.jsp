@@ -8,23 +8,23 @@
 
     String headerUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
 
 <style>
     /* CSS for the dropdown menu */
     body{
-            font-family: 'Bitter', serif !important;
+        font-family: 'Bitter', serif !important;
     }
     .header-nav{
-          background-color: #E4D96F;
-          margin-bottom:20px
+        background-color: #E4D96F;
+        margin-bottom:20px
     }
-/*    .dropdown {
-        position: relative;
-        display: inline-block;
-    }*/
- .dropdown-menu {
+    /*    .dropdown {
+            position: relative;
+            display: inline-block;
+        }*/
+    .dropdown-menu {
         min-width: 160px;
     }
 
@@ -64,10 +64,14 @@
         display: block;
     }
     .header-user{
-          background-color: #87CEEB;
+        background-color: #87CEEB;
+    }
+    .navbar-nav{
+        margin-left: 800px;
     }
 
 </style>
+
 
 <!-- header section start -->
 <nav class="header-nav navbar navbar-expand-lg bg-pink text-center  ">
@@ -102,7 +106,7 @@
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
 
-                 </div> 
+                </div> 
             </c:if>
             <c:if test = "${sessionScope.trainerDTO != null}">
                 <div class="dropdown">
@@ -121,8 +125,8 @@
         </div>
     </div>
 </nav>   
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 

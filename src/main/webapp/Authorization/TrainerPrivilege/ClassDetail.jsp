@@ -138,9 +138,7 @@
     %>
 
     <body>
-        <%@ include file="../../Components/CSSComponent.jsp" %>
-        <!--Javascript-->
-        <%@ include file="../../Components/JsComponent.jsp" %>
+
 
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
         <div class="Controller">

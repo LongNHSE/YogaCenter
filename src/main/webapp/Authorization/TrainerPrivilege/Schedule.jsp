@@ -27,14 +27,14 @@
     <head>
         <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
         <!-- bootstrap css -->
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <!-- style css -->
-        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+
         <!-- Responsive-->
-        <link rel="stylesheet" href="../css/responsive.css">
+
         <!-- fevicon -->
         <link rel="icon" href="images/fevicon.png" type="image/gif" />
         <!-- Scrollbar Custom CSS -->
@@ -47,6 +47,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">        
     </head>
+    <style>
+        a {
+            text-decoration:none;
+        }
+    </style>
     <body>
 
         <!-- header section start -->
@@ -142,13 +147,24 @@
                                 }
                         %>
 
+                        <style>
+                            a {
+                                color: #0060B6;
+                                text-decoration: none;
+                            }
 
+                            a:hover {
+                                color:#00A0C6;
+                                text-decoration:none;
+                                cursor:pointer;
+                            }
+                        </style>
 
                     <td>
 
                         <% if (hasSchedule) {%>
                         <% if (check) {%>
-                        <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>">
+                        <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>" >
                             <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
                         </a>
