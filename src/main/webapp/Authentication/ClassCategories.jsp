@@ -23,9 +23,9 @@
         <!--site metas--> 
         <title>Yogasan</title>
         <!--CSS-->
-        <%@ include file="../Components/CSSComponent.jsp" %>
+        <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
         <!--Javascript-->
-        <%@ include file="../Components/JsComponent.jsp" %>            
+        <%--<%@ include file="../Components/JsComponent.jsp" %>--%>            
         <style type="text/css">
 
 
