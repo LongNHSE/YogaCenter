@@ -36,18 +36,18 @@ public class AuthorizePaymentServlet extends HttpServlet {
         try {
             PrintWriter out = response.getWriter();
             if (action.equals("Authorize")) {
-
+                authorizePayment(request, response);
             }
         } catch (IOException e) {
-            authorizePayment(request, response);
+
         }
 
     }
 
     public void authorizePayment(HttpServletRequest request, HttpServletResponse response) {
-        
+
         HoaDonDTO hoaDonDTO = new HoaDonDTO();
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
