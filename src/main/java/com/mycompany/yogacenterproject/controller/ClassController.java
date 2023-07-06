@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import PayPal.PaymentServices;
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -79,7 +80,6 @@ public class ClassController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String maLopHoc = "";
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         try {
@@ -87,27 +87,6 @@ public class ClassController extends HttpServlet {
             if (action.equals("CreateClassPage")) {
                 thongTinLopHocPage(request, response);
             } else if (action.equals("CreateClass")) {
-
-//                ScheduleDAO scheduleDAO = new ScheduleDAO();
-//                SemesterDAO semesterDAO = new SemesterDAO();
-//                SemesterDTO semesterDTO = new SemesterDTO();
-//                semesterDTO = semesterDAO.getCurrentSemester();
-//                String date = request.getParameter("initializeDate");
-//                String[] weekdays = request.getParameterValues("weekdays");
-//                String maSlot = request.getParameter("slot");
-//                int soBuoi = Integer.parseInt(request.getParameter("soBuoi"));
-//                Date date2 = Date.valueOf(request.getParameter("initializeDate"));
-//
-//                boolean check = scheduleDAO.getLastDate(weekdays, date2, soBuoi).after(semesterDTO.getStartDate());
-//                boolean check2 = scheduleDAO.getLastDate(weekdays, date2, soBuoi).before(semesterDTO.getStartDate());
-//                out.print(check);
-//                out.print(check2);
-//                out.print(scheduleDAO.getLastDate(weekdays, date2, soBuoi).after(semesterDTO.getEndDate()));
-//                out.print(scheduleDAO.getLastDate(weekdays, date2, soBuoi).before(semesterDTO.getEndDate()));
-//
-//                out.println(semesterDTO.getEndDate());
-//                out.println(scheduleDAO.getLastDate(weekdays, date2, soBuoi));
-                //
                 createLopHoc(request, response);
                 response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
             } else if (action.equals("Assign Trainer")) {
@@ -123,28 +102,6 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("Class category information")) {
 
             } else if (action.equals("Register")) {
-//                LopHocDAO lopHocDAO = new LopHocDAO();
-//                String selectedValue = request.getParameter("maSlot");
-//
-//                // Split the selected value to retrieve maSlot and thuList
-//                String[] parts = selectedValue.split("\\|");
-//                String selectedMaSlot = parts[0];
-//                String selectedThuList = parts[1];
-//
-//                // Remove the square brackets and spaces from the string
-//                String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
-//
-//// Split the cleaned value into individual elements
-//                String[] elements = cleanedValue.split(",");
-//
-//// Convert the array to a List<String>
-//                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
-//                String maSlot = selectedMaSlot;
-//                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
-//
-//                maLopHoc =lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
-//                out.print(lopHocDAO.searchClassById(maLopHoc));
-//               out.print( checkAvailability(request, response, maLopHoc));
                 payment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
@@ -464,6 +421,9 @@ public class ClassController extends HttpServlet {
                 }
                 //check availability before registering
                 if (error) {
+                    PaymentServices paymentServices = new PaymentServices();
+                    
+                    
                     Date ngayThanhToan = Date.valueOf(LocalDate.now());
                     long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
@@ -485,6 +445,7 @@ public class ClassController extends HttpServlet {
                     attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
                     RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
                     rd.forward(request, response);
+
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
