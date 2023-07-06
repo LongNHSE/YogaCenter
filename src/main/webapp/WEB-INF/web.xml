@@ -40,6 +40,10 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.BlogController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/BlogController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

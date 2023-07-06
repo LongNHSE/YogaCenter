@@ -1,4 +1,4 @@
-
+﻿
 use master
 go
 drop database YogaCenter
@@ -194,7 +194,7 @@ CREATE TABLE paySlip(
 -- Blog
 CREATE TABLE blogImg(
 	[maAnh] NVARCHAR(10) primary key,
-	[tenAnh] NVARCHAR NOT NULL,
+	[tenAnh] NVARCHAR(20) NOT NULL,
 	[image] VARBINARY(MAX) NOT NULL,
 	[maBlog] NVARCHAR(10) NOT NULL, --CONSTRAINT
 	CONSTRAINT fk_maBlog_blogImg FOREIGN KEY ([maBlog]) REFERENCES blogPost([maBlog])
@@ -205,10 +205,27 @@ CREATE TABLE blogCategories(
 )
 CREATE TABLE blogPost(
 	[maBlog] NVARCHAR(10) primary key,
-	[tieuDe] NVARCHAR(10) NOT NULL,
+	[tieuDe] NVARCHAR(50) NOT NULL,
 	[noiDung] NVARCHAR(MAX) NOT NULL,
-	[tacGia] NVARCHAR(100) NOT NULL,
 	[ngayTaoPost] DATE NOT NULL,
 	[maHV] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	[status] BIT NOT NULL DEFAULT 0
 	CONSTRAINT fk_maHV_Blog FOREIGN KEY ([maHV]) REFERENCES hocVien([maHV])
 )
+
+-- Xóa ràng buộc fk_maBlog_blogImg trong bảng blogImg
+ALTER TABLE blogImg
+DROP CONSTRAINT fk_maBlog_blogImg;
+
+-- Xóa ràng buộc fk_maHV_Blog trong bảng blogPost
+ALTER TABLE blogPost
+DROP CONSTRAINT fk_maHV_Blog;
+
+-- Xóa bảng blogImg
+DROP TABLE blogImg;
+
+-- Xóa bảng blogCategories
+DROP TABLE blogCategories;
+
+-- Xóa bảng blogPost
+DROP TABLE blogPost;
