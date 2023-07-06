@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.mycompany.yogacenterproject.dto.BlogImgDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,30 @@ public class BlogImageDAO {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+    public List<BlogImgDTO> getImageDataByID(String maBlog){
+          byte[] imageData =null;
+          List<BlogImgDTO> listImg = new ArrayList<>();
+          try {
+                conn = DBUtils.getConnection();
+                String sql = "SELECT * FROM [dbo].[blogImg] where [maBlog] = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, maBlog); 
+                 rs = ps.executeQuery();
+                 
+                while(rs.next()){
+                      BlogImgDTO blogImgDTO = new BlogImgDTO();
+                      blogImgDTO.setMaAnh(rs.getString("maAnh"));
+                      blogImgDTO.setTenAnh(rs.getString("tenAnh"));
+                      imageData = rs.getBytes("image");
+                      String base64image = Base64.getEncoder().encodeToString(imageData);
+                      blogImgDTO.setImage(base64image);
+                      blogImgDTO.setMaBlog(rs.getString("maBlog"));
+                      listImg.add(blogImgDTO);
+                }
+          } catch (Exception e) {
+          }
+          return listImg;
+    }
      public List<String> getImageDataFromDatabase(){
            byte[] imageData = null;
            List<String> listAnh = new ArrayList<>();
@@ -43,9 +68,9 @@ public class BlogImageDAO {
 //     Test
       public static void main(String[] args) {
              BlogImageDAO dao = new BlogImageDAO();
-             List<String> listAnh = dao.getImageDataFromDatabase();
+             List<BlogImgDTO> listAnh = dao.getImageDataByID("B0003");
              
-             for(String listImage : listAnh){
+             for(BlogImgDTO listImage : listAnh){
                    System.out.println(listImage);
              }
       }

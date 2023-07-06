@@ -4,10 +4,14 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dto.BlogDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +39,32 @@ public class BLogController extends HttpServlet {
                   if (action.equals("showImageList")) {
                         showImageList(request, response);
                           }
+                  if(action.equals("showBlogs")){
+                        showBlogs(request, response);
+                  }
             } catch (Exception e) {
             }
       }
 //      -- Blog: Start --
+      private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+//            BlogDAO dao = new BlogDAO();
+//            BlogImageDAO daoImg = new BlogImageDAO();
+//            
+//            List<BlogDTO> listBlog = dao.getAllBlogs();
+//            List<String> listAnh = daoImg.getImageDataFromDatabase();
+//            
+//            request.setAttribute("listBlog", listBlog);
+//            request.setAttribute("listAnh", listAnh);
+//            
+//            RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
+//            rd.forward(request, response);
+//            
+            BlogDAO dao = new BlogDAO();
+            List<BlogDTO> listBlog = dao.getAllBlogs();
+            request.setAttribute("listBlog", listBlog);
+            RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
+            rd.forward(request, response);
+      }
 //      -- Blog: End --
       
       

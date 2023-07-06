@@ -4,26 +4,32 @@
  */
 package com.mycompany.yogacenterproject.dto;
 
+import java.util.List;
+
 /**
  *
  * @author devli
  */
-public class Blog {
+public class BlogDTO {
       private String maBlog;
       private String title;
       private String content;
       private String date;
       private String maHV;
+      private boolean status;
+      private List<BlogImgDTO> image;
 
-      public Blog() {
+      public BlogDTO() {
       }
 
-      public Blog(String maBlog, String title, String content, String date, String maHV) {
+      public BlogDTO(String maBlog, String title, String content, String date, String maHV, boolean status, List<BlogImgDTO> image) {
             this.maBlog = maBlog;
             this.title = title;
             this.content = content;
             this.date = date;
             this.maHV = maHV;
+            this.status = status;
+            this.image = image;
       }
 
       public String getMaBlog() {
@@ -66,10 +72,26 @@ public class Blog {
             this.maHV = maHV;
       }
 
+      public boolean isStatus() {
+            return status;
+      }
+
+      public void setStatus(boolean status) {
+            this.status = status;
+      }
+
+      public List<BlogImgDTO> getImage() {
+            return image;
+      }
+
+      public void setImage(List<BlogImgDTO> image) {
+            this.image = image;
+      }
+
       @Override
       public String toString() {
-            return "Blog{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + '}';
+            return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + '}';
       }
-      
-      
+
+
 }

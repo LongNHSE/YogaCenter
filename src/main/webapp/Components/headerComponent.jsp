@@ -83,7 +83,7 @@
         <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/Public/about.jsp">About</a>
         <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
         <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/Authentiation/schedule.jsp">Schedule</a>
-        <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/Blog/Blog.jsp">Blog</a>
+        <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/BLogController?action=showBlogs">Blog</a>
         <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/Public/contact.jsp">Contact us</a>
             <c:if test = "${sessionScope.hocVienDTO == null}">
                 <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
