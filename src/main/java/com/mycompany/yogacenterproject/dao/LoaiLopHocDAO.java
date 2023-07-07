@@ -91,27 +91,28 @@ public class LoaiLopHocDAO {
         }
         return null;
     }
-    
+
 //    Select ID to get information
-    public LoaiLopHocDTO getClassCateByID(String maLoaiLopHoc){
-          String sql = "select * from [dbo].[loaiLopHoc] where [maLoaiLopHoc] = ?";
-          try {
+    public LoaiLopHocDTO getClassCateByID(String maLoaiLopHoc) {
+        String sql = "select * from [dbo].[loaiLopHoc] where [maLoaiLopHoc] = ?";
+        try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
                 loaiLopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
                 loaiLopHocDTO.setTenLoaiLopHoc(rs.getString("tenLoaiLopHoc"));
-                loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));                
+                loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));
                 loaiLopHocDTO.setHocPhi(rs.getDouble("hocPhi"));
                 return loaiLopHocDTO;
             }
-          } catch (Exception e) {
-          }
-          return null;
+        } catch (Exception e) {
+        }
+        return null;
     }
+
     //SEARCH ID TYPE 
     public String searchIdLoaiLopHoc(String tenLoaiLopHoc) {
         String sql = "SELECT  maLoaiLopHoc FROM [dbo].[loaiLopHoc] where tenLoaiLopHoc = ?  ";
@@ -162,13 +163,13 @@ public class LoaiLopHocDAO {
     }
 
     //LAY GIA TIEN CUA LOAI LOP HOC
-    public String searchHocPhiLopHoc(String maLopHoc) {
+    public String searchHocPhiLopHoc(String maLoaiLopHoc) {
         String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
         double hocPhi = 0;
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, maLopHoc);
+            ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
@@ -231,7 +232,7 @@ public class LoaiLopHocDAO {
             List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
             loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-        
+
             loaiLopHocDTO.setHocPhi(hocPhi);
             loaiLopHocDTO.setImage(lopHocIMGDTO);
 
@@ -240,6 +241,36 @@ public class LoaiLopHocDAO {
         }
         return listLoaiLopHoc;
 
+    }
+
+    public long searchHocPhiLopHocWithDouble(String maLoaiLopHoc) {
+        String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
+        long hocPhi = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return hocPhi = rs.getLong("hocPhi");
+
+// Create a DecimalFormatSymbols instance for the default locale
+//                DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+//                symbols.setGroupingSeparator('.');
+//
+//// Create a DecimalFormat instance with the desired pattern and symbols
+//                DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+//                decimalFormat.setDecimalSeparatorAlwaysShown(false);
+//                return decimalFormat.format(hocPhi);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return hocPhi;
     }
 
     public static void main(String[] args) throws SQLException, IOException {

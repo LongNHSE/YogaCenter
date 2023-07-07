@@ -4,9 +4,16 @@
  */
 package PayPal;
 
+import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +37,7 @@ public class AuthorizePaymentServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, PayPalRESTException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         try {
@@ -44,10 +51,17 @@ public class AuthorizePaymentServlet extends HttpServlet {
 
     }
 
-    public void authorizePayment(HttpServletRequest request, HttpServletResponse response) {
+    public void authorizePayment(HttpServletRequest request, HttpServletResponse response) throws PayPalRESTException, IOException {
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        HocVienDTO hocVienDTO = new HocVienDTO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        lopHocDTO = lopHocDAO.searchClassById("LOP0001");
+        hocVienDTO = hocVienDAO.searchHocVienById("HV0001");
 
-        HoaDonDTO hoaDonDTO = new HoaDonDTO();
-
+        PaymentServices paymentServices = new PaymentServices();
+        String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO);
+        response.sendRedirect(approvalLink);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,7 +76,11 @@ public class AuthorizePaymentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (PayPalRESTException ex) {
+            Logger.getLogger(AuthorizePaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -76,7 +94,11 @@ public class AuthorizePaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (PayPalRESTException ex) {
+            Logger.getLogger(AuthorizePaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
