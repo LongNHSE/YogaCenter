@@ -10,7 +10,7 @@
 %>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
-
+<!-- Thêm các t?p CSS c?a Bootstrap -->
 <style>
     /* CSS for the dropdown menu */
     body{
@@ -110,6 +110,8 @@
 </nav>   
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 

@@ -54,10 +54,10 @@
                                     </c:choose>
                               </p>                               <div class="card-ending">
                                     <div class="btn-more">
-                                        <form action="<%=baseUrl%>/BlogController">
+                                        <form action="<%=baseUrl%>/BLogController">
                                             <input type="hidden" name="returnID" value="${blog.getMaBlog()}">
                                             <input type="hidden" name="action" value="showDetails">
-                                            <button class="custom-btn">
+                                            <button class="custom-btn custom-form-btn">
                                                   More
                                             </button>                                                
                                         </form>

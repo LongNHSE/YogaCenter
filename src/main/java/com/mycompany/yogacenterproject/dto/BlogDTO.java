@@ -4,8 +4,11 @@
  */
 package com.mycompany.yogacenterproject.dto;
 
+import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  *
@@ -37,12 +40,6 @@ public class BlogDTO {
         this.tenHV = tenHV;
     }
 
-
-
-
-
-
-
       public String getMaBlog() {
             return maBlog;
       }
@@ -67,9 +64,10 @@ public class BlogDTO {
             this.content = content;
       }
 
-      public String getDate() {
-            return date;
-      }
+    public String getDate() {
+        return date;
+    }
+
 
       public void setDate(String date) {
             this.date = date;
