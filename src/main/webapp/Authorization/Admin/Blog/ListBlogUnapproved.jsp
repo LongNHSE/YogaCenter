@@ -162,9 +162,7 @@
 
         <%
             List<BlogDTO> listBlogDTO = (List<BlogDTO>) request.getAttribute("listBlogDTO");
-//            int count = (int) request.getAttribute("count");
-//            int pageCount = (int) request.getAttribute("pageCount");
-%>
+        %>
         <div class="Controller">
             <div class="wrapper">
                 <nav class='animated bounceInDown bg-dark'>
@@ -205,53 +203,65 @@
                     </ul>
                 </nav>
             </div>
-            <section>
-                <div class="container" >
-                    <div class="text-center mb-5">
-                        <h5 class=" h1 header-title">Blog</h5>
-                        <h2 class="display-20 display-md-18 display-lg-16 header-subtitle">Welcome to the Yoga Center Blog</h2>
-                    </div>
-                    <div class="row">
+            <div class="Table">
+                <table class="table">
+
+                    <thead>
+                        <tr class="Test">
+
+
+                            <th scope="col">ID Blog</th>
+                            <th scope="col">ID Trainee</th>
+                            <!--                            <th scope="col">ID Trainer</th>-->
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
                         <c:forEach items="${listBlogDTO}" var="blog">
-                            <div class="col-lg-4 col-md-6 mb-2-6">
-                                <article class="card card-style2">
-                                    <!-- Display the blog image here if available -->
-                                    <%--  <c:forEach items="${blog.image}" var="image">
-                                          <div class="card-img">
-                                              <c:if test="${not empty image.tenAnh and image.tenAnh.equalsIgnoreCase('THUMBNAIL')}">
-                                                  <img class="rounded-top" src="data:image/jpeg;base64,${image.image}" style="width: 100%; height: 100%;" alt="...">
-                                              </c:if>
-                                          </div>
-                                      </c:forEach> --%>
-                                    <div class="card-body">
-                                        <h3 class="h5"><a href="#!">${blog.title}</a></h3>
-                                        <p class="display-30">${blog.content}</p>
-                                        <a href="#!" class="read-more">read more</a>
-                                    </div>
-                                    <div class="card-footer">
-                                        <ul>
-                                            <li><a href="#!"><i class="fas fa-user"></i>${blog.maHV}</a></li>
-                                            <!-- Display the number of comments or any other information -->
-                                        </ul>
-                                    </div>
-                                </article>
-                            </div>
-                        </c:forEach>                  
-                    </div>
-                </div>
-            </section>
-            <script>
-                $(document).ready(function () {
-                    $('.sub-menu ul#active').show();
-                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
+                            <tr>
+                        <form action="<%=url%>/ClassController" method="POST">
 
-                $('.sub-menu ul').hide();
+                            <th scope="row">${blog.maBlog}</th>
+                            <td>${blog.maHV} </td>
+                            <td>${blog.title} </td>
+                            <td>${blog.date} </td>
+                            <td>${blog.status} </td>
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"    ></td> 
+                            <td >  <input class="btn btn-outline-danger" type='submit'value="Approve"name="action"    ></td> 
+                            <td >  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"    ></td> 
 
-                $(".sub-menu a").click(function () {
-                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
-            </script>
+
+                            <input type="hidden" name="maBlog" value="${blog.maBlog}" >
+                        </form>
+                        </tr>
+                    </c:forEach>       
+
+
+
+
+
+                    </tbody>
+
+                </table>
+            </div>      
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
+
+            $('.sub-menu ul').hide();
+
+            $(".sub-menu a").click(function () {
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
+        </script>
     </body>
 </html>
