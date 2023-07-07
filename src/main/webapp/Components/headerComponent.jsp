@@ -14,7 +14,10 @@
 <style>
     /* CSS for the dropdown menu */
     body{
-        font-family: 'Bitter', serif !important;
+
+            /*font-family: 'Bitter', serif !important;*/
+            font-family: 'Montserrat', sans-serif !important;
+
     }
     .header-nav{
         background-color: #E4D96F;

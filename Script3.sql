@@ -229,3 +229,4 @@ DROP TABLE blogCategories;
 
 -- Xóa bảng blogPost
 DROP TABLE blogPost;
+SELECT * FROM [dbo].[blogImg] where [maBlog] = 'B0003'

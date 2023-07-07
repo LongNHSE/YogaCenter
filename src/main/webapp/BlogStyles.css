@@ -1,8 +1,11 @@
 
 /*-- Blog: Start --*/
-.header-title{
-      color: #4c4f52
-}
+      .header-title{
+            color: #0c646f;
+      }
+      .header-subtitle{
+            color: #343d3c;
+      }
       .card-style2 {
           position: relative;
           display: flex;
@@ -97,5 +100,41 @@
           font-size: 14px;
           margin-right: 8px;
       }
+      .card-body .custom-btn {
+            display:inline-block;
+            width: 100px;
+            height: 55px;
+            border: 3px solid #ba5526;
+            border-radius: 45px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: white;
+            font-size: 1.2em;
+            font-weight: 550;
+          }
+          
+    .card-body .custom-btn:hover {
+      background: #ba5526;
+      color: white;
+      font-size: 1.5em;
+    }
+    .card-body .card-ending{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+    }
+      .blog-title-link {
+        text-decoration: none;
+        color:#ba5526;
+      }
+      .blog-title-link:hover{
+            color:#0c646f;
+      }
+      .blog-content{
+      color:#6b6766;
+      font-size:15px;
+      line-height:24.75px   ;         
+      }
+
 /*-- Blog: End --*/
 
