@@ -4,8 +4,16 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.BlogDAO;
+import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dto.BlogDTO;
+import com.mycompany.yogacenterproject.dto.BlogImgDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,15 +39,27 @@ public class BlogAdminController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BlogAdminController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BlogAdminController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String action = request.getParameter("action");
+            if (action.equals("ViewListBlogUnapprove")) {
+                listBlogUnapprove(request, response);
+            }
+        }
+    }
+
+    public void listBlogUnapprove(HttpServletRequest request, HttpServletResponse response) {
+        BlogDAO blogDAO = new BlogDAO();
+        List<BlogDTO> listBlogDTO = blogDAO.getAllBlogsUnapprove();
+        BlogImageDAO blogImageDAO = new BlogImageDAO();
+        List<BlogImgDTO> listBlogImgDTO = blogImageDAO.getImageData();
+        request.setAttribute("listBlogDTO", listBlogDTO);
+        request.setAttribute("listBlogImgDTO", listBlogImgDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Blog/ListBlogUnapproved.jsp");
+        try {
+            rd.forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(BlogAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BlogAdminController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

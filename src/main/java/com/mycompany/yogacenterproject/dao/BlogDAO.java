@@ -49,7 +49,7 @@ public class BlogDAO {
             public List<BlogDTO> getAllBlogsUnapprove(){
             List<BlogDTO> listBlog = new ArrayList<>();
             BlogImageDAO daoImg = new BlogImageDAO();
-            String sql = "SELECT * FROM [dbo].[blogPost] where status = 'fasle'";
+            String sql = "SELECT * FROM [dbo].[blogPost] where status = '0'";
             try {
                   conn = DBUtils.getConnection();
                   ps = conn.prepareStatement(sql);
@@ -67,13 +67,14 @@ public class BlogDAO {
                         blogDTO.setImage(blogImgDTO);
                         listBlog.add(blogDTO);
                   }               
+                  return listBlog;
             } catch (Exception e) {
             }
             return listBlog;
       }
       public static void main(String[] args) {
             BlogDAO dao = new BlogDAO();
-            List<BlogDTO> listBlog = dao.getAllBlogs();
+            List<BlogDTO> listBlog = dao.getAllBlogsUnapprove();
             for (BlogDTO blog : listBlog) {
                   System.out.println(blog.toString());
             }

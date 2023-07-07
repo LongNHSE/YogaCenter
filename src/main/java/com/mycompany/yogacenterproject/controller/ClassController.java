@@ -4,6 +4,8 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import PaypalServices.PaymentServices;
+import PaypalServices.PaymentServicesTest;
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -33,6 +35,7 @@ import com.mycompany.yogacenterproject.dto.SemesterDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -124,6 +127,8 @@ public class ClassController extends HttpServlet {
 
             } else if (action.equals("Register")) {
 //                LopHocDAO lopHocDAO = new LopHocDAO();
+//                LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+//                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
 //                String selectedValue = request.getParameter("maSlot");
 //
 //                // Split the selected value to retrieve maSlot and thuList
@@ -138,13 +143,16 @@ public class ClassController extends HttpServlet {
 //                String[] elements = cleanedValue.split(",");
 //
 //// Convert the array to a List<String>
-//                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
 //                String maSlot = selectedMaSlot;
 //                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 //
-//                maLopHoc =lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
-//                out.print(lopHocDAO.searchClassById(maLopHoc));
-//               out.print( checkAvailability(request, response, maLopHoc));
+//                maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+//                LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+////                LopHocDAO lopHocDAO = new LopHocDAO();
+////                LopHocDTO lopHocDTO = lopHocDAO.searchClassById("LOP0001");
+////                PaymentServices paymentServices = new PaymentServices();
+////                String approvalLink = paymentServices.authorizePayment(lopHocDTO);
+//                out.print(loaiLopHocDAO.searchHocPhiLopHoc(lopHocDTO.getMaLoaiLopHoc()));
                 payment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
@@ -420,7 +428,7 @@ public class ClassController extends HttpServlet {
     }
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
-    public void payment(HttpServletRequest request, HttpServletResponse response) {
+    public void payment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             boolean error = true;
             HttpSession session = request.getSession();
@@ -464,27 +472,35 @@ public class ClassController extends HttpServlet {
                 }
                 //check availability before registering
                 if (error) {
-                    Date ngayThanhToan = Date.valueOf(LocalDate.now());
-                    long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+                    LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                    PaymentServicesTest paymentServicesTest = new PaymentServicesTest();
+                    String approvalLink = paymentServicesTest.createPayment(lopHocDTO, hocVienDTO);
+//                    PaymentServices paymentServices = new PaymentServices();
+//                    String approvalLink = paymentServices.authorizePayment(lopHocDTO);
 
-                    String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
-                    String maHoaDon = AUTO_HOADON_ID;
+                    response.sendRedirect(approvalLink);
 
-                    HoaDonDTO hoaDonDTO = new HoaDonDTO();
-                    hoaDonDTO.setMahoaDon(maHoaDon);
-                    hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
-                    hoaDonDTO.setMaLopHoc(maLopHoc);
-                    hoaDonDTO.setGiaTien(hocPhi);
-                    hoaDonDTO.setNgayThanhToan(ngayThanhToan);
-
-                    hoaDonDAO.createHoaDonDTO(hoaDonDTO);
-
-                    lopHocDAO.increase(maLopHoc);
-
-                    scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
-                    attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
-                    RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-                    rd.forward(request, response);
+//                    Date ngayThanhToan = Date.valueOf(LocalDate.now());
+//                    long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+//
+//                    String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
+//                    String maHoaDon = AUTO_HOADON_ID;
+//
+//                    HoaDonDTO hoaDonDTO = new HoaDonDTO();
+//                    hoaDonDTO.setMahoaDon(maHoaDon);
+//                    hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
+//                    hoaDonDTO.setMaLopHoc(maLopHoc);
+//                    hoaDonDTO.setGiaTien(hocPhi);
+//                    hoaDonDTO.setNgayThanhToan(ngayThanhToan);
+//
+//                    hoaDonDAO.createHoaDonDTO(hoaDonDTO);
+//
+//                    lopHocDAO.increase(maLopHoc);
+//
+//                    scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
+//                    attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
+//                    RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+//                    rd.forward(request, response);
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
@@ -498,8 +514,8 @@ public class ClassController extends HttpServlet {
             e.printStackTrace();
         }
     }
+    //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 
-    //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
     public boolean checkTraineeSchedule(HttpServletRequest request, HttpServletResponse response, String maSlot, List<String> thuList, String maHocVien) {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         return scheduleDAO.checkTraineeSchedule(maSlot, maHocVien, thuList);

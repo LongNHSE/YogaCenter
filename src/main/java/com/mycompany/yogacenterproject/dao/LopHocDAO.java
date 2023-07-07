@@ -766,7 +766,8 @@ public class LopHocDAO {
         List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
         LopHocDAO lopHocDAO = new LopHocDAO();
-        System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
+//        System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
+        System.out.println(lopHocDAO.searchClassById("LOP0001"));
 ////////        Date aa = Date.valueOf(LocalDate.now());
 //////        LopHocDTO lopHocDTO = new LopHocDTO();
 //////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
