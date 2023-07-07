@@ -164,13 +164,13 @@ public class LoaiLopHocDAO {
     }
 
     //LAY GIA TIEN CUA LOAI LOP HOC
-    public String searchHocPhiLopHoc(String maLopHoc) {
+    public String searchHocPhiLopHoc(String maLoaiLopHoc) {
         String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
         double hocPhi = 0;
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, maLopHoc);
+            ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
@@ -206,14 +206,6 @@ public class LoaiLopHocDAO {
 
                 return hocPhi = rs.getLong("hocPhi");
 
-// Create a DecimalFormatSymbols instance for the default locale
-//                DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
-//                symbols.setGroupingSeparator('.');
-//
-//// Create a DecimalFormat instance with the desired pattern and symbols
-//                DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
-//                decimalFormat.setDecimalSeparatorAlwaysShown(false);
-//                return decimalFormat.format(hocPhi);
             }
             rs.close();
             ps.close();
