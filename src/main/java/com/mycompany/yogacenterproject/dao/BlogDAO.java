@@ -6,6 +6,7 @@ package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
+import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +22,7 @@ public class BlogDAO {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;      
-      public List<BlogDTO> getAllBlogs(){
+     public List<BlogDTO> getAllBlogs(){
             List<BlogDTO> listBlog = new ArrayList<>();
             BlogImageDAO daoImg = new BlogImageDAO();
             String sql = "SELECT * FROM [dbo].[blogPost]";
@@ -46,11 +47,86 @@ public class BlogDAO {
             }
             return listBlog;
       }
+      public BlogDTO getBlogByID(String maBlog){
+          BlogDTO blogDTO = new BlogDTO();
+          String sql = "select * from [dbo].[blogPost] where [maBlog] = ? ";
+          try {
+                  conn = DBUtils.getConnection();
+                  ps = conn.prepareStatement(sql);
+                  ps.setString(1, maBlog);
+                  rs = ps.executeQuery();       
+                  while(rs.next()){
+                      blogDTO = new BlogDTO();
+                      blogDTO.setMaBlog(rs.getString("maBlog"));
+                      blogDTO.setTitle(rs.getString("tieuDe"));
+                      blogDTO.setContent(rs.getString("noiDung"));
+                      blogDTO.setDate(rs.getString("ngayTaoPost"));
+                      blogDTO.setMaHV(rs.getString("maHV"));
+                      blogDTO.setStatus(rs.getBoolean("status"));
+                  }
+                        rs.close();
+                        ps.close();
+                        conn.close();                  
+          } catch (Exception e) {
+          }
+          return blogDTO;
+      }
+      public String getAuthorNameByID(String maHV){
+          String authorName = null;
+          String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
+          try {
+                  conn = DBUtils.getConnection();
+                  ps = conn.prepareStatement(sql);
+                  ps.setString(1, maHV);
+                  rs = ps.executeQuery();
+                  while(rs.next()){
+                      authorName= rs.getString("Ten");
+                  }                                  
+                rs.close();
+                ps.close();
+                conn.close();
+          } catch (Exception e) {
+          }
+          return authorName; 
+      }
+        public BlogDTO getBlogAuthor(String maBlog) {
+           BlogDTO blogDTO = null;
+           String sql = "SELECT b.maBlog, b.tieuDe, b.noiDung, b.ngayTaoPost, b.maHV, h.Ten\n" +
+                        "FROM blogPost b\n" +
+                        "INNER JOIN hocVien h ON b.maHV = h.maHV\n" +
+                        "WHERE b.maBlog = ? ";
+           try {
+               conn = DBUtils.getConnection();
+               ps = conn.prepareStatement(sql);
+               ps.setString(1, maBlog);
+               rs = ps.executeQuery();
+               if (rs.next()) {
+                   blogDTO = new BlogDTO();
+                   blogDTO.setMaBlog(rs.getString("maBlog"));
+                   blogDTO.setTitle(rs.getString("tieuDe"));
+                   blogDTO.setContent(rs.getString("noiDung"));
+                   blogDTO.setDate(rs.getString("ngayTaoPost"));
+                   blogDTO.setMaHV(rs.getString("maHV"));
+                   blogDTO.setStatus(rs.getBoolean("status"));
+                   // Lấy tên tác giả dựa vào mã HV và gán vào blogDTO
+                   String tenHV = getAuthorNameByID(rs.getString("maHV"));
+                   blogDTO.setTenHV(tenHV);
+               }
+               rs.close();
+               ps.close();
+               conn.close();
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           return blogDTO;
+       }
+        
+        
       public static void main(String[] args) {
             BlogDAO dao = new BlogDAO();
-            List<BlogDTO> listBlog = dao.getAllBlogs();
-            for (BlogDTO blog : listBlog) {
-                  System.out.println(blog.toString());
-            }
+            BlogDTO blogDTO = dao.getBlogByID("B0001");
+            System.out.println(blogDTO);
+                    
+            
       }
 }

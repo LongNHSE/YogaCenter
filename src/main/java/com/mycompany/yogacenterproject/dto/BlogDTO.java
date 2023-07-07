@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,19 +19,29 @@ public class BlogDTO {
       private String maHV;
       private boolean status;
       private List<BlogImgDTO> image;
+      private String tenHV;
+
 
       public BlogDTO() {
+
       }
 
-      public BlogDTO(String maBlog, String title, String content, String date, String maHV, boolean status, List<BlogImgDTO> image) {
-            this.maBlog = maBlog;
-            this.title = title;
-            this.content = content;
-            this.date = date;
-            this.maHV = maHV;
-            this.status = status;
-            this.image = image;
-      }
+    public BlogDTO(String maBlog, String title, String content, String date, String maHV, boolean status, List<BlogImgDTO> image, String tenHV) {
+        this.maBlog = maBlog;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        this.maHV = maHV;
+        this.status = status;
+        this.image = image;
+        this.tenHV = tenHV;
+    }
+
+
+
+
+
+
 
       public String getMaBlog() {
             return maBlog;
@@ -88,10 +99,29 @@ public class BlogDTO {
             this.image = image;
       }
 
-      @Override
-      public String toString() {
-            return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + '}';
-      }
+    public String getTenHV() {
+        return tenHV;
+    }
+
+    public void setTenHV(String tenHV) {
+        this.tenHV = tenHV;
+    }
+
+    @Override
+    public String toString() {
+        return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + ", tenHV=" + tenHV + '}';
+    }
+
+
+ 
+      
+
+
+  
+
+
+      
+
 
 
 }

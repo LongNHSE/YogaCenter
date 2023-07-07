@@ -53,6 +53,16 @@ public class BLogController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
             rd.forward(request, response);
       }
+      private void getBlogAuthor(HttpServletRequest request, HttpServletResponse response){
+          
+      }
+      private void showDetail(HttpServletRequest request, HttpServletResponse response){
+          String id = request.getParameter("returnID");
+          BlogDAO blogDAO = new BlogDAO();
+//          Get Blog Details
+            BlogDTO blogDetails = blogDAO.getBlogByID(id);
+            request.setAttribute("blogDetails", blogDetails);
+      }
 //      -- Blog: End --
       
       

@@ -54,9 +54,14 @@
                                     </c:choose>
                               </p>                               <div class="card-ending">
                                     <div class="btn-more">
-                                      <button class="custom-btn">
-                                            More
-                                      </button>                                   
+                                        <form action="<%=baseUrl%>/BlogController">
+                                            <input type="hidden" name="returnID" value="${blog.getMaBlog()}">
+                                            <input type="hidden" name="action" value="showDetails">
+                                            <button class="custom-btn">
+                                                  More
+                                            </button>                                                
+                                        </form>
+                               
                                     </div>
                                     <div>
                                           <span>Created by : <span class="text-primary">${blog.maHV}</span> </span> 
