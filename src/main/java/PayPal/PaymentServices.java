@@ -74,7 +74,6 @@ public class PaymentServices {
                 approvalLink = link.getHref();
             }
         }
-        System.out.println(approvalLink);
         return approvalLink;
     }
 

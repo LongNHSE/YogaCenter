@@ -56,6 +56,14 @@
         <servlet-name>AttendanceController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.AttendanceController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BLogController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.BLogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogAdminController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -108,9 +116,17 @@
         <servlet-name>AttendanceController</servlet-name>
         <url-pattern>/AttendanceController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BLogController</servlet-name>
+        <url-pattern>/BLogController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogAdminController</servlet-name>
+        <url-pattern>/BlogAdminController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-           600
+            600
         </session-timeout>
     </session-config>
     <welcome-file-list>

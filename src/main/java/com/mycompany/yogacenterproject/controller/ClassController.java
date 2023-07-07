@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.controller;
 
 import PayPal.PaymentServices;
+
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -33,6 +34,7 @@ import com.mycompany.yogacenterproject.dto.SemesterDTO;
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -367,7 +369,7 @@ public class ClassController extends HttpServlet {
     }
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
-    public void payment(HttpServletRequest request, HttpServletResponse response) {
+    public void payment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             boolean error = true;
             HttpSession session = request.getSession();
@@ -428,6 +430,7 @@ public class ClassController extends HttpServlet {
             e.printStackTrace();
         }
     }
+    //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 
     public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response) throws SQLException, NumberFormatException, ServletException, IOException {
         HttpSession session = request.getSession();

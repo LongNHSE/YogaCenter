@@ -2,35 +2,37 @@
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-<c:import url='<%= url + "/Components/JsComponent.jsp" %>' />
+<c:import url='<%= url + "/Components/JsComponent.jsp"%>' />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
 
-      
+
         <title>Profile Detail</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <!--bootstrap css--> 
-        <link rel="stylesheet" href="<%=url%>/css/bootstrap.min.css">
-        <!--style css--> 
-        <link href="<%=url%>/css/style.css" rel="stylesheet" type="text/css"/>
-        <!--Responsive-->
-        <link rel="stylesheet" href="<%=url%>/css/responsive.css">
-        <!--fevicon--> 
-        <link rel="icon" href="<%=url%>/images/fevicon.png" type="image/gif" />
-        <!--Scrollbar Custom CSS--> 
-        <link rel="stylesheet" href="<%=url%>/css/jquery.mCustomScrollbar.min.css">
-        <!--Tweaks for older IEs-->
+    <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>JSP Page</title>
+        <!-- bootstrap css -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <!-- style css -->
+
+        <!-- Responsive-->
+
+        <!-- fevicon -->
+        <link rel="icon" href="images/fevicon.png" type="image/gif" />
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+        <!-- Tweaks for older IEs-->
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-        <!--owl stylesheets--> 
-        <link rel="stylesheet" href="<%=url%>/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="<%=url%>/css/owl.theme.default.min.css">
+        <!-- owl stylesheets -->
+        <link rel="stylesheet" href="../css/owl.carousel.min.css">
+        <link rel="stylesheet" href="../css/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">      
-         
+
         <style type="text/css">
             body{
                 background-color:#f2f6fc;
@@ -94,7 +96,8 @@
         </style>
     </head>
     <body>
-        <jsp:include page="${url}/Components/headerComponent.jsp" />             
+        <jsp:include page="${url}/Components/headerComponent.jsp" />          
+     
         <div class="container-xl px-4 mt-4">
 
             <hr class="mt-0 mb-4">
