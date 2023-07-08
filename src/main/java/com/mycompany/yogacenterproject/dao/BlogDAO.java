@@ -217,7 +217,7 @@ public class BlogDAO {
             List<BLogCateDTO> listCate = new ArrayList<>();
             listCate  =dao.getAllBlogCate();
             for( BLogCateDTO o: listCate){
-                System.out.println(o.toString());
+                System.out.println(o.getTenCate());
             }
             
       }

@@ -54,6 +54,8 @@ public class BLogController extends HttpServlet {
       private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{       
             BlogDAO dao = new BlogDAO();
             List<BlogDTO> listBlog = dao.getAllBlogs();
+             List<BLogCateDTO> listCate = dao.getAllBlogCate();
+            request.setAttribute("listCate", listCate);             
             request.setAttribute("listBlog", listBlog);
             RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
             rd.forward(request, response);
@@ -69,12 +71,12 @@ public class BLogController extends HttpServlet {
             BlogDTO blogDetails = blogDAO.getBlogByID(id);
             List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
             BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
-            List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
+
             
             request.setAttribute("blogImgDetails", blogImg);
             request.setAttribute("blogDetails", blogDetails);
             request.setAttribute("blogLatest", blogLatest);
-            request.setAttribute("blogCate", listCate);
+
             RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
             rd.forward(request, response);            
       }
