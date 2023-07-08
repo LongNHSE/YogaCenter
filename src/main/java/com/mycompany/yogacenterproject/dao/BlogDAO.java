@@ -159,6 +159,7 @@ public class BlogDAO {
                 return listCate;
                 
             }
+
       public String getAuthorNameByID(String maHV){
           String authorName = null;
           String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
@@ -216,8 +217,9 @@ public class BlogDAO {
             List<BlogDTO> listB = new ArrayList<>();
             List<BLogCateDTO> listCate = new ArrayList<>();
             listCate  =dao.getAllBlogCate();
-            for( BLogCateDTO o: listCate){
-                System.out.println(o.getTenCate());
+            listB = dao.getBlogByCategoryID("BC0001");
+            for( BlogDTO o: listB){
+                System.out.println(o.toString());
             }
             
       }

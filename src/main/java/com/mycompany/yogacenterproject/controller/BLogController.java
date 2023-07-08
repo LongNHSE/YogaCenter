@@ -47,18 +47,46 @@ public class BLogController extends HttpServlet {
                   if(action.equals("showDetails")){
                       showDetail(request, response);
                   }
+                  if(action.equals("showBlogCategory")){
+                      showBlogCategory(request, response);
+                  }
             } catch (Exception e) {
             }
       }
 //      -- Blog: Start --
-      private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{       
+      private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
             BlogDAO dao = new BlogDAO();
             List<BlogDTO> listBlog = dao.getAllBlogs();
              List<BLogCateDTO> listCate = dao.getAllBlogCate();
+        
             request.setAttribute("listCate", listCate);             
             request.setAttribute("listBlog", listBlog);
+
             RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
             rd.forward(request, response);
+      }
+      private void showBlogCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+          String id = request.getParameter("returnID");  
+           List<BlogDTO> listBlogCate;       
+            BlogDAO dao = new BlogDAO();
+            BlogImageDAO imgDAO = new BlogImageDAO();
+//                if (id != null && !id.isEmpty()) {
+//                    listBlogCate = dao.getBlogByCategoryID(id);
+//                } else {
+//                    listBlogCate = new ArrayList<>(); 
+//                }
+                if (id != null && !id.isEmpty()) {
+                    listBlogCate = dao.getBlogByCategoryID(id);
+                    for (BlogDTO blog : listBlogCate) {
+                        List<BlogImgDTO> blogImages = imgDAO.getImagesByBlogID(blog.getMaBlog());
+                        blog.setImage(blogImages); // Set danh sách ảnh cho mỗi bài viết
+                    }
+                } else {
+                    listBlogCate = new ArrayList<>();
+                }
+             request.setAttribute("listBlog", listBlogCate); 
+             RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
+                rd.forward(request, response);
       }
       private void getBlogAuthor(HttpServletRequest request, HttpServletResponse response){
           

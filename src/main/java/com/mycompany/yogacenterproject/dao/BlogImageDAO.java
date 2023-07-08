@@ -90,6 +90,34 @@ public class BlogImageDAO {
          return  blogImgDTO;
      }
      
+     public List<BlogImgDTO> getImagesByBlogID(String id){
+                List<BlogImgDTO> images = new ArrayList<>();
+                String sql = "SELECT * FROM [dbo].[blogImg] WHERE [maBlog] = ?";
+                try {
+                    conn = DBUtils.getConnection();
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, id);
+                    rs = ps.executeQuery();
+                    while (rs.next()) {
+                        BlogImgDTO blogImgDTO = new BlogImgDTO();
+                        blogImgDTO.setMaAnh(rs.getString("maAnh"));
+                        blogImgDTO.setTenAnh(rs.getString("tenAnh"));
+
+                        byte[] imageData = rs.getBytes("image");
+                        String base64image = Base64.getEncoder().encodeToString(imageData);
+                        blogImgDTO.setImage(base64image);
+
+                        images.add(blogImgDTO);
+                    }
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return images;        
+     }
+     
 //     Test
       public static void main(String[] args) {
              BlogImageDAO dao = new BlogImageDAO();

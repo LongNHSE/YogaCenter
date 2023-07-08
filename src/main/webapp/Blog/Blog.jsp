@@ -71,7 +71,8 @@
                                     </div>
                                 </article>
                             </div>
-                        </c:forEach>
+                        </c:forEach>  
+                       
                     </div>
 
                                                           
@@ -82,7 +83,7 @@
                                 <h3 class="side-title">Category</h3>                               
                                 <ul class="list-unstyled">
                                         <c:forEach items="${listCate}" var="cate" varStatus="status">                                     
-                                            <li><a href="<%= baseUrl %>/BLogController?returnID=${cate.maCate}" title="">${cate.tenCate} 
+                                            <li><a href="<%= baseUrl %>/BLogController?returnID=${cate.maCate}&action=showBlogCategory" " title="">${cate.tenCate} 
                                                     <span class="pull-right">
                                                         <c:set var="count" value="0" />
                                                         <c:forEach items="${listBlog}" var="blog">
