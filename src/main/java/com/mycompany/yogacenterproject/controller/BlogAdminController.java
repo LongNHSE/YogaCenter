@@ -6,6 +6,7 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -57,6 +58,12 @@ public class BlogAdminController extends HttpServlet {
                 listBlogUnapprove(request, response);
             } else if (action.equals("CreateBlog")) {
                 createBlog(request, response);
+            } else if (action.equals("Delete")) {
+                deleteBlog(request, response);
+            } else if (action.equals("Approve")) {
+                approveBlog(request, response);
+            }else if (action.equals("Detail")) {
+                showDetail(request, response);
             }
         }
     }
@@ -66,6 +73,9 @@ public class BlogAdminController extends HttpServlet {
         List<BlogDTO> listBlogDTO = blogDAO.getAllBlogsUnapprove();
         BlogImageDAO blogImageDAO = new BlogImageDAO();
         List<BlogImgDTO> listBlogImgDTO = blogImageDAO.getImageData();
+        List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
+
+        request.setAttribute("listCate", listCate);
         request.setAttribute("listBlogDTO", listBlogDTO);
         request.setAttribute("listBlogImgDTO", listBlogImgDTO);
         RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Blog/ListBlogUnapproved.jsp");
@@ -78,10 +88,18 @@ public class BlogAdminController extends HttpServlet {
         }
     }
 
+    public void approveBlog(HttpServletRequest request, HttpServletResponse response) {
+        BlogDAO blogDAO = new BlogDAO();
+        String maBlog = request.getParameter("maBlog");
+        String maCate = request.getParameter("cate");
+        blogDAO.approveBlog(maBlog, maCate);
+        listBlogUnapprove(request, response);
+    }
+
     public void createBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         BlogDTO blogDTO = new BlogDTO();
-        
+
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
         String title = request.getParameter("title");
@@ -95,7 +113,7 @@ public class BlogAdminController extends HttpServlet {
             TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
             maTrainer = trainerDTO.getMaTrainer();
         }
-         String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
+        String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
 
         //HOCVIEN CONSTRUCTOR
         String maBlog = AUTO_BLOG_ID;
@@ -130,6 +148,31 @@ public class BlogAdminController extends HttpServlet {
         imageListThumb.add(imageData);
 
         blogDAO.insertImageDataFromDatabase(imageListThumb, blogImgDTO);
+    }
+
+    private void deleteBlog(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BlogDAO blogDAO = new BlogDAO();
+        String maBlog = request.getParameter("maBlog");
+        blogDAO.Delete(maBlog);
+        listBlogUnapprove(request, response);
+    }
+
+    private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("maBlog");
+        BlogDAO blogDAO = new BlogDAO();
+        BlogImageDAO blogImgDAO = new BlogImageDAO();
+//        id = "BL0002";
+//          Get Blog Details
+        BlogDTO blogDetails = blogDAO.getBlogByID(id);
+        
+        BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
+      
+
+        request.setAttribute("blogImgDetails", blogImg);
+        request.setAttribute("blogDetails", blogDetails);
+
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Blog/BlogDetails.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

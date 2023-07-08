@@ -77,6 +77,7 @@ public class BlogDAO {
                 blogDTO.setContent(rs.getString("noiDung"));
                 blogDTO.setDate(rs.getString("ngayTaoPost"));
                 blogDTO.setMaHV(rs.getString("maHV"));
+
                 blogDTO.setStatus(rs.getBoolean("status"));
                 blogDTO.setImage(blogImgDTO);
                 listBlog.add(blogDTO);
@@ -103,6 +104,7 @@ public class BlogDAO {
                 blogDTO.setContent(rs.getString("noiDung"));
                 blogDTO.setDate(rs.getString("ngayTaoPost"));
                 blogDTO.setMaHV(rs.getString("maHV"));
+                blogDTO.setMaTrainer(rs.getString("maTrainer"));
                 blogDTO.setStatus(rs.getBoolean("status"));
                 blogDTO.setImage(blogImgDTO);
                 listBlog.add(blogDTO);
@@ -113,81 +115,7 @@ public class BlogDAO {
         return listBlog;
     }
 
-//    public BlogDTO getBlogByID(String maBlog) {
-//        BlogDTO blogDTO = new BlogDTO();
-//        String sql = "select * from [dbo].[blogPost] where [maBlog] = ? ";
-//        try {
-//            conn = DBUtils.getConnection();
-//            ps = conn.prepareStatement(sql);
-//            ps.setString(1, maBlog);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                blogDTO = new BlogDTO();
-//                blogDTO.setMaBlog(rs.getString("maBlog"));
-//                blogDTO.setTitle(rs.getString("tieuDe"));
-//                blogDTO.setContent(rs.getString("noiDung"));
-//                blogDTO.setDate(rs.getString("ngayTaoPost"));
-//                blogDTO.setMaHV(rs.getString("maHV"));
-//                blogDTO.setStatus(rs.getBoolean("status"));
-//            }
-//            rs.close();
-//            ps.close();
-//            conn.close();
-//        } catch (Exception e) {
-//        }
-//        return blogDTO;
-//    }
-//    public String getAuthorNameByID(String maHV) {
-//        String authorName = null;
-//        String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
-//        try {
-//            conn = DBUtils.getConnection();
-//            ps = conn.prepareStatement(sql);
-//            ps.setString(1, maHV);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                authorName = rs.getString("Ten");
-//            }
-//            rs.close();
-//            ps.close();
-//            conn.close();
-//        } catch (Exception e) {
-//        }
-//        return authorName;
-//    }
-//    public BlogDTO getBlogAuthor(String maBlog) {
-//        BlogDTO blogDTO = null;
-//        String sql = "SELECT b.maBlog, b.tieuDe, b.noiDung, b.ngayTaoPost, b.status, b.maHV, h.Ten\n"
-//                + "FROM blogPost b\n"
-//                + "INNER JOIN hocVien h ON b.maHV = h.maHV\n"
-//                + "WHERE b.maBlog = ? ";
-//        try {
-//            conn = DBUtils.getConnection();
-//            ps = conn.prepareStatement(sql);
-//            ps.setString(1, maBlog);
-//            rs = ps.executeQuery();
-//            if (rs.next()) {
-//                blogDTO = new BlogDTO();
-//                blogDTO.setMaBlog(rs.getString("maBlog"));
-//                blogDTO.setTitle(rs.getString("tieuDe"));
-//                blogDTO.setContent(rs.getString("noiDung"));
-//                blogDTO.setDate(rs.getString("ngayTaoPost"));
-//                blogDTO.setMaHV(rs.getString("maHV"));
-//                blogDTO.setStatus(rs.getBoolean("status"));
-//                // Lấy tên tác giả dựa vào mã HV và gán vào blogDTO
-//                String tenHV = rs.getString("Ten");
-//                blogDTO.setTenHV(tenHV);
-//
-//            }
-//            System.out.println(rs.getString("Ten"));
-//            rs.close();
-//            ps.close();
-//            conn.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return blogDTO;
-//    }
+//  
     public void insertImageDataFromDatabase(List<byte[]> imageList, BlogImgDTO blogImgDTO) throws SQLException, IOException {
 
         List<String> listAnh = new ArrayList<>();
@@ -223,98 +151,55 @@ public class BlogDAO {
 
     }
 
-    public int lastIDIndexOfBlogImg() {
-        String sql = "SELECT TOP 1 maAnh FROM [dbo].[blogImg] ORDER BY maAnh DESC";
-        int index = 0;
+    public String getAuthorNameByID(String maHV) {
+        String authorName = null;
+        String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
         try {
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-
-                int numberOnly = Integer.parseInt(rs.getString("maAnh").replaceAll("[^0-9]", ""));
-                index = numberOnly;
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, maHV);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                authorName = rs.getString("Ten");
             }
             rs.close();
             ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        } catch (Exception e) {
         }
-        return index;
+        return authorName;
     }
 
-    public int lastIDIndexOfBlog() {
-        String sql = "SELECT TOP 1 maBlog FROM [dbo].[blogPost] ORDER BY maBlog DESC";
-        int index = 0;
+    public BlogDTO getBlogAuthor(String maBlog) {
+        BlogDTO blogDTO = null;
+        String sql = "SELECT b.maBlog, b.tieuDe, b.noiDung, b.ngayTaoPost, b.maHV, h.Ten\n"
+                + "FROM blogPost b\n"
+                + "INNER JOIN hocVien h ON b.maHV = h.maHV\n"
+                + "WHERE b.maBlog = ? ";
         try {
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-
-                int numberOnly = Integer.parseInt(rs.getString("maBlog").replaceAll("[^0-9]", ""));
-                index = numberOnly;
-            }
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return index;
-    }
-
-    public boolean createBlog(BlogDTO blogDTO) throws SQLException {
-        String sql = "INSERT INTO [dbo].[blogPost]([maBlog]\n"
-                + "           ,[tieuDe]\n"
-                + "           ,[noiDung]\n"
-                + "           ,[ngayTaoPost]\n"
-                + "           ,[maHV]\n"
-                + "           ,[maTrainer]\n"
-                + "           ,[maCate]\n"
-                + "           ,[status]\n"
-                + "           ,[ngayCapNhat]) "
-                + "VALUES(?,?,?,?,?,?,?,?,?)";
-        try {
-
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            ps.setString(1, blogDTO.getMaBlog());
-            ps.setString(2, blogDTO.getTitle());
-            ps.setString(3, blogDTO.getContent());
-            ps.setDate(4, blogDTO.getNgayTaoPost());
-
-            ps.setString(5, blogDTO.getMaHV());
-            ps.setString(6, blogDTO.getMaTrainer());
-            ps.setString(7, null);
-            ps.setBoolean(8, false);
-            ps.setDate(9, null);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return false;
-    }
-
-    public void Delete(String maBlog) {
-        String sql = "DELETE FROM [dbo].[blogImg] where maBlog=? "
-                + "DELETE FROM [dbo].[blogPost] where maBlog=?";
-
-        try {
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
             ps.setString(1, maBlog);
-            ps.setString(2, maBlog);
-            ps.executeUpdate();
-
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                blogDTO = new BlogDTO();
+                blogDTO.setMaBlog(rs.getString("maBlog"));
+                blogDTO.setTitle(rs.getString("tieuDe"));
+                blogDTO.setContent(rs.getString("noiDung"));
+                blogDTO.setDate(rs.getString("ngayTaoPost"));
+                blogDTO.setMaHV(rs.getString("maHV"));
+                blogDTO.setStatus(rs.getBoolean("status"));
+                // Lấy tên tác giả dựa vào mã HV và gán vào blogDTO
+                String tenHV = getAuthorNameByID(rs.getString("maHV"));
+                blogDTO.setTenHV(tenHV);
+            }
+            rs.close();
             ps.close();
             conn.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
+        return blogDTO;
     }
 
     public BlogDTO getBlogByID(String maBlog) {
@@ -428,79 +313,133 @@ public class BlogDAO {
 
     }
 
-    public String getAuthorNameByID(String maHV) {
-        String authorName = null;
-        String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
+    public int lastIDIndexOfBlogImg() {
+        String sql = "SELECT TOP 1 maAnh FROM [dbo].[blogImg] ORDER BY maAnh DESC";
+        int index = 0;
         try {
-            conn = DBUtils.getConnection();
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, maHV);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                authorName = rs.getString("Ten");
-            }
-            rs.close();
-            ps.close();
-            conn.close();
-        } catch (Exception e) {
-        }
-        return authorName;
-    }
-
-    public BlogDTO getBlogAuthor(String maBlog) {
-        BlogDTO blogDTO = null;
-        String sql = "SELECT b.maBlog, b.tieuDe, b.noiDung, b.ngayTaoPost, b.maHV, h.Ten\n"
-                + "FROM blogPost b\n"
-                + "INNER JOIN hocVien h ON b.maHV = h.maHV\n"
-                + "WHERE b.maBlog = ? ";
-        try {
-            conn = DBUtils.getConnection();
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, maBlog);
-            rs = ps.executeQuery();
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                blogDTO = new BlogDTO();
-                blogDTO.setMaBlog(rs.getString("maBlog"));
-                blogDTO.setTitle(rs.getString("tieuDe"));
-                blogDTO.setContent(rs.getString("noiDung"));
-                blogDTO.setDate(rs.getString("ngayTaoPost"));
-                blogDTO.setMaHV(rs.getString("maHV"));
-                blogDTO.setStatus(rs.getBoolean("status"));
-                // Lấy tên tác giả dựa vào mã HV và gán vào blogDTO
-                String tenHV = getAuthorNameByID(rs.getString("maHV"));
-                blogDTO.setTenHV(tenHV);
+
+                int numberOnly = Integer.parseInt(rs.getString("maAnh").replaceAll("[^0-9]", ""));
+                index = numberOnly;
             }
             rs.close();
             ps.close();
             conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
-        return blogDTO;
+        return index;
     }
 
-    public static void main(String[] args) throws SQLException {
+    public int lastIDIndexOfBlog() {
+        String sql = "SELECT TOP 1 maBlog FROM [dbo].[blogPost] ORDER BY maBlog DESC";
+        int index = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                int numberOnly = Integer.parseInt(rs.getString("maBlog").replaceAll("[^0-9]", ""));
+                index = numberOnly;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return index;
+    }
+
+    public boolean createBlog(BlogDTO blogDTO) throws SQLException {
+        String sql = "INSERT INTO [dbo].[blogPost]([maBlog]\n"
+                + "           ,[tieuDe]\n"
+                + "           ,[noiDung]\n"
+                + "           ,[ngayTaoPost]\n"
+                + "           ,[maHV]\n"
+                + "           ,[maTrainer]\n"
+                + "           ,[maCate]\n"
+                + "           ,[status]\n"
+                + "           ,[ngayCapNhat]) "
+                + "VALUES(?,?,?,?,?,?,?,?,?)";
+        try {
+
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, blogDTO.getMaBlog());
+            ps.setString(2, blogDTO.getTitle());
+            ps.setString(3, blogDTO.getContent());
+            ps.setDate(4, blogDTO.getNgayTaoPost());
+
+            ps.setString(5, blogDTO.getMaHV());
+            ps.setString(6, blogDTO.getMaTrainer());
+            ps.setString(7, null);
+            ps.setBoolean(8, false);
+            ps.setDate(9, null);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public void Delete(String maBlog) {
+        String sql = "DELETE FROM [dbo].[blogImg] where maBlog=? "
+                + "DELETE FROM [dbo].[blogPost] where maBlog=?";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maBlog);
+            ps.setString(2, maBlog);
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public void approveBlog(String maBlog, String maCate) {
+        String sql = "Update [dbo].[blogPost] "
+                + "Set [status] = 'true',[maCate]=? "
+                + "where maBlog=?";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maCate);
+            ps.setString(2, maBlog);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
-        LocalDate c = LocalDate.now();
-
-        String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (dao.lastIDIndexOfBlog() + 1));
-
-        String maBlog = AUTO_BLOG_ID;
-//        BlogDTO blogDTO = new BlogDTO();
-//        blogDTO.setMaBlog(maBlog);
-//        blogDTO.setNgayTaoPost(Date.valueOf(c));
-//        blogDTO.setTitle("asdasd");
-//        blogDTO.setContent("asdasd");
-//        dao.createBlog(blogDTO);
-        BlogDTO blogDTO = dao.getBlogByID("BL0001");
-        System.out.println(blogDTO);
+        BlogDTO blogDTO = dao.getBlogByID("B0001");
+        dao.approveBlog("B0003", "BC0001");
+        System.out.println();
 //        List<BlogDTO> listB = new ArrayList<>();
 //        List<BLogCateDTO> listCate = new ArrayList<>();
 //        listCate = dao.getAllBlogCate();
-//        for (BLogCateDTO o : listCate) {
+//        listB = dao.getBlogByCategoryID("BC0001");
+//        for (BlogDTO o : listB) {
 //            System.out.println(o.toString());
 //        }
-
     }
 
 }

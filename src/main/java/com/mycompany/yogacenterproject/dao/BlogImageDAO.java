@@ -23,7 +23,6 @@ public class BlogImageDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-
     public List<BlogImgDTO> getImageDataByID(String maBlog) {
         byte[] imageData = null;
         List<BlogImgDTO> listImg = new ArrayList<>();
@@ -77,9 +76,9 @@ public class BlogImageDAO {
     public List<String> getImageDataFromDatabase() {
         byte[] imageData = null;
         List<String> listAnh = new ArrayList<>();
+        String sql = "SELECT [image] FROM [dbo].[blogImg]";
         try {
             conn = DBUtils.getConnection();
-            String sql = "SELECT [image] FROM [dbo].[blogImg]";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -93,7 +92,6 @@ public class BlogImageDAO {
         return listAnh;
     }
 
-//     Test
     public BlogImgDTO getImageByBlogID(String id) {
         byte[] imageData = null;
         BlogImgDTO blogImgDTO = new BlogImgDTO();
@@ -120,4 +118,33 @@ public class BlogImageDAO {
         return blogImgDTO;
     }
 
+    public List<BlogImgDTO> getImagesByBlogID(String id) {
+        List<BlogImgDTO> images = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[blogImg] WHERE [maBlog] = ?";
+        try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                BlogImgDTO blogImgDTO = new BlogImgDTO();
+                blogImgDTO.setMaAnh(rs.getString("maAnh"));
+                blogImgDTO.setTenAnh(rs.getString("tenAnh"));
+
+                byte[] imageData = rs.getBytes("image");
+                String base64image = Base64.getEncoder().encodeToString(imageData);
+                blogImgDTO.setImage(base64image);
+
+                images.add(blogImgDTO);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return images;
+    }
+
+//     Test
 }

@@ -69,43 +69,51 @@ public class BLogController extends HttpServlet {
             } else if (action.equals("Update")) {
                 viewMyBlog(request, response);
             } else if (action.equals("CreateBlog")) {
-//                BlogDAO blogDAO = new BlogDAO();
-//                BlogDTO blogDTO = new BlogDTO();
-//
-//                LocalDate currentDate = LocalDate.now();
 //                String content = request.getParameter("content");
-//                String title = request.getParameter("title");
-//                HttpSession session = request.getSession();
-//                String maHocVien = null;
-//                String maTrainer = null;
-//                if (session.getAttribute("hocVienDTO") != null) {
-//                    HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-//                    maHocVien = hocVienDTO.getMaHV();
-//                } else if (session.getAttribute("trainerDTO") != null) {
-//                    TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
-//                    maTrainer = trainerDTO.getMaTrainer();
-//                }
-//                String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
-//
-//                String maBlog = AUTO_BLOG_ID;
-//                out.print(content);
-//                out.print(title);
-//                out.print(currentDate);
-//                out.print(maBlog);
-//                out.print(maHocVien);
-//                out.print(maTrainer);
+//                // Chuyển đổi ký tự xuống dòng thành thẻ <br>
+////                out.print( content ); //
                 createBlog(request, response);
                 viewMyBlog(request, response);
+            } else if (action.equals("showBlogCategory")) {
+                showBlogCategory(request, response);
             }
         } catch (Exception e) {
+
         }
     }
-//      -- Blog: Start --
 
     private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BlogDAO dao = new BlogDAO();
         List<BlogDTO> listBlog = dao.getAllBlogs();
+        List<BLogCateDTO> listCate = dao.getAllBlogCate();
+
+        request.setAttribute("listCate", listCate);
         request.setAttribute("listBlog", listBlog);
+
+        RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
+        rd.forward(request, response);
+    }
+
+    private void showBlogCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("returnID");
+        List<BlogDTO> listBlogCate;
+        BlogDAO dao = new BlogDAO();
+        BlogImageDAO imgDAO = new BlogImageDAO();
+//                if (id != null && !id.isEmpty()) {
+//                    listBlogCate = dao.getBlogByCategoryID(id);
+//                } else {
+//                    listBlogCate = new ArrayList<>(); 
+//                }
+        if (id != null && !id.isEmpty()) {
+            listBlogCate = dao.getBlogByCategoryID(id);
+            for (BlogDTO blog : listBlogCate) {
+                List<BlogImgDTO> blogImages = imgDAO.getImagesByBlogID(blog.getMaBlog());
+                blog.setImage(blogImages); // Set danh sách ảnh cho mỗi bài viết
+            }
+        } else {
+            listBlogCate = new ArrayList<>();
+        }
+        request.setAttribute("listBlog", listBlogCate);
         RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
         rd.forward(request, response);
     }
@@ -114,11 +122,27 @@ public class BLogController extends HttpServlet {
 
     }
 
+//    private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String id = request.getParameter("returnID");
+//        BlogDAO blogDAO = new BlogDAO();
+//        BlogImageDAO blogImgDAO = new BlogImageDAO();
+////          Get Blog Details
+//        BlogDTO blogDetails = blogDAO.getBlogByID(id);
+//        List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
+//        BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
+//
+//        request.setAttribute("blogImgDetails", blogImg);
+//        request.setAttribute("blogDetails", blogDetails);
+//        request.setAttribute("blogLatest", blogLatest);
+//
+//        RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
+//        rd.forward(request, response);
+//    }
     private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("returnID");
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
-        id="BL0002";
+//        id = "BL0002";
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
         List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
@@ -168,6 +192,7 @@ public class BLogController extends HttpServlet {
 
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
+        content = content.replace("\n", "<br>");
         String title = request.getParameter("title");
         HttpSession session = request.getSession();
         String maHocVien = null;
