@@ -163,16 +163,16 @@
                         <% if (hasSchedule) {%>
                         <% if (check) {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>" >
-                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" ><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%>  
                                 <%if (status.equalsIgnoreCase("ABSENT")) {%> 
-                                <div class="bg-danger">
+                                <div class="bg-danger" style="background-color: red">
                                     <%=status%>
                                 </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
-                                <div class="bg-yellow">
+                                <div class="bg-yellow" style="background-color: yellow">
                                     <%=status%>
                                 </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
-                                <div class="bg-green">
+                                <div class="bg-green" style="background-color: #00FF00">
                                     <%=status%>
                                 </div>
                                 <%} %>
@@ -181,16 +181,16 @@
 
                         <% } else {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%> " >
-                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" ><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%> 
                                 <%if (status.equalsIgnoreCase("ABSENT")) {%> 
-                                <div class="bg-danger">
+                                <div class="bg-danger" style="background-color:#FF0000">
                                     <%=status%>
                                 </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
-                                <div class="bg-yellow">
+                                <div class="bg-yellow" style="background-color: yellow">
                                     <%=status%>
                                 </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
-                                <div class="bg-green">
+                                <div class="bg-green" style="background-color: #00FF00">
                                     <%=status%>
                                 </div>
                                 <%} %>

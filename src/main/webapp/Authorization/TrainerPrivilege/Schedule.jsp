@@ -165,13 +165,13 @@
                         <% if (hasSchedule) {%>
                         <% if (check) {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>" >
-                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
                         </a>
 
                         <% } else {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>">
-                            <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
+                            <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
                         </a>
                         <%         }

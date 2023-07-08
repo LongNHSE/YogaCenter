@@ -252,6 +252,13 @@
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
+                        <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                     </ul>
                 </nav>
@@ -298,18 +305,18 @@
                                 <li>
                                     <span class="property-name">End date: </span>
                                     <span class="property-value"><c:out value="${requestScope.lastDay}"></c:out></span>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </div>
+                        <div class="TrainerDetail">
 
+                        </div>
                     </div>
-                    <div class="TrainerDetail">
-
-                    </div>
-                </div>
-                <table class="table">
-                    <div class="cf-title-03">
-                        <h3>Number of trainees <%=listHocVienDTO.size()%>/<%=lopHocDTO.getSoLuongHV()%> </h3>
+                    <table class="table">
+                        <div class="cf-title-03">
+                            <h3>Number of trainees <%=listHocVienDTO.size()%>/<%=lopHocDTO.getSoLuongHV()%> </h3>
                     </div>
                     <thead>
                         <tr class="Test">

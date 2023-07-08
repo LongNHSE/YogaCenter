@@ -15,8 +15,8 @@
     /* CSS for the dropdown menu */
     body{
 
-            /*font-family: 'Bitter', serif !important;*/
-            font-family: 'Montserrat', sans-serif !important;
+        /*font-family: 'Bitter', serif !important;*/
+        font-family: 'Montserrat', sans-serif !important;
 
     }
     .header-nav{
@@ -89,9 +89,9 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/home.jsp">Home</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
-            <a class="nav-item nav-link" href="<%=headerUrl%>/Authentiation/schedule.jsp">Schedule</a>
-            <a class="nav-item nav-link" href="<%=headerUrl%>/trainer.jsp">Trainer</a>
-            <a class="nav-item nav-link" href="<%= headerUrl%>/Public/contact.jsp">Contact us</a>
+
+            <a class="nav-item nav-link" href="<%=headerUrl%>/Blog/BlogCreate.jsp">Create Blog</a>
+            <a class="nav-item nav-link" href="<%= headerUrl%>/Blog/BlogDetails.jsp">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
                 <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
 
@@ -105,7 +105,8 @@
 
                         <a class="btn-menu-item " href="<%=headerUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>         
+                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
 
@@ -119,7 +120,8 @@
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=headerUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>                                                  
+                        <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController/?action=MyBlog"><b style="color: black">My Blog</b></a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  

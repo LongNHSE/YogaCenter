@@ -210,7 +210,14 @@
                             <ul >
                                 <li ><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href="<%=url%>/Admin/Trainer/AddTrainer.jsp">Add Trainer</a></li>
-                        
+
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
@@ -274,7 +281,7 @@
                         </tr>
                     </form>
                     <% }
-                        } else {%>
+                    } else {%>
                     <tr>
                         <th scope="row"></th>
                         <td></td>
@@ -309,7 +316,7 @@
                     <% } else {%>
                     <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>'><%=i%></a>
                     <% }
-                    }%>
+                        }%>
                     <a href="#">&raquo;</a>
                 </div>
             </div>

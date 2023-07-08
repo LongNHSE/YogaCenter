@@ -20,9 +20,9 @@
     </head>
 
     <body>
-        
-        
-  
+
+
+
         <div class="Controller">
             <div class="wrapper">
                 <nav class='animated bounceInDown bg-dark'>
@@ -43,30 +43,37 @@
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                         <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
-                         <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
                                 <li><a href="">Add Trainer</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
+                        <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
-                       
+
                     </ul>
                 </nav>
             </div>
-  <div class="content">
- </div>         
+            <div class="content">
+            </div>         
         </div>
         <script>
-         
+
 
             $('.sub-menu ul').hide();
 

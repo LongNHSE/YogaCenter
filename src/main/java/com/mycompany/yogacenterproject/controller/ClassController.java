@@ -107,6 +107,7 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
             } else if (action.equals("CreateClassType")) {
+//                out.print(request.getParameter("description").trim());
                 createLoaiLopHoc(request, response);
                 insertImg(request, response);
                 insertThumbImg(request, response);
@@ -234,18 +235,15 @@ public class ClassController extends HttpServlet {
             descriptionDTO.setMaDescription(maDescription);
             descriptionDTO.setTitle(request.getParameter("title").trim());
             descriptionDTO.setContent(request.getParameter("description").trim());
-            loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
+
             descriptionDAO.createDescriptionDTO(descriptionDTO);
+            loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
             response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
         } else {
             request.setAttribute("errorMessage", errorMessage);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
             rd.forward(request, response);
-            try {
-                rd.forward(request, response);
-            } catch (IOException ex) {
-                Logger.getLogger(ClassController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
         }
     }
 
@@ -436,7 +434,7 @@ public class ClassController extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.getAttribute("hocVienDTO") != null) {
             String maLopHoc = request.getParameter("returnID");
-            HocVienDTO hocVienDTO = (HocVienDTO)session.getAttribute("hocVienDTO");
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
 
             Date ngayThanhToan = Date.valueOf(LocalDate.now());
 
@@ -448,7 +446,7 @@ public class ClassController extends HttpServlet {
 
             String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
 
-            long hocPhi =Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
 
             String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
             String maHoaDon = AUTO_HOADON_ID;
