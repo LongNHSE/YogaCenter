@@ -8,15 +8,18 @@
 
     String headerUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
 
 <style>
     /* CSS for the dropdown menu */
     body{
-
         /*font-family: 'Bitter', serif !important;*/
         font-family: 'Montserrat', sans-serif !important;
+        box-sizing: border-box;
+
 
     }
     .header-nav{
@@ -91,7 +94,7 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
 
             <a class="nav-item nav-link" href="<%=headerUrl%>/Blog/BlogCreate.jsp">Create Blog</a>
-            <a class="nav-item nav-link" href="<%= headerUrl%>/Blog/BlogDetails.jsp">Blog</a>
+            <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showDetails"">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
                 <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
 
@@ -130,8 +133,11 @@
         </div>
     </div>
 </nav>   
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 

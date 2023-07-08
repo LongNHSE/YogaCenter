@@ -6,11 +6,15 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+
+import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
+
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -30,7 +34,8 @@ import javax.servlet.http.HttpSession;
 /**
  *
  * @author devli
- */@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+ */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 4, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class BLogController extends HttpServlet {
@@ -49,11 +54,13 @@ public class BLogController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         try {
+            PrintWriter out = response.getWriter();
             if (action.equals("showImageList")) {
                 showImageList(request, response);
-            }
-            if (action.equals("showBlogs")) {
+            } else if (action.equals("showBlogs")) {
                 showBlogs(request, response);
+            } else if (action.equals("showDetails")) {
+                showDetail(request, response);
             } else if (action.equals("MyBlog")) {
                 viewMyBlog(request, response);
             } else if (action.equals("Delete")) {
@@ -62,8 +69,33 @@ public class BLogController extends HttpServlet {
             } else if (action.equals("Update")) {
                 viewMyBlog(request, response);
             } else if (action.equals("CreateBlog")) {
+//                BlogDAO blogDAO = new BlogDAO();
+//                BlogDTO blogDTO = new BlogDTO();
+//
+//                LocalDate currentDate = LocalDate.now();
+//                String content = request.getParameter("content");
+//                String title = request.getParameter("title");
+//                HttpSession session = request.getSession();
+//                String maHocVien = null;
+//                String maTrainer = null;
+//                if (session.getAttribute("hocVienDTO") != null) {
+//                    HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+//                    maHocVien = hocVienDTO.getMaHV();
+//                } else if (session.getAttribute("trainerDTO") != null) {
+//                    TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+//                    maTrainer = trainerDTO.getMaTrainer();
+//                }
+//                String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
+//
+//                String maBlog = AUTO_BLOG_ID;
+//                out.print(content);
+//                out.print(title);
+//                out.print(currentDate);
+//                out.print(maBlog);
+//                out.print(maHocVien);
+//                out.print(maTrainer);
                 createBlog(request, response);
-                 viewMyBlog(request, response);
+                viewMyBlog(request, response);
             }
         } catch (Exception e) {
         }
@@ -82,16 +114,26 @@ public class BLogController extends HttpServlet {
 
     }
 
-    private void showDetail(HttpServletRequest request, HttpServletResponse response) {
+    private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("returnID");
         BlogDAO blogDAO = new BlogDAO();
+        BlogImageDAO blogImgDAO = new BlogImageDAO();
+        id="BL0002";
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
-        request.setAttribute("blogDetails", blogDetails);
-    }
-//      -- Blog: End --
+        List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
+        BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
+        List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
 
-//      -- Image : Start --
+        request.setAttribute("blogImgDetails", blogImg);
+        request.setAttribute("blogDetails", blogDetails);
+        request.setAttribute("blogLatest", blogLatest);
+        request.setAttribute("blogCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
+        rd.forward(request, response);
+    }
+
+    //      -- Image : Start --
     private void showImageList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BlogImageDAO dao = new BlogImageDAO();
         List<String> listAnh = dao.getImageDataFromDatabase();
@@ -119,10 +161,11 @@ public class BLogController extends HttpServlet {
         blogDAO.Delete(maBlog);
 
     }
+
     public void createBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         BlogDTO blogDTO = new BlogDTO();
-        
+
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
         String title = request.getParameter("title");
@@ -136,9 +179,8 @@ public class BLogController extends HttpServlet {
             TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
             maTrainer = trainerDTO.getMaTrainer();
         }
-         String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
+        String AUTO_BLOG_ID = String.format(Constants.MA_BLOG_FORMAT, (blogDAO.lastIDIndexOfBlog() + 1));
 
-        //HOCVIEN CONSTRUCTOR
         String maBlog = AUTO_BLOG_ID;
         blogDTO.setMaBlog(maBlog);
         blogDTO.setContent(content);

@@ -6,8 +6,13 @@ package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
 import java.time.LocalDate;
+
+import java.text.ParseException;
+
 import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+
+import java.util.TimeZone;
 
 /**
  *
@@ -29,45 +34,15 @@ public class BlogDTO {
     private Date ngayTaoPost;
 
     public BlogDTO() {
-
     }
-
-    public String getMaTrainer() {
-        return maTrainer;
-    }
-
-    public void setMaTrainer(String maTrainer) {
-        this.maTrainer = maTrainer;
-    }
-
-    public String getMaCate() {
-        return maCate;
-    }
-
-    public void setMaCate(String maCate) {
-        this.maCate = maCate;
-    }
-
-    public Date getNgayCapNhat() {
-        return ngayCapNhat;
-    }
-
-    public void setNgayCapNhat(Date ngayCapNhat) {
-        this.ngayCapNhat = ngayCapNhat;
-    }
-
-    public Date getNgayTaoPost() {
-        return ngayTaoPost;
-    }
-
-    public void setNgayTaoPost(Date ngayTaoPost) {
-        this.ngayTaoPost = ngayTaoPost;
-    }
-
-  
 
     public String getMaBlog() {
         return maBlog;
+    }
+
+    @Override
+    public String toString() {
+        return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + ", tenHV=" + tenHV + ", maTrainer=" + maTrainer + ", maCate=" + maCate + ", ngayCapNhat=" + ngayCapNhat + ", ngayTaoPost=" + ngayTaoPost + '}';
     }
 
     public void setMaBlog(String maBlog) {
@@ -130,9 +105,36 @@ public class BlogDTO {
         this.tenHV = tenHV;
     }
 
-    @Override
-    public String toString() {
-        return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + ", tenHV=" + tenHV + '}';
+    public String getMaTrainer() {
+        return maTrainer;
+    }
+
+    public void setMaTrainer(String maTrainer) {
+        this.maTrainer = maTrainer;
+    }
+
+    public String getMaCate() {
+        return maCate;
+    }
+
+    public void setMaCate(String maCate) {
+        this.maCate = maCate;
+    }
+
+    public Date getNgayCapNhat() {
+        return ngayCapNhat;
+    }
+
+    public void setNgayCapNhat(Date ngayCapNhat) {
+        this.ngayCapNhat = ngayCapNhat;
+    }
+
+    public Date getNgayTaoPost() {
+        return ngayTaoPost;
+    }
+
+    public void setNgayTaoPost(Date ngayTaoPost) {
+        this.ngayTaoPost = ngayTaoPost;
     }
 
 }

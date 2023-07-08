@@ -23,6 +23,7 @@ public class BlogImageDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
 
+
     public List<BlogImgDTO> getImageDataByID(String maBlog) {
         byte[] imageData = null;
         List<BlogImgDTO> listImg = new ArrayList<>();
@@ -93,12 +94,30 @@ public class BlogImageDAO {
     }
 
 //     Test
-    public static void main(String[] args) {
-        BlogImageDAO dao = new BlogImageDAO();
-        List<BlogImgDTO> listAnh = dao.getImageDataByID("B0003");
+    public BlogImgDTO getImageByBlogID(String id) {
+        byte[] imageData = null;
+        BlogImgDTO blogImgDTO = new BlogImgDTO();
+        String sql = "select * from [dbo].[blogImg] where [maBlog] = ? ";
+        try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                blogImgDTO = new BlogImgDTO();
+                blogImgDTO.setMaAnh(rs.getString("maAnh"));
+                blogImgDTO.setTenAnh(rs.getString("tenAnh"));
 
-        for (BlogImgDTO listImage : listAnh) {
-            System.out.println(listImage);
+                imageData = rs.getBytes("image");
+                String base64image = Base64.getEncoder().encodeToString(imageData);
+                blogImgDTO.setImage(base64image);
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
         }
+        return blogImgDTO;
     }
+
 }

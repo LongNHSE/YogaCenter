@@ -8,14 +8,14 @@ package com.mycompany.yogacenterproject.dto;
  *
  * @author devli
  */
-public class BLogCate {
+public class BLogCateDTO {
       private String maCate;
       private String tenCate;
 
-      public BLogCate() {
+      public BLogCateDTO() {
       }
 
-      public BLogCate(String maCate, String tenCate) {
+      public BLogCateDTO(String maCate, String tenCate) {
             this.maCate = maCate;
             this.tenCate = tenCate;
       }
