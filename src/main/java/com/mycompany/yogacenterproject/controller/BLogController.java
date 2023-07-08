@@ -70,6 +70,7 @@ public class BLogController extends HttpServlet {
            List<BlogDTO> listBlogCate;       
             BlogDAO dao = new BlogDAO();
             BlogImageDAO imgDAO = new BlogImageDAO();
+              List<BLogCateDTO> listCate = dao.getAllBlogCate();
 //                if (id != null && !id.isEmpty()) {
 //                    listBlogCate = dao.getBlogByCategoryID(id);
 //                } else {
@@ -85,6 +86,7 @@ public class BLogController extends HttpServlet {
                     listBlogCate = new ArrayList<>();
                 }
              request.setAttribute("listBlog", listBlogCate); 
+            request.setAttribute("listCate", listCate);                
              RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
                 rd.forward(request, response);
       }

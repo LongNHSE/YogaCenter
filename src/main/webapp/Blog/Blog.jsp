@@ -84,16 +84,6 @@
                                 <ul class="list-unstyled">
                                         <c:forEach items="${listCate}" var="cate" varStatus="status">                                     
                                             <li><a href="<%= baseUrl %>/BLogController?returnID=${cate.maCate}&action=showBlogCategory" " title="">${cate.tenCate} 
-                                                    <span class="pull-right">
-                                                        <c:set var="count" value="0" />
-                                                        <c:forEach items="${listBlog}" var="blog">
-                                                            <c:if test="${blog.maCate eq cate.maCate}">
-                                                              <c:set var="count" value="${count + 1}" />
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    ${count}
-                                                  </span>
-                                                    </span></a></li>
                                         </c:forEach>                               
                                   </ul>
                                     </div>                        
