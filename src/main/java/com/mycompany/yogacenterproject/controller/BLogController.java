@@ -6,6 +6,7 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
 import java.io.IOException;
@@ -66,13 +67,18 @@ public class BLogController extends HttpServlet {
           BlogImageDAO blogImgDAO = new BlogImageDAO();
 //          Get Blog Details
             BlogDTO blogDetails = blogDAO.getBlogByID(id);
+            List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
             BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
+            List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
+            
             request.setAttribute("blogImgDetails", blogImg);
             request.setAttribute("blogDetails", blogDetails);
-            
+            request.setAttribute("blogLatest", blogLatest);
+            request.setAttribute("blogCate", listCate);
             RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
             rd.forward(request, response);            
       }
+
 //      -- Blog: End --
       
       

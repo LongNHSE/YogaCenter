@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -40,6 +41,7 @@ public class BlogDAO {
                         blogDTO.setDate(rs.getString("ngayTaoPost"));
                         blogDTO.setMaHV(rs.getString("maHV"));
                         blogDTO.setStatus(rs.getBoolean("status"));
+                        blogDTO.setMaCate(rs.getString("maCate"));
                         blogDTO.setImage(blogImgDTO);
                         listBlog.add(blogDTO);
                   }               
@@ -63,6 +65,8 @@ public class BlogDAO {
                       blogDTO.setDate(rs.getString("ngayTaoPost"));
                       blogDTO.setMaHV(rs.getString("maHV"));
                       blogDTO.setStatus(rs.getBoolean("status"));
+                        blogDTO.setMaCate(rs.getString("maCate"));
+                      
                   }
                         rs.close();
                         ps.close();
@@ -71,6 +75,90 @@ public class BlogDAO {
           }
           return blogDTO;
       }
+        public List<BlogDTO> getLatestPosts() {
+            List<BlogDTO> latestPosts = new ArrayList<>();
+            String sql = "SELECT TOP 4 * FROM [dbo].[blogPost] ORDER BY [ngayTaoPost] DESC";
+
+            try {
+                conn = DBUtils.getConnection();
+                ps = conn.prepareStatement(sql);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    BlogDTO blogDTO = new BlogDTO();
+                    BlogImageDAO blogImgDAO = new BlogImageDAO();
+                    blogDTO.setMaBlog(rs.getString("maBlog"));
+                    blogDTO.setTitle(rs.getString("tieuDe"));
+                    blogDTO.setContent(rs.getString("noiDung"));
+                    blogDTO.setDate(rs.getString("ngayTaoPost"));
+                    blogDTO.setMaHV(rs.getString("maHV"));
+                    blogDTO.setStatus(rs.getBoolean("status"));
+                    blogDTO.setMaCate(rs.getString("maCate"));
+
+                    latestPosts.add(blogDTO);
+                }
+
+                rs.close();
+                ps.close();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return latestPosts;
+        }
+        
+        
+            public List<BlogDTO> getBlogByCategoryID(String cid){
+                List<BlogDTO> listBlog = new ArrayList<>();
+                String sql = "SELECT * FROM [dbo].[blogPost] where [maCate]= ? ";
+                try {
+                        conn = DBUtils.getConnection();
+                        ps = conn.prepareStatement(sql);
+                        ps.setString(1, cid);
+                        rs = ps.executeQuery();
+                        
+                        while(rs.next()){
+                            BlogDTO blogDTO = new BlogDTO();
+                            blogDTO.setMaBlog(rs.getString("maBlog"));
+                            blogDTO.setTitle(rs.getString("tieuDe"));
+                            blogDTO.setContent(rs.getString("noiDung"));
+                            blogDTO.setDate(rs.getString("ngayTaoPost"));
+                            blogDTO.setMaHV(rs.getString("maHV"));
+                            blogDTO.setStatus(rs.getBoolean("status"));
+                            blogDTO.setMaCate(rs.getString("maCate"));
+                            listBlog.add(blogDTO);
+                        }             
+                        rs.close();
+                        ps.close();
+                        conn.close();
+                                   
+                } catch (Exception e) {
+                }
+                return listBlog;
+            } 
+         
+            public List<BLogCateDTO> getAllBlogCate(){
+                List<BLogCateDTO> listCate = new ArrayList<>();
+                String sql = "SELECT * FROM [dbo].[blogCategories]";
+                try {
+                        conn = DBUtils.getConnection();
+                        ps = conn.prepareStatement(sql);
+                        rs = ps.executeQuery();
+                        while(rs.next()){
+                            BLogCateDTO bLogCateDTO = new BLogCateDTO();
+                            bLogCateDTO.setMaCate(rs.getString("maCate"));
+                            bLogCateDTO.setTenCate(rs.getString("tenCate"));
+                            listCate.add(bLogCateDTO);
+                        }
+                        rs.close();
+                        ps.close();
+                        conn.close();                       
+                } catch (Exception e) {
+                }
+                return listCate;
+                
+            }
       public String getAuthorNameByID(String maHV){
           String authorName = null;
           String sql = "SELECT ten FROM [dbo].[hocVien] WHERE maHV = ? ";
@@ -125,8 +213,12 @@ public class BlogDAO {
       public static void main(String[] args) {
             BlogDAO dao = new BlogDAO();
             BlogDTO blogDTO = dao.getBlogByID("B0001");
-            System.out.println(blogDTO);
-                    
+            List<BlogDTO> listB = new ArrayList<>();
+            List<BLogCateDTO> listCate = new ArrayList<>();
+            listCate  =dao.getAllBlogCate();
+            for( BLogCateDTO o: listCate){
+                System.out.println(o.toString());
+            }
             
       }
 }

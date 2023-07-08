@@ -23,13 +23,13 @@ public class BlogDTO {
       private boolean status;
       private List<BlogImgDTO> image;
       private String tenHV;
-
+      private String maCate;
 
       public BlogDTO() {
 
       }
 
-    public BlogDTO(String maBlog, String title, String content, String date, String maHV, boolean status, List<BlogImgDTO> image, String tenHV) {
+    public BlogDTO(String maBlog, String title, String content, String date, String maHV, boolean status, List<BlogImgDTO> image, String tenHV, String maCate) {
         this.maBlog = maBlog;
         this.title = title;
         this.content = content;
@@ -38,7 +38,10 @@ public class BlogDTO {
         this.status = status;
         this.image = image;
         this.tenHV = tenHV;
+        this.maCate = maCate;
     }
+
+
 
       public String getMaBlog() {
             return maBlog;
@@ -105,10 +108,22 @@ public class BlogDTO {
         this.tenHV = tenHV;
     }
 
-    @Override
-    public String toString() {
-        return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + ", tenHV=" + tenHV + '}';
+    public String getMaCate() {
+        return maCate;
     }
+
+    public void setMaCate(String maCate) {
+        this.maCate = maCate;
+    }
+
+    @Override
+    public String toString() {          
+        return "BlogDTO{" + "maBlog=" + maBlog + ", title=" + title + ", content=" + content + ", date=" + date + ", maHV=" + maHV + ", status=" + status + ", image=" + image + ", tenHV=" + tenHV + ", maCate=" + maCate + '}';
+    }
+    
+    
+
+
 
 
  

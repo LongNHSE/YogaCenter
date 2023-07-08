@@ -3,10 +3,13 @@
     Created on : Jul 4, 2023, 9:14:03 PM
     Author     : devli
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
      String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="com.mycompany.yogacenterproject.dao.BlogDAO" %>
+
 <!DOCTYPE html>
 <html>
       <head>
@@ -50,7 +53,7 @@
         <h2 class="header-ken">${blogDetails.title}</h2>
         <div class="media">
         <div class="avatar">
-        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" title alt>
+        <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
         </div>
         <div class="media-body">
         <label>${blogDetails.maHV}</label>
@@ -81,28 +84,30 @@
             <h3>Latest Post</h3>
             </div>
             <div class="widget-body">
+                <c:forEach items="${requestScope.blogLatest}" var="blog">
                     <div class="latest-post-aside media">
-                    <div class="lpa-left media-body">
-                    <div class="lpa-title">
-                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
+                        <div class="lpa-left media-body">
+                        <div class="lpa-title">
+                        <h5><a href="#">${blog.getTitle()}</a></h5>
+                        </div>
+                        <div class="lpa-meta">
+                        <a class="name" href="#">
+                                ${blog.maHV}
+                        </a>
+                        <a class="date" href="#">
+                                ${blog.date}
+                        </a>
+                        </div>
+                        </div>
+                        <div class="lpa-right">
+                        <a href="#">
+                            
+                        <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
+                        </a>
+                        </div>
                     </div>
-                    <div class="lpa-meta">
-                    <a class="name" href="#">
-                    Rachel Roth
-                    </a>
-                    <a class="date" href="#">
-                    26 FEB 2020
-                    </a>
-                    </div>
-                    </div>
-                    <div class="lpa-right">
-                    <a href="#">
-                    <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
-                    </a>
-                    </div>
-                    </div>
-            
-            
+                    </c:forEach>            
+
             </div>
         </div>
 

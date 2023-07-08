@@ -135,6 +135,50 @@
       font-size:15px;
       line-height:24.75px   ;         
       }
+        .sidebar-title {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
 
+        .categories li {
+            vertical-align: middle;
+        }
+
+        .categories li > ul {
+            padding-left: 15px;
+        }
+
+        .categories li > ul > li > a {
+            font-weight: 300;
+        }
+
+        .categories li a {
+            color: #999;
+            position: relative;
+            display: block;
+            padding: 5px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .categories li a:before {
+            content: "\f0da";
+            font-family: 'FontAwesome';
+            margin-right: 5px;
+        }
+
+        .categories li a:hover {
+            color: #444;
+            background-color: #f5f5f5;
+        }
+
+        .categories > li.active > a {
+            font-weight: 600;
+            color: #444;
+        }
+        .title-container {
+            flex-grow: 1;
+        }
+
+        
 /*-- Blog: End --*/
 

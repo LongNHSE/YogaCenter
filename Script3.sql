@@ -205,12 +205,14 @@ CREATE TABLE blogCategories(
 )
 CREATE TABLE blogPost(
 	[maBlog] NVARCHAR(10) primary key,
-	[tieuDe] NVARCHAR(50) NOT NULL,
+	[tieuDe] NVARCHAR(255) NOT NULL,
 	[noiDung] NVARCHAR(MAX) NOT NULL,
 	[ngayTaoPost] DATE NOT NULL,
 	[maHV] NVARCHAR(10) NOT NULL, --CONSTRAINT
-	[status] BIT NOT NULL DEFAULT 0
-	CONSTRAINT fk_maHV_Blog FOREIGN KEY ([maHV]) REFERENCES hocVien([maHV])
+	[status] BIT NOT NULL DEFAULT 0,
+	[maCate] NVARCHAR(10) NOT NULL, -- CONSTRAINT
+	CONSTRAINT fk_maCate_Blog FOREIGN KEY ([maCate]) REFERENCES blogCategories([maCate]),
+ 	CONSTRAINT fk_maHV_Blog FOREIGN KEY ([maHV]) REFERENCES hocVien([maHV])
 )
 
 -- Xóa ràng buộc fk_maBlog_blogImg trong bảng blogImg
