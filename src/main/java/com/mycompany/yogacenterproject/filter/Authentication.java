@@ -4,7 +4,9 @@
  */
 package com.mycompany.yogacenterproject.filter;
 
+import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -38,30 +40,38 @@ public class Authentication implements Filter {
     public void doFilter(ServletRequest request,
             ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        String uri = req.getRequestURI();
+//		this.context.log("Requested Resource::"+uri);
 
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        HttpServletResponse res = (HttpServletResponse) response;
-//
-//        String uri = req.getRequestURI();
-////		this.context.log("Requested Resource::"+uri);
-//
-//        HttpSession session = req.getSession(false);
-//
-//        HocVienDTO hocVienDTO = null;
-//        try {
-//            hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-//            this.context.log("Run to here and hocVienDTO: " + hocVienDTO);
-//        } catch (Exception ex) {
-//            hocVienDTO = null;
-//        }
-//
-//        if (hocVienDTO == null && uri.contains("Admin")) {
-//            this.context.log("Unauthorized access request");
-//            res.sendRedirect("/YogaCenter/Authentication/signin.jsp");
-//        } else {
-//            // pass the request along the filter chain
-//            chain.doFilter(request, response);
-//        }
+        HttpSession session = req.getSession(false);
+        AdminDTO adminDTO = null;
+        HocVienDTO hocVienDTO = null;
+        TrainerDTO trainerDTO = null;
+        try {
+            adminDTO = (AdminDTO) session.getAttribute("adminDTO");
+            hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+            this.context.log("Run to here and hocVienDTO: " + hocVienDTO);
+            this.context.log("Run to here and adminDTO: " + adminDTO);
+        } catch (Exception ex) {
+            hocVienDTO = null;
+            adminDTO = null;
+        }
+
+        if (adminDTO == null && uri.contains("Authorization/Admin")) {
+            res.sendRedirect("/YogaCenter/Public/adminLogin.jsp");
+            this.context.log("Unauthorized access request");
+        } else {
+            if (hocVienDTO == null && uri.contains("Authentication") || hocVienDTO == null && uri.contains("Authorization/TraineePrivilege") ||  trainerDTO == null && uri.contains("Authentication")||trainerDTO == null && uri.contains("Authorization/TrainerPrivilege")) {
+                this.context.log("Unauthorized access request");
+                res.sendRedirect("/YogaCenter/Public/signin.jsp");
+            } else {
+                // pass the request along the filter chain
+                chain.doFilter(request, response);
+            }
+        }
     }
 
     public void destroy() {

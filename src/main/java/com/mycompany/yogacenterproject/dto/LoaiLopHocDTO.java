@@ -19,7 +19,25 @@ public class LoaiLopHocDTO {
     private String tenLoaiLopHoc;
     private double hocPhi;
     private String description;
+     private String maDescription;
     private List<LopHocIMGDTO> image;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getMaDescription() {
+        return maDescription;
+    }
+
+    public void setMaDescription(String maDescription) {
+        this.maDescription = maDescription;
+    }
 
     public List<LopHocIMGDTO> getImage() {
         return image;

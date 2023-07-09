@@ -6,8 +6,10 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.AdminDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DateUtils;
 import com.mycompany.yogacenterproject.util.Utils;
@@ -78,10 +80,9 @@ public class LoginController extends HttpServlet {
                 newPass(request, response);
             } else if (action.equals("logout")) {
                 logout(request, response);
-            } 
-            else if (action.equals("adminLogout")) {
+            } else if (action.equals("adminLogout")) {
                 adminLogout(request, response);
-            }else {
+            } else {
 
                 signup(request, response);
             }
@@ -101,9 +102,9 @@ public class LoginController extends HttpServlet {
         request.setAttribute("errorMessageMail", errorMessageMail);
         if (!hocVienDAO.selectByHocVienEmail(email)) {
             OTPController.generateOTP(email, request);
-            request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/OTPCheck.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("/Authentication/signup_1.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/signup_1.jsp").forward(request, response);
         }
     }
 
@@ -111,9 +112,9 @@ public class LoginController extends HttpServlet {
     public void OTPCheck(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
         OTPController.checkOTP(request, response, OTP);
         if (OTPController.checkOTP(request, response, OTP)) {
-            request.getRequestDispatcher("/Authentication/signup.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/signup.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("/Authentication/OTPCheck.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/OTPCheck.jsp").forward(request, response);
         }
     }
     //FUNCTION CHECK OTP ( for Reset Password)
@@ -121,9 +122,9 @@ public class LoginController extends HttpServlet {
     public void OTPVerify(HttpServletRequest request, HttpServletResponse response, String OTP) throws ServletException, IOException {
         OTPController.checkOTP(request, response, OTP);
         if (OTPController.checkOTP(request, response, OTP)) {
-            request.getRequestDispatcher("/Authentication/changePass.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/changePass.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/OTPVerify.jsp").forward(request, response);
         }
     }
 
@@ -181,16 +182,12 @@ public class LoginController extends HttpServlet {
 
             ////////SET DATE
             LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
-
-            
             hocVienDTO.setDob(dob);
-            log(String.valueOf(hocVienDTO));
-
             hocVienDAO.addHocVien(hocVienDTO);
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
             rd.forward(request, response);
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signup.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/signup.jsp");
             rd.forward(request, response);
         }
     }
@@ -203,21 +200,36 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         HocVienDAO dao = new HocVienDAO();
         HocVienDTO hocVienDTO = dao.login(username, password);
-        if (hocVienDTO == null) {
-            request.getRequestDispatcher("/Authentication/signin.jsp").forward(request, response);
-        } else {
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.loginTrainer(username, password);
+        if (hocVienDTO == null && trainerDTO == null) {
+            request.getRequestDispatcher("/Public/signin.jsp").forward(request, response);
+        } else if (hocVienDTO != null && hocVienDTO.getMaLoaiTK().equals("HOCVIEN")) {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
             session.setAttribute("hocVienDTO", hocVienDTO);
             // Lấy URL trang trước đó từ localStorage (nếu có)
-            session.setMaxInactiveInterval(300);
+            session.setMaxInactiveInterval(1800);
             String redirectUrl = (String) session.getAttribute("redirectUrl");
             if (redirectUrl != null && !redirectUrl.isEmpty()) {
                 response.sendRedirect(redirectUrl);
             } else {
                 // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
-                response.sendRedirect("../home.jsp");
+                response.sendRedirect("../Public/home.jsp");
+            }
+        } else if (trainerDTO != null && trainerDTO.getMaLoaiTK().equals("TRAINER")) {
+            // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
+            session.setAttribute("trainerDTO", trainerDTO);
+            // Lấy URL trang trước đó từ localStorage (nếu có)
+            session.setMaxInactiveInterval(1800);
+            String redirectUrl = (String) session.getAttribute("redirectUrl");
+            if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                response.sendRedirect(redirectUrl);
+            } else {
+                // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
+                response.sendRedirect("../Public/home.jsp");
             }
         }
+
     }
 
     //RESET PASSWORD
@@ -229,13 +241,13 @@ public class LoginController extends HttpServlet {
         if (!hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "You have not sign up with this email before";
             request.setAttribute("errorMessageMail", errorMessageMail);
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/resetPass.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/resetPass.jsp");
             rd.forward(request, response);
 
         } else {
             session.setAttribute("email", email);
             OTPController.generateOTP(email, request);
-            request.getRequestDispatcher("/Authentication/OTPVerify.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/OTPVerify.jsp").forward(request, response);
         }
     }
 
@@ -245,7 +257,7 @@ public class LoginController extends HttpServlet {
         String newPass = request.getParameter("newPass");
         HocVienDAO hocVienDAO = new HocVienDAO();
         hocVienDAO.changePsw(newPass, email);
-        response.sendRedirect("../home.jsp");
+        response.sendRedirect("../Public/home.jsp");
     }
 
     //LOGIN CUA ADMIN 
@@ -257,15 +269,15 @@ public class LoginController extends HttpServlet {
         AdminDTO adminDTO = new AdminDTO();
         adminDTO = adminDAO.login(username, password);
         if (adminDTO == null) {
-            request.getRequestDispatcher("/Admin/adminLogin.jsp").forward(request, response);
+            request.getRequestDispatcher("/Public/adminLogin.jsp").forward(request, response);
 
         } else {
             session.setAttribute("adminDTO", adminDTO);
-            // set lại session time out là 5p
-            session.setMaxInactiveInterval(300);
+//            // set lại session time out là 5p
+            session.setMaxInactiveInterval(1900);
 
-            request.getRequestDispatcher("/Admin/AdminHomepage.jsp").forward(request, response);
-           
+            request.getRequestDispatcher("/Authorization/Admin/AdminHomepage.jsp").forward(request, response);
+
         }
     }
 //
@@ -275,20 +287,24 @@ public class LoginController extends HttpServlet {
         session.removeAttribute("adminDTO");
         String referer = request.getHeader("Referer");
         if (referer == null || referer.isEmpty()) {
-            referer = "Admin/adminLogin.jsp";
+            referer = "./Public/adminLogin.jsp";
         }
-         response.sendRedirect("Admin/adminLogin.jsp");
+        response.sendRedirect("./Public/adminLogin.jsp");
     }
 //    Logout
 
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.removeAttribute("hocVienDTO");
+        if (session.getAttribute("trainerDTO") != null) {
+            session.removeAttribute("trainerDTO");
+        } else {
+            session.removeAttribute("hocVienDTO");
+        }
         String referer = request.getHeader("Referer");
         if (referer == null || referer.isEmpty()) {
             referer = "../home.jsp";
         }
-        response.sendRedirect(referer);
+        response.sendRedirect("/YogaCenter/Public/home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

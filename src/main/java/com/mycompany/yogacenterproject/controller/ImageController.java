@@ -95,7 +95,7 @@ public class ImageController extends HttpServlet {
         List<String> lis = lopHocImageDAO.getImageDataFromDatabase();
         request.setAttribute("imageList", lis);
 
-        RequestDispatcher rs = request.getRequestDispatcher("/image.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("/jspTest/image.jsp");
         rs.forward(request, response);
     }
     private void viewImgByID(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
@@ -103,7 +103,7 @@ public class ImageController extends HttpServlet {
           LopHocImageDAO dao = new LopHocImageDAO();
           List<LopHocIMGDTO> list = dao.getImageBasedOnTypeID(cid);
             request.setAttribute("imageListByID", list);
-            RequestDispatcher rs = request.getRequestDispatcher("/Class/ClassDetail.jsp");
+            RequestDispatcher rs = request.getRequestDispatcher("/Authorization/Admin/Class/ClassDetail.jsp");
             rs.forward(request, response);        
     }
     

@@ -19,6 +19,26 @@ public class LopHocDTO {
     private int soLuongHvHienTai;
     private String timeStart, timeEnd;
     private List<String> thuList;
+    private boolean status;
+    private Date ngayBatDau;
+    private Date ngayKetThuc;
+    private String[] thu;
+
+    public Date getNgayKetThuc() {
+        return ngayKetThuc;
+    }
+
+    public void setNgayKetThuc(Date ngayKetThuc) {
+        this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public List<String> getThuList() {
         return thuList;
@@ -27,7 +47,7 @@ public class LopHocDTO {
     public void setThuList(List<String> thuList) {
         this.thuList = thuList;
     }
-    
+
     public String getTimeStart() {
         return timeStart;
     }
@@ -43,12 +63,6 @@ public class LopHocDTO {
     public void setTimeEnd(String timeEnd) {
         this.timeEnd = timeEnd;
     }
-
-    private Date ngayBatDau;
-
-    private String[] thu;
-
-
 
     public Date getNgayBatDau() {
         return ngayBatDau;
@@ -150,7 +164,5 @@ public class LopHocDTO {
         return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
 
     }
-
-   
 
 }

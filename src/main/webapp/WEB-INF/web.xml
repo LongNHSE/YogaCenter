@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>EventListener.AppContextListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>OTPController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.OTPController</servlet-class>
@@ -21,10 +25,6 @@
         <servlet-class>com.mycompany.yogacenterproject.controller.ScheduleController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ClassController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ClassController</servlet-class>
     </servlet>
@@ -39,6 +39,30 @@
     <servlet>
         <servlet-name>TrainerController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.TrainerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SystemController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.SystemController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TrainerScheduleController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.TrainerScheduleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AttendanceController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.AttendanceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BLogController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.BLogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogAdminController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
@@ -61,10 +85,6 @@
         <url-pattern>/ScheduleController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ClassController</servlet-name>
         <url-pattern>/ClassController</url-pattern>
     </servlet-mapping>
@@ -80,20 +100,44 @@
         <servlet-name>TrainerController</servlet-name>
         <url-pattern>/TrainerController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SystemController</servlet-name>
+        <url-pattern>/SystemController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrainerScheduleController</servlet-name>
+        <url-pattern>/TrainerScheduleController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AttendanceController</servlet-name>
+        <url-pattern>/AttendanceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BLogController</servlet-name>
+        <url-pattern>/BLogController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogAdminController</servlet-name>
+        <url-pattern>/BlogAdminController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            600
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Authentication/signin.jsp</welcome-file>
+        <welcome-file>Public/signin.jsp</welcome-file>
     </welcome-file-list>
-    <!--     <filter>
+    <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.mycompany.yogacenterproject.filter.Authentication</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
 </web-app>

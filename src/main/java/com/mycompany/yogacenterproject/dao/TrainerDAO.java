@@ -20,6 +20,53 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TrainerDAO {
+
+    //Trainer login 
+    public TrainerDTO loginTrainer(String username, String psw) {
+        List<TrainerDTO> listTrainer = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Trainer where username = ? and psw= ?";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, username);
+            stm.setString(2, psw);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                TrainerDTO trainerDTO = new TrainerDTO();
+                String maTrainer = rs.getString("maTrainer");
+                String Ho = rs.getString("Ho");
+                String Ten = rs.getString("Ten");
+                Date dob = rs.getDate("dob");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                long salary = rs.getLong("salary");
+               
+                int soNgayNghi = rs.getInt("soNgayNghi");
+                boolean status = rs.getBoolean("status");
+                String trainerType = rs.getString("trainerType");
+                String maLoaiTK = rs.getString("maLoaiTK");
+
+                trainerDTO.setMaTrainer(maTrainer);
+                trainerDTO.setDob(DateUtils.asLocalDate(dob));
+                trainerDTO.setHo(Ho);
+                trainerDTO.setTen(Ten);
+                trainerDTO.setEmail(email);
+                trainerDTO.setPhone(phone);
+                trainerDTO.setPsw(psw);
+                trainerDTO.setSalary(salary);
+                trainerDTO.setSoNgayNghi(soNgayNghi);
+                trainerDTO.setStatus(status);
+                trainerDTO.setTrainerType(trainerType);
+                trainerDTO.setUsername(username);
+                trainerDTO.setMaLoaiTK(maLoaiTK);
+
+                return trainerDTO;
+            }
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 ////Read list của các trainer
 
     public List<TrainerDTO> readListTrainer() {
@@ -366,7 +413,7 @@ public class TrainerDAO {
         newTrainer.setMaTrainer("TR001");
         newTrainer.setHo("John");
         newTrainer.setTen("Doe");
-        
+
 ////        newTrainer.setDob("1990-01-01");
 //        newTrainer.setPhone("123456789");
 //        newTrainer.setEmail("john.doe@example.com");

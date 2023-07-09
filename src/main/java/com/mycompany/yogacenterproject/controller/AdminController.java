@@ -8,6 +8,7 @@ import com.mycompany.yogacenterproject.dao.HocVienDAO;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
@@ -15,6 +16,7 @@ import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
@@ -80,11 +82,23 @@ public class AdminController extends HttpServlet {
             } else if (action.equals("ViewSchedule")) {
                 listSchedule(request, response);
                 date(request, response);
-                RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/Schedule.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/Schedule.jsp");
                 rd.forward(request, response);
 
+            } else if (action.equals("listClassType")) {
+                ListClassType(request, response);
             }
         }
+    }
+
+    public void ListClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<LoaiLopHocDTO> listCate = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        listCate = loaiLopHocDAO.getAllLoaiLopHoc();
+        request.setAttribute("listCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClassType.jsp");
+        rd.forward(request, response);
+
     }
 
     public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -92,8 +106,8 @@ public class AdminController extends HttpServlet {
         HocVienDAO hocVienDAO = new HocVienDAO();
         listHocVienDTO = hocVienDAO.readListHocVien();
         request.setAttribute("listHocVienDTO", listHocVienDTO);
-//        response.sendRedirect("./Admin/HocVien/HocVienList.jsp");
-        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HocVienList.jsp");
+//        response.sendRedirect("./Authorization/Admin/Trainee/HocVienList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Authorization/Admin/Trainee/HocVienList.jsp");
         rs.forward(request, response);
 
     }
@@ -117,7 +131,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listTrainerDTO", listTrainerDTO);
         request.setAttribute("count", count);
         request.setAttribute("pageCount", pageCount);
-        RequestDispatcher rd = request.getRequestDispatcher("./Admin/Trainer/TrainerList.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Trainer/TrainerList.jsp");
         rd.forward(request, response);
     }
 
@@ -129,7 +143,7 @@ public class AdminController extends HttpServlet {
         listHoaDon = hoaDonDAO.listHoaDon(request.getParameter("maHV"));
 
         request.setAttribute("listHoaDon", listHoaDon);
-        RequestDispatcher rs = request.getRequestDispatcher("./Admin/HocVien/HoaDonList.jsp");
+        RequestDispatcher rs = request.getRequestDispatcher("./Authorization/Admin/Trainee/HoaDonList.jsp");
         rs.forward(request, response);
 
     }
@@ -140,7 +154,7 @@ public class AdminController extends HttpServlet {
         listLopHocTemp = lopHocDAO.listLopTemp();
 
         request.setAttribute("listLopHocTemp", listLopHocTemp);
-        RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/ListClassUnassigned.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClassUnassigned.jsp");
         rd.forward(request, response);
 
     }
@@ -164,7 +178,7 @@ public class AdminController extends HttpServlet {
         request.setAttribute("listLopHocDTO", listLopHocDTO);
         request.setAttribute("count", count);
         request.setAttribute("pageCount", pageCount);
-        RequestDispatcher rd = request.getRequestDispatcher("./Admin/Class/ListClass.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClass.jsp");
         rd.forward(request, response);
 
     }
