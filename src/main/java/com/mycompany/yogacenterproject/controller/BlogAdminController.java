@@ -62,8 +62,10 @@ public class BlogAdminController extends HttpServlet {
                 deleteBlog(request, response);
             } else if (action.equals("Approve")) {
                 approveBlog(request, response);
-            }else if (action.equals("Detail")) {
+            } else if (action.equals("Detail")) {
                 showDetail(request, response);
+            }else if (action.equals("ViewListBlogApprove")) {
+                listBlogApprove(request, response);
             }
         }
     }
@@ -79,6 +81,26 @@ public class BlogAdminController extends HttpServlet {
         request.setAttribute("listBlogDTO", listBlogDTO);
         request.setAttribute("listBlogImgDTO", listBlogImgDTO);
         RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Blog/ListBlogUnapproved.jsp");
+        try {
+            rd.forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(BlogAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BlogAdminController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void listBlogApprove(HttpServletRequest request, HttpServletResponse response) {
+        BlogDAO blogDAO = new BlogDAO();
+        List<BlogDTO> listBlogDTO = blogDAO.getAllBlogsApprove();
+        BlogImageDAO blogImageDAO = new BlogImageDAO();
+        List<BlogImgDTO> listBlogImgDTO = blogImageDAO.getImageData();
+        List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
+
+        request.setAttribute("listCate", listCate);
+        request.setAttribute("listBlogDTO", listBlogDTO);
+        request.setAttribute("listBlogImgDTO", listBlogImgDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Blog/ListBlogApproved.jsp");
         try {
             rd.forward(request, response);
         } catch (ServletException ex) {
@@ -164,9 +186,8 @@ public class BlogAdminController extends HttpServlet {
 //        id = "BL0002";
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
-        
+
         BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
-      
 
         request.setAttribute("blogImgDetails", blogImg);
         request.setAttribute("blogDetails", blogDetails);

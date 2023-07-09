@@ -49,7 +49,8 @@ CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
 	[maDescription] NVARCHAR(10) not null,
-	[hocPhi] DECIMAL(10,2) NOT NULL
+	[hocPhi] DECIMAL(10,2) NOT NULL,
+	[status] bit not null
 	CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription]),
 	)
 

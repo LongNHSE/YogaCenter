@@ -93,8 +93,8 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
 
-            <a class="nav-item nav-link" href="<%=headerUrl%>/Blog/BlogCreate.jsp">Create Blog</a>
-            <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogCategory"">Blog</a>
+            
+            <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
                 <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
 

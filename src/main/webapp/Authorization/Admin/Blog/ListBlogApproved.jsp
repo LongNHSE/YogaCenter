@@ -1,8 +1,3 @@
-
-
-
-
-
 <%-- 
     Document   : ListClass
     Created on : Jun 23, 2023, 7:36:18 PM
@@ -23,7 +18,6 @@
     <head>
         <meta charset="utf-8">
         <title>YogaCenter Admin</title>
-        <link href="<%=url%>/BlogDetail.css" rel="stylesheet" type="text/css"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -139,10 +133,14 @@
                 margin-left:250px;
             }
             .Table{
-                margin-left: 30%;
+
 
             }
-
+            table {
+                margin-left: 250px;
+                width: 100%; /* Set the width of the table */
+                border-collapse: collapse; /* Collapse the borders of table cells */
+            }
 
             th, td {
                 font-size: 20px;
@@ -172,56 +170,82 @@
             </div>
             <div class="Table">
                 <table class="table">
-                    <div class="col-lg-8 m-15px-tb">
-                        <article class="article">
-                            <div class="article-img">
-                                <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
-                            </div>
-                            <div class="article-title">
-                                <h6><a href="#">Lifestyle</a></h6>
-                                <h2 class="header-ken">${blogDetails.title}</h2>
-                                <div class="media">
-                                    <div class="avatar">
-                                        <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
-                                    </div>
-                                    <div class="media-body">
-                                        <label>${blogDetails.maHV}</label>
-                                        <span>${blogDetails.date}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="article-content">
-                                <p style="color:#545554; font-size: 20px">${blogDetails.content}</p>
-                            </div>
-                            <!--        <div class="nav tag-cloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">Travel</a>
-                                    <a href="#">Web Design</a>
-                                    <a href="#">Marketing</a>
-                                    <a href="#">Research</a>
-                                    <a href="#">Managment</a>
-                                    </div>-->
-                        </article>
 
-                    </div>
-                    <form action="<%=url%>/BlogAdminController" method="POST">
-
-                   
-                        <input class="btn btn-outline-danger" type='submit' value="Delete" name="action" style="margin-left: 30%" />
+                    <thead>
+                        <tr class="Test">
 
 
-                        <input type="hidden" name="maBlog" value="${blogDetails.maBlog}" >
-                    </form>
+                            <th scope="col">ID Blog</th>
+                            <th scope="col">ID Trainee</th>
+                            <th scope="col">ID Trainer</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Category</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <c:forEach items="${listBlogDTO}" var="blog">
+                            <tr>
+                        <form action="<%=url%>/BlogAdminController" method="POST">
+
+                            <th scope="row">${blog.maBlog}</th>
+                            <td>${blog.maHV} </td>
+                            <td>${blog.maTrainer} </td>
+                            <td>${blog.title} </td>
+                            <td>${blog.date} </td>
+                            <td>${blog.status} </td>
+                            <td>
+
+                                <c:forEach var="listCate" items="${requestScope.listCate}" >
+                                    <c:if test="${listCate.maCate==blog.maCate}">
+                                        ${listCate.tenCate}
+                                    </c:if>
+
+                                </c:forEach>
+
+                            </td> 
+
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"   onclick="removeSelectRequired(this)"> </td>
+
+                            <td > <input class="btn btn-outline-danger" type='submit' value="Delete" name="action" onclick="removeSelectRequired(this)" /></td> 
+
+
+                            <input type="hidden" name="maBlog" value="${blog.maBlog}" >
+                        </form>
+                        </tr>
+                    </c:forEach>       
+
+
+
+
+
+                    </tbody>
+
                 </table>
             </div>      
         </div>
 
         <script>
+            function removeSelectRequired(button) {
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = false;
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = true;
+                }
+            });
 
 
+            document.getElementsByClassName("cate").required = true;
             const navMenu = document.querySelector("nav");
-
             // Find the desired element and assign it the "active" id
             const blogLiElement = navMenu.querySelector("#Blog");
             if (blogLiElement) {
@@ -235,9 +259,7 @@
                 $('.sub-menu ul#active').show();
                 $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
             });
-
             $('.sub-menu ul').hide();
-
             $(".sub-menu a").click(function () {
                 $(this).parent(".sub-menu").children("ul").slideToggle("100");
                 $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");

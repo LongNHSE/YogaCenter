@@ -36,7 +36,7 @@ public class BlogDAO {
     public List<BlogDTO> getAllBlogs() {
         List<BlogDTO> listBlog = new ArrayList<>();
         BlogImageDAO daoImg = new BlogImageDAO();
-        String sql = "SELECT * FROM [dbo].[blogPost]";
+        String sql = "SELECT * FROM [dbo].[blogPost] where [status] = 'true'";
         try {
             conn = DBUtils.getConnection();
             ps = conn.prepareStatement(sql);
@@ -106,6 +106,35 @@ public class BlogDAO {
                 blogDTO.setMaHV(rs.getString("maHV"));
                 blogDTO.setMaTrainer(rs.getString("maTrainer"));
                 blogDTO.setStatus(rs.getBoolean("status"));
+                blogDTO.setImage(blogImgDTO);
+                listBlog.add(blogDTO);
+            }
+            return listBlog;
+        } catch (Exception e) {
+        }
+        return listBlog;
+    }
+
+    public List<BlogDTO> getAllBlogsApprove() {
+        List<BlogDTO> listBlog = new ArrayList<>();
+        BlogImageDAO daoImg = new BlogImageDAO();
+        String sql = "SELECT * FROM [dbo].[blogPost] where status = 'true'";
+        try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                BlogDTO blogDTO = new BlogDTO();
+                String maBlog = rs.getString("maBlog");
+                List<BlogImgDTO> blogImgDTO = daoImg.getImageDataByID(maBlog);
+                blogDTO.setMaBlog(maBlog);
+                blogDTO.setTitle(rs.getString("tieuDe"));
+                blogDTO.setContent(rs.getString("noiDung"));
+                blogDTO.setDate(rs.getString("ngayTaoPost"));
+                blogDTO.setMaHV(rs.getString("maHV"));
+                blogDTO.setMaTrainer(rs.getString("maTrainer"));
+                blogDTO.setStatus(rs.getBoolean("status"));
+                blogDTO.setMaCate(rs.getString("maCate"));
                 blogDTO.setImage(blogImgDTO);
                 listBlog.add(blogDTO);
             }
@@ -430,9 +459,10 @@ public class BlogDAO {
 
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
-        BlogDTO blogDTO = dao.getBlogByID("B0001");
-        dao.approveBlog("B0003", "BC0001");
-        System.out.println();
+        System.out.println(dao.getAllBlogsApprove());
+//        BlogDTO blogDTO = dao.getBlogByID("B0001");
+//        dao.approveBlog("B0003", "BC0001");
+//        System.out.println();
 //        List<BlogDTO> listB = new ArrayList<>();
 //        List<BLogCateDTO> listCate = new ArrayList<>();
 //        listCate = dao.getAllBlogCate();

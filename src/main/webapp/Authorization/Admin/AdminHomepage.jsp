@@ -33,6 +33,7 @@
                             <ul id="active">
                                 <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
                                 <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listClassType'>List Class Type</a></li>
                                 <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                                 <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
@@ -62,7 +63,7 @@
                         <li class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
                             <ul>
                                 <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
-                                <li><a href="">List Blog Approved</a></li>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogApprove">List Blog Approved</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>

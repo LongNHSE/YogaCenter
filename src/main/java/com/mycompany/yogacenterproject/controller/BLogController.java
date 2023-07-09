@@ -76,6 +76,8 @@ public class BLogController extends HttpServlet {
                 viewMyBlog(request, response);
             } else if (action.equals("showBlogCategory")) {
                 showBlogCategory(request, response);
+            } else if (action.equals("Detail")) {
+                showDetail2(request, response);
             }
         } catch (Exception e) {
 
@@ -113,6 +115,9 @@ public class BLogController extends HttpServlet {
         } else {
             listBlogCate = new ArrayList<>();
         }
+        List<BLogCateDTO> listCate = dao.getAllBlogCate();
+
+        request.setAttribute("listCate", listCate);
         request.setAttribute("listBlog", listBlogCate);
         RequestDispatcher rd = request.getRequestDispatcher("/Blog/Blog.jsp");
         rd.forward(request, response);
@@ -140,6 +145,25 @@ public class BLogController extends HttpServlet {
 //    }
     private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("returnID");
+        BlogDAO blogDAO = new BlogDAO();
+        BlogImageDAO blogImgDAO = new BlogImageDAO();
+//        id = "BL0002";
+//          Get Blog Details
+        BlogDTO blogDetails = blogDAO.getBlogByID(id);
+        List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
+        BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
+        List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
+
+        request.setAttribute("blogImgDetails", blogImg);
+        request.setAttribute("blogDetails", blogDetails);
+        request.setAttribute("blogLatest", blogLatest);
+        request.setAttribute("blogCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
+        rd.forward(request, response);
+    }
+
+    private void showDetail2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("maBlog");
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
 //        id = "BL0002";

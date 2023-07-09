@@ -416,8 +416,8 @@
 
             .box {
                 position: absolute;
-                top: 300px;
-                right: 400px;
+                top: 27px ;
+                right: -265px;
                 transform: translate(-50%, -50%);
             }
 
@@ -479,6 +479,12 @@
                 text-align: center;
                 margin: 20px;
                 line-height: 30px;
+            }
+            .Custom{
+
+
+                margin-left: 98px;
+
             }
         </style>            
     </head>
@@ -568,7 +574,7 @@
 
                                 </div>
 
-                                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+                                <div class="Custom">
                                     <button class="button" type="submit" name="action" value="Register">
                                         Register now!
                                     </button>

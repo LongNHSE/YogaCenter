@@ -124,11 +124,23 @@ public class ClassController extends HttpServlet {
                 classDetailTrainee(request, response);
             } else if (action.equals("ClassDetailTrainer")) {
                 classDetailTrainer(request, response);
+            } else if (action.equals("Change Status")) {
+                changeStatusClassType(request, response);
             }
         } catch (Exception e) {
 
         }
 
+    }
+
+    private void changeStatusClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        boolean status = loaiLopHocDAO.searchStatusLoaiLopHoc(maLoaiLopHoc);
+        loaiLopHocDAO.changeStatus(maLoaiLopHoc, !status);
+
+        RequestDispatcher rd = request.getRequestDispatcher("./AdminController?action=listClassType");
+        rd.forward(request, response);
     }
 
     //ADD Image danh cho Create Class Type
@@ -359,7 +371,7 @@ public class ClassController extends HttpServlet {
     public void showClass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        listCate = loaiLopHocDAO.getAllLoaiLopHoc();
+        listCate = loaiLopHocDAO.getAllLoaiLopHocAvailable();
         request.setAttribute("listCate", listCate);
         RequestDispatcher rd = request.getRequestDispatcher("/Authentication/ClassCategories.jsp");
         rd.forward(request, response);
