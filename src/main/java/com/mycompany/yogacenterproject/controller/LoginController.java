@@ -6,8 +6,10 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.AdminDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DateUtils;
 import com.mycompany.yogacenterproject.util.Utils;
@@ -78,10 +80,9 @@ public class LoginController extends HttpServlet {
                 newPass(request, response);
             } else if (action.equals("logout")) {
                 logout(request, response);
-            } 
-            else if (action.equals("adminLogout")) {
+            } else if (action.equals("adminLogout")) {
                 adminLogout(request, response);
-            }else {
+            } else {
 
                 signup(request, response);
             }
@@ -199,9 +200,11 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         HocVienDAO dao = new HocVienDAO();
         HocVienDTO hocVienDTO = dao.login(username, password);
-        if (hocVienDTO == null) {
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = trainerDAO.loginTrainer(username, password);
+        if (hocVienDTO == null && trainerDTO == null) {
             request.getRequestDispatcher("/Public/signin.jsp").forward(request, response);
-        } else {
+        } else if (hocVienDTO != null && hocVienDTO.getMaLoaiTK().equals("HOCVIEN")) {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
             session.setAttribute("hocVienDTO", hocVienDTO);
             // Lấy URL trang trước đó từ localStorage (nếu có)
@@ -213,7 +216,20 @@ public class LoginController extends HttpServlet {
                 // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
                 response.sendRedirect("../Public/home.jsp");
             }
+        } else if (trainerDTO != null && trainerDTO.getMaLoaiTK().equals("TRAINER")) {
+            // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
+            session.setAttribute("trainerDTO", trainerDTO);
+            // Lấy URL trang trước đó từ localStorage (nếu có)
+            session.setMaxInactiveInterval(1800);
+            String redirectUrl = (String) session.getAttribute("redirectUrl");
+            if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                response.sendRedirect(redirectUrl);
+            } else {
+                // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)
+                response.sendRedirect("../Public/home.jsp");
+            }
         }
+
     }
 
     //RESET PASSWORD
@@ -261,7 +277,7 @@ public class LoginController extends HttpServlet {
             session.setMaxInactiveInterval(1900);
 
             request.getRequestDispatcher("/Authorization/Admin/AdminHomepage.jsp").forward(request, response);
-           
+
         }
     }
 //
@@ -273,18 +289,22 @@ public class LoginController extends HttpServlet {
         if (referer == null || referer.isEmpty()) {
             referer = "./Public/adminLogin.jsp";
         }
-         response.sendRedirect("./Public/adminLogin.jsp");
+        response.sendRedirect("./Public/adminLogin.jsp");
     }
 //    Logout
 
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.removeAttribute("hocVienDTO");
+        if (session.getAttribute("trainerDTO") != null) {
+            session.removeAttribute("trainerDTO");
+        } else {
+            session.removeAttribute("hocVienDTO");
+        }
         String referer = request.getHeader("Referer");
         if (referer == null || referer.isEmpty()) {
             referer = "../home.jsp";
         }
-        response.sendRedirect(referer);
+        response.sendRedirect("/YogaCenter/Public/home.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -33,12 +33,24 @@ CREATE TABLE lopHocImg (
     [maLopHoc] NVARCHAR(25) NULL,
 	[maTrainer] NVARCHAR(25) NULL,
 );
-
+CREATE TABLE [description](
+	maDescription  NVARCHAR(10) primary key,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+)
+CREATE TABLE [descriptionIMG] (
+    [maAnh] NVARCHAR(25) primary key,
+	[tenAnh] NVARCHAR(50) NULL,
+    [image] VARBINARY(MAX) NOT NULL,
+    maDescription NVARCHAR(10)NULL,
+	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
+);
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-	[maDescription] NVARCHAR(max) null,
-	[hocPhi] DECIMAL(10,2) NOT NULL
+	[maDescription] NVARCHAR(10) not null,
+	[hocPhi] DECIMAL(10,2) NOT NULL,
+	[status] bit not null
 	CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription]),
 	)
 
@@ -97,7 +109,8 @@ create TABLE ScheduleHV(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maHV,ngayHoc)
 
 CONSTRAINT fk_maSlot_ScheduleHV FOREIGN KEY([maSlot]) REFERENCES slot(maSlot),
@@ -109,7 +122,8 @@ CREATE TABLE ScheduleTrainer(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,maTrainer,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleTR foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -121,7 +135,8 @@ CREATE TABLE ScheduleTemp(
 [maLopHoc] NVARCHAR(10) NOT NULL,--CONSTRAINT--
 [ngayHoc] Date NOT NULL,
 [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
-[thu] nvarchar(20) NOT NULl
+[thu] nvarchar(20) NOT NULl,
+[status] bit null
 primary key(maLopHoc,ngayHoc)
 
 constraint fk_maLopHoc_ScheduleT foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
@@ -177,18 +192,7 @@ CREATE TABLE hopDongGiaoVien(
 
 
 
-CREATE TABLE [description](
-	maDescription  NVARCHAR(10) primary key,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-)
-CREATE TABLE [descriptionIMG] (
-    [maAnh] NVARCHAR(25) primary key,
-	[tenAnh] NVARCHAR(50) NULL,
-    [image] VARBINARY(MAX) NOT NULL,
-    maDescription NVARCHAR(10)NULL,
-	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
-);
+
 
 
 CREATE TABLE Semester (
@@ -197,12 +201,50 @@ CREATE TABLE Semester (
     endDate DATE,
     courses VARCHAR(255)
 );
-INSERT INTO Semester (quarterID, startDate, endDate, courses)
-VALUES
-    (1, '2023-01-01', '2023-03-31', 'Semester 1'),
-    (2, '2023-04-01', '2023-06-30', 'Semester 2'),
-    (3, '2023-07-01', '2023-09-30', 'Semester 3'),
-    (4, '2023-10-01', '2023-12-31', 'Semester 4');
+
+CREATE TABLE Attendance (
+  attendanceID nvarchar(20) primary key,
+  [maHV] NVARCHAR(10) not null,
+  [maLopHoc] NVARCHAR(10) not null,
+  [ngayHoc] Date NOT NULL,
+  [maSlot] NVARCHAR(10) NOT NULL, --CONSTRAINT--
+  [status] NVARCHAR(20) null
+constraint fk_maLopHoc_Attendance foreign key([maLopHoc]) references [lopHoc]([maLopHoc]),
+constraint fk_maHocVien_Attendance foreign key([maHV]) references [hocVien]([maHV])
+);
+
+
+
+CREATE TABLE paySlip(
+	[maPaySlip] NVARCHAR(10) primary key,
+	[maHopDong] NVARCHAR(10) NOT NULL,  --CONSTRAINT--
+	Deductions DECIMAL(10, 2),
+	Total DECIMAL(10, 2),
+	[Date] DATE,
+	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
+	)
+
+
+CREATE TABLE blogCategories(
+	[maCate] NVARCHAR(10) primary key,
+	[tenCate] NVARCHAR(50) NOT NULL,
+)
+CREATE TABLE blogPost(
+	[maBlog] NVARCHAR(10) primary key,
+	[tieuDe] NVARCHAR(50) NOT NULL,
+	[noiDung] NVARCHAR(MAX) NOT NULL,
+	[ngayTaoPost] DATE NOT NULL,
+	[maHV] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	[status] BIT NOT NULL DEFAULT 0
+	CONSTRAINT fk_maHV_Blog FOREIGN KEY ([maHV]) REFERENCES hocVien([maHV])
+)
+	CREATE TABLE blogImg(
+	[maAnh] NVARCHAR(10) primary key,
+	[tenAnh] NVARCHAR(20) NOT NULL,
+	[image] VARBINARY(MAX) NOT NULL,
+	[maBlog] NVARCHAR(10) NOT NULL, --CONSTRAINT
+	CONSTRAINT fk_maBlog_blogImg FOREIGN KEY ([maBlog]) REFERENCES blogPost([maBlog])
+)
 
 	--ALTER TABLE lopHoc
 --ADD [status] bit NULL;
@@ -238,24 +280,10 @@ CREATE TABLE bangOT(
 	)
 	*/
 
-CREATE TABLE paySlip(
-	[maPaySlip] NVARCHAR(10) primary key,
-	[maHopDong] NVARCHAR(10) NOT NULL,  --CONSTRAINT--
-	Deductions DECIMAL(10, 2),
-	Total DECIMAL(10, 2),
-	[Date] DATE,
-	CONSTRAINT fk_maPaySlip_hopDong FOREIGN KEY([maHopDong]) REFERENCES hopDongGiaoVien([maHopDong])
-	)
 
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG001', 'Surya Kriya', 'https://sundariyogacenter.com/admin/sanpham/Surya-Kriya-Inside_4018_anh1.jpg')
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG002', 'Angamardana', 'https://sundariyogacenter.com/admin/sanpham/Angamardana-Ben-Trong_4021_anh1.jpg')
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG003', 'Yogasanas', 'https://sundariyogacenter.com/admin/sanpham/Yogasanas-Ben-Trong_4016_anh1.jpg')
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG004', 'Bhuta Shuddhi', 'https://sundariyogacenter.com/admin/sanpham/Bhuta-Shuddhi-Ben-Trong_4020_anh1.jpg')
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG005', 'Surya Shakti', 'https://sundariyogacenter.com/admin/sanpham/Surya-Shakti-Ben-Trong_4026_anh1.jpg')
-INSERT INTO dbo.lopHocImg (maAnh, tenAnh, URLAnh)
-VALUES('YG006', 'Khóa Thiền Định', 'https://sundariyogacenter.com/admin/sanpham/Thien-Dinh-Ben-Trong_4013_anh1.jpg')
+ALTER TABLE [dbo].[ScheduleHV]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTemp]
+ADD [status] bit NULL;
+ALTER TABLE [dbo].[ScheduleTrainer]
+ADD [status] bit NULL;

@@ -5,6 +5,7 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
@@ -32,7 +33,7 @@ public class LoaiLopHocDAO {
     ResultSet rs = null;
 
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
-        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[maDescription], hocPhi)"
+        String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[maDescription], hocPhi,status)"
                 + "VALUES(?,?,?,?)";
         int row = 0;
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
@@ -40,6 +41,7 @@ public class LoaiLopHocDAO {
         stm.setString(2, loaiLopHocDTO.getTenLoaiLopHoc());
         stm.setString(3, loaiLopHocDTO.getMaDescription());
         stm.setDouble(4, loaiLopHocDTO.getHocPhi());
+        stm.setBoolean(5, true);
 
         row = stm.executeUpdate();
 
@@ -91,27 +93,49 @@ public class LoaiLopHocDAO {
         }
         return null;
     }
-    
-//    Select ID to get information
-    public LoaiLopHocDTO getClassCateByID(String maLoaiLopHoc){
-          String sql = "select * from [dbo].[loaiLopHoc] where [maLoaiLopHoc] = ?";
-          try {
+
+    public boolean searchStatusLoaiLopHoc(String maLoaiLopHoc) {
+        String sql = "SELECT status FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?  ";
+
+        try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            if (rs.next()) {
+
+                return rs.getBoolean("status");
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+
+//    Select ID to get information
+    public LoaiLopHocDTO getClassCateByID(String maLoaiLopHoc) {
+        String sql = "select * from [dbo].[loaiLopHoc] where [maLoaiLopHoc] = ?";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
                 LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
                 loaiLopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
                 loaiLopHocDTO.setTenLoaiLopHoc(rs.getString("tenLoaiLopHoc"));
-                loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));                
+                loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));
                 loaiLopHocDTO.setHocPhi(rs.getDouble("hocPhi"));
                 return loaiLopHocDTO;
             }
-          } catch (Exception e) {
-          }
-          return null;
+        } catch (Exception e) {
+        }
+        return null;
     }
+
     //SEARCH ID TYPE 
     public String searchIdLoaiLopHoc(String tenLoaiLopHoc) {
         String sql = "SELECT  maLoaiLopHoc FROM [dbo].[loaiLopHoc] where tenLoaiLopHoc = ?  ";
@@ -138,7 +162,7 @@ public class LoaiLopHocDAO {
     //READ LIST LOAI LOP HOC 
     public List<LoaiLopHocDTO> readLoaiLopHoc() {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[loaiLopHoc]";
+        String sql = "SELECT * FROM [dbo].[loaiLopHoc] where status ='true'";
 
         try {
             Connection conn = DBUtils.getConnection();
@@ -162,13 +186,13 @@ public class LoaiLopHocDAO {
     }
 
     //LAY GIA TIEN CUA LOAI LOP HOC
-    public String searchHocPhiLopHoc(String maLopHoc) {
+    public String searchHocPhiLopHoc(String maLoaiLopHoc) {
         String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
         double hocPhi = 0;
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, maLopHoc);
+            ps.setString(1, maLoaiLopHoc);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
 
@@ -190,6 +214,28 @@ public class LoaiLopHocDAO {
             System.out.println(ex);
         }
         return null;
+    }
+
+    public long searchHocPhiLopHocWithDouble(String maLoaiLopHoc) {
+        String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
+        long hocPhi = 0;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return hocPhi = rs.getLong("hocPhi");
+
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return hocPhi;
     }
 
     // PRINT CLASSES' CATEGORIES
@@ -231,7 +277,34 @@ public class LoaiLopHocDAO {
             List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
             loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
             loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-        
+
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setImage(lopHocIMGDTO);
+            loaiLopHocDTO.setStatus(rs.getBoolean("status"));
+            loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));
+            listLoaiLopHoc.add(loaiLopHocDTO);
+
+        }
+        return listLoaiLopHoc;
+
+    }
+
+    public List<LoaiLopHocDTO> getAllLoaiLopHocAvailable() throws SQLException, IOException {
+        List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        String sql = "SELECT * FROM loaiLopHoc where status='true'";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+            String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+
+            double hocPhi = rs.getDouble("hocPhi");
+            List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+
             loaiLopHocDTO.setHocPhi(hocPhi);
             loaiLopHocDTO.setImage(lopHocIMGDTO);
 
@@ -242,14 +315,45 @@ public class LoaiLopHocDAO {
 
     }
 
+    public void changeStatus(String maLoaiLopHoc, boolean status) {
+        String sql = "Update [dbo].[loaiLopHoc] "
+                + "Set [status] = ? "
+                + "where maLoaiLopHoc =?";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setBoolean(1, status);
+            ps.setString(2, maLoaiLopHoc);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
-
-        listCate = a.getAllLoaiLopHoc();
-        for (LoaiLopHocDTO c : listCate) {
-            System.out.println(c);
-        }
+        System.out.println(a.searchStatusLoaiLopHoc("TYPE0001"));
+        a.changeStatus("TYPE0001", !a.searchStatusLoaiLopHoc("TYPE0001"));
+//        LopHocDTO lopHocDTO = new LopHocDTO();
+//        LopHocDAO lopHocDAO = new LopHocDAO();
+//        lopHocDTO = lopHocDAO.searchClassById("LOP0003");
+//        long subtotal = a.searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()); // Replace with actual calculation based on lopHocDTO
+//        long tax = 0; // Replace with actual calculation based on lopHocDTO
+//        long shipping = 0; // Replace with actual calculation based on lopHocDTO
+//        long totalAmount = subtotal + tax + shipping;
+//        System.out.println(totalAmount);
+//        System.out.println(String.valueOf(totalAmount));
+//        listCate = a.getAllLoaiLopHoc();
+//        for (LoaiLopHocDTO c : listCate) {
+//            System.out.println(c);
+//        }
 //          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
 //          System.out.println(DTO.toString());
 

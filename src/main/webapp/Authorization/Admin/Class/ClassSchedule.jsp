@@ -155,6 +155,13 @@
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
+                        <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
                         <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
                     </ul>
                 </nav>
@@ -232,14 +239,15 @@
                                 <td>
 
                                     <% if (!phongTrong) {%>
-                                    <span class="bg-warning padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=message%></span>
-
+                                    <div style="align: center; background-color: yellow; ">
+                                        <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=message%></span>
+                                    </div>
 
                                     <% } else {%>
 
                                     <div onchange="checkSlot()">
-                                        <div style="align: center">
-                                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13" style="text-align: center;"><%=message%></span>
+                                        <div style="align: center; background-color: greenyellow; ">
+                                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="text-align: center;"><%=message%></span>
                                         </div>
                                         <input class="weekday" type="checkbox" name="weekday" id="weekday"
                                                data-slot="<%=slot%>" data-day="<%=dayOfWeek%>" value="<%=dayOfWeek%>"

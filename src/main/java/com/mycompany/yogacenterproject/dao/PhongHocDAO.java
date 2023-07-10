@@ -105,7 +105,7 @@ public class PhongHocDAO {
                 + "FROM lopHoc "
                 + "INNER JOIN room ON lopHoc.maRoom = room.maRoom "
                 + "INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc "
-                + "WHERE lopHoc.maRoom = ? AND maSlot = ? and thu=?";
+                + "WHERE lopHoc.maRoom = ? AND maSlot = ? and thu=? and lopHoc.[status] = 'true'";
         try {
 
             Connection conn = DBUtils.getConnection();
@@ -153,13 +153,13 @@ public class PhongHocDAO {
                 + "    SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?)\n"
+                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?) and lopHoc.[status] = 'true' \n"
                 + "	union\n"
                 + "	SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
                 + "	\n"
-                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?)\n"
+                + "    WHERE maSlot = ? AND (thu = ? OR thu = ?) and lopHoc.[status] = 'true' \n"
                 + "	\n"
                 + ")";
         PhongHocDTO phongHocDTO = new PhongHocDTO();
@@ -203,14 +203,14 @@ public class PhongHocDAO {
                 + "    SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+                + "    WHERE maSlot = ? AND thu IN (" + thuParams + ") and lopHoc.[status] = 'true' \n";
 
         if (thuList.length > 1) {
             sql += "    UNION\n"
                     + "    SELECT lopHoc.maRoom\n"
                     + "    FROM lopHoc\n"
                     + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
-                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ") and lopHoc.[status] = 'true' \n";
         }
 
         sql += ")";
@@ -263,14 +263,14 @@ public class PhongHocDAO {
                 + "    SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+                + "    WHERE maSlot = ? AND thu IN  (" + thuParams + ") and lopHoc.[status] = 'true' \n";
 
         if (thuList.length > 1) {
             sql += "    UNION\n"
                     + "    SELECT lopHoc.maRoom\n"
                     + "    FROM lopHoc\n"
                     + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
-                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ")\n";
+                    + "    WHERE maSlot = ? AND thu IN (" + thuParams + ") and lopHoc.[status] = 'true' \n";
         }
 
         sql += ")";
@@ -327,12 +327,12 @@ public class PhongHocDAO {
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTrainer ON lopHoc.maLopHoc = ScheduleTrainer.maLopHoc\n"
                 + "	\n"
-                + "    WHERE ScheduleTrainer.maSlot = ? AND ScheduleTrainer.thu = ?\n"
+                + "    WHERE ScheduleTrainer.maSlot = ? AND ScheduleTrainer.thu = ?  and lopHoc.[status] = 'true'\n"
                 + "	union\n"
                 + "	SELECT lopHoc.maRoom\n"
                 + "    FROM lopHoc\n"
                 + "    INNER JOIN ScheduleTemp ON lopHoc.maLopHoc = ScheduleTemp.maLopHoc\n"
-                + "    WHERE ScheduleTemp.maSlot = ? AND ScheduleTemp.thu = ?\n"
+                + "    WHERE ScheduleTemp.maSlot = ? AND ScheduleTemp.thu = ?  and lopHoc.[status] = 'true'\n"
                 + ")";
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -357,9 +357,11 @@ public class PhongHocDAO {
         lopHocDTO = lopHocDAO.searchClassById("LOP0014");
 //        Boolean b = a.checkRoomEmpty("RO0001", "SL001", "MONDAY", "WEDNESDAY");
 //        System.out.println(a.getEmptyRoom("SL002", "TUESDAY", "WEDNESDAY").toString());
-        String[] b = {"MONDAY2", "sWEDNESDAY"};
+        String[] b = {"MONDAY", "WEDNESDAY"};
         
         System.out.println(a.getListEmptyRoom(lopHocDAO.maSlotClassUnassigned(lopHocDTO.getMaLopHoc()), lopHocDAO.showThuWithStringArrayOfClassUnassigned("LOP0014")));
+        System.out.println(lopHocDAO.maSlotClassUnassigned(lopHocDTO.getMaLopHoc()));
+        System.out.println(lopHocDAO.showThuWithStringArrayOfClassUnassigned("LOP0014"));
 //        System.out.println(lopHocDTO.getMaSlot());
 //        System.out.println(lopHocDAO.showThuWithStringArray("LOP0001"));
 //        System.out.println(a.getListEmptyRoom("SLOT0001", b));

@@ -17,6 +17,15 @@ public class ScheduleTrainerDTO {
     private Date ngayHoc;
     private String maSlot;
     private String thu;
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     public ScheduleTrainerDTO() {
     }

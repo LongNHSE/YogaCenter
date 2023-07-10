@@ -4,6 +4,7 @@
     Author     : Oalskad
 --%>
 
+<%@page import="com.mycompany.yogacenterproject.dto.AttendanceDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -27,14 +28,14 @@
     <head>
         <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
         <!-- bootstrap css -->
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <!-- style css -->
-        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+
         <!-- Responsive-->
-        <link rel="stylesheet" href="../css/responsive.css">
+
         <!-- fevicon -->
         <link rel="icon" href="images/fevicon.png" type="image/gif" />
         <!-- Scrollbar Custom CSS -->
@@ -45,18 +46,19 @@
         <link rel="stylesheet" href="../css/owl.carousel.min.css">
         <link rel="stylesheet" href="../css/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-              media="screen">        
+              media="screen">      
     </head>
     <body>
 
         <!-- header section start -->
-     
+
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
     </nav>
     <% List<ScheduleHvDTO> listScheduleHvDTO = (List<ScheduleHvDTO>) request.getAttribute("listScheduleHv");
         List<SlotDTO> listSlot = (List<SlotDTO>) request.getAttribute("listSlot");
         List<LocalDate> listDate = (List<LocalDate>) request.getAttribute("listDate");
         List<DateStartAndDateEnd> weekRanges = (List<DateStartAndDateEnd>) request.getAttribute("weekRanges");
+        List<AttendanceDTO> listAttendanceDTO = (List<AttendanceDTO>) request.getAttribute("listAttendanceDTO");
 
     %>
 
@@ -118,15 +120,22 @@
                     <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
                         <% for (int day = 0; day < 7; day++) {
                                 boolean hasSchedule = false;
-                               
+
                                 LopHocDAO lopHocDAO = new LopHocDAO();
                                 String maLopHoc = "";
                                 String tenLopHoc = "";
-                             
+                                String status = "";
+                                boolean check = true;
                                 String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                 for (ScheduleHvDTO scheduleHocVienDTO : listScheduleHvDTO) {
                                     if (scheduleHocVienDTO.getThu().equalsIgnoreCase(dayOfWeek) && scheduleHocVienDTO.getMaSlot().equals(slot) && scheduleHocVienDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
+                                        for (AttendanceDTO attendanceDTO : listAttendanceDTO) {
+                                            if (attendanceDTO.getMaSlot().equals(slot) && attendanceDTO.getNgayHoc().equals(Date.valueOf(listDate.get(day)))) {
+                                                status = attendanceDTO.getStatus();
+                                            }
+                                        }
                                         hasSchedule = true;
+                                        check = scheduleHocVienDTO.isStatus();
                                         maLopHoc = scheduleHocVienDTO.getMaLopHoc();
                                         tenLopHoc = lopHocDAO.tenLopHoc(lopHocDAO.IDLoaiLopHoc(scheduleHocVienDTO.getMaLopHoc()));
                                         break;
@@ -138,13 +147,61 @@
 
 
                     <td>
+                        <style>
+                            a {
+                                color: #0060B6;
+                                text-decoration: none;
+                            }
+
+                            a:hover {
+                                color:#00A0C6;
+                                text-decoration:none;
+                                cursor:pointer;
+                            }
+                        </style>
 
                         <% if (hasSchedule) {%>
-                        <span class="bg-yellow padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"><%=tenLopHoc%></span>
-                        <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
+                        <% if (check) {%>
+                        <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%>" >
+                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" ><%=tenLopHoc%></span>
+                            <div class="margin-10px-top font-size14"><%=maLopHoc%>  
+                                <%if (status.equalsIgnoreCase("ABSENT")) {%> 
+                                <div class="bg-danger" style="background-color: red">
+                                    <%=status%>
+                                </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
+                                <div class="bg-yellow" style="background-color: yellow">
+                                    <%=status%>
+                                </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
+                                <div class="bg-green" style="background-color: #00FF00">
+                                    <%=status%>
+                                </div>
+                                <%} %>
+                            </div>
+                        </a>
 
-                        <% }%>
-                        
+                        <% } else {%>
+                        <a href="<%=url%>/ClassController?action=ClassDetailTrainee&maLopHoc=<%= maLopHoc%> " >
+                            <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" ><%=tenLopHoc%></span>
+                            <div class="margin-10px-top font-size14"><%=maLopHoc%> 
+                                <%if (status.equalsIgnoreCase("ABSENT")) {%> 
+                                <div class="bg-danger" style="background-color:#FF0000">
+                                    <%=status%>
+                                </div> <% } else if (status.trim().equalsIgnoreCase("PENDING")) {%>  
+                                <div class="bg-yellow" style="background-color: yellow">
+                                    <%=status%>
+                                </div>   <%} else if (status.trim().equalsIgnoreCase("ATTENDED")) {%> 
+                                <div class="bg-green" style="background-color: #00FF00">
+                                    <%=status%>
+                                </div>
+                                <%} %>
+
+                            </div>
+
+                        </a>
+
+                        <%         }
+                            }%>
+
                     </td>
                     <%  calendar.add(Calendar.DAY_OF_WEEK, 1);
                         } %>

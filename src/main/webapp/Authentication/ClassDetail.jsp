@@ -3,6 +3,10 @@
     Created on : Jun 8, 2023, 8:10:20 AM
     Author     : Oalskad
 --%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="com.mycompany.yogacenterproject.dto.DayAndSlot"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.mycompany.yogacenterproject.dao.LopHocDAO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
 <%@page import="java.util.List"%>
@@ -10,18 +14,36 @@
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+<%
+    String JsUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="<%=JsUrl%>/js/jquery.min.js"></script>
+        <script src="<%=JsUrl%>/js/popper.min.js"></script>
+        <script src="<%=JsUrl%>/js/bootstrap.bundle.min.js"></script>
+        <script src="<%=JsUrl%>/js/jquery-3.0.0.min.js"></script>
+        <script src="<%=JsUrl%>/js/plugin.js"></script>
+        <!-- sidebar -->
+        <script src="<%=JsUrl%>/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="<%=JsUrl%>/js/custom.js"></script>
+        <!-- javascript -->
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="<%=JsUrl%>/js/owl.carousel.js"></script>
+        <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <title>JSP Page</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <!--CSS-->
-        <%@ include file="../Components/CSSComponent.jsp" %>
-        <!--Javascript-->
-        <%@ include file="../Components/JsComponent.jsp" %>
+
         <style type="text/css">
             body{
                 background:#eee;
@@ -394,8 +416,8 @@
 
             .box {
                 position: absolute;
-                top: 50%;
-                left: 50%;
+                top: 27px ;
+                right: -265px;
                 transform: translate(-50%, -50%);
             }
 
@@ -458,6 +480,12 @@
                 margin: 20px;
                 line-height: 30px;
             }
+            .Custom{
+
+
+                margin-left: 98px;
+
+            }
         </style>            
     </head>
 
@@ -472,23 +500,33 @@
 
                     <div class="col-md-5 col-sm-12 col-xs-12">
                         <div class="product-image">
-                            <div id="myCarousel-2" class="carousel slide">
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
+
                                     <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
-                                        <li data-target="#myCarousel-2" data-slide-to="${status.index}" class="${status.index == 0 ? 'active' : ''}"></li>
+                                        <li data-target="#carouselExampleIndicators" data-slide-to="${status.index}" class="${status.index == 0 ? 'active' : ''}"></li>
                                         </c:forEach>
                                 </ol>
                                 <div class="carousel-inner">
+
                                     <c:forEach items="${requestScope.imageListByID}" var="imageData" varStatus="status">
-                                        <div class="item ${status.index == 0 ? 'active' : ''}">
+                                        <div class="carousel-item ${status.index == 0 ? 'active' : ''}">
                                             <img src="data:image/jpeg;base64,${imageData.image}" class="img-responsive" alt="" style="width: 100%;
                                                  height: 400px;">
                                         </div>
                                     </c:forEach>
                                 </div>
-                                <a class="left carousel-control" href="#myCarousel-2" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-                                <a class="right carousel-control" href="#myCarousel-2" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-                            </div>            
+
+
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only"></span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only"></span>
+                                </a>
+                            </div>        
                         </div>
                     </div>
 
@@ -513,38 +551,21 @@
 
                         <hr/>
 
-                        <form action="<%=url%>/ClassController">
+                        <form action="<%=url%>/ClassController" method="POST">
                             <div class="row">
 
                                 <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
                                     <div class="box">
-                                        <select name="maSlot">
+                                        <select name="maSlot" required>
                                             <option  value=""> Please choose Slot</option>
-                                            <%  List<LopHocDTO> listLopHocDTO = (List<LopHocDTO>) request.getAttribute("listLopHocDTO");
-                                                LopHocDAO lopHocDAO = new LopHocDAO();
-                                                for (int i = 0; i < listLopHocDTO.size(); i++) {
-                                                    if (i != 0) {
-                                                        if (!lopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(i - 1).getThuList()) || !listLopHocDTO.get(i).getMaSlot().equals(listLopHocDTO.get(i - 1).getMaSlot())) {
-                                            %>
-                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
-                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%> - <%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
-                                            
-                                            </option>  
-                                            <%
-                                                }
-                                            } else {
-                                            %>
-
-                                            <option name="maSlot" value="<%= listLopHocDTO.get(i).getMaSlot() + "|" + listLopHocDTO.get(i).getThuList() %>">
-                                                <%=listLopHocDTO.get(i).getMaSlot()%>:  <%=listLopHocDTO.get(i).getTimeStart()%>-<%=listLopHocDTO.get(i).getTimeEnd()%>, <%=listLopHocDTO.get(i).getThuList()%>
-                                            
-                                            </option>  
-                                            <%
-                                                    }
-                                                }
-                                            %>
+                                            <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
+                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
+                                                    ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
+                                                </option>  
+                                            </c:forEach>
                                         </select>
+
                                     </div>
 
 
@@ -553,13 +574,25 @@
 
                                 </div>
 
-                                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+                                <div class="Custom">
                                     <button class="button" type="submit" name="action" value="Register">
                                         Register now!
                                     </button>
                                     <% String cid = (String) request.getAttribute("cid");%>
                                     <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                    <input type="hidden" name="returnID" value="<%=cid%>" />
                                 </div>
+
+                            </div>
+                            <div style="width: 357px;
+                                 position: absolute;
+                                 margin-top: 10px;
+                                 right: 223px;
+                                 color: red;
+                                 font-weight: BOLD;">
+
+                                <% String errorMessage = (String) request.getAttribute("error");%>
+                                <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                             </div>
                         </form>

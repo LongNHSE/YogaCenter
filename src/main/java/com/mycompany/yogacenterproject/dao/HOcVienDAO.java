@@ -215,12 +215,14 @@ public class HocVienDAO {
                 String maLoaiTk = rs.getString("maLoaiTk");
                 String email = rs.getString("email");
                 String gender = rs.getString("gender");
+                String type = rs.getString("maLoaiTK");
                 ////////CONVERT DATE TO LOCALDATE
                 Date date = rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
                 LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
                 //////////////////////////////////////////////////////////////////
                 HocVienDTO loginUser = new HocVienDTO(maHV, ho, ten, dob, user, phone, psw, maLoaiTk, email, gender);
+                loginUser.setMaLoaiTK(maLoaiTk);
                 return loginUser;
             }
 

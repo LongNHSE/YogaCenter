@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-             <meta charset="utf-8">
+        <meta charset="utf-8">
         <title>YogaCenter</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
@@ -140,10 +140,10 @@
         tr:hover {
             background-color: #e6e6e6; /* Set background color for hovered rows */
         }</style>
-    <%
-        List<HoaDonDTO> listHoaDon = (List<HoaDonDTO>) request.getAttribute("listHoaDon");
+        <%
+            List<HoaDonDTO> listHoaDon = (List<HoaDonDTO>) request.getAttribute("listHoaDon");
 
-    %>
+        %>
 
     <body>
         <div class="Controller">
@@ -154,7 +154,7 @@
                         <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
                         <li  class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
                             <ul >
-                              <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
+                                <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
                                 <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
                                 <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
                                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
@@ -165,6 +165,27 @@
                             <ul id="active">
                                 <li id="active-element"><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
                                 <li><a href='#settings'>Submit a Ticket</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/AdminController?action=listTrainer&page=1">List Trainer</a></li>
+                                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
+                                <li><a href="">Add Trainer</a></li>
+                                <li><a href='#settings'>Network Status</a></li>
+                            </ul>
+                        </li>
+                        <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
+                            <ul>
+                                <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
+                                <li><a href="">List Blog Approved</a></li>
                                 <li><a href='#settings'>Network Status</a></li>
                             </ul>
                         </li>
@@ -199,7 +220,7 @@
                         </tr>
                     </form>
                     <% }
-                } else {%>
+                    } else {%>
                     <tr>
                         <th scope="row"></th>
                         <td></td>

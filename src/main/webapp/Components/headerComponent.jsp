@@ -8,27 +8,29 @@
 
     String headerUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
-<!-- Thêm các t?p CSS c?a Bootstrap -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
+
 <style>
     /* CSS for the dropdown menu */
     body{
-            /*font-family: 'Bitter', serif !important;*/
-            font-family: 'Montserrat', sans-serif !important;
-            box-sizing: border-box;
-                
+        /*font-family: 'Bitter', serif !important;*/
+        font-family: 'Montserrat', sans-serif !important;
+        box-sizing: border-box;
+
+
     }
     .header-nav{
-          background-color: #E4D96F;
-          margin-bottom:20px
+        background-color: #E4D96F;
+        margin-bottom:20px
     }
-/*    .dropdown {
-        position: relative;
-        display: inline-block;
-    }*/
- .dropdown-menu {
+    /*    .dropdown {
+            position: relative;
+            display: inline-block;
+        }*/
+    .dropdown-menu {
         min-width: 160px;
     }
 
@@ -68,10 +70,14 @@
         display: block;
     }
     .header-user{
-          background-color: #87CEEB;
+        background-color: #87CEEB;
+    }
+    .navbar-nav{
+        margin-left: 800px;
     }
 
 </style>
+
 
 <!-- header section start -->
 <nav class="header-nav navbar navbar-expand-lg bg-pink text-center  ">
@@ -81,16 +87,17 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav ml-auto mr-auto">
 
-         <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/Public/home.jsp">Home</a>
-        <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/Public/about.jsp">About</a>
-        <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
-        <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/Authentiation/schedule.jsp">Schedule</a>
-        <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/BLogController?action=showBlogs">Blog</a>
-        <a class="nav-item nav-link text-dark" href="<%= headerUrl%>/Public/contact.jsp">Contact us</a>
-            <c:if test = "${sessionScope.hocVienDTO == null}">
-                <a class="nav-item nav-link text-dark" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="<%= headerUrl%>/Public/home.jsp">Home</a>
+            <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
+            <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
+
+            
+            <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>
+            <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
+                <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
+
             </c:if>
             <c:if test = "${sessionScope.hocVienDTO != null}">
                 <div class=" dropdown header-user " style="margin-top:5px" >
@@ -101,20 +108,36 @@
 
                         <a class="btn-menu-item " href="<%=headerUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>                                                  
+                        <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>         
+                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
 
-                 </div> 
+                </div> 
             </c:if>
-                
+            <c:if test = "${sessionScope.trainerDTO != null}">
+                <div class="dropdown">
+                    <button style="margin-top: 10px; margin-left: 100px; background: #be2532" class="btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>${sessionScope.trainerDTO.username}</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <a class="btn-menu-item" href="<%=headerUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController/?action=MyBlog"><b style="color: black">My Blog</b></a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
+                    </div>
+                </div>                  
+            </c:if>
+
         </div>
     </div>
 </nav>   
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
