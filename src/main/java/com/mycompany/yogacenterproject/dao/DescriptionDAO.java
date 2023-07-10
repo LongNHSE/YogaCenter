@@ -6,6 +6,7 @@ package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
+import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,7 +58,7 @@ public class DescriptionDAO {
             ps.setString(1, descriptionDTO.getMaDescription());
             ps.setString(2, descriptionDTO.getTitle());
             ps.setString(3, descriptionDTO.getContent());
-   
+
             check = ps.executeUpdate();
 
             ps.close();
@@ -94,21 +95,29 @@ public class DescriptionDAO {
         return index;
     }
 
-    public static void main(String[] args) {
-//        DescriptionDAO a = new DescriptionDAO();
+    public static void main(String[] args) throws SQLException {
+        DescriptionDAO a = new DescriptionDAO();
+        DescriptionDTO b = new DescriptionDTO();
+        String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (a.lastIDIndex() + 1));
+        String maDescription = AUTO_DESCRIPTION_ID;
+        b.setMaDescription(maDescription);
+        b.setContent("eqwe");
+        b.setTitle("sadcvxv");
+        a.createDescriptionDTO(b);
 //        System.out.println(a.readDescription("TYPE0001"));
-        String thuListValue = "[THURSDAY, TUESDAY]";
 
-// Remove the square brackets and spaces from the string
-String cleanedValue = thuListValue.replaceAll("[\\[\\]\\s]", "");
-
-// Split the cleaned value into individual elements
-String[] elements = cleanedValue.split(",");
-
-// Convert the array to a List<String>
-List<String> thuList = new ArrayList<>(Arrays.asList(elements));
-
-// Print the thuList
-System.out.println(thuList.get(0));
+//        String thuListValue = "[THURSDAY, TUESDAY]";
+//
+//// Remove the square brackets and spaces from the string
+//String cleanedValue = thuListValue.replaceAll("[\\[\\]\\s]", "");
+//
+//// Split the cleaned value into individual elements
+//String[] elements = cleanedValue.split(",");
+//
+//// Convert the array to a List<String>
+//List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+//
+//// Print the thuList
+//System.out.println(thuList.get(0));
     }
 }

@@ -41,6 +41,32 @@ import java.util.logging.Logger;
  */
 public class ScheduleDAO {
 
+    public List<ScheduleHvDTO> readScheduleHvDTO() throws SQLException {
+        List<ScheduleHvDTO> listScheduleHv = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[ScheduleHV]";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        try {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ScheduleHvDTO scheduleHvDTO = new ScheduleHvDTO();
+                scheduleHvDTO.setMaHV(rs.getString("maHV"));
+                scheduleHvDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                scheduleHvDTO.setMaSlot(rs.getString("maSlot"));
+                scheduleHvDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                scheduleHvDTO.setThu(rs.getString("thu"));
+                scheduleHvDTO.setStatus(rs.getBoolean("status"));
+                listScheduleHv.add(scheduleHvDTO);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return listScheduleHv;
+    }
+
     public List<ScheduleHvDTO> readScheduleHvDTO(String maHv) throws SQLException {
         List<ScheduleHvDTO> listScheduleHv = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[ScheduleHV] where maHV=?";
@@ -76,6 +102,33 @@ public class ScheduleDAO {
 
         try {
 
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                ScheduleTrainerDTO scheduleTrainerDTO = new ScheduleTrainerDTO();
+                scheduleTrainerDTO.setMaTrainer(rs.getString("maTrainer"));
+                scheduleTrainerDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                scheduleTrainerDTO.setMaSlot(rs.getString("maSlot"));
+                scheduleTrainerDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                scheduleTrainerDTO.setThu(rs.getString("thu"));
+                scheduleTrainerDTO.setStatus(rs.getBoolean("status"));
+                listScheduleTrainer.add(scheduleTrainerDTO);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return listScheduleTrainer;
+    }
+
+    public List<ScheduleTrainerDTO> readScheduleTrainer(String maTrainer) throws SQLException {
+        List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[ScheduleTrainer] where maTrainer =? ";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        try {
+            ps.setString(1, maTrainer);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 

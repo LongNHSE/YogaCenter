@@ -6,6 +6,7 @@ package com.mycompany.yogacenterproject.filter;
 
 import com.mycompany.yogacenterproject.dto.AdminDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -47,9 +48,11 @@ public class Authentication implements Filter {
         HttpSession session = req.getSession(false);
         AdminDTO adminDTO = null;
         HocVienDTO hocVienDTO = null;
+        TrainerDTO trainerDTO = null;
         try {
             adminDTO = (AdminDTO) session.getAttribute("adminDTO");
             hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
             this.context.log("Run to here and hocVienDTO: " + hocVienDTO);
             this.context.log("Run to here and adminDTO: " + adminDTO);
         } catch (Exception ex) {
@@ -61,7 +64,7 @@ public class Authentication implements Filter {
             res.sendRedirect("/YogaCenter/Public/adminLogin.jsp");
             this.context.log("Unauthorized access request");
         } else {
-            if (hocVienDTO == null && uri.contains("Authentication") || hocVienDTO == null && uri.contains("Authorization/TraineePrivilege")) {
+            if (hocVienDTO == null && uri.contains("Authentication") || hocVienDTO == null && uri.contains("Authorization/TraineePrivilege") ||  trainerDTO == null && uri.contains("Authentication")||trainerDTO == null && uri.contains("Authorization/TrainerPrivilege")) {
                 this.context.log("Unauthorized access request");
                 res.sendRedirect("/YogaCenter/Public/signin.jsp");
             } else {

@@ -1,12 +1,14 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
+import com.mycompany.yogacenterproject.dto.AttendanceDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
@@ -65,8 +67,11 @@ public class ScheduleController extends HttpServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         List<ScheduleHvDTO> listScheduleHv = scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV());
         SlotDAO slotDAO = new SlotDAO();
+        AttendanceDAO attendanceDAO = new AttendanceDAO();
+        List<AttendanceDTO> listAttendanceDTO = attendanceDAO.readTraineeAttendance(hocVienDTO.getMaHV());
 
         List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listAttendanceDTO", listAttendanceDTO);
         request.setAttribute("listSlot", listSlot);
         request.setAttribute("listScheduleHv", listScheduleHv);
         String weekRange = request.getParameter("weekRange");

@@ -104,6 +104,27 @@ public class LopHocDAO {
 
     }
 
+    public Date getLastDay(String maLopHoc) {
+
+        try {
+            String sql = "SELECT top 1 ngayHoc FROM [dbo].[ScheduleTrainer]\n"
+                    + "where maLopHoc=?\n"
+                    + "order by ngayHoc desc";
+
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLopHoc);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getDate("ngayHoc");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void updateClassStatus(String maLopHoc, boolean status) {
         try {
             String sql = "UPDATE [dbo].[lopHoc] SET [status] = ? where maLopHoc= ? ";
@@ -730,23 +751,24 @@ public class LopHocDAO {
         List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0002");
         System.out.println(listLopHocTemp);
         // Split the selected value to retrieve maSlot and thuList
-//        String selectedMaSlot = "SL001";
-//        String selectedThuList = "[ MONDAY, WEDNESDAY]";
-//
-//        // Remove the square brackets and spaces from the string
-//        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
-//
-//// Split the cleaned value into individual elements
-//        String[] elements = cleanedValue.split(",");
-//
-//// Convert the array to a List<String>
-//        String maLoaiLopHoc = "TYPE0001";
-//        String maSlot = selectedMaSlot;
-//        List<String> thuList = new ArrayList<>(Arrays.asList(elements));
-//
-//        LopHocDAO lopHocDAO = new LopHocDAO();
+        String selectedMaSlot = "SL001";
+        String selectedThuList = "[ MONDAY, WEDNESDAY]";
+
+        // Remove the square brackets and spaces from the string
+        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
+
+// Split the cleaned value into individual elements
+        String[] elements = cleanedValue.split(",");
+
+// Convert the array to a List<String>
+        String maLoaiLopHoc = "TYPE0001";
+        String maSlot = selectedMaSlot;
+        List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+
+        LopHocDAO lopHocDAO = new LopHocDAO();
 //        System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
-//////////        Date aa = Date.valueOf(LocalDate.now());
+        System.out.println(lopHocDAO.searchClassById("LOP0001"));
+////////        Date aa = Date.valueOf(LocalDate.now());
 //////        LopHocDTO lopHocDTO = new LopHocDTO();
 //////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
 //////        lopHocDTO.setMaLopHoc("TYPE0001");
