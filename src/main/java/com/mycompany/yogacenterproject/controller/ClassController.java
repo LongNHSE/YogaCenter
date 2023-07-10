@@ -26,6 +26,8 @@ import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
@@ -164,6 +166,8 @@ public class ClassController extends HttpServlet {
                 updateClass(request, response);
             } else if (action.equals("Delete")) {
                 deleteClass(request, response);
+            } else if (action.equals("listToChangeClass")) {
+//                listToChangeClass(request,response);
             }
             /* TODO output your page here. You may use following sample code. */
         } catch (Exception e) {
@@ -698,7 +702,7 @@ public class ClassController extends HttpServlet {
         rd.forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

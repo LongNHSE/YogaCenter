@@ -139,8 +139,8 @@ public class SlotDAO {
     public static void main(String[] args) {
 
         SlotDAO slotDAO = new SlotDAO();
-        Time timeStart = new Time(9, 15, 00);
-        Time timeEnd = new Time(10, 45, 00);
+//        Time timeStart = new Time(9, 15, 00);
+//        Time timeEnd = new Time(10, 45, 00);
 //        slotDAO.createSlot("SL0002", timeStart, timeEnd);
         List<SlotDTO> listSlotDTO = new ArrayList<SlotDTO>();
         listSlotDTO = slotDAO.readSlot();

@@ -383,10 +383,10 @@ public class ScheduleDAO {
 //        System.out.println(lopHocDTO);
 //          List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0001");
         // Split the selected value to retrieve maSlot and thuList
-        String selectedMaSlot = "SL005";
-        LocalDate currentDate = LocalDate.now();
-        System.out.println(java.sql.Date.valueOf(currentDate));
-        schedule.checkSchedule();
+//        String selectedMaSlot = "SL005";
+//        LocalDate currentDate = LocalDate.now();
+//        System.out.println(java.sql.Date.valueOf(currentDate));
+//        schedule.checkSchedule();
 //        String selectedThuList = "[ THURSDAY, TUESDAY]";
 //
 //        // Remove the square brackets and spaces from the string

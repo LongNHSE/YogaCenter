@@ -13,6 +13,18 @@ GO
 --CREATE TABLE--
 ALTER DATABASE YogaCenter SET COMPATIBILITY_LEVEL = 160;
 
+CREATE TABLE [description](
+	maDescription  NVARCHAR(10) primary key,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+)
+CREATE TABLE [descriptionIMG] (
+    [maAnh] NVARCHAR(25) primary key,
+	[tenAnh] NVARCHAR(50) NULL,
+    [image] VARBINARY(MAX) NOT NULL,
+    maDescription NVARCHAR(10)NULL,
+	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
+);
 
 CREATE TABLE room(
 	[maRoom] NVARCHAR(10) primary key,
@@ -37,7 +49,7 @@ CREATE TABLE lopHocImg (
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-	[maDescription] NVARCHAR(max) null,
+	[maDescription] NVARCHAR(10) null,
 	[hocPhi] DECIMAL(10,2) NOT NULL
 	CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription]),
 	)
@@ -178,34 +190,12 @@ CREATE TABLE hopDongGiaoVien(
 	CONSTRAINT fk_maTrainer_hopDong FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer])
 	)
 
-
-
-CREATE TABLE [description](
-	maDescription  NVARCHAR(10) primary key,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-)
-CREATE TABLE [descriptionIMG] (
-    [maAnh] NVARCHAR(25) primary key,
-	[tenAnh] NVARCHAR(50) NULL,
-    [image] VARBINARY(MAX) NOT NULL,
-    maDescription NVARCHAR(10)NULL,
-	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
-);
-
-
 CREATE TABLE Semester (
     quarterID INT PRIMARY KEY,
     startDate DATE,
     endDate DATE,
     courses VARCHAR(255)
 );
-INSERT INTO Semester (quarterID, startDate, endDate, courses)
-VALUES
-    (1, '2023-01-01', '2023-03-31', 'Semester 1'),
-    (2, '2023-04-01', '2023-06-30', 'Semester 2'),
-    (3, '2023-07-01', '2023-09-30', 'Semester 3'),
-    (4, '2023-10-01', '2023-12-31', 'Semester 4');
 
 ALTER TABLE [dbo].[ScheduleHV]
 ADD [status] bit NULL;

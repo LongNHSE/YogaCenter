@@ -579,7 +579,7 @@ public class LopHocDAO {
 
         }
     }
-
+        
     //LAY COUNT SO LUONG LOP HOC TORNG LoPHOC INNER JOIN SCHEDULETRAIN
     public int countRecord() {
         int count = 0;
@@ -668,7 +668,7 @@ public class LopHocDAO {
         }
         return maSlot;
     }
-
+    
     //LAY MA SLOT TU CLASS UNASSIGNED 
     public String maSlotClassUnassigned(String maLopHoc) {
         String maSlot = null;
@@ -727,26 +727,26 @@ public class LopHocDAO {
 //        double divisor = 5.0;
 //        double result = Math.ceil(dividend / divisor);
 ////        System.out.println(result);
-        List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0001");
-//
+        List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0002");
+        System.out.println(listLopHocTemp);
         // Split the selected value to retrieve maSlot and thuList
-        String selectedMaSlot = "SL001";
-        String selectedThuList = "[ MONDAY, WEDNESDAY]";
-
-        // Remove the square brackets and spaces from the string
-        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
-
-// Split the cleaned value into individual elements
-        String[] elements = cleanedValue.split(",");
-
-// Convert the array to a List<String>
-        String maLoaiLopHoc = "TYPE0001";
-        String maSlot = selectedMaSlot;
-        List<String> thuList = new ArrayList<>(Arrays.asList(elements));
-
-        LopHocDAO lopHocDAO = new LopHocDAO();
-        System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
-////////        Date aa = Date.valueOf(LocalDate.now());
+//        String selectedMaSlot = "SL001";
+//        String selectedThuList = "[ MONDAY, WEDNESDAY]";
+//
+//        // Remove the square brackets and spaces from the string
+//        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
+//
+//// Split the cleaned value into individual elements
+//        String[] elements = cleanedValue.split(",");
+//
+//// Convert the array to a List<String>
+//        String maLoaiLopHoc = "TYPE0001";
+//        String maSlot = selectedMaSlot;
+//        List<String> thuList = new ArrayList<>(Arrays.asList(elements));
+//
+//        LopHocDAO lopHocDAO = new LopHocDAO();
+//        System.out.print(lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList));
+//////////        Date aa = Date.valueOf(LocalDate.now());
 //////        LopHocDTO lopHocDTO = new LopHocDTO();
 //////        lopHocDTO.setMaLoaiLopHoc("TYPE0001");
 //////        lopHocDTO.setMaLopHoc("TYPE0001");
