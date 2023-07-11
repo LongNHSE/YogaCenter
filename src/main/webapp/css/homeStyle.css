@@ -1,0 +1,408 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 11, 2023, 1:22:43 PM
+    Author     : devli
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+.layout_padding {
+    padding-top: 90px;
+    padding-bottom: 0px;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+ul, li, ol {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+input,
+select,
+textarea {
+  background-color: transparent;
+  outline: none;
+}
+button {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0;
+}
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+      font-family: Raleway !important ;
+}
+textarea {
+    overflow: auto;
+    resize: vertical;
+}
+a, .btn {
+    text-decoration: none !important;
+    outline: none !important;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.banner_section {
+    width: 100%;
+    float: left;
+    background-image: url(../images/banner-bg.png);
+    height: auto;
+    background-size: 100%;
+    padding-bottom: 110px;
+    padding-top: 200px;
+}
+.yoga_text {
+    width: 100%;
+    float: left;
+    font-size: 60px;
+    color: #8b57fc;
+    font-weight: 500;
+}.carousel-item {
+    position: relative;
+    display: none;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    transition: -webkit-transform .6s ease;
+    transition: transform .6s ease;
+    transition: transform .6s ease,-webkit-transform .6s ease;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+#myCarousel .carousel-inner, #myCarousel .carousel, .carousel-item, .fill {
+    height: 100%;
+    min-height: 400px;
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+}
+
+
+#myCarousel .carousel-indicators {
+    right: 0;
+    justify-content: left;
+    bottom: 0px;
+    margin-left: 0px;
+    display: block;
+    left: -90px;
+    top: 70px;
+}
+
+#myCarousel .carousel-indicators .active {
+    background-color: #ff47d9;
+}
+#myCarousel .carousel-indicators li {
+    width: 50px;
+    height: 50px;
+    background-color: #8b57fc;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 5px;
+}
+.body_text {
+    width: 100%;
+    float: left;
+    font-size: 60px;
+    color: #0d0c0a;
+    font-weight: 500;
+}
+.contrary_text {
+    width: 48%;
+    float: left;
+    font-size: 18px;
+    color: #171617;
+    margin-left: 0px;
+}
+.contact_bt {
+    width: 100%;
+    float: left;
+    margin-top: 50px;
+}
+.contact_bt a {
+    width: 15%;
+    float: left;
+    font-size: 18px;
+    color: #fafbfd;
+    background-color: #ff47d9;
+    text-align: center;
+    padding: 10px 0px;
+}
+
+.trainer_section {
+    width: 100%;
+    float: left;
+    background-color: #fafbfd;
+    height: auto;
+    padding-bottom: 90px;
+}
+.image_1 {
+    width: 100%;
+    float: left;
+    text-align: center;
+}
+.meditation_text {
+    width: 100%;
+    float: left;
+    font-size: 30px;
+    color: #353336;
+    text-align: center;
+    padding-top: 30px;
+}
+.lorem_tetx {
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #353336;
+    text-align: center;
+    margin-left: 0px;
+}
+.about_section {
+    width: 100%;
+    float: left;
+    background-image: url(../images/about-bg.png);
+    height: auto;
+    background-size: 100%;
+    padding-bottom: 310px;
+}
+.about_main {
+    width: 60%;
+    float: left;
+    background-color: #8b57fc;
+    height: auto;
+    padding: 60px 40px;
+    border-radius: 100px;
+    margin-top: 140px;
+}
+.about_text {
+    width: 100%;
+    float: left;
+    font-size: 50px;
+    color: #ffffff;
+    text-align: center;
+}
+.ipsum_text {
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 0px;
+}
+.about_bt_main {
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+}
+.about_bt {
+    width: 100%;
+    float: left;
+    margin-top: 30px;
+}
+.about_bt a {
+    width: 28%;
+    float: left;
+    font-size: 18px;
+    color: #fafbfd;
+    background-color: #ff47d9;
+    text-align: center;
+    padding: 10px 0px;
+}
+.client_section {
+    width: 100%;
+    float: left;
+    background-color: #8b57fc;
+    padding-bottom: 90px;
+}
+.costomer_taital {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 50px;
+    text-align: center;
+    color: #ffffff;
+    border-bottom: 1px solid #ff47d9;
+}
+.carousel {
+    position: relative;
+}
+.carousel-indicators {
+    right: 0;
+    justify-content: left;
+    bottom: -60px;
+    margin-left: 0px;
+}
+.pricing_section {
+    width: 100%;
+    float: left;
+    height: auto;
+    background-size: 100%;
+    padding-bottom: 320px;
+    background-color: #8b57fc;    
+}
+.pricing_taital {
+    width: 24%;
+    margin: 0 auto;
+    font-size: 50px;
+    text-align: center;
+    border-bottom: 1px solid #ffff;
+    color: #ffff;
+    font-weight: 500;
+}
+.pricing_section_2 {
+    width: 100%;
+    float: left;
+    margin-top: 70px;
+    
+}
+.plane_section {
+    width: 100%;
+    float: left;
+    background-color:#ffff
+}
+.starter_text {
+    width: 50%;
+    margin: 0 auto;
+    font-size: 30px;
+    color: #000;
+    text-align: center;
+    border-bottom: 7px solid #ff47d9;
+    font-weight: 500;
+}
+.number_text {
+    width: 35%;
+    margin: 0 auto;
+    font-size: 50px;
+    background-color: #8b57fc;
+    color: #ffffff;
+    height: auto;
+    padding: 20px 30px;
+    border-radius: 30px;
+    text-align: center;
+    margin-top: 45px;
+}
+.lorem_amet_text {
+    width: 60%;
+    margin: 0 auto;
+    font-size: 18px;
+    color: #000;
+    text-align: center;
+    margin-top: 30px;
+}
+.contact_section {
+    width: 100%;
+    float: left;
+    background-color: #252525;
+    height: auto;
+    padding-bottom: 90px;
+}
+.contact_text {
+    width: 100%;
+    float: left;
+    font-size: 50px;
+    color: #ffffff;
+}
+.mail_text {
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #f3f4fb;
+    border: 0px;
+    border-bottom: 1px solid #fcfdff;
+    background-color: transparent !important;
+    padding: 50px 30px 0px 0px;
+}
+.massage-bt {
+    color: #f3f4fb;
+    width: 100%;
+    height: 110px;
+    font-size: 18px;
+    border-bottom: 1px solid #fcfdff !important;
+    background-color: transparent !important;
+    padding: 75px 30px 0px 0px;
+    border: 0px;
+}
+.send_bt {
+    width: 100%;
+    float: left;
+    margin-top: 40px;
+}
+.send_bt a {
+    width: 30%;
+    float: left;
+    background-color: #ff47d9;
+    color: #fefeff;
+    text-align: center;
+    padding: 10px 0px;
+    font-size: 16px;
+}
+.social_icon {
+    width: 100%;
+    float: left;
+}
+.social_icon ul {
+    margin: 0px;
+    padding: 0px;
+}
+.social_icon li {
+    float: left;
+    padding-right: 10px;
+}
+.map {
+    width: 100%;
+    float: left;
+    padding-top: 30px;
+}
+.padding_left_0 {
+    padding-left: 20px;
+}
+.call_text {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #ffffff;
+    padding-top: 30px;
+}
+.copyright_section {
+    width: 100%;
+    float: left;
+    background-color: #8b57fc;
+    height: auto;
+}
+.copyright_text {
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    margin-left: 0px;
+}
+.copyright_text a {
+    color: #ffffff;
+}
+p {
+    margin: 20px;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 24px;
+}

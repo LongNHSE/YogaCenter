@@ -42,7 +42,7 @@ html {
 
 body {
      color: #666666;
-     font-size: 16px;
+     font-size: 14px;
      font-family:Raleway;
      line-height: 1.80857;
      font-weight: normal;
@@ -221,6 +221,9 @@ button {
 
 .padding_0{
      padding: 0px;
+}
+.bg-light {
+    background-color: #8b57fc !important;
 }
 .logo{
      width: 45%;

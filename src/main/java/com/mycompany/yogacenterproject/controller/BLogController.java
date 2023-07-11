@@ -81,7 +81,9 @@ public class BLogController extends HttpServlet {
             }
         } catch (Exception e) {
 
-        }
+      }
+ 
+        
     }
 
     private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -101,11 +103,13 @@ public class BLogController extends HttpServlet {
         List<BlogDTO> listBlogCate;
         BlogDAO dao = new BlogDAO();
         BlogImageDAO imgDAO = new BlogImageDAO();
+
 //                if (id != null && !id.isEmpty()) {
 //                    listBlogCate = dao.getBlogByCategoryID(id);
 //                } else {
 //                    listBlogCate = new ArrayList<>(); 
 //                }
+
         if (id != null && !id.isEmpty()) {
             listBlogCate = dao.getBlogByCategoryID(id);
             for (BlogDTO blog : listBlogCate) {
@@ -148,6 +152,7 @@ public class BLogController extends HttpServlet {
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
 //        id = "BL0002";
+
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
         List<BlogDTO> blogLatest = blogDAO.getLatestPosts();

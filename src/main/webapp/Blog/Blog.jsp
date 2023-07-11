@@ -80,9 +80,11 @@
                     </div>
 
                     <div class="col-md-3 mb40">
+
                         <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
                             <a class="nav-item nav-link" href="<%=baseUrl%>/Blog/BlogCreate.jsp"><i class="fa-solid fa-circle-plus" style="font-size: 50px"></i>   </a>
                         </c:if>
+
 
                         <div class="single category">
                             <h3 class="side-title">Category</h3>                               

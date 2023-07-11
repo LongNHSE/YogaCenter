@@ -17,13 +17,13 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Montserrat', sans-serif t;
         box-sizing: border-box;
 
 
     }
     .header-nav{
-        background-color: #E4D96F;
+        background-color: #8b57fc;
         margin-bottom:20px
     }
     /*    .dropdown {
@@ -74,6 +74,12 @@
     }
     .navbar-nav{
         margin-left: 800px;
+    }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 10px;
+        padding-left: 10px;
+        color: #fff;
+    font-size: 18px;
     }
 
 </style>

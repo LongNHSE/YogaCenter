@@ -12,6 +12,7 @@
 <html>
     <head>
         <title>Yogasan</title>
+        <link href="<%=url%>/css/homeStyle.css" rel="stylesheet" type="text/css"/>
     </head>
 
    
@@ -36,7 +37,7 @@
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <h1 class="yoga_text">Yoga For New</h1>
+                                    <h1 class="yoga_text ">Yoga For New</h1>
                                     <h1 class="body_text">Body Energy</h1>
                                     <p class="contrary_text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
                                         in a </p>
@@ -112,154 +113,13 @@
             </div>
         </div>
         <!-- about section end -->
-        <!-- client section start -->
-        <div class="client_section layout_padding">
-            <div class="container">
-                <h1 class="costomer_taital">What our customer say</h1>
-                <div id="main_slider" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#main_slider" data-slide-to="0" class="active"></li>
-                        <li data-target="#main_slider" data-slide-to="1"></li>
-                        <li data-target="#main_slider" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="client_section_2">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="client_section_2">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="client_section_2">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="client_icon">
-                                            <div class="client_left">
-                                                <div class="client_icon"><img src="<%=url%>/images/client-icon.png"></div>
-                                            </div>
-                                            <div class="client_right">
-                                                <h1 class="carklo_text">carklo</h1>
-                                                <p class="lorem_dolar_text">Lorem ipsum dolor</p>
-                                            </div>
-                                        </div>
-                                        <div class="lorem_main">
-                                            <div class="top_arrow"><img src="<%=url%>/images/top-arrow-icon.png"></div>
-                                            <p class="ipsum_dolor_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                                exercitation ullamco laboris nisi ut aliquip ex ea commodo </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- client section end -->
+ 
         <!-- pricing section start -->
         <div class="pricing_section layout_padding">
             <div class="container">
-                <h1 class="pricing_taital">Our Pricing</h1>
+                    <div>
+                        <h1 class="pricing_taital">Our Pricing</h1>
+                    </div>
                 <div class="pricing_section_2">
                     <div class="row">
                         <div class="col-md-6">
@@ -322,8 +182,8 @@
         <!-- contact section end -->
         <!-- copyright section start -->
         <div class="copyright_section">
-            <div class="container">
-                <p class="copyright_text">Copyright 2019 All Right Reserved By.<a href="https://html.design"> Free html
+            <div class="container " style="margin-top: 20px">
+                <p class="copyright_text ">Copyright 2019 All Right Reserved By.<a href="https://html.design"> Free html
                         Templates</a> Distributed By. <a href="https://themewagon.com">ThemeWagon </a></p>
             </div>
         </div>
