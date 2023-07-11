@@ -93,7 +93,7 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
 
-            
+
             <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
                 <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
@@ -107,9 +107,11 @@
                     <div class="dropdown-content">
 
                         <a class="btn-menu-item " href="<%=headerUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
+                        <a class="btn-menu-item " href="<%=headerUrl%>/ProfileController?action=viewTransaction">View My Transaction</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>         
                         <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/ProfileController?action=classList">My Class</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
 

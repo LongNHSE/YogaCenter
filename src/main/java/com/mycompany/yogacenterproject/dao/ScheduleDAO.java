@@ -242,6 +242,16 @@ public class ScheduleDAO {
 
     }
 
+    public void deleteScheduleHVWithMaLopHoc(String maLopHoc, String maHocVien) throws SQLException {
+        String sql = "DELETE FROM [dbo].[ScheduleHV] where maLopHoc = ? and maHV =?";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maLopHoc);
+        ps.setString(2, maHocVien);
+        ps.executeUpdate();
+
+    }
+
     public boolean createScheduleTemp(LopHocDTO lopHocDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[ScheduleTemp](maLopHoc, ngayHoc,maSlot, thu,[status]) "
                 + "VALUES(?,?,?,?,?)";

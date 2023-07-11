@@ -8,6 +8,7 @@ import PayPal.PaymentServices;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
+import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
@@ -37,6 +38,7 @@ import com.mycompany.yogacenterproject.util.Constants;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -59,6 +61,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -92,6 +95,10 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("Assign Trainer")) {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                String maTrainer = request.getParameter("listTrainer");
+//                out.print(maLopHoc);
+//                out.print(maTrainer);
                 assignTrainer(request, response);
             } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
@@ -120,7 +127,7 @@ public class ClassController extends HttpServlet {
                 updateClass(request, response);
             } else if (action.equals("Delete")) {
                 deleteClass(request, response);
-            } else if (action.equals("ClassDetailTrainee")) {
+            } else if (action.equals("ClassDetailTrainee") || action.equals("Detail")) {
                 classDetailTrainee(request, response);
             } else if (action.equals("ClassDetailTrainer")) {
                 classDetailTrainer(request, response);
@@ -353,7 +360,7 @@ public class ClassController extends HttpServlet {
     }
 
     //ASSIGN GIAO VIEN VAO SCHEDULE
-    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, EmailException {
         String maLopHoc = request.getParameter("maLopHoc");
         String maTrainer = request.getParameter("listTrainer");
         LopHocDAO lopHocDAO = new LopHocDAO();
@@ -363,6 +370,7 @@ public class ClassController extends HttpServlet {
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
         scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
+        EmailController.trainerDTOAssign(trainerDAO.readTrainer(maTrainer), lopHocDAO.searchClassById(maLopHoc));
         response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
 
     }
@@ -381,6 +389,7 @@ public class ClassController extends HttpServlet {
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
     public void payment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
             boolean error = true;
             HttpSession session = request.getSession();
             LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
@@ -406,7 +415,6 @@ public class ClassController extends HttpServlet {
                 String[] elements = cleanedValue.split(",");
 
 // Convert the array to a List<String>
-                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
                 String maSlot = selectedMaSlot;
                 List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
@@ -432,7 +440,9 @@ public class ClassController extends HttpServlet {
                     showDetails(request, response);
                 }
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
                 rd.forward(request, response);
 
             }
@@ -442,7 +452,7 @@ public class ClassController extends HttpServlet {
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 
-    public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response) throws SQLException, NumberFormatException, ServletException, IOException {
+    public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response) throws SQLException, NumberFormatException, ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
         if (session.getAttribute("hocVienDTO") != null) {
             String maLopHoc = request.getParameter("returnID");
@@ -476,16 +486,27 @@ public class ClassController extends HttpServlet {
 
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
             attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
+            sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
             rd.forward(request, response);
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
             rd.forward(request, response);
 
         }
     }
 
+    public void sendMailClassRegister(HttpServletRequest request, HttpServletResponse response, LopHocDTO lopHocDTO) throws EmailException, MalformedURLException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("hocVienDTO") != null) {
+            String maLopHoc = request.getParameter("returnID");
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+            EmailController.ClassRegister(lopHocDTO, hocVienDTO.getEmail());
+        }
+    }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
+
     public boolean checkTraineeSchedule(HttpServletRequest request, HttpServletResponse response, String maSlot, List<String> thuList, String maHocVien) {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         return scheduleDAO.checkTraineeSchedule(maSlot, maHocVien, thuList);

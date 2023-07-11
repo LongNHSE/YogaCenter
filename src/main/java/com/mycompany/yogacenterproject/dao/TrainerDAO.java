@@ -39,7 +39,7 @@ public class TrainerDAO {
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
                 long salary = rs.getLong("salary");
-               
+
                 int soNgayNghi = rs.getInt("soNgayNghi");
                 boolean status = rs.getBoolean("status");
                 String trainerType = rs.getString("trainerType");
@@ -61,7 +61,7 @@ public class TrainerDAO {
 
                 return trainerDTO;
             }
-           
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,6 +96,40 @@ public class TrainerDAO {
                 listTrainer.add(newTrainer);
             }
             return listTrainer;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public TrainerDTO readTrainer(String maTrainer) {
+        List<TrainerDTO> listTrainer = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Trainer where maTrainer=? ";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maTrainer);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+//                String maTrainer = rs.getString("maTrainer");
+                String Ho = rs.getString("Ho");
+                String Ten = rs.getString("Ten");
+                Date dob = rs.getDate("dob");
+                LocalDate dobDate = DateUtils.asLocalDate(dob);
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                long salary = rs.getLong("salary");
+                String username = rs.getString("username");
+                String psw = rs.getString("psw");
+                int soNgayNghi = rs.getInt("soNgayNghi");
+                boolean status = rs.getBoolean("status");
+                String trainerType = rs.getString("trainerType");
+                String maLoaiTK = rs.getString("maLoaiTK");
+                TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, Ten, dobDate, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+//                TrainerDTO newTrainer = new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+//                
+                return newTrainer;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -355,6 +389,37 @@ public class TrainerDAO {
             String sql = "SELECT * FROM [dbo].[Trainer] where username=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, userName);
+
+            // Bước 3: thực thi câu lệnh SQL
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+
+            // Bước 4:
+            if (rs.next()) {
+
+                return true;
+            }
+
+            // Bước 5:
+            DBUtils.closeConnection(con);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean selectByEmail(String email) {
+
+        try {
+
+            // Bước 1: tạo kết nối đến CSDL
+            Connection con = DBUtils.getConnection();
+
+            // Bước 2: tạo ra đối tượng statement
+            String sql = "SELECT * FROM [dbo].[Trainer] where email=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, email);
 
             // Bước 3: thực thi câu lệnh SQL
             System.out.println(sql);

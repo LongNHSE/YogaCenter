@@ -12,6 +12,7 @@ public class LopHocDTO {
     private String maLopHoc;
     private int soLuongHV;
     private int soBuoi;
+    private int soBuoiDaDay;
     private String maTrainer;
     private String maLoaiLopHoc;
     private String maSlot;
@@ -23,6 +24,52 @@ public class LopHocDTO {
     private Date ngayBatDau;
     private Date ngayKetThuc;
     private String[] thu;
+    private TrainerDTO trainerDTO;
+    private LoaiLopHocDTO loaiLopHocDTO;
+    private SlotDTO slotDTO;
+
+    public SlotDTO getSlotDTO() {
+        return slotDTO;
+    }
+
+    public void setSlotDTO(SlotDTO slotDTO) {
+        this.slotDTO = slotDTO;
+    }
+
+    public int getSoBuoiDaDay() {
+        return soBuoiDaDay;
+    }
+
+    public void setSoBuoiDaDay(int soBuoiDaDay) {
+        this.soBuoiDaDay = soBuoiDaDay;
+    }
+
+    public TrainerDTO getTrainerDTO() {
+        return trainerDTO;
+    }
+
+    public void setTrainerDTO(TrainerDTO trainerDTO) {
+        this.trainerDTO = trainerDTO;
+    }
+
+    public LoaiLopHocDTO getLoaiLopHocDTO() {
+        return loaiLopHocDTO;
+    }
+
+    public void setLoaiLopHocDTO(LoaiLopHocDTO loaiLopHocDTO) {
+        this.loaiLopHocDTO = loaiLopHocDTO;
+    }
+
+    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngayBatDau) {
+        this.maLopHoc = maLopHoc;
+        this.soLuongHV = soLuongHV;
+        this.soBuoi = soBuoi;
+        this.maTrainer = maTrainer;
+        this.maLoaiLopHoc = maLoaiLopHoc;
+        this.maSlot = maSlot;
+        this.maRoom = maRoom;
+        this.ngayBatDau = ngayBatDau;
+    }
 
     public Date getNgayKetThuc() {
         return ngayKetThuc;
@@ -91,17 +138,6 @@ public class LopHocDTO {
     public LopHocDTO() {
     }
 
-    public LopHocDTO(String maLopHoc, int soLuongHV, int soBuoi, String maTrainer, String maLoaiLopHoc, String maSlot, String maRoom, Date ngayBatDau) {
-        this.maLopHoc = maLopHoc;
-        this.soLuongHV = soLuongHV;
-        this.soBuoi = soBuoi;
-        this.maTrainer = maTrainer;
-        this.maLoaiLopHoc = maLoaiLopHoc;
-        this.maSlot = maSlot;
-        this.maRoom = maRoom;
-        this.ngayBatDau = ngayBatDau;
-    }
-
     public String getMaLopHoc() {
         return maLopHoc;
     }
@@ -158,11 +194,34 @@ public class LopHocDTO {
         this.maRoom = maRoom;
     }
 
+    public String printDays() {
+        StringBuilder sb = new StringBuilder();
+        List<String> days = getThuList();
+        // Append the opening bracket
+        // Iterate over the days and append them to the StringBuilder
+        for (int i = 0; i < days.size(); i++) {
+            String day = days.get(i);
+
+            // Convert the day to proper case (e.g., "THURSDAY" to "Thursday")
+            String formattedDay = day.substring(0, 1) + day.substring(1).toLowerCase();
+
+            // Append the formatted day
+            sb.append(formattedDay);
+
+            // Add a comma and space if it's not the last day
+            if (i < days.size() - 1) {
+                sb.append(", ");
+            }
+        }
+
+        // Append the closing bracket
+        // Print the beautiful string
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
-
-        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", ngayBatDau=" + ngayBatDau + ", thu=" + thu + '}';
-
+        return "LopHocDTO{" + "maLopHoc=" + maLopHoc + ", soLuongHV=" + soLuongHV + ", soBuoi=" + soBuoi + ", maTrainer=" + maTrainer + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maSlot=" + maSlot + ", maRoom=" + maRoom + ", soLuongHvHienTai=" + soLuongHvHienTai + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + ", thuList=" + thuList + ", status=" + status + ", ngayBatDau=" + ngayBatDau + ", ngayKetThuc=" + ngayKetThuc + ", thu=" + thu + ", trainerDTO=" + trainerDTO + ", loaiLopHocDTO=" + loaiLopHocDTO + '}';
     }
 
 }

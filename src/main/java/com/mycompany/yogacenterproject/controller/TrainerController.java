@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -41,7 +45,7 @@ public class TrainerController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, EmailException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
 
@@ -63,11 +67,12 @@ public class TrainerController extends HttpServlet {
 
     }
 
-    public void addTrainer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void addTrainer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
         TrainerDAO trainerDAO = new TrainerDAO();
         String errorMessage = "";
         String errorMessageDate = "";
+        String errorMessageEmail = "";
         boolean error = true;
         //DATE USING SQL.DATE
         Date dateOfBirth = null;
@@ -97,8 +102,13 @@ public class TrainerController extends HttpServlet {
             errorMessage += "Username has already taken";
             error = false;
         }
+        if (trainerDAO.selectByEmail(email)) {
+            errorMessageEmail += "Email has already taken";
+            error = false;
+        }
         request.setAttribute("errorMessage", errorMessage);
         request.setAttribute("errorMessageDate", errorMessageDate);
+        request.setAttribute("errorMessageEmail", errorMessageEmail);
 
         if (error == true) {
             TrainerDTO trainerDTO = new TrainerDTO();
@@ -119,10 +129,12 @@ public class TrainerController extends HttpServlet {
             trainerDTO.setGender(gender);
 
             trainerDAO.addTrainer(trainerDTO);
-            RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
+            EmailController.trainerDTOCreate(trainerDTO);
+            RequestDispatcher rd = request.getRequestDispatcher("./AdminController?action=listTrainer&page=1");
             rd.forward(request, response);
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Public/signup.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Trainer/AddTrainer.jsp");
+            
             rd.forward(request, response);
         }
     }
@@ -139,7 +151,11 @@ public class TrainerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (EmailException ex) {
+            Logger.getLogger(TrainerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -153,7 +169,11 @@ public class TrainerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (EmailException ex) {
+            Logger.getLogger(TrainerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

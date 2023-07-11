@@ -155,6 +155,16 @@ public class AttendanceDAO {
         return false;
     }
 
+    public void deleteAttendaceHV(String maHocVien, String maLopHoc) throws SQLException {
+        String sql = "DELETE FROM [dbo].[Attendance] where maHV = ? and maLopHoc=? ";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maHocVien);
+        ps.setString(2, maLopHoc);
+        ps.executeUpdate();
+
+    }
+
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 attendanceID FROM [dbo].[Attendance] ORDER BY attendanceID DESC";
         int index = 0;
@@ -180,6 +190,6 @@ public class AttendanceDAO {
         AttendanceDAO attendanceDAO = new AttendanceDAO();
         LocalDate date = LocalDate.now();
 //        System.out.println(attendanceDAO.readAttendance(Date.valueOf(date), "SL002", "LOP0003"));
-System.out.println(attendanceDAO.readTraineeAttendance("HV0001"));
+       attendanceDAO.deleteAttendaceHV("HV0001", "LOP0009");
     }
 }

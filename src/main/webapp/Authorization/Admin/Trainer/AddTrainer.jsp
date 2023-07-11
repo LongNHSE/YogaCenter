@@ -214,7 +214,10 @@
                                                 <input type="email" id="emailAddress"   class="form-control form-control-lg" name="email" required="required" />
                                                 <label class="form-label" for="emailAddress">Email</label>
                                             </div>
-
+                                            <div style="color: red; font-weight: BOLD">
+                                            <% String errorMessageEmail = (String) request.getAttribute("errorMessageEmail"); %>
+                                            <% if (errorMessageEmail != null) {%> <%= errorMessageEmail%> <% }%>
+                                            </div>
                                         </div>
                                         <div class="col-md-6 mb-4 pb-2">
 

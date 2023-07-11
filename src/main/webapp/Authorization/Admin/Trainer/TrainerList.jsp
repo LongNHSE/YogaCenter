@@ -312,9 +312,9 @@
 
                     <% for (int i = 1; i <= count; i++) {%>
                     <% if (i == pageCount) {%>
-                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>' class="active"><%=i%></a>
+                    <a href='<%=url%>/AdminController?action=listTrainer&page=<%=i%>' class="active"><%=i%></a>
                     <% } else {%>
-                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>'><%=i%></a>
+                    <a href='<%=url%>/AdminController?action=listTrainer&page=<%=i%>'><%=i%></a>
                     <% }
                         }%>
                     <a href="#">&raquo;</a>
