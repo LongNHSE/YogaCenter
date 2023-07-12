@@ -123,31 +123,31 @@
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
                             <form method="POST" action="<%=url%>/ProfileController">
-                                <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" hidden="" readonly>
+                                <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" readonly>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputUsername" >Username</label>
-                                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}">
+                                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}" readonly>
                                 </div>
 
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputFirstName">Last Name</label>
-                                        <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}">
+                                        <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}" readonly>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputLastName">First name</label>
-                                        <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}">
+                                        <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}" readonly>
                                     </div>
                                 </div>
 
-                                <div class="row gx-3 mb-3">
+<!--                                <div class="row gx-3 mb-3">
                                     <div class="col-md-12">
                                         <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap">
+                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap" readonly>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputEmailAddress">Email address</label>
@@ -158,16 +158,16 @@
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}">
+                                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}" readonly>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                        <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
+                                        <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}" readonly>
                                     </div>
                                 </div>
 
-                                <button class="btn btn-primary" type="submit" name="action" value="updateProfile" >Save changes</button>
+                                <button class="btn btn-primary" type="submit" name="action" value="viewUpdateProfile" >Update</button>
                             </form>
                         </div>
                     </div>

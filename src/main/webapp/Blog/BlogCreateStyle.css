@@ -38,10 +38,14 @@ textarea::-webkit-scrollbar-thumb{
 .title::placeholder,
 .article::placeholder{
     color: #2d2d2d;
+    border-radius: 50px
 }
-
+.title{
+    text-align: center;
+    font-style: italic; 
+}
 .article{
-    height: 500px;
+    height: 300px;
     font-size: 20px;
     margin-top: 20px;
     line-height: 30px;
@@ -53,7 +57,7 @@ textarea::-webkit-scrollbar-thumb{
 
     max-height:auto;
     min-height: 333px;
-    border: 5px solid;
+    border: 1px solid;
     margin: auto;
     width: 44%;
     padding: 10px;

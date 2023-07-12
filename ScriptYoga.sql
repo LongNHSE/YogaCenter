@@ -45,29 +45,14 @@ CREATE TABLE lopHocImg (
     [maLopHoc] NVARCHAR(25) NULL,
 	[maTrainer] NVARCHAR(25) NULL,
 );
-CREATE TABLE [description](
-	maDescription  NVARCHAR(10) primary key,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-)
-CREATE TABLE [descriptionIMG] (
-    [maAnh] NVARCHAR(25) primary key,
-	[tenAnh] NVARCHAR(50) NULL,
-    [image] VARBINARY(MAX) NOT NULL,
-    maDescription NVARCHAR(10)NULL,
-	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
-);
+
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
-<<<<<<< HEAD:Script4(1).sql
-	[maDescription] NVARCHAR(10) null,
-	[hocPhi] DECIMAL(10,2) NOT NULL
-=======
+
 	[maDescription] NVARCHAR(10) not null,
 	[hocPhi] DECIMAL(10,2) NOT NULL,
 	[status] bit not null
->>>>>>> 8540cf540b7b22fa2950d5f0b60ddfdb6a7cdda2:ScriptYoga.sql
 	CONSTRAINT fk_Description_loaiLopHoc FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription]),
 	)
 
@@ -207,14 +192,6 @@ CREATE TABLE hopDongGiaoVien(
 	CONSTRAINT fk_maTrainer_hopDong FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer])
 	)
 
-<<<<<<< HEAD:Script4(1).sql
-=======
-
-
-
-
-
->>>>>>> 8540cf540b7b22fa2950d5f0b60ddfdb6a7cdda2:ScriptYoga.sql
 CREATE TABLE Semester (
     quarterID INT PRIMARY KEY,
     startDate DATE,

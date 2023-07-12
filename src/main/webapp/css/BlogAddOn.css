@@ -1,0 +1,19 @@
+.blog .submit-btn{
+    background-color: #8b57fc;
+    border: #0067ff;
+    color: #e7e7e7;
+    border-radius: 5px;
+    align-content: center;
+    padding: 3px 18px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.blog .submit-btn:hover{
+    padding: 6px 24px;
+    font-size: 25px;
+    
+}
+.blog .submit-btn:active{
+    background-color: #e7e7e7;
+    color: #000000;
+}

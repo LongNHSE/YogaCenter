@@ -34,18 +34,16 @@ public class ProfileController extends HttpServlet {
         try {
             // log("chay vao process request");////////////////////
             String action = request.getParameter("action");
-            switch (action) {
-                case "viewProfile":
-                    viewProfile(request, response);
-                    break;
-                case "viewTransaction":
-                    viewHocVienTransaction(request, response);
-                    break;
-                case "updateProfile":
-                    updateProfile(request, response);
-                    break;
-                default:
-                    break;
+            log("action:" + action);
+            if (action.equals("viewProfile")) {
+                viewProfile(request, response);
+            } else if (action.equals("viewTransaction")) {
+                viewHocVienTransaction(request, response);
+            } else if (action.equals("updateProfile")) {
+                updateProfile(request, response);
+            } else if (action.equals("viewUpdateProfile")) {
+                log("action====" + action);
+                viewProfile(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +53,7 @@ public class ProfileController extends HttpServlet {
 
     public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // View profile trainee
-        //  log("chay vao view Profile");////////////////////
+        log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
         String maHocVien = request.getParameter("maHocVien");
         HocVienDAO hocVienDAO = new HocVienDAO();
@@ -64,8 +62,14 @@ public class ProfileController extends HttpServlet {
         //   log(hvDTO.getHo());////////////////////
         //   hvDTO.setHo(hvDTO.getHo());
         session.setAttribute("maHV", hvDTO.getMaHV());
-        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/profile.jsp");
+//        if(whereTo.equals("viewProfile")){
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/updateProfile.jsp");
         rd.forward(request, response);
+//    }
+//        else if(whereTo.equals("updateProfile")){
+//        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/updateProfile.jsp");
+//        rd.forward(request, response);
+//    }
     }
 
 //////////SET MAHV HIDDEN MOI DEM VE DC, RELOAD TRANG VE STATELESS >< K CO CACH GIU MAHV SAU KHI NHAN SAVE CHANGE, TRANG CAP NHAT DUNG LUC   
@@ -86,7 +90,7 @@ public class ProfileController extends HttpServlet {
         Date dateTime = Date.valueOf(date);
         LocalDate dob = Instant.ofEpochMilli(dateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 /////////////////////////////            
-        HocVienDTO changeHocVien = (HocVienDTO)session.getAttribute("hocVienDTO");
+        HocVienDTO changeHocVien = (HocVienDTO) session.getAttribute("hocVienDTO");
         changeHocVien.setDob(dob);
         changeHocVien.setEmail(changeHocVien.getEmail());
         changeHocVien.setGender(changeHocVien.getGender());
@@ -95,9 +99,9 @@ public class ProfileController extends HttpServlet {
         changeHocVien.setTen(ten);
         changeHocVien.setPhone(phone);
         changeHocVien.setUsername(username);
-        session.setAttribute("hocVienDTO",changeHocVien);
+        session.setAttribute("hocVienDTO", changeHocVien);
         hocVienDAO.updateHocVien(changeHocVien);
-        log(changeHocVien.toString());
+//        log(changeHocVien.toString());
         RequestDispatcher rd = request.getRequestDispatcher("./ProfileController?action=viewProfile&&maHocVien=" + maHV);
         rd.forward(request, response);
     }

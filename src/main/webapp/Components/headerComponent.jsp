@@ -81,7 +81,7 @@
 
 <!-- header section start -->
 <nav class="header-nav navbar navbar-expand-lg bg-pink text-center  ">
-    <div class="logo"><a href="home.jsp"><img src="<%= headerUrl%>/images/logo.png"></a></div>
+    <div class="logo"><a href="<%= headerUrl%>/Public/home.jsp"><img src="<%= headerUrl%>/images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

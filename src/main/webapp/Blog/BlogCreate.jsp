@@ -14,7 +14,7 @@
 
 
         <link href="<%=url%>/Blog/BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
-
+        <link href="<%=url%>/css/BlogAddOn.css" rel="stylesheet" type="text/css"  > 
     </head>
     <body>
         <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">
@@ -22,12 +22,12 @@
             <div id="previewThumb" class="previewThumb">
             </div>
             <div class="Controller">
-                <input type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
+                <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
                 <input type="hidden" id="Thumbnails" name="Banner"  >
                 <div class="blog">
-                    <textarea type="text" class="title" name="title" placeholder="Blog title..."></textarea>
-                    <textarea type="text" class="article" name="content" placeholder="Start writing here..."></textarea>
-                    <input type="submit" value="submit">
+                    <textarea type="text" class="title" name="title" placeholder="Blog title..." required=""></textarea>
+                    <textarea type="text" class="article" name="content" placeholder="Start writing here..."required=""></textarea>
+                    <input class="submit-btn" type="submit" value="Submit">
                     <input type="hidden" name="action" value="CreateBlog">
                 </div>
             </div>
