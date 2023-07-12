@@ -64,6 +64,10 @@
         <servlet-name>BlogAdminController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VoucherController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.VoucherController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -123,6 +127,10 @@
     <servlet-mapping>
         <servlet-name>BlogAdminController</servlet-name>
         <url-pattern>/BlogAdminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VoucherController</servlet-name>
+        <url-pattern>/VoucherController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

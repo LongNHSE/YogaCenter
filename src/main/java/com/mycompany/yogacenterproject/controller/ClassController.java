@@ -18,6 +18,7 @@ import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.AttendanceDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
@@ -383,16 +384,22 @@ public class ClassController extends HttpServlet {
         try {
             boolean error = true;
             HttpSession session = request.getSession();
-            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-            AttendanceDAO attendanceDAO = new AttendanceDAO();
             if (session.getAttribute("hocVienDTO") != null) {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
                 LopHocDTO lopHocDTO = new LopHocDTO();
                 LopHocDAO lopHocDAO = new LopHocDAO();
                 HoaDonDAO hoaDonDAO = new HoaDonDAO();
+                VoucherDAO voucherDAO = new VoucherDAO();
+                long multiplier=1;
                 String errorMessage = "";
-//
+
                 String selectedValue = request.getParameter("maSlot");
+                String voucherID = request.getParameter("voucherID");
+                if(voucherID==null){
+                    multiplier = voucherDAO.getMultiplierByID("V0001");
+                }else{
+                    multiplier = 1;
+                }
 
                 // Split the selected value to retrieve maSlot and thuList
                 String[] parts = selectedValue.split("\\|");
@@ -412,7 +419,6 @@ public class ClassController extends HttpServlet {
 
                 String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
 
-                ScheduleDAO scheduleDAO = new ScheduleDAO();
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
                     errorMessage += "Classes are fully reserved.";
@@ -425,19 +431,18 @@ public class ClassController extends HttpServlet {
                 if (error) {
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
                     PaymentServices paymentServices = new PaymentServices();
-                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO);
+                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, voucherID);
                     response.sendRedirect(approvalLink);
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
                 }
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
                 rd.forward(request, response);
 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (PayPalRESTException | IOException | SQLException | ServletException e) {
         }
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT

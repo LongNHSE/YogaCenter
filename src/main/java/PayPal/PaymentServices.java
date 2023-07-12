@@ -7,6 +7,7 @@ package PayPal;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
+import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.paypal.api.payments.Amount;
@@ -22,6 +23,7 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,12 +42,12 @@ public class PaymentServices {
 
     String uuid = null;
 
-    public String createPayment(LopHocDTO lopHocDTO, HocVienDTO hocVienDTO) throws PayPalRESTException {
+    public String createPayment(LopHocDTO lopHocDTO, HocVienDTO hocVienDTO, String voucherID) throws PayPalRESTException, SQLException {
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
 
         // Create a Payment object using the PayPal SDK
         Payer payer = getPayerInformation(hocVienDTO);
-        Transaction transaction = getTransactionInformation(lopHocDTO);
+        Transaction transaction = getTransactionInformation(lopHocDTO, voucherID);
         RedirectUrls redirectUrls = getRedirectURL(lopHocDTO);
 
         Payment requestPayment = new Payment();
@@ -77,10 +79,12 @@ public class PaymentServices {
         return approvalLink;
     }
 
-    private Transaction getTransactionInformation(LopHocDTO lopHocDTO) {
+    private Transaction getTransactionInformation(LopHocDTO lopHocDTO, String voucherID) throws SQLException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        VoucherDAO voucherDAO = new VoucherDAO();
 
-        long subtotal = loaiLopHocDAO.searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000; // Replace with actual calculation based on lopHocDTO
+        long subtotal = (loaiLopHocDAO.searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())
+                * voucherDAO.getMultiplierByID(voucherID)) / 21000; // Replace with actual calculation based on lopHocDTO
         long tax = 0; // Replace with actual calculation based on lopHocDTO
         long shipping = 0; // Replace with actual calculation based on lopHocDTO
         long totalAmount = subtotal + tax + shipping;

@@ -5,8 +5,6 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
-import com.mycompany.yogacenterproject.dto.LopHocDTO;
-import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.io.IOException;
@@ -17,8 +15,6 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -198,11 +194,9 @@ public class LoaiLopHocDAO {
 
                 hocPhi = rs.getDouble("hocPhi");
 
-// Create a DecimalFormatSymbols instance for the default locale
                 DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
                 symbols.setGroupingSeparator('.');
 
-// Create a DecimalFormat instance with the desired pattern and symbols
                 DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
                 decimalFormat.setDecimalSeparatorAlwaysShown(false);
                 return decimalFormat.format(hocPhi);
