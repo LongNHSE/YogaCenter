@@ -128,7 +128,6 @@
                     </button>
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=headerUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/BLogController/?action=MyBlog"><b style="color: black">My Blog</b></a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>

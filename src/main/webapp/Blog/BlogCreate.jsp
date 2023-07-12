@@ -59,7 +59,7 @@
                         imgElement.src = imgData;
                         var deleteButton = document.createElement('button');
                         deleteButton.className = 'deleteButton';
-                        deleteButton.textContent = 'Xóa';
+                        deleteButton.textContent = 'Delete';
                         deleteButton.addEventListener('click', function () {
                             var imageContainer = this.parentNode;
                             imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện

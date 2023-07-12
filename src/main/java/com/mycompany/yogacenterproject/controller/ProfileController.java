@@ -36,14 +36,14 @@ public class ProfileController extends HttpServlet {
             String action = request.getParameter("action");
             log("action:" + action);
             if (action.equals("viewProfile")) {
-                viewProfile(request, response);
+                viewProfile(request, response, "profile");
             } else if (action.equals("viewTransaction")) {
                 viewHocVienTransaction(request, response);
             } else if (action.equals("updateProfile")) {
                 updateProfile(request, response);
             } else if (action.equals("viewUpdateProfile")) {
                 log("action====" + action);
-                viewProfile(request, response);
+                viewProfile(request, response, "updateProfile");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,25 +51,24 @@ public class ProfileController extends HttpServlet {
 
     }
 
-    public void viewProfile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void viewProfile(HttpServletRequest request, HttpServletResponse response, String whereTo) throws ServletException, IOException {
         // View profile trainee
         log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
-        String maHocVien = request.getParameter("maHocVien");
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hvDTO = hocVienDAO.searchHocVienById(maHocVien);
-        //   log(maHocVien);////////////////////
-        //   log(hvDTO.getHo());////////////////////
-        //   hvDTO.setHo(hvDTO.getHo());
-        session.setAttribute("maHV", hvDTO.getMaHV());
-//        if(whereTo.equals("viewProfile")){
-        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/updateProfile.jsp");
-        rd.forward(request, response);
-//    }
-//        else if(whereTo.equals("updateProfile")){
-//        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/updateProfile.jsp");
-//        rd.forward(request, response);
-//    }
+        request.setAttribute("hocVienDTO", hocVienDTO);
+        if (whereTo.equalsIgnoreCase("updateProfile")) {
+            RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/updateProfile.jsp");
+            rd.forward(request, response);
+        } else if (whereTo.equalsIgnoreCase("profile")) {
+            RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/profile.jsp");
+            rd.forward(request, response);
+        }
+
+        {
+
+        }
     }
 
 //////////SET MAHV HIDDEN MOI DEM VE DC, RELOAD TRANG VE STATELESS >< K CO CACH GIU MAHV SAU KHI NHAN SAVE CHANGE, TRANG CAP NHAT DUNG LUC   
@@ -82,9 +81,7 @@ public class ProfileController extends HttpServlet {
         String ho = request.getParameter("ho");
         String ten = request.getParameter("ten");
         String phone = request.getParameter("phone");
-//            String psw= request.getParameter("psw");
-//            String email= request.getParameter("email");
-//            String gender= request.getParameter("gender");
+
 //////RECEIVING STRING DATE FROM JSP, THEN CONVERT TO DATE TYPE
         String date = request.getParameter("dob");
         Date dateTime = Date.valueOf(date);
@@ -102,8 +99,7 @@ public class ProfileController extends HttpServlet {
         session.setAttribute("hocVienDTO", changeHocVien);
         hocVienDAO.updateHocVien(changeHocVien);
 //        log(changeHocVien.toString());
-        RequestDispatcher rd = request.getRequestDispatcher("./ProfileController?action=viewProfile&&maHocVien=" + maHV);
-        rd.forward(request, response);
+        viewProfile(request, response,"profile");
     }
 
     public void viewHocVienTransaction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

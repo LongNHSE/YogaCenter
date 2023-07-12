@@ -32,11 +32,6 @@
         <link rel="stylesheet" href="<%=url%>/css/owl.theme.default.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">
-        <style>
-            .logo{
-                width: 13%;
-            }
-        </style>
     </head>
     <!-- body -->
 

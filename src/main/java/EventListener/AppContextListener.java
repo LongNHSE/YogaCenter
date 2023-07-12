@@ -18,16 +18,16 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class AppContextListener implements ServletContextListener {
 
-//    @Override
-//    public void contextInitialized(ServletContextEvent sce) {
-//        ScheduleDAO scheduleDAO = new ScheduleDAO();
-//        LopHocDAO lopHocDAO = new LopHocDAO();
-//
-//        scheduleDAO.checkSchedule();
-//        lopHocDAO.CheckClass();
-//    }
-//
-//    @Override
-//    public void contextDestroyed(ServletContextEvent sce) {
-//    }
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        scheduleDAO.checkSchedule();
+        lopHocDAO.CheckClass();
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+    }
 }

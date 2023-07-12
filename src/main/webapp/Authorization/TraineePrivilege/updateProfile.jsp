@@ -11,7 +11,7 @@
 
 
         <title>Profile Detail</title>
-    <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
@@ -93,11 +93,138 @@
                 margin-left: 1rem;
                 margin-right: 1rem;
             }
+
+
+
+            .blog{
+                width: 70vw;
+                min-width: 400px;
+                height: 100%;
+                display: block;
+                margin: auto;
+                padding: 50px 0;
+            }
+
+            textarea::-webkit-scrollbar{
+                width: 10px;
+            }
+
+            textarea::-webkit-scrollbar-thumb{
+                background: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+            }
+
+            .title,
+            .article{
+                width: 100%;
+                min-height: 100px;
+                height: auto;
+                outline: none;
+                font-size: 50px;
+                font-weight: 600;
+                color: #2d2d2d;
+                resize: none;
+                border: solid;
+                padding: 10px;
+                border-radius: solid10px;
+
+            }
+
+            .title::placeholder,
+            .article::placeholder{
+                color: #2d2d2d;
+                border-radius: 50px
+            }
+            .title{
+                text-align: center;
+                font-style: italic;
+            }
+            .article{
+                height: 300px;
+                font-size: 20px;
+                margin-top: 20px;
+                line-height: 30px;
+                font-weight: 500;
+                padding-bottom: 100px;
+                white-space: pre-wrap;
+            }
+            .previewThumb {
+
+                max-height:auto;
+                min-height: 333px;
+                border: 1px solid;
+                margin: auto;
+                width: 44%;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                background: #e7e7e7;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .imageListStyle {
+                max-width: 100%;
+                max-height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                background: #e7e7e7;
+                background-size: cover;
+                background-position: center;
+            }
+            .imageListStyle img {
+                max-width: 100%;
+                max-height: 100%;
+                display: block; /* remove extra space below image */
+            }
+
+            .deleteButton {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background: rgba(255, 255, 255, 0.8);
+                border: none;
+                border-radius: 50%;
+                padding: 5px;
+                cursor: pointer;
+            }
+            .contentImg{
+                display: block;
+            }
+            .preview {
+
+                height: 423px;
+                border: 5px solid;
+                margin: auto;
+                width: 100%;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                background: #e7e7e7;
+                background-size: cover;
+                background-position: center;
+            }
+            .preview img {
+                max-width: 110%;
+                max-height: 100%;
+            }
+            .imageListStyle {
+                display: inline-block;
+                position: relative;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="${url}/Components/headerComponent.jsp" />          
-     
+
         <div class="container-xl px-4 mt-4">
 
             <hr class="mt-0 mb-4">
@@ -117,6 +244,14 @@
                       </div>
                 
                       </div>-->
+                <div class="previewThumb col-xl-12">
+                    <div id="previewThumb" class="previewThumb">
+                    </div>
+                    <div class="Controller">
+                        <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
+                        <input type="hidden" id="Thumbnails" name="Banner"  >
+                    </div>    
+                </div>    
                 <div class="col-xl-8">
 
                     <div class="card mb-4">
@@ -142,12 +277,12 @@
                                     </div>
                                 </div>
 
-<!--                                <div class="row gx-3 mb-3">
-                                    <div class="col-md-12">
-                                        <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap">
-                                    </div>
-                                </div>-->
+                                <!--                                <div class="row gx-3 mb-3">
+                                                                    <div class="col-md-12">
+                                                                        <label class="small mb-1" for="inputOrgName">Organization name</label>
+                                                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap">
+                                                                    </div>
+                                                                </div>-->
 
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputEmailAddress">Email address</label>
@@ -191,28 +326,28 @@
         <script src="<%=url%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script>
-            $('#myCarousel').carousel({
-                interval: false
-            });
+                            $('#myCarousel').carousel({
+                                interval: false
+                            });
 
-            //scroll slides on swipe for touch enabled devices
+                            //scroll slides on swipe for touch enabled devices
 
-            $("#myCarousel").on("touchstart", function (event) {
+                            $("#myCarousel").on("touchstart", function (event) {
 
-                var yClick = event.originalEvent.touches[0].pageY;
-                $(this).one("touchmove", function (event) {
+                                var yClick = event.originalEvent.touches[0].pageY;
+                                $(this).one("touchmove", function (event) {
 
-                    var yMove = event.originalEvent.touches[0].pageY;
-                    if (Math.floor(yClick - yMove) > 1) {
-                        $(".carousel").carousel('next');
-                    } else if (Math.floor(yClick - yMove) < -1) {
-                        $(".carousel").carousel('prev');
-                    }
-                });
-                $(".carousel").on("touchend", function () {
-                    $(this).off("touchmove");
-                });
-            });
+                                    var yMove = event.originalEvent.touches[0].pageY;
+                                    if (Math.floor(yClick - yMove) > 1) {
+                                        $(".carousel").carousel('next');
+                                    } else if (Math.floor(yClick - yMove) < -1) {
+                                        $(".carousel").carousel('prev');
+                                    }
+                                });
+                                $(".carousel").on("touchend", function () {
+                                    $(this).off("touchmove");
+                                });
+                            });
         </script>      
     </body>
 </html>
