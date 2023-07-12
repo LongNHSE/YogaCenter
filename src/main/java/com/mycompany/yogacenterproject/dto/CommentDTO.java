@@ -14,19 +14,20 @@ public class CommentDTO {
     private String commentID;
     private String commentContent;
     private BlogDTO blogID;
+    private String author;
     private Date createDate;
+    
 
     public CommentDTO() {
     }
 
-    public CommentDTO(String commentID, String commentContent, BlogDTO blogID, Date createDate) {
+    public CommentDTO(String commentID, String commentContent, BlogDTO blogID, String author, Date createDate) {
         this.commentID = commentID;
         this.commentContent = commentContent;
         this.blogID = blogID;
+        this.author = author;
         this.createDate = createDate;
     }
-
-
 
     public String getCommentID() {
         return commentID;
@@ -52,6 +53,14 @@ public class CommentDTO {
         this.blogID = blogID;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -60,12 +69,7 @@ public class CommentDTO {
         this.createDate = createDate;
     }
 
-    @Override
-    public String toString() {
-        return "CommentDTO{" + "commentID=" + commentID + ", commentContent=" + commentContent + ", blogID=" + blogID + ", createDate=" + createDate + '}';
-    }
-
-    
+ 
 
  
 }

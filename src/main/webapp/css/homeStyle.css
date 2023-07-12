@@ -77,7 +77,8 @@ a, .btn {
     font-size: 60px;
     color: #8b57fc;
     font-weight: 500;
-}.carousel-item {
+}
+.carousel-item {
     position: relative;
     display: none;
     -ms-flex-align: center;
@@ -121,6 +122,15 @@ a, .btn {
     margin-right: 0px;
     margin-top: 5px;
 }
+#myCarousel .carousel-item {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+}
+#myCarousel .carousel-item.active {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
 .body_text {
     width: 100%;
     float: left;
@@ -129,10 +139,12 @@ a, .btn {
     font-weight: 500;
 }
 .contrary_text {
+    text-align: left;
     width: 48%;
     float: left;
-    font-size: 18px;
-    color: #171617;
+    font-size: 19.2px;
+    line-height: 28px;
+    color: #7a7a7a;
     margin-left: 0px;
 }
 .contact_bt {
@@ -161,22 +173,31 @@ a, .btn {
     width: 100%;
     float: left;
     text-align: center;
+
+}
+.image_1 img{
+        margin: auto;
 }
 .meditation_text {
     width: 100%;
     float: left;
-    font-size: 30px;
-    color: #353336;
-    text-align: center;
+    font-size: 56px;
+    line-height: 72.8px;
+    color: #702963;
+    text-align: left;
     padding-top: 30px;
 }
 .lorem_tetx {
     width: 100%;
     float: left;
-    font-size: 16px;
-    color: #353336;
-    text-align: center;
+    font-size: 22px;
+    line-height: 40px;
+    color: #5a5a5a;
+    text-align: left;
     margin-left: 0px;
+}
+col-trainer{
+    padding: 0px 50px
 }
 .about_section {
     width: 100%;
@@ -205,10 +226,11 @@ a, .btn {
 .ipsum_text {
     width: 100%;
     float: left;
-    font-size: 16px;
+    font-size: 22px;
     color: #ffffff;
     text-align: center;
-    margin-left: 0px;
+    line-height: 40.8571px;
+    text-align: left;
 }
 .about_bt_main {
     width: 60%;
@@ -384,10 +406,11 @@ a, .btn {
     padding-top: 30px;
 }
 .copyright_section {
+
     width: 100%;
     float: left;
     background-color: #8b57fc;
-    height: auto;
+    padding:30px 0px;
 }
 .copyright_text {
     width: 100%;
@@ -406,3 +429,40 @@ p {
     font-size: 15px;
     line-height: 24px;
 }
+.contact-map-row {
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-column {
+    order: 1;
+     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.map-column {
+    order: 2;
+}
+.contact-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-info .call_text {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.contact-info .call_text img {
+  margin-right: 10px;
+}
+
+
+.call_text {
+    display: inline-block;
+    margin-right: 10px;
+}
+

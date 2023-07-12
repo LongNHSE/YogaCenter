@@ -13,25 +13,16 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <!--   basic 
-        --><meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!--   mobile metas -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <!--site metas--> 
         <title>Yogasan</title>
         <!--CSS-->
         <%--<%@ include file="../Components/CSSComponent.jsp" %>--%>
         <!--Javascript-->
         <%--<%@ include file="../Components/JsComponent.jsp" %>--%>            
         <style type="text/css">
-
-
-            /*
-      * @subsection Shop
-      */
+            body{
+               width: 100%;
+               height: 100%
+            }
             .classCate {
                 padding-top: 5px;
                 padding-bottom: 5px;
@@ -217,51 +208,14 @@
             .quantity [class*="fa-"]:hover {
                 color: #455a64;
             }
-/*            .button {
-                position: relative;
-                overflow: hidden;
-                height: 3rem;
-                padding: 0 2rem;
-                border-radius: 1.5rem;
-                background: #3d3a4e;
-                background-size: 400%;
-                color: #fff;
-                border: none;
-            }
 
-            .button:hover::before {
-                transform: scaleX(1);
-            }
-
-            .button-content {
-                position: relative;
-                z-index: 1;
-            }
-
-            .button::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                transform: scaleX(0);
-                transform-origin: 0 50%;
-                width: 100%;
-                height: inherit;
-                border-radius: inherit;
-                background: linear-gradient(
-                    82.3deg,
-                    rgba(150, 93, 233, 1) 10.8%,
-                    rgba(99, 88, 238, 1) 94.3%
-                    );
-                transition: all 0.475s;
-            }*/
             .button {
               cursor: pointer;
               position: relative;
               padding: 10px 24px;
               font-size: 18px;
-              color: rgb(193, 163, 98);
-              border: 2px solid rgb(193, 163, 98);
+              color: rgb(106, 90, 249);
+              border: 2px solid rgb(106, 90, 249);
               border-radius: 34px;
               background-color: transparent;
               font-weight: 600;
@@ -279,7 +233,7 @@
               border-radius: inherit;
               scale: 0;
               z-index: -1;
-              background-color: rgb(193, 163, 98);
+              background-color: rgb(106, 90, 249);
               transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             }
 
@@ -288,9 +242,10 @@
             }
 
             .button:hover {
-              color: #212121;
+              color: #ffff;
               scale: 1.1;
-              box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+              box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+;
             }
 
             .button:active {
@@ -309,7 +264,7 @@
 
         <!--Container: Start-->
 
-        <div class="container bootstrap snipets " style="margin-top:15px">
+        <div class="container " style="margin-top:15px">
             <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
             <div class="row">
                 <c:forEach items="${requestScope.listCate}" var="a">
@@ -350,10 +305,10 @@
 <!--                        </form>-->
                     </div>       
           </c:forEach>
-      </div>      
+      </div>
       </div>
        <!--Container: End-->
-        <jsp:include page="../Components/footerComponent.jsp" />                  
+         
       </body>
 
 </html>

@@ -72,7 +72,7 @@ public class CommentDAO {
     CommentDAO dao = new CommentDAO();
 
     // Call the getAllComments function
-    List<CommentDTO> comments = dao.getAllCommentsByBlogID("B0002");
+    List<CommentDTO> comments = dao.getAllComments();
 
     // Display the comments
     for (CommentDTO comment : comments) {
