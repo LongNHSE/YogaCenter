@@ -276,7 +276,63 @@ public class EmailController {
                 + "      <a href=\"\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">YogaCenter</a>"
                 + "    </div>"
                 + "    <p style=\"font-size:1.1em\">Hi,</p>"
-                + "    <p>You have just Change from class " + maLopHocCu + " To class " + lopHocDTO.getMaLopHoc() + "<p style=\"text-decoration: underline;\"> Class Type " + lopHocDTO.getLoaiLopHocDTO().getTenLoaiLopHoc() + "</p>" + "Start from: " + lopHocDTO.getNgayBatDau() + " To: " + lopHocDTO.getNgayKetThuc() + ".Thank you for choosing YogaCenter.</p>"
+                + "    <p>You have just Changed from class " + maLopHocCu + " To class " + lopHocDTO.getMaLopHoc() + "<p style=\"text-decoration: underline;\"> Class Type " + lopHocDTO.getLoaiLopHocDTO().getTenLoaiLopHoc() + "</p>" + "Start from: " + lopHocDTO.getNgayBatDau() + " To: " + lopHocDTO.getNgayKetThuc() + ".Thank you for choosing YogaCenter.</p>"
+                + "    <h2 style=\"background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;\">" + "</h2>"
+                + "    <p style=\"font-size:0.9em;\">Regards,<br />YogaCenter</p>"
+                + "    <a href=\"http://localhost:8080/YogaCenter/Public/home.jsp \"><p style=\"font-size:0.9em;\">Visit our Website for more information</p></a>"
+                + "    <hr style=\"border:none;border-top:1px solid #eee\" />"
+                + "    <div style=\"float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300\">"
+                + "      <p>YogaCenter Inc</p>"
+                + "      <p>99/1 Distric 1</p>"
+                + "      <p>TP.HCM</p>"
+                + "    </div>"
+                + "  </div>"
+                + "</div>";
+        ;
+        email.setHtmlMsg(htmlContent);
+
+        // Nội dung thay thế:
+        // Trong trường hợp chương trình đọc email của người nhận ko hỗ trợ HTML
+        email.setTextMsg("Your email client does not support HTML messages");
+
+        // send message
+        email.send();
+
+        System.out.println("Message sent successfully");
+    }
+
+    public static void ClassReserve(LopHocDTO lopHocDTO, String mailAddress) throws EmailException, MalformedURLException {
+
+        // Tạo đối tượng Email
+        ImageHtmlEmail email = new ImageHtmlEmail();
+
+        // Cấu hình thông tin Email Server
+        email.setHostName(MailConfig.HOST_NAME);
+        email.setSmtpPort(MailConfig.SSL_PORT);
+        email.setAuthenticator(new DefaultAuthenticator(MailConfig.APP_EMAIL, MailConfig.APP_PASSWORD));
+        email.setSSLOnConnect(true);
+        // Người gửi
+        email.setFrom(MailConfig.APP_EMAIL);
+
+        // Người nhận
+        email.addTo(mailAddress);
+
+        // Tiêu đề
+        email.setSubject("YogaCenter");
+
+        // Định nghĩa URL cơ sở để xác định đúng vị trí nguồn dữ liệu (img,..)
+        // (Trong trường hợp nó có đường dẫn tương đối, ví dụ thẻ img như bên dưới)
+        URL url = new URL("https://gpcoder.com");
+
+        email.setDataSourceResolver(new DataSourceUrlResolver(url));
+        // Nội dung email
+        String htmlContent = "<div style=\"font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2\">"
+                + "  <div style=\"margin:50px auto;width:70%;padding:20px 0\">"
+                + "    <div style=\"border-bottom:1px solid #eee\">"
+                + "      <a href=\"\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">YogaCenter</a>"
+                + "    </div>"
+                + "    <p style=\"font-size:1.1em\">Hi,</p>"
+                + "    <p>You have just reserved class " + lopHocDTO.getMaLopHoc() +"</p>"+ "<p>. Your next register of  "+lopHocDTO.getLoaiLopHocDTO().getTenLoaiLopHoc()+" will be free.</p>"
                 + "    <h2 style=\"background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;\">" + "</h2>"
                 + "    <p style=\"font-size:0.9em;\">Regards,<br />YogaCenter</p>"
                 + "    <a href=\"http://localhost:8080/YogaCenter/Public/home.jsp \"><p style=\"font-size:0.9em;\">Visit our Website for more information</p></a>"

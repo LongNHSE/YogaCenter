@@ -11,7 +11,7 @@ import java.sql.Date;
  * @author Oalskad
  */
 public class ApplicationDTO {
-
+    private String ApplicationType;
     private String maDon;
     private String maHV;
     private String maTrainer;
@@ -20,6 +20,19 @@ public class ApplicationDTO {
     private String noiDung;
     private Date date;
     private String status;
+
+    public String getApplicationType() {
+        return ApplicationType;
+    }
+
+    public void setApplicationType(String ApplicationType) {
+        this.ApplicationType = ApplicationType;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationDTO{" + "ApplicationType=" + ApplicationType + ", maDon=" + maDon + ", maHV=" + maHV + ", maTrainer=" + maTrainer + ", maLopHoc=" + maLopHoc + ", maApplicationType=" + maApplicationType + ", noiDung=" + noiDung + ", date=" + date + ", status=" + status + '}';
+    }
 
     public ApplicationDTO() {
     }

@@ -18,7 +18,7 @@
     <head>
         <meta charset="utf-8">
         <title>YogaCenter Admin</title>
-  </head>
+    </head>
     <body>
 
         <style>
@@ -92,17 +92,16 @@
                     </form>
                     </tr>
                 </c:forEach>       
-
-
-
-
-
                 </tbody>
 
             </table>
         </div>      
-
-
+        <style>
+            .header-nav {
+                background-color: #8b57fc;
+                margin-bottom: 0px;
+            }
+        </style>
         <script>
 
 

@@ -67,6 +67,32 @@ public class TrainerDAO {
         }
         return null;
     }
+
+    public void CheckClass() {
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        List<String> listMaLopHoc = lopHocDAO.readListIDClass();
+        try {
+            String sql = "SELECT top 1 [status] FROM [dbo].[ScheduleTrainer]\n"
+                    + "where maLopHoc=?\n"
+                    + "order by ngayHoc desc";
+            for (String maLopHoc : listMaLopHoc) {
+                PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+                stm.setString(1, maLopHoc);
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    boolean status = rs.getBoolean("status");
+                    if (status == false) {
+                        updateTrainerStatus(maLopHoc, true);
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 ////Read list của các trainer
 
     public List<TrainerDTO> readListTrainer() {

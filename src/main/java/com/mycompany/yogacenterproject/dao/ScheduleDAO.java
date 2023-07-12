@@ -378,7 +378,7 @@ public class ScheduleDAO {
                     sql += ",";
                 }
             }
-            sql += ") \n"
+            sql += ") and status ='true' \n"
                     + "GROUP BY ScheduleHV.maLopHoc";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, maSlot);
@@ -395,6 +395,27 @@ public class ScheduleDAO {
             }
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return true;
+    }
+
+    public boolean checkTraineeClass(String maHV, String maLoaiLophoc) {
+        LocalDate currentDate = LocalDate.now();
+        String sql = "SELECT * from ScheduleHV \n"
+                + "inner join lopHoc on lopHoc.maLopHoc = ScheduleHV.maLopHoc\n"
+                + "where maHV=? and maLoaiLopHoc=? and lopHoc.[status]='true' ";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maHV);
+            ps.setString(2, maLoaiLophoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+
+        } catch (SQLException e) {
         }
         return true;
     }
@@ -446,11 +467,12 @@ public class ScheduleDAO {
 //        System.out.println(lopHocDTO);
 //          List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0001");
         // Split the selected value to retrieve maSlot and thuList
-        String selectedMaSlot = "SL005";
-        LocalDate currentDate = LocalDate.now();
-        System.out.println(java.sql.Date.valueOf(currentDate));
-        schedule.checkSchedule();
-//        String selectedThuList = "[ THURSDAY, TUESDAY]";
+//        String selectedMaSlot = "SL005";
+//        LocalDate currentDate = LocalDate.now();
+//        System.out.println(java.sql.Date.valueOf(currentDate));
+//        schedule.checkSchedule();
+        String selectedThuList = "[ MONDAY, WEDNESDAY]";
+//        schedule.checkTraineeSchedule("SL002", "HV0001", selectedThuList);
 //
 //        // Remove the square brackets and spaces from the string
 //        String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
@@ -464,7 +486,6 @@ public class ScheduleDAO {
 //        List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 //
 //        System.out.println(schedule.checkTraineeSchedule(maSlot, "HV0001", thuList));
-
 //        Date date = new Date();
 //        List<Date> listDate = new ArrayList<Date>();
 //        for (ScheduleTempDTO scheduleTempDTO : listScheduleHv) {

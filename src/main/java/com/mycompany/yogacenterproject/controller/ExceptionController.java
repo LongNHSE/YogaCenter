@@ -35,6 +35,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -59,7 +61,7 @@ public class ExceptionController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException, EmailException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -68,6 +70,8 @@ public class ExceptionController extends HttpServlet {
                 changeClassPage(request, response);
             } else if (action.equals("ChangeClassAction")) {
                 changeClass(request, response);
+            } else if (action.equals("Reserve")) {
+                reserve(request, response);
             }
 
         }
@@ -155,11 +159,12 @@ public class ExceptionController extends HttpServlet {
                     String noiDung = "Trainee " + hocVienDTO.getMaHV() + " change from class " + maLopHocCu + " to " + maLopHoc;
                     noiDung.toString();
                     applicationDTO.setNoiDung(noiDung);
-                    
-                    
-                    
-                    
+
                     applicationDAO.create(applicationDTO);
+
+                    String popupMessage = "You have changed form class " + maLopHocCu + " to class " + maLopHoc + " successfully";
+                    request.setAttribute("popupMessageSuccessful", popupMessage);
+
                     RequestDispatcher rd = request.getRequestDispatcher("/ProfileController?action=classList");
                     rd.forward(request, response);
 
@@ -266,6 +271,54 @@ public class ExceptionController extends HttpServlet {
         rd.forward(request, response);
     }
 
+    public void reserve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, EmailException {
+        String maLopHoc = request.getParameter("maLopHoc");
+        HttpSession session = request.getSession();
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        AttendanceDAO attendanceDAO = new AttendanceDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        LopHocDTO lopHocDTO = new LopHocDTO();
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        ApplicationDTO applicationDTO = new ApplicationDTO();
+
+        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+
+        if (lopHocDAO.getSoNgayDaDay(maLopHoc) >= 2) {
+            String popupMessage = maLopHoc;
+            request.setAttribute("popupMessage", popupMessage);
+            request.getRequestDispatcher("/ProfileController?action=classList").forward(request, response);
+        } else {
+            lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+            scheduleDAO.deleteScheduleHVWithMaLopHoc(maLopHoc, hocVienDTO.getMaHV());
+            attendanceDAO.deleteAttendaceHV(hocVienDTO.getMaHV(), maLopHoc);
+            lopHocDAO.decrease(maLopHoc);
+
+            LocalDate currentDate = LocalDate.now();
+
+            String AUTO_APPLICATION_ID = String.format(Constants.MA_APPLICATION_FORMAT, (applicationDAO.lastIDIndexOfBlog() + 1));
+
+            //HOCVIEN CONSTRUCTOR
+            String maApp = AUTO_APPLICATION_ID;
+            applicationDTO.setMaApplicationType("TYPE0002");
+            applicationDTO.setDate(Date.valueOf(currentDate));
+            applicationDTO.setMaHV(hocVienDTO.getMaHV());
+            applicationDTO.setMaDon(maApp);
+            applicationDTO.setStatus("Approved(n)");
+            applicationDTO.setMaLopHoc(maLopHoc);
+
+            String noiDung = "Reserve class " + maLopHoc;
+            noiDung.toString();
+            applicationDTO.setNoiDung(noiDung);
+            applicationDAO.create(applicationDTO);
+
+            EmailController.ClassReserve(lopHocDTO, hocVienDTO.getEmail());
+            String popupMessageSuccessful = "You reserved class " + maLopHoc + " successfully.";
+            request.setAttribute("popupMessageSuccessful", popupMessageSuccessful);
+            request.getRequestDispatcher("/ProfileController?action=classList").forward(request, response);
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -278,7 +331,13 @@ public class ExceptionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExceptionController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (EmailException ex) {
+            Logger.getLogger(ExceptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -292,7 +351,13 @@ public class ExceptionController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ExceptionController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (EmailException ex) {
+            Logger.getLogger(ExceptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

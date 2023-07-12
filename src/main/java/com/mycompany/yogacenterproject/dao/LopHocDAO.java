@@ -311,6 +311,18 @@ public class LopHocDAO {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void updateStatusClass(String maLopHoc) {
+        try {
+            String sql = "Update lopHoc set status='false' where maLopHoc =?";
+            PreparedStatement stm;
+            stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLopHoc);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 //LAY ID LOAI LOP HOC 
 
     public String IDLoaiLopHoc(String maLopHoc) {
