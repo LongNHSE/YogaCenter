@@ -526,29 +526,27 @@ public class ClassController extends HttpServlet {
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
                 //this below starts the call for the payment link after finishing checking for all outlying exceptions
+//                if (error) {
+//                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+//                    PaymentServices paymentServices = new PaymentServices();
+//                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+//                    response.sendRedirect(approvalLink);
+//                    if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
+//                        error = false;
+//                        errorMessage += "You already have registered this class.";
+//                    }
+                //check availability before registering
                 if (error) {
-                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                    PaymentServices paymentServices = new PaymentServices();
-                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
-                    response.sendRedirect(approvalLink);
-                    if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
-                        error = false;
-                        errorMessage += "You already have registered this class.";
-                    }
-                    //check availability before registering
-                    if (error) {
-                        if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
-                            lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                            approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO,verifiedVoucherID);
-                            response.sendRedirect(approvalLink);
-                        } else {
-                            lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                            applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()));
-                            assignClassAfterPayment(request, response, maLopHoc);
-//                        RequestDispatcher rd = request.getRequestDispatcher("./ClassController?returnID=" + lopHocDTO.getMaLopHoc() + "&action = SuccessfulPayment");
-//                        rd.forward(request, response);
-                        }
+                    if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        PaymentServices paymentServices = new PaymentServices();
+                        String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+                        response.sendRedirect(approvalLink);
                     } else {
+                        applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()));
+                        assignClassAfterPayment(request, response, maLopHoc);
+                    }
+                }else {
                         request.setAttribute("error", errorMessage);
                         showDetails(request, response);
                     }
@@ -560,7 +558,6 @@ public class ClassController extends HttpServlet {
 
                     rd.forward(request, response);
                 }
-            }
         } catch (PayPalRESTException | IOException | SQLException | ServletException e) {
         }
     }
