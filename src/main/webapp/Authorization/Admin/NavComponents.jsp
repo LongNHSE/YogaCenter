@@ -28,7 +28,6 @@
         <li id="Trainee" class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
             <ul >
                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-
             </ul>
         </li>
         <li id="Trainer" class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
