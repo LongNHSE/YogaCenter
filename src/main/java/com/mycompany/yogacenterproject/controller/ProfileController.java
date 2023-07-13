@@ -132,7 +132,7 @@ public class ProfileController extends HttpServlet {
         List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
         listHoaDon = hoaDonDAO.listHoaDon(hocVienDTO.getMaHV());
         HocVienDAO hocVienDAO = new HocVienDAO();
-
+        
         ///set Attribute
         session.setAttribute("hocVienDTO", hocVienDTO);
         session.setAttribute("listHoaDon", listHoaDon);
