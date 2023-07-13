@@ -21,37 +21,56 @@ public class VoucherDAO {
 
     public List<VoucherDTO> listVouchers() throws SQLException {
         List<VoucherDTO> listVoucher = new ArrayList<>();
-        VoucherDTO voucherDTO = new VoucherDTO();
-        String sql = "select * from [dbo].[Voucher]\n'";
-        Connection conn = DBUtils.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        try (ResultSet rs = ps.executeQuery()) {
+        String sql = "SELECT * FROM [dbo].[Voucher]";
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
+                VoucherDTO voucherDTO = new VoucherDTO();
                 voucherDTO.setVoucherID(rs.getString("voucherID"));
                 voucherDTO.setVoucherName(rs.getString("voucherName"));
-                voucherDTO.setMultiplier(rs.getLong("multiplier"));
+                voucherDTO.setMultiplier(rs.getInt("multiplier"));
+                voucherDTO.setUsageLimit(rs.getInt("usageLimit"));
+                voucherDTO.setUsageLimitPerUser(rs.getInt("usageLimitPerUser"));
+                voucherDTO.setTotalUsage(rs.getInt("totalUsage"));
                 listVoucher.add(voucherDTO);
             }
-            rs.close();
-            ps.close();
-            conn.close();
         } catch (SQLException e) {
         }
         return listVoucher;
     }
 
-    public void addVoucher() throws SQLException {
-        String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier])\n"
-                + "values (?,?,?)";
-        Connection conn = DBUtils.getConnection();
+    public VoucherDTO searchVoucherByID(String voucherID) throws SQLException {
         VoucherDTO voucherDTO = new VoucherDTO();
+        String sql = "select * from [dbo].[Voucher]\n"
+                + "where voucherID = ?";
+        try(PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql); 
+                ResultSet rs = ps.executeQuery()){
+            ps.setString(1, voucherID);
+            while(rs.next()){
+                voucherDTO.setVoucherID(rs.getString("voucherID"));
+                voucherDTO.setVoucherName(rs.getString("voucherName"));
+                voucherDTO.setMultiplier(rs.getInt("multiplier"));
+                voucherDTO.setUsageLimit(rs.getInt("usageLimit"));
+                voucherDTO.setUsageLimitPerUser(rs.getInt("usageLimitPerUser"));
+                voucherDTO.setTotalUsage(rs.getInt("totalUsage"));
+            }
+        }catch(SQLException e){
+            
+        }
+        return voucherDTO;
+    }
+
+    public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
+        String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier],[usageLimit],[usageLimitPerUser])\n"
+                + "values (?,?,?,?,?)";
+        Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
 
         try {
             ps.setString(1, voucherDTO.getVoucherID());
             ps.setString(2, voucherDTO.getVoucherName());
-            ps.setFloat(3, voucherDTO.getMultiplier());
+            ps.setInt(3, voucherDTO.getMultiplier());
+            ps.setInt(4, voucherDTO.getUsageLimit());
+            ps.setInt(5, voucherDTO.getUsageLimitPerUser());
             ps.executeUpdate();
         } catch (SQLException e) {
 
@@ -69,7 +88,7 @@ public class VoucherDAO {
         ResultSet rs = ps.executeQuery();
         try {
             if (rs.next()) {
-                multiplier = rs.getLong("multiplier");
+                multiplier = rs.getInt("multiplier");
             }
         } catch (SQLException e) {
         }
@@ -82,7 +101,7 @@ public class VoucherDAO {
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, voucherID);
-        
+
         try {
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -113,12 +132,29 @@ public class VoucherDAO {
         return index;
     }
 
-    public boolean getVoucherName(String voucherName) throws SQLException {
+    public void updateVoucher(VoucherDTO voucherDTO) throws SQLException {
+        String sql = "UPDATE Voucher \n"
+                + "SET voucherName = ?, multiplier = ?, usageLimit = ?, usageLimitPerUser = ? \n"
+                + "WHERE voucherID = ?";
+        PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql);
+        try {
+            ps.setString(1, voucherDTO.getVoucherName());
+            ps.setInt(2, voucherDTO.getMultiplier());
+            ps.setInt(3, voucherDTO.getUsageLimit());
+            ps.setInt(4, voucherDTO.getUsageLimitPerUser());
+            ps.setString(5, voucherDTO.getVoucherID());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public boolean checkVoucherName(String voucherName) throws SQLException {
         String sql = "select * from [dbo].[Voucher]\n"
                 + "where [voucherName] like ?";
         Connection conn = DBUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
-        
+
         try {
             ps.setString(1, voucherName);
             ResultSet rs = ps.executeQuery();
@@ -133,11 +169,19 @@ public class VoucherDAO {
 
     public static void main(String[] args) throws SQLException {
         VoucherDAO voucherDAO = new VoucherDAO();
-//        int index = voucherDAO.lastIDIndex();
-//        System.out.println(index);
+        List<VoucherDTO> list = new ArrayList<>();
+//        VoucherDTO voucherDTO = new VoucherDTO("V0004", "test2", 50, 10, 1,2);
+        int index = voucherDAO.lastIDIndex();
+        System.out.println(index);
 //        boolean nigger = voucherDAO.getVoucherName("nigger");
 //        System.out.println(nigger);
-voucherDAO.deleteVoucher("V0001");
+//        voucherDAO.deleteVoucher("V0001");
+//        list = voucherDAO.listVouchers();
+//        for (VoucherDTO x : list) {
+//            System.out.println(x);
+//    }
 
+//    voucherDAO.addVoucher(voucherDTO);
+//voucherDAO.deleteVoucher("V0003");
     }
 }

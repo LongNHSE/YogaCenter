@@ -9,16 +9,28 @@ package com.mycompany.yogacenterproject.dto;
  * @author iba
  */
 public class VoucherDTO {
-    private String voucherID,voucherName;
-    private long multiplier;
 
-    public VoucherDTO(String voucherID, String voucherName, long multiplier) {
+    private String voucherID, voucherName;
+    private int multiplier;
+    private int usageLimit;
+    private int usageLimitPerUser;
+    private int totalUsage;
+
+    public VoucherDTO() {
+    }
+
+    public VoucherDTO(String voucherID, String voucherName, int multiplier, int usageLimit, int usageLimitPerUser, int totalUsage) {
         this.voucherID = voucherID;
         this.voucherName = voucherName;
         this.multiplier = multiplier;
+        this.usageLimit = usageLimit;
+        this.usageLimitPerUser = usageLimitPerUser;
+        this.totalUsage = 0;
     }
 
-    public VoucherDTO() {
+    @Override
+    public String toString() {
+        return "VoucherDTO{" + "voucherID=" + voucherID + ", voucherName=" + voucherName + ", multiplier=" + multiplier + ", usageLimit=" + usageLimit + ", usageLimitPerUser=" + usageLimitPerUser + ", totalUsage=" + totalUsage + '}';
     }
 
     public String getVoucherID() {
@@ -37,17 +49,36 @@ public class VoucherDTO {
         this.voucherName = voucherName;
     }
 
-    public float getMultiplier() {
+    public int getMultiplier() {
         return multiplier;
     }
 
-    public void setMultiplier(long multiplier) {
+    public void setMultiplier(int multiplier) {
         this.multiplier = multiplier;
     }
 
-    @Override
-    public String toString() {
-        return "VoucherDTO{" + "voucherID=" + voucherID + ", voucherName=" + voucherName + ", multiplier=" + multiplier + '}';
+    public int getUsageLimit() {
+        return usageLimit;
     }
-    
+
+    public void setUsageLimit(int usageLimit) {
+        this.usageLimit = usageLimit;
+    }
+
+    public int getUsageLimitPerUser() {
+        return usageLimitPerUser;
+    }
+
+    public void setUsageLimitPerUser(int usageLimitPerUser) {
+        this.usageLimitPerUser = usageLimitPerUser;
+    }
+
+    public int getTotalUsage() {
+        return totalUsage;
+    }
+
+    public void setTotalUsage(int totalUsage) {
+        this.totalUsage = totalUsage;
+    }
+
 }

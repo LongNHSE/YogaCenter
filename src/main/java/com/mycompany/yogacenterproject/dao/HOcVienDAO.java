@@ -359,12 +359,12 @@ public class HocVienDAO {
 
 //        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hocVienDTO = new HocVienDTO();
+//        HocVienDTO hocVienDTO = new HocVienDTO();
 
-        DateUtils dateUtils = new DateUtils();
+//        DateUtils dateUtils = new DateUtils();
          List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
   
-        listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV("LOP0001");
+        listHocVienDTO = hocVienDAO.readListHocVien();
         for(HocVienDTO x : listHocVienDTO){
             System.out.println(x);
         }
@@ -373,7 +373,7 @@ public class HocVienDAO {
 //        hocVienDAO.updateHocVien(hocVienDTO);
 
 //        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-        System.out.println(hocVienDTO);
+//        System.out.println(hocVienDTO);
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {

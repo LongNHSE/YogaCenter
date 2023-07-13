@@ -32,7 +32,7 @@ CREATE TABLE lopHocImg (
     [maHV] NVARCHAR(25) NULL,
     [maLopHoc] NVARCHAR(25) NULL,
 	[maTrainer] NVARCHAR(25) NULL,
-);
+)
 CREATE TABLE [description](
 	maDescription  NVARCHAR(10) primary key,
     title VARCHAR(255) NOT NULL,
@@ -245,7 +245,21 @@ CREATE TABLE blogPost(
 	[maBlog] NVARCHAR(10) NOT NULL, --CONSTRAINT
 	CONSTRAINT fk_maBlog_blogImg FOREIGN KEY ([maBlog]) REFERENCES blogPost([maBlog])
 )
-
+CREATE TABLE Voucher(
+	voucherID NVARCHAR(15) PRIMARY KEY,
+    voucherName VARCHAR(50),
+    multiplier INT NOT NULL,
+    usageLimit INT NOT NULL,
+	usageLimitPerUser int not null,
+	totalUsage int default 0
+)
+CREATE TABLE UserVoucherUsage(
+	voucherID NVARCHAR(15) not null,
+	[maHV] nvarchar(10) not null,
+	usageCount int DEFAULT 0,
+	foreign key (voucherID) references [dbo].[Voucher](voucherID),
+	foreign key (maHV) references [dbo].[hocVien](maHV)
+)
 	--ALTER TABLE lopHoc
 --ADD [status] bit NULL;
 

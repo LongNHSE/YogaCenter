@@ -52,17 +52,22 @@ public class VoucherController extends HttpServlet {
 
         String AUTO_VOUCHER_ID = String.format(Constants.VOUCHER_ID_FORMAT, (voucherDAO.lastIDIndex() + 1));
         String voucherName = request.getParameter("voucherName");
-        long multiplier = Long.parseLong(request.getParameter("multiplier")) / 100;
+        int multiplier = Integer.parseInt(request.getParameter("multiplier"));
+        int usageLimit = Integer.parseInt(request.getParameter("usageLimit"));
+        int usageLimitPerUser = Integer.parseInt(request.getParameter("usageLimitPerUser"));
+        
         String errorMessage = "";
         boolean error = true;
 
-        if (voucherDAO.getVoucherName(voucherName) != true) {
-            if (multiplier < 1) {                                                                                   // correct statement
+        if (voucherDAO.checkVoucherName(voucherName) != true) {
+            if (multiplier < 100) {                                                                                   // correct statement, the discount is 20 for 20% off the total
                 voucherDTO.setVoucherID(AUTO_VOUCHER_ID);
                 voucherDTO.setVoucherName(voucherName);
                 voucherDTO.setMultiplier(multiplier);
+                voucherDTO.setUsageLimit(usageLimit);
+                voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
                 error = false;
-                voucherDAO.addVoucher();
+                voucherDAO.addVoucher(voucherDTO);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
                 rd.forward(request, response);
             } else {
@@ -74,8 +79,18 @@ public class VoucherController extends HttpServlet {
         }
     }
 
-    public void applyVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        
+    public void editVoucher(HttpServletRequest request, HttpServletResponse response){
+        VoucherDAO voucherDAO = new VoucherDAO();
+    }
+    
+    public void deleteVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        VoucherDAO voucherDAO = new VoucherDAO();
+
+        String voucherID = request.getParameter("voucherID");
+
+        voucherDAO.deleteVoucher(voucherID);
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

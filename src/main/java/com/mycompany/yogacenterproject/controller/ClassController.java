@@ -100,11 +100,10 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("SuccessfulPayment")) {
-                assignClassAfterPayment(request, response);
-
             } else if (action.equals("Register")) {
                 payment(request, response);
+            } else if (action.equals("SuccessfulPayment")) {
+                assignClassAfterPayment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
             } else if (action.equals("CreateClassType")) {
@@ -115,7 +114,6 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
             } else if (action.equals("Update")) {
-
                 updateClassPage(request, response);
             } else if (action.equals("UpdateClass")) {
                 updateClass(request, response);
@@ -390,16 +388,13 @@ public class ClassController extends HttpServlet {
                 LopHocDAO lopHocDAO = new LopHocDAO();
                 HoaDonDAO hoaDonDAO = new HoaDonDAO();
                 VoucherDAO voucherDAO = new VoucherDAO();
-                long multiplier=1;
                 String errorMessage = "";
 
                 String selectedValue = request.getParameter("maSlot");
                 String voucherID = request.getParameter("voucherID");
-                if(voucherID==null){
-                    multiplier = voucherDAO.getMultiplierByID("V0001");
-                }else{
-                    multiplier = 1;
-                }
+                    if (voucherID == null) {
+                        voucherID = "V0001";
+                    }
 
                 // Split the selected value to retrieve maSlot and thuList
                 String[] parts = selectedValue.split("\\|");
@@ -427,7 +422,7 @@ public class ClassController extends HttpServlet {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
-                //check availability before registering
+                //this below starts the call for the payment link after finishing checking for all outlying exceptions
                 if (error) {
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
                     PaymentServices paymentServices = new PaymentServices();

@@ -4,17 +4,17 @@
  */
 package PayPal;
 
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
-import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.Details;
 import com.paypal.api.payments.Item;
 import com.paypal.api.payments.ItemList;
 import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Order;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.PayerInfo;
 import com.paypal.api.payments.Payment;
@@ -23,12 +23,15 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.apache.http.HttpException;
+import static org.bouncycastle.crypto.tls.ConnectionEnd.client;
 
 /**
  *
@@ -59,11 +62,7 @@ public class PaymentServices {
         Payment approvedPayment = requestPayment.create(apiContext);
         String approvalLink = getApprovalLink(approvedPayment);
 
-//        if(!approvalLink.isEmpty()){
-//            
-//            executePayment(uuid, payer.getPayerInfo().getPayerId());
-//        }
-        System.out.println(approvalLink);
+//        System.out.println(approvalLink);
 
         return approvalLink;
     }
@@ -82,9 +81,10 @@ public class PaymentServices {
     private Transaction getTransactionInformation(LopHocDTO lopHocDTO, String voucherID) throws SQLException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         VoucherDAO voucherDAO = new VoucherDAO();
+        VoucherDTO voucherDTO = new VoucherDTO();
 
-        long subtotal = (loaiLopHocDAO.searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())
-                * voucherDAO.getMultiplierByID(voucherID)) / 21000; // Replace with actual calculation based on lopHocDTO
+        long subtotal = (loaiLopHocDAO
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())) / 21000; // Replace with actual calculation based on lopHocDTO
         long tax = 0; // Replace with actual calculation based on lopHocDTO
         long shipping = 0; // Replace with actual calculation based on lopHocDTO
         long totalAmount = subtotal + tax + shipping;
@@ -110,8 +110,19 @@ public class PaymentServices {
         item.setPrice(String.valueOf(totalAmount));
         item.setTax("0");
         item.setQuantity("1");
-
         items.add(item);
+
+        if (voucherDAO.searchVoucherByID(voucherID) != null) {
+            voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+            Item discountItem = new Item();
+            discountItem.setCurrency("USD");
+            discountItem.setName("Voucher: " + voucherDTO.getVoucherName());
+            discountItem.setPrice("-" + String.valueOf(totalAmount * (voucherDAO.getMultiplierByID(voucherID) / 100)));
+            discountItem.setTax("0");
+            discountItem.setQuantity("1");
+            items.add(discountItem);
+        }
+
         itemList.setItems(items);
         transaction.setItemList(itemList);
 
