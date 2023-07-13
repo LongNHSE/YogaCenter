@@ -19,8 +19,6 @@
                           imgElement.className = 'img-thumbnail';
                           imgElement.src = imgData;
                           imgElement.onload = function () {
-                            previewThumb.style.width = imgElement.offsetWidth + 'px';
-                            previewThumb.style.height = imgElement.offsetHeight + 'px';
                           };
 
                           var deleteButton = document.createElement('button');

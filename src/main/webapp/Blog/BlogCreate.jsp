@@ -11,8 +11,7 @@
         <%
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         %>
-
-
+        <title>Yogasan</title>
         <link href="<%=url%>/Blog/BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
 
     </head>
@@ -82,7 +81,7 @@
                                              <div class="latest-post-aside media">
                                                  <div class="lpa-left media-body">
                                                      <div class="lpa-title">
-                                                         <h5><a href="#">${blog.getTitle()}</a></h5>
+                                                         <h5><a href="">${blog.getTitle()}</a></h5>
                                                      </div>
                                                      <div class="lpa-meta">
                                                          <a class="name" href="#">

@@ -28,8 +28,7 @@
                                 <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
                             </div>
                             <div class="article-title">
-                                <h6><a href="#">Lifestyle</a></h6>
-                                <h2 class="header-ken">${blogDetails.title}</h2>
+                                <h2 class="">${blogDetails.title}</h2>
                                 <div class="media">
                                     <div class="avatar">
                                         <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
@@ -41,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="article-content">
-                                <p style="color:#545554; font-size: 20px">${blogDetails.content}</p>
+                                <p style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</p>
                             </div>
                             <!--        <div class="nav tag-cloud">
                                     <a href="#">Design</a>
@@ -60,16 +59,19 @@
                                 <div class="col-sm-8">   
                                     <form>
                                             <h3 class="pull-left">New Comment</h3>
-                                            <button type="submit" class="btn btn-normal pull-right">Submit</button>
+
                                         <fieldset>
                                             <div class="row">
                                                 <div class="col-sm-3 col-lg-2 hidden-xs">
-                                                    <img class="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                                    <img class="img-responsive  img-avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
                                                 </div>
                                                 <div class="form-group col-xs-12 col-sm-9 col-lg-10">
                                                     <textarea class="form-control" id="message" placeholder="Your message" required=""></textarea>
                                                 </div>
-                                            </div>  	
+                                            </div>
+                                            <div >
+                                                       <button type="submit" class="btn btn-normal pull-right">Submit</button>
+                                            </div>                                            
                                         </fieldset>
                                     </form>
 
@@ -78,7 +80,7 @@
                     <!-- Iterate over comments -->
                     <c:forEach var="comment" items="${blogCmt}">
                         <div class="media">
-                            <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                            <a class="pull-left" href=""><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
                             <div class="media-body">
                                 <h4 class="media-heading">Hello</h4>
                                 <p>${comment.commentContent}</p>
@@ -108,7 +110,7 @@
                                     <div class="latest-post-aside media">
                                         <div class="lpa-left media-body">
                                             <div class="lpa-title">
-                                                <h5><a href="#">${blog.getTitle()}</a></h5>
+                                                <h5><a href="<%= baseUrl%>/BLogController?returnID=${blog.getMaBlog()}&action=showDetails">${blog.getTitle()}</a></h5>
                                             </div>
                                             <div class="lpa-meta">
                                                 <a class="name" href="#">
@@ -120,10 +122,7 @@
                                             </div>
                                         </div>
                                         <div class="lpa-right">
-                                            <a href="#">
-
-                                                <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
-                                            </a>
+                                                <img src="data:image/jpeg;base64,{BlogImageDAO.getImagesDataByBlogID(${blog.getMaBlog()})}" title alt>
                                         </div>
                                     </div>
                                 </c:forEach>            
@@ -134,7 +133,7 @@
 
                         <div class="widget widget-tags">
                             <div class="widget-title">
-                                <h3>Latest Tags</h3>
+                                <h3>Latest Categories</h3>
                             </div>
                             <div class="widget-body">
                                 <div class="nav tag-cloud">
