@@ -121,6 +121,8 @@ public class ClassController extends HttpServlet {
                 createLoaiLopHoc(request, response);
                 insertImg(request, response);
                 insertThumbImg(request, response);
+                response.sendRedirect("Authorization/Admin/Class/ListClassType.jsp");
+
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
             } else if (action.equals("Update")) {
@@ -266,7 +268,6 @@ public class ClassController extends HttpServlet {
 
             descriptionDAO.createDescriptionDTO(descriptionDTO);
             loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
-            response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
         } else {
             request.setAttribute("errorMessage", errorMessage);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
@@ -875,7 +876,6 @@ public class ClassController extends HttpServlet {
         if (request.getParameter("loaiLopHoc") != null) {
             loaiLopHoc = request.getParameter("loaiLopHoc");
         }
-        
 
         if (!loaiLopHoc.equals("all")) {
             listScheduleTrainer = scheduleDAO.readScheduleTrainerWithType(loaiLopHoc);

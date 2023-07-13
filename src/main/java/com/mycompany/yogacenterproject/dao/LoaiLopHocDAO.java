@@ -34,7 +34,7 @@ public class LoaiLopHocDAO {
 
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[maDescription], hocPhi,status)"
-                + "VALUES(?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         int row = 0;
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         stm.setString(1, loaiLopHocDTO.getMaLoaiLopHoc());

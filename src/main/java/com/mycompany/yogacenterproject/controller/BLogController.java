@@ -6,10 +6,12 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 
 import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
@@ -151,6 +153,7 @@ public class BLogController extends HttpServlet {
         String id = request.getParameter("returnID");
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
+        CommentDAO cmtDAO = new CommentDAO();
 //        id = "BL0002";
 
 //          Get Blog Details
@@ -158,11 +161,13 @@ public class BLogController extends HttpServlet {
         List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
         BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
         List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
-
+        List<CommentDTO> listCmt = cmtDAO.getAllCommentsByBlogID(id);
+        
         request.setAttribute("blogImgDetails", blogImg);
         request.setAttribute("blogDetails", blogDetails);
         request.setAttribute("blogLatest", blogLatest);
         request.setAttribute("blogCate", listCate);
+        request.setAttribute("blogCmt", listCmt);
         RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
         rd.forward(request, response);
     }

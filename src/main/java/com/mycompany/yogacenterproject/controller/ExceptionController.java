@@ -284,7 +284,7 @@ public class ExceptionController extends HttpServlet {
 
         lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
 
-        if (lopHocDAO.getSoNgayDaDay(maLopHoc) >= 2) {
+        if (lopHocDAO.getSoNgayDaDay(maLopHoc) > 2) {
             String popupMessage = maLopHoc;
             request.setAttribute("popupMessage", popupMessage);
             request.getRequestDispatcher("/ProfileController?action=classList").forward(request, response);
