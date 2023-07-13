@@ -69,7 +69,7 @@ public class BLogController extends HttpServlet {
                 deleteBlog(request, response);
                 viewMyBlog(request, response);
             } else if (action.equals("Update")) {
-                viewMyBlog(request, response);
+                updateBlogPage(request, response);
             } else if (action.equals("CreateBlog")) {
 //                String content = request.getParameter("content");
 //                // Chuyển đổi ký tự xuống dòng thành thẻ <br>
@@ -80,6 +80,8 @@ public class BLogController extends HttpServlet {
                 showBlogCategory(request, response);
             } else if (action.equals("Detail")) {
                 showDetail2(request, response);
+            } else if (action.equals("UpdateAction")) {
+                updateBlog(request, response);
             }
         } catch (Exception e) {
 
@@ -249,7 +251,7 @@ public class BLogController extends HttpServlet {
         blogDTO.setMaTrainer(maTrainer);
         blogDAO.createBlog(blogDTO);
         insertBanner(request, response, maBlog);
-        
+
     }
 
     public void insertBanner(HttpServletRequest request, HttpServletResponse response, String maBlog) throws SQLException, IOException {
@@ -275,12 +277,12 @@ public class BLogController extends HttpServlet {
         blogDAO.insertImageDataFromDatabase(imageListThumb, blogImgDTO);
     }
 
-    public void updateBlogPage(HttpServletRequest request, HttpServletResponse response) {
+    public void updateBlogPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         String maBlog = request.getParameter("maBlog");
         BlogDTO blogDTO = blogDAO.getBlogByID(maBlog);
         request.setAttribute("blogDTO", blogDTO);
-
+        request.getRequestDispatcher("/Blog/UpdateBlog.jsp").forward(request, response);
     }
 
     public void updateBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
@@ -291,7 +293,7 @@ public class BLogController extends HttpServlet {
         String content = request.getParameter("content");
         content = content.replace("\n", "<br>");
         String title = request.getParameter("title");
-          String maBlog = request.getParameter("maBlog");
+        String maBlog = request.getParameter("maBlog");
         HttpSession session = request.getSession();
         blogDTO.setContent(content);
         blogDTO.setTitle(title);
@@ -299,10 +301,7 @@ public class BLogController extends HttpServlet {
         blogDAO.updateBlog(blogDTO);
 
         viewMyBlog(request, response);
-     
-        
-    
- 
+
     }
 
 //      -- Image : End --

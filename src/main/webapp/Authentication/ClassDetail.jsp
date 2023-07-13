@@ -263,8 +263,11 @@
             }
 
             .product-deatil .name {
+                    font-size: 24px;
+                font-weight: bold;
+                color: #555;
+                margin-bottom: 10px;
                 margin-top: 0;
-                margin-bottom: 0
             }
 
             .product-deatil .name small {
@@ -276,9 +279,10 @@
             }
 
             .product-deatil .price-container {
-                font-size: 24px;
-                margin: 0;
-                font-weight: 300
+                font-size: 20px;
+                font-weight: bold;
+                color: #333;
+                text-align: right;
             }
 
             .product-deatil .price-container small {
@@ -484,11 +488,9 @@
                 line-height: 40px;
             }
             .Custom{
-
-
-                margin-left: 98px;
-
+             margin-left: 98px;
             }
+
             .alert {
                 padding: 20px;
                 background-color: #ffff4d;
@@ -509,6 +511,19 @@
             .closebtn:hover {
                 color: black;
             }
+
+            .class-information{
+                    margin-left: 40px;
+            }
+            .class-information h1{
+                text-align: center;
+                
+            }
+            .infor-line{
+                            border-top: 2px solid #554c86;
+                            }
+            
+
         </style>            
     </head>
 
@@ -568,18 +583,16 @@
 
 
 
-                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12 class-information">
                         <h1 class="name">
                             ${requestScope.details.getTenLoaiLopHoc()}
                         </h1>
-                        <hr/>
-                        <h3 class="price-container">
+                        <hr class="infor-line"/>
+                        <p class="price-container text-right">
                             <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
                             ${formattedHocPhi}
-                        </h3>
-                        <hr/>
-
-                        <hr/>
+                        </p>
+                        <hr class="infor-line"/>
 
                         <form action="<%=url%>/ClassController" method="POST">
                             <div class="row">
