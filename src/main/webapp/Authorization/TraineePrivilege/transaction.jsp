@@ -6,6 +6,11 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,26 +53,30 @@
         }
     </style>    
     <body>
-        <h1>Transaction Page</h1>
+        <!--navbar : Start-->
+        <jsp:include page="../../Components/headerComponent.jsp" />       
+        <!--navbar: End-->
         <div class="Table">
             <table class="table">
                 <thead>
                     <tr class="Test">
                         <!--trong phan log in phai them set user de co the goi ra trong session Scope-->
-                        <th scope="col">No</td> 
-                        <th scope="col">Gia Tien</td>
-                        <th scope="col">Ngay Thanh Toan</td>
-                        <!--Consider co them ten lop hoc-->
+                        <th >No</td> 
+                        <th >Gia Tien</td>
+                        <th >Ngay Thanh Toan</td>
+                            <!--Consider co them ten lop hoc-->
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="row" items="${sessionScope.listHoaDon}" varStatus="counter"> 
                         <tr>
                             <th>${counter.count}</td>
-                            <td>${row.giaTien}</td>
-                            <td>${row.ngayThanhToan}</td>
-                        </tr>
-                    </c:forEach>
+                            <td class="price-container">
+                    <fmt:formatNumber value="${row.giaTien}" pattern="#,##0 VNĐ" var="formattedGiaTien" />
+                    ${formattedGiaTien}</td>
+                    <td>${row.ngayThanhToan}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

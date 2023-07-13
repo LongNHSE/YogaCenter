@@ -17,11 +17,48 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat', sans-serif t;
+        font-family: 'Montserrat' !important;
         box-sizing: border-box;
 
 
     }
+    
+    *,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+input,
+select,
+textarea {
+  background-color: transparent;
+  outline: none;
+}
+button {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0;
+}
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+}
+
     .header-nav{
         background-color: #8b57fc;
         margin-bottom:20px
@@ -79,7 +116,7 @@
         padding-right: 10px;
         padding-left: 10px;
         color: #fff;
-    font-size: 18px;
+        font-size: 18px;
     }
 
 </style>
@@ -98,7 +135,7 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/home.jsp">Home</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
-
+            <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=ViewSchedulePublic">Schedule</a>
 
             <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">

@@ -62,6 +62,7 @@ public class LoginController extends HttpServlet {
             if (action.equals("login")) {
                 login(request, response);
             } else if (action.equals("adminLogin")) {
+                out.print("mmb");
                 adminLogin(request, response);
             } else if (action.equals("OTPSend")) {
                 String email = request.getParameter("email");
@@ -275,7 +276,7 @@ public class LoginController extends HttpServlet {
             session.setAttribute("adminDTO", adminDTO);
 //            // set lại session time out là 5p
             session.setMaxInactiveInterval(1900);
-
+            
             request.getRequestDispatcher("/Authorization/Admin/AdminHomepage.jsp").forward(request, response);
 
         }

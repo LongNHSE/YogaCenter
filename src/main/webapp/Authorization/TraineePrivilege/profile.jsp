@@ -99,6 +99,10 @@
                 margin-right: 10px;
                 margin-bottom: 10px;
             }
+            .btn-primary{
+                margin: 10px;
+                
+            }
         </style>
     </head>
     <body>
@@ -123,15 +127,15 @@
                       </div>
                 
                       </div>-->
-                <div class="col-xl-4">
+<!--                <div class="col-xl-4">
                     <div id="previewThumb" class="previewThumb">
                     </div>
                     <div class="Controller">
                         <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
                         <input type="hidden" id="Thumbnails" name="Banner"  >
                     </div>    
-                </div>    
-                <div class="col-xl-8">
+                </div>    -->
+                <div class=" center col-xl-8">
 
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
@@ -177,7 +181,7 @@
                                 </div >
                                 <button class="btn btn-primary" type="submit" name="action" value="viewUpdateProfile" >Update</button>
                             </form>
-                            <a class="btn btn-primary" href="<%=url%>/Public/changePass.jsp">Change password</a>
+                                <a class="btn btn-primary" href="<%=url%>/Public/changePass.jsp">Change password</a>
                         </div>
                     </div>
                 </div>

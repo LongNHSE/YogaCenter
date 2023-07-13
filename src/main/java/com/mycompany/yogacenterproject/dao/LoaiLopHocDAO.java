@@ -34,7 +34,7 @@ public class LoaiLopHocDAO {
 
     public boolean createLoaiLopHoc(LoaiLopHocDTO loaiLopHocDTO) throws SQLException {
         String sql = "INSERT INTO [dbo].[loaiLopHoc](maLoaiLopHoc, tenLoaiLopHoc,[maDescription], hocPhi,status)"
-                + "VALUES(?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         int row = 0;
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         stm.setString(1, loaiLopHocDTO.getMaLoaiLopHoc());
@@ -265,7 +265,7 @@ public class LoaiLopHocDAO {
     public List<LoaiLopHocDTO> getAllLoaiLopHoc() throws SQLException, IOException {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        String sql = "SELECT * FROM loaiLopHoc";
+        String sql = "SELECT * FROM loaiLopHoc where status='true'";
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {

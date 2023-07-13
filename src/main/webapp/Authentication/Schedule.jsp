@@ -349,6 +349,11 @@
     </div>
 </div>
 
+<style>
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1662px;
+    }
+</style>
 </body>
 <!-- Javascript files-->
 <script src="../js/jquery.min.js"></script>

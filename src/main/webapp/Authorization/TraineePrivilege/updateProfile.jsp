@@ -244,14 +244,16 @@
                       </div>
                 
                       </div>-->
-                <div class="previewThumb col-xl-12">
+                
+                
+<!--                <div class="previewThumb col-xl-12">
                     <div id="previewThumb" class="previewThumb">
                     </div>
                     <div class="Controller">
                         <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
                         <input type="hidden" id="Thumbnails" name="Banner"  >
                     </div>    
-                </div>    
+                </div>    -->
                 <div class="col-xl-8">
 
                     <div class="card mb-4">

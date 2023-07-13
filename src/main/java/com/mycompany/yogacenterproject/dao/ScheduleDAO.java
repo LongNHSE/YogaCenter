@@ -121,6 +121,35 @@ public class ScheduleDAO {
         return listScheduleTrainer;
     }
 
+    public List<ScheduleTrainerDTO> readScheduleTrainerWithType(String maLoaiLopHoc) throws SQLException {
+        List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList<>();
+        String sql = "select * from ScheduleTrainer inner join lopHoc on lopHoc.maLopHoc=ScheduleTrainer.maLopHoc\n"
+                + "where maLoaiLopHoc =?";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maLoaiLopHoc);
+
+        try {
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                ScheduleTrainerDTO scheduleTrainerDTO = new ScheduleTrainerDTO();
+                scheduleTrainerDTO.setMaTrainer(rs.getString("maTrainer"));
+                scheduleTrainerDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                scheduleTrainerDTO.setMaSlot(rs.getString("maSlot"));
+                scheduleTrainerDTO.setNgayHoc(rs.getDate("ngayHoc"));
+                scheduleTrainerDTO.setThu(rs.getString("thu"));
+                scheduleTrainerDTO.setStatus(rs.getBoolean("status"));
+                listScheduleTrainer.add(scheduleTrainerDTO);
+
+            }
+        } catch (SQLException e) {
+        }
+
+        return listScheduleTrainer;
+    }
+
     public List<ScheduleTrainerDTO> readScheduleTrainer(String maTrainer) throws SQLException {
         List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[ScheduleTrainer] where maTrainer =? ";

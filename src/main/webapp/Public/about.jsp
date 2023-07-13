@@ -1,44 +1,42 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-    <%
-        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-    %>
     <head>
-        <!-- basic -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <!-- mobile metas -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <!-- site metas -->
-        <title>About</title>
-        <meta name="keywords" content="">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <!-- bootstrap css -->
-        <link rel="stylesheet" href="<%=url%>/css/bootstrap.min.css">
-        <!-- style css -->
-        <link rel="stylesheet" href="<%=url%>/css/style.css">
-        <!-- Responsive-->
-        <link rel="stylesheet" href="<%=url%>/css/responsive.css">
-        <!-- fevicon -->
-        <link rel="icon" href="<%=url%>/images/fevicon.png" type="image/gif" />
-        <!-- Scrollbar Custom CSS -->
-        <link rel="stylesheet" href="<%=url%>/css/jquery.mCustomScrollbar.min.css">
-        <!-- Tweaks for older IEs-->
-        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-        <!-- owl stylesheets -->
-        <link rel="stylesheet" href="<%=url%>/css/owl.carousel.min.css">
-        <link rel="stylesheet" href="<%=url%>/css/owl.theme.default.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-              media="screen">
+        <title>Yogasan</title>
+        <link href="<%=url%>/css/homeStyle.css" rel="stylesheet" type="text/css"/>
     </head>
-    <!-- body -->
 
     <body>
         <!-- header section start -->
-        <jsp:include page="../Components/headerComponent.jsp" />   
-        
+        <jsp:include page="../Components/headerComponent.jsp" />
+
+        <!-- header section end -->
+        <!-- about section start -->
+        <div class="about_section layout_padding">
+            <div class="container">
+                <div class="about_main">
+                    <h1 class="about_text">About us </h1>
+                    <p class="ipsum_text">Yoga San is a leading yoga center with a team of professional instructors and a variety of courses suitable for all individuals. We focus on the holistic development of our students, from cultivating physical flexibility to attaining inner tranquility of the soul.</p>
+                    <p class="ipsum_text">With our dedicated and high-standard teaching methodology, we guarantee you a peaceful and enriching yoga experience at Yoga San. Come and explore the world of yoga with us, and unleash your maximum potential.</p>
+
+                </div>
+                <div class="about_bt_main">
+                    <div class="about_bt"><a href="<%=url%>/BLogController?action=showBlogs">Discover our Blogs</a></div>
+                    <div class="about_bt"><a href="<%= url%>/ClassController?action=classes">Discover our Class</a></div>
+                    <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
+                        <div class="about_bt"><a href="<%=url%>/Public/signin.js">Join Us</a></div>         
+
+                    </c:if>        
+                </div>
+            </div>
+        </div>
+        <!-- about section end -->
+        <jsp:include page="../Components/footerComponent.jsp" />       
+
         <!-- header section end -->
         <!-- about section start -->
         <div class="about_section layout_padding">
