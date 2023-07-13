@@ -11,7 +11,7 @@
 
 
         <title>Profile Detail</title>
-    <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
+        <link href="Class/ScheduleStyle.css" rel="stylesheet" type="text/css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
@@ -93,11 +93,21 @@
                 margin-left: 1rem;
                 margin-right: 1rem;
             }
+            .imageListStyle {
+                display: inline-block;
+                position: relative;
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+            .btn-primary{
+                margin: 10px;
+                
+            }
         </style>
     </head>
     <body>
         <jsp:include page="${url}/Components/headerComponent.jsp" />          
-     
+
         <div class="container-xl px-4 mt-4">
 
             <hr class="mt-0 mb-4">
@@ -117,58 +127,61 @@
                       </div>
                 
                       </div>-->
-                <div class="col-xl-8">
+<!--                <div class="col-xl-4">
+                    <div id="previewThumb" class="previewThumb">
+                    </div>
+                    <div class="Controller">
+                        <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
+                        <input type="hidden" id="Thumbnails" name="Banner"  >
+                    </div>    
+                </div>    -->
+                <div class=" center col-xl-8">
 
                     <div class="card mb-4">
                         <div class="card-header">Account Details</div>
                         <div class="card-body">
                             <form method="POST" action="<%=url%>/ProfileController">
-                                <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" hidden="" readonly>
-                                <div class="mb-3">
-                                    <label class="small mb-1" for="inputUsername" >Username</label>
-                                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}">
+                                <input class="form-control" id="setMaHV" name="maHV" type="text" hidden value="${hocVienDTO.maHV}" readonly>
+                                <div>
+                                    <div class="mb-3">
+                                        <h5>Username: ${hocVienDTO.username}</h5>
+                                    </div>
                                 </div>
-
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="inputFirstName">Last Name</label>
-                                        <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}">
+                                        <h5>Last name: ${hocVienDTO.ho}</h5>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="inputLastName">First name</label>
-                                        <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}">
+                                        <h5>First name: ${hocVienDTO.ten}</h5>
                                     </div>
                                 </div>
 
-                                <div class="row gx-3 mb-3">
-                                    <div class="col-md-12">
-                                        <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap">
-                                    </div>
-                                </div>
+                                <!--                                <div class="row gx-3 mb-3">
+                                                                    <div class="col-md-12">
+                                                                        <label class="small mb-1" for="inputOrgName">Organization name</label>
+                                                                        <input class="form-control" id="inputOrgName" type="text" name="orgname" placeholder="Enter your organization name" value="Start Bootstrap" readonly>
+                                                                    </div>
+                                                                </div>-->
 
                                 <div class="mb-3">
-                                    <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                    <input class="form-control" id="inputEmailAddress" name="email" type="email"  value="${hocVienDTO.email}" readonly>
+                                    <h5>Email: ${hocVienDTO.email}</h5>
                                 </div>
 
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}">
+                                        <h5>Phone number: ${hocVienDTO.phone}</h5>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                        <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
+                                        <h5>Birthday: ${hocVienDTO.dob}</h5>
                                     </div>
-                                </div>
-
-                                <button class="btn btn-primary" type="submit" name="action" value="updateProfile" >Save changes</button>
+                                </div >
+                                <button class="btn btn-primary" type="submit" name="action" value="viewUpdateProfile" >Update</button>
                             </form>
+                                <a class="btn btn-primary" href="<%=url%>/Public/changePass.jsp">Change password</a>
                         </div>
                     </div>
                 </div>
@@ -191,28 +204,81 @@
         <script src="<%=url%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script>
-            $('#myCarousel').carousel({
-                interval: false
-            });
+                            $('#myCarousel').carousel({
+                                interval: false
+                            });
 
-            //scroll slides on swipe for touch enabled devices
+                            //scroll slides on swipe for touch enabled devices
 
-            $("#myCarousel").on("touchstart", function (event) {
+                            $("#myCarousel").on("touchstart", function (event) {
 
-                var yClick = event.originalEvent.touches[0].pageY;
-                $(this).one("touchmove", function (event) {
+                                var yClick = event.originalEvent.touches[0].pageY;
+                                $(this).one("touchmove", function (event) {
 
-                    var yMove = event.originalEvent.touches[0].pageY;
-                    if (Math.floor(yClick - yMove) > 1) {
-                        $(".carousel").carousel('next');
-                    } else if (Math.floor(yClick - yMove) < -1) {
-                        $(".carousel").carousel('prev');
-                    }
-                });
-                $(".carousel").on("touchend", function () {
-                    $(this).off("touchmove");
-                });
-            });
+                                    var yMove = event.originalEvent.touches[0].pageY;
+                                    if (Math.floor(yClick - yMove) > 1) {
+                                        $(".carousel").carousel('next');
+                                    } else if (Math.floor(yClick - yMove) < -1) {
+                                        $(".carousel").carousel('prev');
+                                    }
+                                });
+                                $(".carousel").on("touchend", function () {
+                                    $(this).off("touchmove");
+                                });
+                            });
+
+                            function addThumbnailImage(fileInput) {
+                                var files = fileInput.files;
+
+                                // Clear the previewThumb container
+                                var previewThumb = document.getElementById('previewThumb');
+                                previewThumb.innerHTML = '';
+
+                                for (var i = 0; i < files.length; i++) {
+                                    var file = files[i];
+                                    var reader = new FileReader();
+
+                                    // Đọc file ảnh
+                                    reader.onload = (function (file) {
+                                        return function (e) {
+                                            var imgData = e.target.result;
+
+                                            var imgElement = document.createElement('img');
+                                            imgElement.className = 'banner';
+                                            imgElement.src = imgData;
+                                            var deleteButton = document.createElement('button');
+                                            deleteButton.className = 'deleteButton';
+                                            deleteButton.textContent = 'Delete';
+                                            deleteButton.addEventListener('click', function () {
+                                                var imageContainer = this.parentNode;
+                                                imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                                                document.getElementById('fileInput').value = '';
+                                                document.getElementById('Thumbnail').value = '';
+                                            });
+                                            var imageContainer = document.createElement('div');
+                                            imageContainer.className = 'imageListStyle';
+                                            imageContainer.appendChild(imgElement);
+                                            imageContainer.appendChild(deleteButton);
+                                            previewThumb.appendChild(imageContainer); // Hiển thị ảnh và nút xóa trên giao diện
+                                            document.getElementById('Thumbnails').value = imgData;
+
+                                        };
+                                    })(file);
+
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                            $(document).ready(function () {
+                                $('.sub-menu ul#active').show();
+                                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                            });
+
+                            $('.sub-menu ul').hide();
+
+                            $(".sub-menu a").click(function () {
+                                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                            });
         </script>      
     </body>
 </html>

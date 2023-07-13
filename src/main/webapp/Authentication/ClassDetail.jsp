@@ -511,6 +511,30 @@
             .closebtn:hover {
                 color: black;
             }
+            .price-container{
+                position: relative;
+                padding: 20px;
+                padding-left: 60%
+            }
+            .name{
+                padding 20px;
+                padding-left: 0%;
+            }
+            .row{
+                padding 20px;
+            }
+            .box select{
+                padding :20px;
+                position: relative;
+                left: 100px;
+                border-radius: 20px;
+                text-align: center;
+            }
+            .button{
+                margin: 100px;
+                margin-left: 59%;
+
+            }
 
             .class-information{
                 margin-left: 40px;
@@ -521,8 +545,8 @@
             }
             .infor-line{
 
-                            border-top: 2px solid #554c86;
-                            }
+                border-top: 2px solid #554c86;
+            }
 
         </style>            
     </head>
@@ -670,40 +694,40 @@
         </div>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
+
+
+
+        <!--        <script>
+                    // Get the voucher code input element
+                    const voucherCodeInput = document.getElementById('voucherCodeInput');
         
+        // Add event listener to the voucher code input
+                    voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
         
+                    function handleVoucherCodeChange() {
+                        const voucherCode = voucherCodeInput.value;
         
-<!--        <script>
-            // Get the voucher code input element
-            const voucherCodeInput = document.getElementById('voucherCodeInput');
-
-// Add event listener to the voucher code input
-            voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
-
-            function handleVoucherCodeChange() {
-                const voucherCode = voucherCodeInput.value;
-
-                // Make an AJAX request to the server
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/check-voucher?code=' + voucherCode);
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            // Parse the response JSON
-                            const response = JSON.parse(xhr.responseText);
-
-                            // Update the prices on the page
-                            document.getElementById('originalPrice').textContent = 'Original Price: $100';
-                            document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
-                        } else {
-                            console.error('Error: ' + xhr.status);
-                        }
+                        // Make an AJAX request to the server
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/check-voucher?code=' + voucherCode);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status === 200) {
+                                    // Parse the response JSON
+                                    const response = JSON.parse(xhr.responseText);
+        
+                                    // Update the prices on the page
+                                    document.getElementById('originalPrice').textContent = 'Original Price: $100';
+                                    document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
+                                } else {
+                                    console.error('Error: ' + xhr.status);
+                                }
+                            }
+                        };
+                        xhr.send();
                     }
-                };
-                xhr.send();
-            }
-
-        </script>-->
+        
+                </script>-->
 
     </body>
 

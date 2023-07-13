@@ -15,14 +15,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Yogasan</title>
         <link href="<%=url%>/css/ClassCategoriesStyles.css" rel="stylesheet" type="text/css"/>    
-
-
     </head>
     <body>
         <!--navbar : Start-->
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
-
 
 
         <div class="container " style="margin-top:15px">

@@ -13,6 +13,18 @@ GO
 --CREATE TABLE--
 ALTER DATABASE YogaCenter SET COMPATIBILITY_LEVEL = 160;
 
+CREATE TABLE [description](
+	maDescription  NVARCHAR(10) primary key,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+)
+CREATE TABLE [descriptionIMG] (
+    [maAnh] NVARCHAR(25) primary key,
+	[tenAnh] NVARCHAR(50) NULL,
+    [image] VARBINARY(MAX) NOT NULL,
+    maDescription NVARCHAR(10)NULL,
+	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
+);
 
 CREATE TABLE room(
 	[maRoom] NVARCHAR(10) primary key,
@@ -32,6 +44,10 @@ CREATE TABLE lopHocImg (
     [maHV] NVARCHAR(25) NULL,
     [maLopHoc] NVARCHAR(25) NULL,
 	[maTrainer] NVARCHAR(25) NULL,
+<<<<<<< HEAD
+);
+
+=======
 )
 CREATE TABLE [description](
 	maDescription  NVARCHAR(10) primary key,
@@ -45,9 +61,11 @@ CREATE TABLE [descriptionIMG] (
     maDescription NVARCHAR(10)NULL,
 	CONSTRAINT fk_Description_descriptionIMG FOREIGN KEY([maDescription]) REFERENCES [description]([maDescription])
 );
+>>>>>>> 5c64e45fc1786c799883fa3b37cb261d1dbba8a2
 CREATE TABLE loaiLopHoc(
 	[maLoaiLopHoc] NVARCHAR(10) primary key,
 	[tenLoaiLopHoc] NVARCHAR(25) NOT NULL,
+
 	[maDescription] NVARCHAR(10) not null,
 	[hocPhi] DECIMAL(10,2) NOT NULL,
 	[status] bit not null
@@ -189,11 +207,6 @@ CREATE TABLE hopDongGiaoVien(
 	[mucLuong] DECIMAL(10,2) NOT NULL,
 	CONSTRAINT fk_maTrainer_hopDong FOREIGN KEY([maTrainer]) REFERENCES Trainer([maTrainer])
 	)
-
-
-
-
-
 
 CREATE TABLE Semester (
     quarterID INT PRIMARY KEY,
