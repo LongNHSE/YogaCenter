@@ -159,6 +159,7 @@ public class SlotDAO {
     public static void main(String[] args) {
 
         SlotDAO slotDAO = new SlotDAO();
+
 //        System.out.println(slotDAO.maSlot("Lop0003"));
 //        Time timeStart = new Time(9, 15, 00);
 //        Time timeEnd = new Time(10, 45, 00);
@@ -176,5 +177,4 @@ public class SlotDAO {
 //        System.out.println(slotDTO.toString());
 //        
 //        
-    }
-}
+    }}

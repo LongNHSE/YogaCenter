@@ -4,11 +4,11 @@
  */
 package PayPal;
 
-import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
-import com.mycompany.yogacenterproject.dao.LopHocDAO;
+import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.Details;
 import com.paypal.api.payments.Item;
@@ -22,7 +22,8 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import java.time.LocalDate;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,13 +41,13 @@ public class PaymentServices {
 
     String uuid = null;
 
-    public String createPayment(LopHocDTO lopHocDTO, HocVienDTO hocVienDTO) throws PayPalRESTException {
+    public String createPayment(LopHocDTO lopHocDTO, HocVienDTO hocVienDTO, String voucherID) throws PayPalRESTException, SQLException {
         APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
 
         // Create a Payment object using the PayPal SDK
         Payer payer = getPayerInformation(hocVienDTO);
-        Transaction transaction = getTransactionInformation(lopHocDTO);
-        RedirectUrls redirectUrls = getRedirectURL(lopHocDTO);
+        Transaction transaction = getTransactionInformation(lopHocDTO, voucherID);
+        RedirectUrls redirectUrls = getRedirectURL(lopHocDTO, voucherID);
 
         Payment requestPayment = new Payment();
         requestPayment.setTransactions(Collections.singletonList(transaction));
@@ -57,12 +58,7 @@ public class PaymentServices {
         Payment approvedPayment = requestPayment.create(apiContext);
         String approvalLink = getApprovalLink(approvedPayment);
 
-//        if(!approvalLink.isEmpty()){
-//            
-//            executePayment(uuid, payer.getPayerInfo().getPayerId());
-//        }
-        System.out.println(approvalLink);
-
+//        System.out.println(approvalLink);
         return approvalLink;
     }
 
@@ -77,21 +73,48 @@ public class PaymentServices {
         return approvalLink;
     }
 
-    private Transaction getTransactionInformation(LopHocDTO lopHocDTO) {
+    private Transaction getTransactionInformation(LopHocDTO lopHocDTO, String voucherID) throws SQLException {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        VoucherDAO voucherDAO = new VoucherDAO();
+        VoucherDTO voucherDTO = new VoucherDTO();
 
-        long subtotal = loaiLopHocDAO.searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000; // Replace with actual calculation based on lopHocDTO
-        long tax = 0; // Replace with actual calculation based on lopHocDTO
-        long shipping = 0; // Replace with actual calculation based on lopHocDTO
-        long totalAmount = subtotal + tax + shipping;
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+//        System.out.println(voucherDTO);
+        String voucherName;
+        double tax = 0;
+        double shipping = 0;
+        double productPrice = loaiLopHocDAO
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000;
+        double discountMultiplier;
+        if (voucherDTO != null) {
+            discountMultiplier = voucherDAO.getMultiplierByID(voucherID) / 100;
+            voucherName = voucherDTO.getVoucherName();
+        } else {
+            discountMultiplier = 0;
+            voucherName = "None";
+        }
+
+        double subtotal = productPrice - productPrice * discountMultiplier;
+//        System.out.println(discountMultiplier);
+//        System.out.println(productPrice * discountMultiplier);
+//        System.out.println(productPrice);
+//        System.out.println(subtotal);
+        double totalAmount = subtotal + tax + shipping;
+
+        String finalSubtotal = String.format("%.2f", subtotal);
+        String finalProductPrice = String.format("%.2f", productPrice);
+        String finalDiscountedPrice = String.format("%.2f", productPrice * discountMultiplier);
+        String finalTotalAmount = String.format("%.2f", totalAmount);
+
         Details details = new Details();
-        details.setShipping(String.valueOf(shipping));
-        details.setSubtotal(String.valueOf(subtotal));
-        details.setTax(String.valueOf(tax));
+        details.setShipping("0");
+        details.setSubtotal(finalSubtotal);
+        details.setTax("0");
 
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(String.valueOf(subtotal));
+        amount.setTotal(finalTotalAmount);
         amount.setDetails(details);
 
         Transaction transaction = new Transaction();
@@ -103,11 +126,23 @@ public class PaymentServices {
         Item item = new Item();
         item.setCurrency("USD");
         item.setName(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDTO.getMaLoaiLopHoc()));
-        item.setPrice(String.valueOf(totalAmount));
+        item.setPrice(finalProductPrice);
         item.setTax("0");
         item.setQuantity("1");
-
         items.add(item);
+
+//        voucherDTO = voucherDAO.searchVoucherByID("V0002");
+//        System.out.println();
+        if (discountMultiplier != 0) {
+            Item discountItem = new Item();
+            discountItem.setCurrency("USD");
+            discountItem.setName("Voucher: " + voucherName);
+            discountItem.setPrice("-" + finalDiscountedPrice);
+            discountItem.setTax("0");
+            discountItem.setQuantity("1");
+            items.add(discountItem);
+        }
+        
         itemList.setItems(items);
         transaction.setItemList(itemList);
 
@@ -117,10 +152,10 @@ public class PaymentServices {
         return transaction;
     }
 
-    private RedirectUrls getRedirectURL(LopHocDTO lopHocDTO) {
+    private RedirectUrls getRedirectURL(LopHocDTO lopHocDTO, String voucherID) {
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLoaiLopHoc() + "&action=showDetails");
-        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() + "&action=SuccessfulPayment");
+        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() +"&voucherID="+voucherID+ "&action=SuccessfulPayment");
 
         return redirectUrls;
     }

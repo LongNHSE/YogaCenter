@@ -14,10 +14,10 @@
 
         <link href="BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
         <link href="<%=url%>/Blog/BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
-
+        <link href="<%=url%>/css/BlogAddOn.css" rel="stylesheet" type="text/css"  > 
     </head>
     <body>
-
+        
         <%@include  file="../Components/headerComponent.jsp" %>
 
         <!--AlertMessage-->                                       
@@ -67,14 +67,11 @@
 
                         </article>
                     </form>
-
-
                 </div>
 
             </div>
 
         </div>     
-
 
         <style></style>
     </body>

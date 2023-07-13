@@ -15,14 +15,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Yogasan</title>
         <link href="<%=url%>/css/ClassCategoriesStyles.css" rel="stylesheet" type="text/css"/>    
-
-
     </head>
     <body>
         <!--navbar : Start-->
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
-
 
 
         <div class="container " style="margin-top:15px">
@@ -37,7 +34,7 @@
                 <% }%>
             </div>
             <div class="row">
-                <c:forEach items="${requestScope.listCate}" var="a">
+                <c:forEach items="${listCate}" var="a">
                     <div class="col-xs-6 col-md-4">
                         <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
                             <c:forEach items="${a.image}" var ="imageData">

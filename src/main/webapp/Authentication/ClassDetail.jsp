@@ -263,7 +263,7 @@
             }
 
             .product-deatil .name {
-                    font-size: 24px;
+                font-size: 24px;
                 font-weight: bold;
                 color: #555;
                 margin-bottom: 10px;
@@ -433,7 +433,7 @@
                 padding: 12px;
                 padding-top: 20px;
                 width: 350px;
-                  margin-right: 5px;
+                margin-right: 5px;
                 border: none;
                 font-size: 20px;
                 box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -488,7 +488,7 @@
                 line-height: 40px;
             }
             .Custom{
-             margin-left: 98px;
+                margin-left: 98px;
             }
 
             .alert {
@@ -511,18 +511,42 @@
             .closebtn:hover {
                 color: black;
             }
+            .price-container{
+                position: relative;
+                padding: 20px;
+                padding-left: 60%
+            }
+            .name{
+                padding 20px;
+                padding-left: 0%;
+            }
+            .row{
+                padding 20px;
+            }
+            .box select{
+                padding :20px;
+                position: relative;
+                left: 100px;
+                border-radius: 20px;
+                text-align: center;
+            }
+            .button{
+                margin: 100px;
+                margin-left: 59%;
+
+            }
 
             .class-information{
-                    margin-left: 40px;
+                margin-left: 40px;
             }
             .class-information h1{
                 text-align: center;
-                
+
             }
             .infor-line{
-                            border-top: 2px solid #554c86;
-                            }
-            
+
+                border-top: 2px solid #554c86;
+            }
 
         </style>            
     </head>
@@ -610,21 +634,48 @@
                                         </select>
 
                                     </div>
+                                    <c:set var="voucher" value="${voucherDTO}"/>
+                                    <c:if test="${voucher!=null}" >
+                                        <div>
+                                            <input type="text" name="voucherID" value="${voucher.voucherID}" />
+                                            
+                                        </div>
+                                    </c:if>
+                                    <div>
+                                        <input type="text" name="voucher" value="${voucher}" />
+                                        <button class="button" type="submit" name="action" value="CheckVoucher">
+                                            Check
+                                        </button>
+                                    </div>
+                                    <div style="color: red; font-weight: BOLD">
+                                        <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
+                                        <% if (voucherMessage != null) {%> <%= voucherMessage%> <% }%>
+                                    </div>
 
 
+                                    <div class="Custom">
+                                        <button class="button" type="submit" name="action" value="Register">
+                                            Register now!
+                                        </button>
 
+                                        <% String cid = (String) request.getAttribute("cid");%>
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                        <input type="hidden" name="returnID" value="<%=cid%>" />
+                                    </div>
 
+                                </div>
+                                <div style="width: 357px;
+                                     position: absolute;
+                                     margin-top: 10px;
+                                     right: 223px;
+                                     color: red;
+                                     font-weight: BOLD;">
+
+                                    <% String errorMessage = (String) request.getAttribute("error");%>
+                                    <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                                 </div>
 
-                                <div class="Custom">
-                                    <button class="button" type="submit" name="action" value="Register">
-                                        Register now!
-                                    </button>
-                                    <% String cid = (String) request.getAttribute("cid");%>
-                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-                                    <input type="hidden" name="returnID" value="<%=cid%>" />
-                                </div>
 
                             </div>
                             <div style="width: 357px;
@@ -634,7 +685,7 @@
                                  color: red;
                                  font-weight: BOLD;">
 
-                                <% String errorMessage = (String) request.getAttribute("error");%>
+                                <% errorMessage = (String) request.getAttribute("error");%>
                                 <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                             </div>
@@ -658,8 +709,41 @@
 
         </div>
 
-                <jsp:include page="../Components/footerComponent.jsp" />        
+        <jsp:include page="../Components/footerComponent.jsp" />   
 
+
+
+        <!--        <script>
+                    // Get the voucher code input element
+                    const voucherCodeInput = document.getElementById('voucherCodeInput');
+        
+        // Add event listener to the voucher code input
+                    voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
+        
+                    function handleVoucherCodeChange() {
+                        const voucherCode = voucherCodeInput.value;
+        
+                        // Make an AJAX request to the server
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/check-voucher?code=' + voucherCode);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status === 200) {
+                                    // Parse the response JSON
+                                    const response = JSON.parse(xhr.responseText);
+        
+                                    // Update the prices on the page
+                                    document.getElementById('originalPrice').textContent = 'Original Price: $100';
+                                    document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
+                                } else {
+                                    console.error('Error: ' + xhr.status);
+                                }
+                            }
+                        };
+                        xhr.send();
+                    }
+        
+                </script>-->
 
     </body>
 

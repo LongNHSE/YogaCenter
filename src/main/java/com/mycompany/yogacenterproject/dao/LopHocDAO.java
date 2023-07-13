@@ -6,19 +6,15 @@ package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
-import com.mycompany.yogacenterproject.dto.HocVienDTO;
-import com.mycompany.yogacenterproject.dto.PhongHocDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -676,7 +672,7 @@ public class LopHocDAO {
 
         }
     }
-
+        
     //LAY COUNT SO LUONG LOP HOC TORNG LoPHOC INNER JOIN SCHEDULETRAIN
     public int countRecord() {
         int count = 0;
@@ -765,7 +761,7 @@ public class LopHocDAO {
         }
         return maSlot;
     }
-
+    
     //LAY MA SLOT TU CLASS UNASSIGNED 
     public String maSlotClassUnassigned(String maLopHoc) {
         String maSlot = null;
@@ -1011,6 +1007,7 @@ public class LopHocDAO {
 //        System.out.println(listLopHocTemp.get(0).getThuList().equals(listLopHocTemp.get(1).getThuList()));
 //        System.out.println(listLopHocTemp.get(0).getThuList());
 //        System.out.println(listLopHocTemp.get(1).getThuList());
+
 //        for (int i = 0; i < listLopHocTemp.size(); i++) {
 //            List<String> currentThuList = listLopHocTemp.get(i).getThuList();
 //            String currentSlot = listLopHocTemp.get(i).getMaSlot();

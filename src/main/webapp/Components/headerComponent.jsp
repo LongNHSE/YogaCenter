@@ -151,7 +151,6 @@
 
                         <a class="btn-menu-item " href="<%=headerUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
                         <a class="btn-menu-item " href="<%=headerUrl%>/ProfileController?action=viewTransaction">View My Transaction</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>         
                         <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/ProfileController?action=classList">My Class</a>
@@ -168,7 +167,6 @@
                     </button>
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=headerUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog  </a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/TrainerController?action=classList">My Class</a>

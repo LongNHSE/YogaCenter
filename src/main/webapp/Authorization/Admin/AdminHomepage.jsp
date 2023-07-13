@@ -21,6 +21,7 @@
     </head>
 
     <body>
+
         <style>
             .container{
                 position: relative;
@@ -152,16 +153,16 @@
             }</style>
 
 
+
         <div class="Controller">
             <div class="wrapper">
 
                 <%@include file="NavComponents.jsp" %>
-            </div>    
+
+            </div>
         </div>
         <script>
-
-
-          
+            $('.sub-menu ul').hide();
 
             $(document).ready(function () {
                 $('.sub-menu ul#active').show();
