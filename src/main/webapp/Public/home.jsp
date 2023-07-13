@@ -92,7 +92,7 @@
         <div class="about_section layout_padding">
             <div class="container">
                 <div class="about_main">
-                    <h1 class="about_text"> 🎇 Yoga San  Center</h1>
+                    <h1 class="about_text">🌸 Yoga San  Center</h1>
                     <p class="ipsum_text">Welcome to Yoga San Center! We are committed to providing you with exceptional yoga experiences to help you relax, balance your body and mind, and enhance your overall health and well-being in your daily life.</p>
                 </div>
                 <div class="about_bt_main">
@@ -126,7 +126,7 @@
 
                           <div class="map">
                             <div class="map-responsive">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.153021509756!2d106.79869957595733!3d10.875963657348032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d99f191a9a8f%3A0x2d39d67349441db7!2zTmhhzIAgVsSDbiBIb8yBYSBTaW5oIFZpw6puIMSQSFFH!5e0!3m2!1sen!2s!4v1689244183253!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2948995297716!2d-74.01493547336389!3d40.71152417139369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a19881b83fb%3A0x979b0a4fe0492ce6!2sWorld%20Trade%20Center%2C%20New%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1689272047557!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                         </div>
                     </div>

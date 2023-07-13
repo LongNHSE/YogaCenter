@@ -16,7 +16,7 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat' !important;
+        font-family: 'Times New Roman' !important;
         box-sizing: border-box;
 
 
