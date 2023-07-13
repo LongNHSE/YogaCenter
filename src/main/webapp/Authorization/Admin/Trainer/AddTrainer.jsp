@@ -60,7 +60,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="userName" class="form-control form-control-lg" name="username" required="required"/>
-                                                <label class="form-label" for="userName">User Name</label>
+                                                <label class="form-label" for="userName">Username</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -94,7 +94,7 @@
 
                                             <div class="form-outline">
                                                 <input type="text" id="Ho" class="form-control form-control-lg" name="Ho" />
-                                                <label class="form-label" for="Ho">Ho</label>
+                                                <label class="form-label" for="Ho">Last Name</label>
                                             </div>
 
                                         </div>
@@ -102,7 +102,7 @@
 
                                             <div class="form-outline">
                                                 <input type="text" id="Ten" class="form-control form-control-lg" name="Ten" />
-                                                <label class="form-label" for="Ten">Ten</label>
+                                                <label class="form-label" for="Ten">First Name</label>
                                             </div>
 
                                         </div>
@@ -154,7 +154,7 @@
 
                                         <div class="col-md-12 mb-4">
 
-                                            <h6 class="mb-2 pb-1">YogaType </h6>
+                                            <h6 class="mb-2 pb-1">Managable Class Type</h6>
                                             <% for (LoaiLopHocDTO x : listLoaiLopHoc) {%>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="loaiLopHoc" id="<%=x.getMaLoaiLopHoc()%>"
@@ -190,7 +190,7 @@
                                         <div class="col-md-6 mb-4">
                                             <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
-                                            <label class="form-label" for="Thumbnail">Avatar</label>
+                                            <label class="form-label" for="Thumbnail">Profile Picture</label>
                                             <div id="previewThumb" class="previewThumb"></div>
                                         </div>
                                     </div>

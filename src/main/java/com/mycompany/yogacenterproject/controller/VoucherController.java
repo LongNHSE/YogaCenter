@@ -43,9 +43,8 @@ public class VoucherController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
-
+            
             if (action.equals("listVouchers")) {
-                out.print("kill all niggers");
                 viewAllVouchers(request, response);
             }
         }
@@ -60,7 +59,7 @@ public class VoucherController extends HttpServlet {
         int multiplier = Integer.parseInt(request.getParameter("multiplier"));
         int usageLimit = Integer.parseInt(request.getParameter("usageLimit"));
         int usageLimitPerUser = Integer.parseInt(request.getParameter("usageLimitPerUser"));
-        
+
         String errorMessage = "";
         boolean error = true;
 
@@ -84,10 +83,10 @@ public class VoucherController extends HttpServlet {
         }
     }
 
-    public void editVoucher(HttpServletRequest request, HttpServletResponse response){
+    public void editVoucher(HttpServletRequest request, HttpServletResponse response) {
         VoucherDAO voucherDAO = new VoucherDAO();
     }
-    
+
     public void deleteVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         VoucherDAO voucherDAO = new VoucherDAO();
 
@@ -97,11 +96,11 @@ public class VoucherController extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
         rd.forward(request, response);
     }
-     
-    public void viewAllVouchers(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+
+    public void viewAllVouchers(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         VoucherDAO voucherDAO = new VoucherDAO();
         List<VoucherDTO> listVouchers = new ArrayList<>();
-        
+
         listVouchers = voucherDAO.listVouchers();
         request.setAttribute("listVouchers", listVouchers);
         RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Voucher/ListVouchers.jsp");

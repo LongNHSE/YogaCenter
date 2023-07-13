@@ -183,10 +183,10 @@
                                             int soPhongTrong = phongHocDAO.soPhongTrong(slotDTO.getMaSlot(), weekdays[day]);
                                             String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                             if (soPhongTrong == 0) {
-                                                message += "Hien Khong Co Phong Trong";
+                                                message += "No Available Rooms Found!";
                                                 phongTrong = false;
                                             } else {
-                                                message += "Hien Dang Co " + soPhongTrong + " Phong Trong";
+                                                message += "There Are Currently " + soPhongTrong + " Empty Rooms";
                                                 phongTrong = true;
                                             }
 
@@ -229,8 +229,10 @@
                                 </tbody>
 
                             </table>
-                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
-                            <input class="btn btn-outline-danger" type="hidden" value="CreateClassPage" id="submit" name="action"  />
+                            <div style = "text-align:center; margin-bottom: 20px ">
+                                <input  class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
+                                <input class="btn btn-outline-danger" type="hidden" value="CreateClassPage" id="submit" name="action"  />
+                            </div>
                         </form>    
                     </div>
 
@@ -309,7 +311,8 @@
         $(".sub-menu a").click(function () {
             $(this).parent(".sub-menu").children("ul").slideToggle("100");
             $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });s
+        });
+        s
         function handleCheckboxChange() {
             if (this.checked) {
                 checkedCount++;
