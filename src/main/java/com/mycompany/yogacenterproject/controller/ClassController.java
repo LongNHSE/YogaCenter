@@ -118,11 +118,20 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
             } else if (action.equals("CreateClassType")) {
-//                out.print(request.getParameter("description").trim());
+//             
+//            request.setCharacterEncoding("UTF-8");
+//            response.setCharacterEncoding("UTF-8");
+//                String content = request.getParameter("description").trim();
+//                content = content.replace("\n", "<br>");
+//
+//                
+//               
+//                out.print(content);
                 createLoaiLopHoc(request, response);
                 insertImg(request, response);
                 insertThumbImg(request, response);
-                response.sendRedirect("Authorization/Admin/Class/ListClassType.jsp");
+                response.sendRedirect("./AdminController?action=listClassType");
+//                response.sendRedirect("Authorization/Admin/Class/ListClassType.jsp");
 
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
@@ -145,11 +154,76 @@ public class ClassController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("./Authentication/SchedulePublic.jsp");
                 rd.forward(request, response);
 
+            } else if (action.equals("Update Class Type")) {
+                UpdateClassTypePage(request, response);
+
+            } else if (action.equals("UpdateClassType")) {
+                UpdateLoaiLopHoc(request, response);
+
+                response.sendRedirect("./AdminController?action=listClassType");
             }
         } catch (Exception e) {
 
         }
 
+    }
+
+    private void UpdateClassTypePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException {
+        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LoaiLopHocDTO loaiLopHocDTO = loaiLopHocDAO.searchLoaiLopHoc(maLoaiLopHoc);
+        request.setAttribute("loaiLopHocDTO", loaiLopHocDTO);
+        LopHocImageDAO imgdao = new LopHocImageDAO();
+        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
+        request.setAttribute("imageListByID", list);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/UpdateClassTypePage.jsp");
+        rd.forward(request, response);
+    }
+
+    public void UpdateLoaiLopHoc(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+        DescriptionDAO descriptionDAO = new DescriptionDAO();
+        DescriptionDTO descriptionDTO = new DescriptionDTO();
+
+        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+        String maDescription = request.getParameter("maDescription");
+        String errorMessage = "";
+        boolean check = true;
+
+        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+
+        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
+            errorMessage += "Ten loai lop hoc da ton tai";
+            check = false;
+        }
+        double hocPhi = 0;
+        try {
+            hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
+        } catch (Exception e) {
+            errorMessage += "Ten loai lop hoc da ton tai";
+            check = false;
+        }
+        if (check == true) {
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+            loaiLopHocDTO.setMaDescription(maDescription);
+            descriptionDTO.setMaDescription(maDescription);
+            descriptionDTO.setTitle(request.getParameter("title").trim());
+            String content = request.getParameter("description").trim();
+            content = content.replace("\n", "<br>");
+
+            descriptionDTO.setContent(content);
+
+            descriptionDAO.updateDescriptionDTO(descriptionDTO);
+            loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
+        } else {
+            request.setAttribute("errorMessage", errorMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+            rd.forward(request, response);
+
+        }
     }
 
     private void changeStatusClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -265,8 +339,12 @@ public class ClassController extends HttpServlet {
             loaiLopHocDTO.setMaDescription(maDescription);
             descriptionDTO.setMaDescription(maDescription);
             descriptionDTO.setTitle(request.getParameter("title").trim());
-            descriptionDTO.setContent(request.getParameter("description").trim());
+            String content = request.getParameter("description").trim();
+            content = content.replace("\n", "<br>");
 
+            descriptionDTO.setContent(content);
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
             descriptionDAO.createDescriptionDTO(descriptionDTO);
             loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
         } else {

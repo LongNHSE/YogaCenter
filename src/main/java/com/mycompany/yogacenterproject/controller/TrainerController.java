@@ -6,8 +6,10 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DateUtils;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -55,7 +59,14 @@ public class TrainerController extends HttpServlet {
                 addTrainer(request, response);
             } else if (action.equals("UpdateStatus")) {
                 updateStatus(request, response);
+            } else if (action.equals("updateProfile")) {
+                updateStatus(request, response);
+            } else if (action.equals("classList")) {
+                classList(request, response);
+            } else if (action.equals("classList")) {
+                classList(request, response);
             }
+
         }
     }
 
@@ -134,9 +145,25 @@ public class TrainerController extends HttpServlet {
             rd.forward(request, response);
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Trainer/AddTrainer.jsp");
-            
+
             rd.forward(request, response);
         }
+    }
+
+    public void classList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // View profile trainee
+        //  log("chay vao view Profile");////////////////////
+        HttpSession session = request.getSession();
+        TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        List<LopHocDTO> listLopHocDTO = new ArrayList<>();
+        listLopHocDTO = lopHocDAO.getListClassOfTrainer(trainerDTO.getMaTrainer());
+        ///set Attribute
+//        session.setAttribute("hocVienDTO", hocVienDTO);
+        request.setAttribute("listLopHocDTO", listLopHocDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TrainerPrivilege/ClassList.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -120,44 +120,19 @@
                     </div>
                     <div class="col-md-6 map-column">
                         <div class="contact-info">
-                            <div class="call_text"><img src="<%=url%>/images/call-icon.png"><span class="padding_left_0">+01 9876543210</span></div>
-                            <div class="call_text"><img src="<%=url%>/images/mail-icon.png"><span class="padding_left_0">demo@gmail.com</span></div>
+                            <div class="call_text"><img src="<%=url%>/images/call-icon.png"><span class="padding_left_0">+84 912345678</span></div>
+                            <div class="call_text"><img src="<%=url%>/images/mail-icon.png"><span class="padding_left_0">YogaSan@gmail.com</span></div>
                         </div>
 
                           <div class="map">
                             <div class="map-responsive">
-                                <iframe
-                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Eiffel+Tower+Paris+France"
-                                    width="600" height="250" frameborder="0" style="border:0; width: 100%;" allowfullscreen></iframe>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.153021509756!2d106.79869957595733!3d10.875963657348032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d99f191a9a8f%3A0x2d39d67349441db7!2zTmhhzIAgVsSDbiBIb8yBYSBTaW5oIFZpw6puIMSQSFFH!5e0!3m2!1sen!2s!4v1689244183253!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-                        
-                        <style>
-                            .customTest{
-    right: 120px;
-    /* margin-left: 20px; */
-    width: 1350px;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: 10px;
-    margin-left: -15px;
-    position: relative;
-}
-                        </style>
-        <!-- contact section end -->
-        <!-- copyright section start -->
-<!--        <div class="copyright_section">
-            <div class="container " style="margin-top: 20px">
-                <p class="copyright_text ">Copyright 2019 All Right Reserved By.<a href="https://html.design"> Free html
-                        Templates</a> Distributed By. <a href="https://themewagon.com">ThemeWagon </a></p>
-            </div>
-        </div>-->
                 <jsp:include page="../Components/footerComponent.jsp" />        
     </body>
     <script src="<%=url%>/js/homeStyle.js"></script>

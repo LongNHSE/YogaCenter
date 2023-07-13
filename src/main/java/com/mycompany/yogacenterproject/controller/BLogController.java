@@ -69,7 +69,7 @@ public class BLogController extends HttpServlet {
                 deleteBlog(request, response);
                 viewMyBlog(request, response);
             } else if (action.equals("Update")) {
-                viewMyBlog(request, response);
+                updateBlogPage(request, response);
             } else if (action.equals("CreateBlog")) {
 //                String content = request.getParameter("content");
 //                // Chuyển đổi ký tự xuống dòng thành thẻ <br>
@@ -80,12 +80,13 @@ public class BLogController extends HttpServlet {
                 showBlogCategory(request, response);
             } else if (action.equals("Detail")) {
                 showDetail2(request, response);
+            } else if (action.equals("UpdateAction")) {
+                updateBlog(request, response);
             }
         } catch (Exception e) {
 
-      }
- 
-        
+        }
+
     }
 
     private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -111,7 +112,6 @@ public class BLogController extends HttpServlet {
 //                } else {
 //                    listBlogCate = new ArrayList<>(); 
 //                }
-
         if (id != null && !id.isEmpty()) {
             listBlogCate = dao.getBlogByCategoryID(id);
             for (BlogDTO blog : listBlogCate) {
@@ -162,7 +162,7 @@ public class BLogController extends HttpServlet {
         BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
         List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
         List<CommentDTO> listCmt = cmtDAO.getAllCommentsByBlogID(id);
-        
+
         request.setAttribute("blogImgDetails", blogImg);
         request.setAttribute("blogDetails", blogDetails);
         request.setAttribute("blogLatest", blogLatest);
@@ -208,7 +208,10 @@ public class BLogController extends HttpServlet {
             request.setAttribute("listBlog", listBlog);
             request.getRequestDispatcher("/Blog/MyBlogTrainee.jsp").forward(request, response);
         } else if (session.getAttribute("trainerDTO") != null) {
-
+            TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+            List<BlogDTO> listBlog = blogDAO.getAllBlogsByMaTrainer(trainerDTO.getMaTrainer());
+            request.setAttribute("listBlog", listBlog);
+            request.getRequestDispatcher("/Blog/MyBlogTrainee.jsp").forward(request, response);
         }
 
     }
@@ -223,7 +226,6 @@ public class BLogController extends HttpServlet {
     public void createBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         BlogDTO blogDTO = new BlogDTO();
-
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
         content = content.replace("\n", "<br>");
@@ -249,6 +251,7 @@ public class BLogController extends HttpServlet {
         blogDTO.setMaTrainer(maTrainer);
         blogDAO.createBlog(blogDTO);
         insertBanner(request, response, maBlog);
+
     }
 
     public void insertBanner(HttpServletRequest request, HttpServletResponse response, String maBlog) throws SQLException, IOException {
@@ -273,8 +276,35 @@ public class BLogController extends HttpServlet {
 
         blogDAO.insertImageDataFromDatabase(imageListThumb, blogImgDTO);
     }
-//      -- Image : End --
 
+    public void updateBlogPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        BlogDAO blogDAO = new BlogDAO();
+        String maBlog = request.getParameter("maBlog");
+        BlogDTO blogDTO = blogDAO.getBlogByID(maBlog);
+        request.setAttribute("blogDTO", blogDTO);
+        request.getRequestDispatcher("/Blog/UpdateBlog.jsp").forward(request, response);
+    }
+
+    public void updateBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        BlogDAO blogDAO = new BlogDAO();
+        BlogDTO blogDTO = new BlogDTO();
+
+        LocalDate currentDate = LocalDate.now();
+        String content = request.getParameter("content");
+        content = content.replace("\n", "<br>");
+        String title = request.getParameter("title");
+        String maBlog = request.getParameter("maBlog");
+        HttpSession session = request.getSession();
+        blogDTO.setContent(content);
+        blogDTO.setTitle(title);
+        blogDTO.setMaBlog(maBlog);
+        blogDAO.updateBlog(blogDTO);
+
+        viewMyBlog(request, response);
+
+    }
+
+//      -- Image : End --
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

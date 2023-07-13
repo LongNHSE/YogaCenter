@@ -96,7 +96,7 @@ public class AdminDAO {
     public static void main(String[] args) {
         AdminDAO adminDAO = new AdminDAO();
 //        AdminDTO adminDTO = new AdminDTO();
-//        adminDTO = adminDAO.login("admin1", "1234");
+//        adminDTO = adminDAO.login("Oalskad", "Pugre11111");
 //        System.out.println(adminDTO);
 //adminDAO.deleteAdmin("AD0001");
         adminDAO.createAdmin("admin", "12345", "AD0003");

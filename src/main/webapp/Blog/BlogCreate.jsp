@@ -12,83 +12,68 @@
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         %>
 
-
+        <link href="BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
         <link href="<%=url%>/Blog/BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
         <link href="<%=url%>/css/BlogAddOn.css" rel="stylesheet" type="text/css"  > 
     </head>
     <body>
-        <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">
-            <%@include  file="../Components/headerComponent.jsp" %>
-            <div id="previewThumb" class="previewThumb">
-            </div>
-            <div class="Controller">
-                <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
-                <input type="hidden" id="Thumbnails" name="Banner"  >
-                <div class="blog">
-                    <textarea type="text" class="title" name="title" placeholder="Blog title..." required=""></textarea>
-                    <textarea type="text" class="article" name="content" placeholder="Start writing here..."required=""></textarea>
-                    <input class="submit-btn" type="submit" value="Submit">
-                    <input type="hidden" name="action" value="CreateBlog">
+        
+        <%@include  file="../Components/headerComponent.jsp" %>
+
+        <!--AlertMessage-->                                       
+        <div id="alertMessage" class="alert-message">
+            Vui lòng điền đầy đủ thông tin
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col-lg-8 m-15px-tb">
+                    <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
+                        <article class="article">
+
+                            <div style="height:250px"id="previewThumb" class="previewThumb">
+
+                            </div>
+                            <div class="image-input">
+                                <input class="input-style"  type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">                
+                            </div>
+
+
+                            <div class="Controller">
+
+                                <input type="hidden" id="Thumbnails" name="Banner"  >
+                                <div class="blog">
+                                    <div class="textarea-container">
+                                        <div class="input-title">
+                                            <textarea   class="input-style " id="titleInput" style="text-align: center; width: 100%; margin: 20px 0px; height: 50px"type="text" class="title" name="title" placeholder="Blog title"></textarea>                                                      
+                                        </div>
+                                        <div>
+                                            <textarea   class="input-style" id="contentInput" style="height: 300px; width: 100%" type="text" class="article" name="content" placeholder="Start writing here..."></textarea>                                                          
+                                        </div>
+                                    </div>
+                                    <div class="button-in-blog">
+                                        <button class="button-blog-cancel"> 
+                                            Cancel
+                                        </button>
+                                        <button class="button-blog" id="submitButton">
+                                            <input type="hidden" name="action" value="CreateBlog">
+                                            Submit
+                                        </button>                                                           
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </article>
+                    </form>
                 </div>
+
             </div>
-        </form>
+
+        </div>     
+
+        <style></style>
     </body>
-    <script>
-
-
-
-
-        function addThumbnailImage(fileInput) {
-            var files = fileInput.files;
-
-            // Clear the previewThumb container
-            var previewThumb = document.getElementById('previewThumb');
-            previewThumb.innerHTML = '';
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
-
-                // Đọc file ảnh
-                reader.onload = (function (file) {
-                    return function (e) {
-                        var imgData = e.target.result;
-
-                        var imgElement = document.createElement('img');
-                        imgElement.className = 'banner';
-                        imgElement.src = imgData;
-                        var deleteButton = document.createElement('button');
-                        deleteButton.className = 'deleteButton';
-                        deleteButton.textContent = 'Delete';
-                        deleteButton.addEventListener('click', function () {
-                            var imageContainer = this.parentNode;
-                            imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
-                            document.getElementById('fileInput').value = '';
-                            document.getElementById('Thumbnail').value = '';
-                        });
-                        var imageContainer = document.createElement('div');
-                        imageContainer.className = 'imageListStyle';
-                        imageContainer.appendChild(imgElement);
-                        imageContainer.appendChild(deleteButton);
-                        previewThumb.appendChild(imageContainer); // Hiển thị ảnh và nút xóa trên giao diện
-                        document.getElementById('Thumbnails').value = imgData;
-
-                    };
-                })(file);
-
-                reader.readAsDataURL(file);
-            }
-        }
-        $(document).ready(function () {
-            $('.sub-menu ul#active').show();
-            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });
-
-        $('.sub-menu ul').hide();
-
-        $(".sub-menu a").click(function () {
-            $(this).parent(".sub-menu").children("ul").slideToggle("100");
-            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });
-    </script>
+    <script src="<%=url%>/js/CreateBlogStyle.js"></script>
 </html>
