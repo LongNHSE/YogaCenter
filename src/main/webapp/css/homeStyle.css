@@ -250,6 +250,7 @@ col-trainer{
     background-color: #ff47d9;
     text-align: center;
     padding: 10px 0px;
+    border-radius: 100px
 }
 .client_section {
     width: 100%;
