@@ -14,7 +14,6 @@ import com.paypal.api.payments.Details;
 import com.paypal.api.payments.Item;
 import com.paypal.api.payments.ItemList;
 import com.paypal.api.payments.Links;
-import com.paypal.api.payments.Order;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.PayerInfo;
 import com.paypal.api.payments.Payment;
@@ -23,15 +22,12 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import org.apache.http.HttpException;
-import static org.bouncycastle.crypto.tls.ConnectionEnd.client;
 
 /**
  *
@@ -63,7 +59,6 @@ public class PaymentServices {
         String approvalLink = getApprovalLink(approvedPayment);
 
 //        System.out.println(approvalLink);
-
         return approvalLink;
     }
 
@@ -82,20 +77,40 @@ public class PaymentServices {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         VoucherDAO voucherDAO = new VoucherDAO();
         VoucherDTO voucherDTO = new VoucherDTO();
-
+        
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        voucherID="V0002";
+        voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+        
+        double totalAmount;
+        double tax = 0;
+        double shipping = 0;
         long subtotal = (loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())) / 21000; // Replace with actual calculation based on lopHocDTO
-        long tax = 0; // Replace with actual calculation based on lopHocDTO
-        long shipping = 0; // Replace with actual calculation based on lopHocDTO
-        long totalAmount = subtotal + tax + shipping;
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())) / 21000;
+       
+//        if (voucherDTO != null) {
+            double discounted = (voucherDAO.getMultiplierByID(voucherID)/100.0);
+            totalAmount = subtotal*(1-discounted) + tax + shipping;
+<<<<<<< Updated upstream
+=======
+            decimalFormat.format(totalAmount);
+>>>>>>> Stashed changes
+//        } else {
+//            totalAmount = subtotal + tax + shipping;
+//            decimalFormat.format(totalAmount);
+//        }
+<<<<<<< Updated upstream
+=======
+        System.out.println(decimalFormat.format(totalAmount));
+>>>>>>> Stashed changes
         Details details = new Details();
-        details.setShipping(String.valueOf(shipping));
+        details.setShipping("0");
         details.setSubtotal(String.valueOf(subtotal));
-        details.setTax(String.valueOf(tax));
+        details.setTax("0");
 
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(String.valueOf(subtotal));
+        amount.setTotal(String.valueOf(decimalFormat.format(totalAmount)));
         amount.setDetails(details);
 
         Transaction transaction = new Transaction();
@@ -107,21 +122,23 @@ public class PaymentServices {
         Item item = new Item();
         item.setCurrency("USD");
         item.setName(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDTO.getMaLoaiLopHoc()));
-        item.setPrice(String.valueOf(totalAmount));
+        item.setPrice("-"+String.valueOf((loaiLopHocDAO
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000)
+                *voucherDAO.getMultiplierByID(voucherID)/100.0));
         item.setTax("0");
         item.setQuantity("1");
         items.add(item);
 
-        if (voucherDAO.searchVoucherByID(voucherID) != null) {
-            voucherDTO = voucherDAO.searchVoucherByID(voucherID);
-            Item discountItem = new Item();
-            discountItem.setCurrency("USD");
-            discountItem.setName("Voucher: " + voucherDTO.getVoucherName());
-            discountItem.setPrice("-" + String.valueOf(totalAmount * (voucherDAO.getMultiplierByID(voucherID) / 100)));
-            discountItem.setTax("0");
-            discountItem.setQuantity("1");
-            items.add(discountItem);
-        }
+//        voucherDTO = voucherDAO.searchVoucherByID("V0002");
+//        System.out.println();
+        Item discountItem = new Item();
+        discountItem.setCurrency("USD");
+        discountItem.setName("Voucher: " + voucherDTO.getVoucherName());
+        discountItem.setPrice("-" + decimalFormat.format((loaiLopHocDAO
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())/21000)));
+        discountItem.setTax("0");
+        discountItem.setQuantity("1");
+        items.add(discountItem);
 
         itemList.setItems(items);
         transaction.setItemList(itemList);

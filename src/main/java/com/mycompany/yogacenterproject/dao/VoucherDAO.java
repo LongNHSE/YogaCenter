@@ -42,21 +42,23 @@ public class VoucherDAO {
         VoucherDTO voucherDTO = new VoucherDTO();
         String sql = "select * from [dbo].[Voucher]\n"
                 + "where voucherID = ?";
-        try(PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql); 
-                ResultSet rs = ps.executeQuery()){
+
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql);) {
             ps.setString(1, voucherID);
-            while(rs.next()){
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 voucherDTO.setVoucherID(rs.getString("voucherID"));
                 voucherDTO.setVoucherName(rs.getString("voucherName"));
                 voucherDTO.setMultiplier(rs.getInt("multiplier"));
                 voucherDTO.setUsageLimit(rs.getInt("usageLimit"));
                 voucherDTO.setUsageLimitPerUser(rs.getInt("usageLimitPerUser"));
                 voucherDTO.setTotalUsage(rs.getInt("totalUsage"));
+                return voucherDTO;
             }
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
         }
-        return voucherDTO;
+        return null;
     }
 
     public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
@@ -78,8 +80,8 @@ public class VoucherDAO {
 
     }
 
-    public long getMultiplierByID(String voucherID) throws SQLException {
-        long multiplier = 1;
+    public double getMultiplierByID(String voucherID) throws SQLException {
+        int multiplier = 100;
         String sql = "select [multiplier] from [dbo].[Voucher]\n"
                 + "where [voucherID] = ?";
         Connection conn = DBUtils.getConnection();
@@ -170,9 +172,10 @@ public class VoucherDAO {
     public static void main(String[] args) throws SQLException {
         VoucherDAO voucherDAO = new VoucherDAO();
         List<VoucherDTO> list = new ArrayList<>();
+        VoucherDTO voucherDTO = new VoucherDTO();
 //        VoucherDTO voucherDTO = new VoucherDTO("V0004", "test2", 50, 10, 1,2);
-        int index = voucherDAO.lastIDIndex();
-        System.out.println(index);
+//        int index = voucherDAO.lastIDIndex();
+//        System.out.println(index);
 //        boolean nigger = voucherDAO.getVoucherName("nigger");
 //        System.out.println(nigger);
 //        voucherDAO.deleteVoucher("V0001");
@@ -180,6 +183,8 @@ public class VoucherDAO {
 //        for (VoucherDTO x : list) {
 //            System.out.println(x);
 //    }
+        voucherDTO = voucherDAO.searchVoucherByID("V0002");
+        System.out.println(voucherDTO);
 
 //    voucherDAO.addVoucher(voucherDTO);
 //voucherDAO.deleteVoucher("V0003");

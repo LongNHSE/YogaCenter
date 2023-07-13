@@ -26,7 +26,7 @@
         <div class="container " style="margin-top:15px">
             <h1 class="text-center text-muted-h1">Peace of Mind</h1>
             <div class="row">
-                <c:forEach items="${requestScope.listCate}" var="a">
+                <c:forEach items="${listCate}" var="a">
                     <div class="col-xs-6 col-md-4">
                             <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
                                 <c:forEach items="${a.image}" var ="imageData">
