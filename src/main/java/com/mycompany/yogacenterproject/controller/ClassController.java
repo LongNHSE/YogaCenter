@@ -378,7 +378,7 @@ public class ClassController extends HttpServlet {
     }
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
-    public void payment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void payment(HttpServletRequest request, HttpServletResponse response)  {
         try {
             boolean error = true;
             HttpSession session = request.getSession();

@@ -6,10 +6,12 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 
 import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
@@ -81,7 +83,9 @@ public class BLogController extends HttpServlet {
             }
         } catch (Exception e) {
 
-        }
+      }
+ 
+        
     }
 
     private void showBlogs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -101,11 +105,13 @@ public class BLogController extends HttpServlet {
         List<BlogDTO> listBlogCate;
         BlogDAO dao = new BlogDAO();
         BlogImageDAO imgDAO = new BlogImageDAO();
+
 //                if (id != null && !id.isEmpty()) {
 //                    listBlogCate = dao.getBlogByCategoryID(id);
 //                } else {
 //                    listBlogCate = new ArrayList<>(); 
 //                }
+
         if (id != null && !id.isEmpty()) {
             listBlogCate = dao.getBlogByCategoryID(id);
             for (BlogDTO blog : listBlogCate) {
@@ -147,17 +153,21 @@ public class BLogController extends HttpServlet {
         String id = request.getParameter("returnID");
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
+        CommentDAO cmtDAO = new CommentDAO();
 //        id = "BL0002";
+
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
         List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
         BlogImgDTO blogImg = blogImgDAO.getImageByBlogID(id);
         List<BLogCateDTO> listCate = blogDAO.getAllBlogCate();
-
+        List<CommentDTO> listCmt = cmtDAO.getAllCommentsByBlogID(id);
+        
         request.setAttribute("blogImgDetails", blogImg);
         request.setAttribute("blogDetails", blogDetails);
         request.setAttribute("blogLatest", blogLatest);
         request.setAttribute("blogCate", listCate);
+        request.setAttribute("blogCmt", listCmt);
         RequestDispatcher rd = request.getRequestDispatcher("/Blog/BlogDetails.jsp");
         rd.forward(request, response);
     }

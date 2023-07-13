@@ -17,13 +17,50 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Montserrat' !important;
         box-sizing: border-box;
 
 
     }
+    
+    *,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+input,
+select,
+textarea {
+  background-color: transparent;
+  outline: none;
+}
+button {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0;
+}
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+}
+
     .header-nav{
-        background-color: #E4D96F;
+        background-color: #8b57fc;
         margin-bottom:20px
     }
     /*    .dropdown {
@@ -74,6 +111,12 @@
     }
     .navbar-nav{
         margin-left: 800px;
+    }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 10px;
+        padding-left: 10px;
+        color: #fff;
+    font-size: 18px;
     }
 
 </style>
