@@ -45,7 +45,7 @@ public class VoucherController extends HttpServlet {
             String action = request.getParameter("action");
 
             if (action.equals("listVouchers")) {
-                out.print("kill all niggers");
+                out.print("asdkandkjadnajkdnasidniausndiuasndiuns");
                 viewAllVouchers(request, response);
             }
         }

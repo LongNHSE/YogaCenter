@@ -158,17 +158,17 @@
                         <tr class="Test">
 
 
-                            <th  scope="col">Ma Hoc Vien</th>
-                            <th scope="col">Ho</th>
-                            <th scope="col">Ten</th>
+                            <th  scope="col">Trainee's ID</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">First Name</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Day of birth</th>
+                            <th scope="col">Day of Birth</th>
 
 
                             <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
+                            <th scope="col">Phone Number</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Ma Lop Hoc</th>
+                            <th scope="col">Currently Registered Class(es)</th>
 
                         </tr>
                     </thead>

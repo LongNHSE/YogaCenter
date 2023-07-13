@@ -32,8 +32,6 @@ import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
-import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
-import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
@@ -112,8 +110,6 @@ public class ClassController extends HttpServlet {
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("SuccessfulPayment")) {
-                assignClassAfterPayment(request, response);
             } else if (action.equals("Register")) {
                 payment(request, response);
             } else if (action.equals("SuccessfulPayment")) {
@@ -125,8 +121,6 @@ public class ClassController extends HttpServlet {
                 insertImg(request, response);
                 insertThumbImg(request, response);
                 response.sendRedirect("./AdminController?action=listClassType");
-//                response.sendRedirect("Authorization/Admin/Class/ListClassType.jsp");
-
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
             } else if (action.equals("Update")) {

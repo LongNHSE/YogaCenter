@@ -170,16 +170,14 @@
                         <tr class="Test">
 
 
-                            <th scope="col">Ma Lop Hoc</th>
-                            <th scope="col">Ma Loai Lop Hoc</th>
-                            <th scope="col">So Luong Hoc Vien</th>
-                            <th scope="col">So Luong Hoc Vien Hien Tai</th>
-                            <th scope="col">Ma Trainer</th>
-                            <th scope="col">Ma Phong</th>
-                            <th scope="col">Ma Slot</th>
-
-
-                            <th scope="col">Ngay bat dau</th>
+                            <th scope="col">Class' ID</th>
+                            <th scope="col">Type of Class</th>
+                            <th scope="col">Max No. of Attendees</th>
+                            <th scope="col">Current No. of Attendees</th>
+                            <th scope="col">Trainer In Charge</th>
+                            <th scope="col">Room's ID</th>
+                            <th scope="col">Slot's ID</th>
+                            <th scope="col">Initial Date</th>
                             <th scope="col">Status</th>
 
                         </tr>
