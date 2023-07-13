@@ -24,8 +24,7 @@
                 <div class="row">
                     <div class="col-md-9 mb40"">
                         <div class="text-center mb-5">
-                            <h5 class=" h1 header-title">Blog</h5>
-                            <h2 class="display-20 display-md-18 display-lg-16 header-subtitle">Welcome to the Yoga Center Blog</h2>
+                            <h5 class=" h1 header-title">Yoga Center Blog</h5>
 
                         </div>
                         <div class="row">
@@ -65,9 +64,6 @@
                                                         <button class="custom-btn custom-form-btn">More</button>
                                                     </form>
                                                 </div>
-                                                <div>
-                                                    <span>Created by : <span class="text-primary">${blog.maHV}</span></span>
-                                                </div>
                                             </div>
                                         </div>
                                     </article>
@@ -80,9 +76,11 @@
                     </div>
 
                     <div class="col-md-3 mb40">
+
                         <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
                             <a class="nav-item nav-link" href="<%=baseUrl%>/Blog/BlogCreate.jsp"><i class="fa-solid fa-circle-plus" style="font-size: 50px"></i>   </a>
                         </c:if>
+
 
                         <div class="single category">
                             <h3 class="side-title">Category</h3>                               
@@ -96,6 +94,6 @@
 
                 </div>
         </section>
-
+                <jsp:include page="../Components/footerComponent.jsp" />
     </body>
 </html>

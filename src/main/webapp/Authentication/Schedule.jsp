@@ -193,6 +193,10 @@
                                 <div class="bg-green" style="background-color: #00FF00">
                                     <%=status%>
                                 </div>
+                                <%} else {%> 
+                                <div class="bg-green" style="background-color: gray">
+                                    <%=status%>
+                                </div>
                                 <%} %>
 
                             </div>
@@ -345,6 +349,11 @@
     </div>
 </div>
 
+<style>
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1662px;
+    }
+</style>
 </body>
 <!-- Javascript files-->
 <script src="../js/jquery.min.js"></script>

@@ -54,65 +54,102 @@
                                     </div>-->
                         </article>
 
-                    </div>
+                        <section class="content-item" id="comments">
+                            <div class="container">   
+                                <div class="row">
+                                    <div class="col-sm-8">   
+                                        <form>
+                                            <h3 class="pull-left">New Comment</h3>
+                                            <button type="submit" class="btn btn-normal pull-right">Submit</button>
+                                            <fieldset>
+                                                <div class="row">
+                                                    <div class="col-sm-3 col-lg-2 hidden-xs">
+                                                        <img class="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                                                    </div>
+                                                    <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                                        <textarea class="form-control" id="message" placeholder="Your message" required=""></textarea>
+                                                    </div>
+                                                </div>  	
+                                            </fieldset>
+                                        </form>
+
+                                        <h3>Comments</h3>
+
+                                        <!-- Iterate over comments -->
+                                        <c:forEach var="comment" items="${blogCmt}">
+                                            <div class="media">
+                                                <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading">Hello</h4>
+                                                    <p>${comment.commentContent}</p>
+                                                    <ul class="list-unstyled list-inline media-detail pull-left">
+                                                        <li><i class="fa fa-calendar"></i>${comment.createDate}</li>
+                                                    </ul>
+                                                    <ul class="list-unstyled list-inline media-detail pull-right">
+                                                        <li class=""><a href="">Like</a></li>
+                                                        <li class=""><a href="">Reply</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                    </section>                            
+
+                                </div>
 
 
-                    <div class="col-lg-4 m-15px-tb blog-aside">
-                        <div class="widget widget-latest-post">
-                            <div class="widget-title">
-                                <h3>Latest Post</h3>
-                            </div>
-                            <div class="widget-body">
-                                <c:forEach items="${requestScope.blogLatest}" var="blog">
-                                    <div class="latest-post-aside media">
-                                        <div class="lpa-left media-body">
-                                            <div class="lpa-title">
-                                                <h5><a href="#">${blog.getTitle()}</a></h5>
-                                            </div>
-                                            <div class="lpa-meta">
-                                                <a class="name" href="#">
-                                                    ${blog.maHV}
-                                                </a>
-                                                <a class="date" href="#">
-                                                    ${blog.date}
-                                                </a>
-                                            </div>
+                                <div class="col-lg-4 m-15px-tb blog-aside">
+                                    <div class="widget widget-latest-post">
+                                        <div class="widget-title">
+                                            <h3>Latest Post</h3>
                                         </div>
-                                        <div class="lpa-right">
-                                            <a href="#">
+                                        <div class="widget-body">
+                                            <c:forEach items="${requestScope.blogLatest}" var="blog">
+                                                <div class="latest-post-aside media">
+                                                    <div class="lpa-left media-body">
+                                                        <div class="lpa-title">
+                                                            <h5><a href="#">${blog.getTitle()}</a></h5>
+                                                        </div>
+                                                        <div class="lpa-meta">
+                                                            <a class="name" href="#">
+                                                                ${blog.maHV}
+                                                            </a>
+                                                            <a class="date" href="#">
+                                                                ${blog.date}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="lpa-right">
+                                                        <a href="#">
 
-                                                <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
-                                            </a>
+                                                            <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>            
+
                                         </div>
                                     </div>
-                                </c:forEach>            
-
-                            </div>
-                        </div>
 
 
-                        <div class="widget widget-tags">
-                            <div class="widget-title">
-                                <h3>Latest Tags</h3>
-                            </div>
-                            <div class="widget-body">
-                                <div class="nav tag-cloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">Travel</a>
-                                    <a href="#">Web Design</a>
-                                    <a href="#">Marketing</a>
-                                    <a href="#">Research</a>
-                                    <a href="#">Managment</a>
+                                    <div class="widget widget-tags">
+                                        <div class="widget-title">
+                                            <h3>Category</h3>
+                                        </div>
+                                        <div class="single category">
+                                            <ul class="list-unstyled">
+                                                <c:forEach items="${blogCate}" var="cate" varStatus="status">                                     
+                                                    <li><a href="<%= baseUrl%>/BLogController?returnID=${cate.maCate}&action=showBlogCategory" " title="">${cate.tenCate} 
+                                                        </c:forEach>                               
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-        </div>
 
-    </body>
+                </body>
 
-</html>
+                </html>

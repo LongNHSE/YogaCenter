@@ -17,13 +17,50 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Montserrat' !important;
         box-sizing: border-box;
 
 
     }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        font: inherit;
+    }
+    img,
+    picture,
+    svg,
+    video {
+        display: block;
+        max-width: 100%;
+    }
+    input,
+    select,
+    textarea {
+        background-color: transparent;
+        outline: none;
+    }
+    button {
+        cursor: pointer;
+        background-color: transparent;
+        outline: none;
+        border: 0;
+    }
+    body {
+        min-height: 100vh;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1;
+    }
+
     .header-nav{
-        background-color: #E4D96F;
+        background-color: #8b57fc;
         margin-bottom:20px
     }
     /*    .dropdown {
@@ -75,13 +112,19 @@
     .navbar-nav{
         margin-left: 800px;
     }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 10px;
+        padding-left: 10px;
+        color: #fff;
+        font-size: 18px;
+    }
 
 </style>
 
 
 <!-- header section start -->
 <nav class="header-nav navbar navbar-expand-lg bg-pink text-center  ">
-    <div class="logo"><a href="home.jsp"><img src="<%= headerUrl%>/images/logo.png"></a></div>
+    <div class="logo"><a href="<%= headerUrl%>/Public/home.jsp"><img src="<%= headerUrl%>/images/logo.png"></a></div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -92,8 +135,8 @@
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/home.jsp">Home</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
+            <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=ViewSchedulePublic">Schedule</a>
 
-            
             <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>
             <c:if test = "${sessionScope.hocVienDTO == null && sessionScope.trainerDTO == null}">
                 <a class="nav-item nav-link" href="<%=headerUrl%>/Authentication/signin.jsp">Login</a>              
@@ -107,24 +150,27 @@
                     <div class="dropdown-content">
 
                         <a class="btn-menu-item " href="<%=headerUrl%>/Authorization/TraineePrivilege/profile.jsp">Profile</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
+                        <a class="btn-menu-item " href="<%=headerUrl%>/ProfileController?action=viewTransaction">View My Transaction</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/ScheduleController">View my schedule</a>         
                         <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog</a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/ProfileController?action=classList">My Class</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
 
                 </div> 
             </c:if>
             <c:if test = "${sessionScope.trainerDTO != null}">
-                <div class="dropdown">
-                    <button style="margin-top: 10px; margin-left: 100px; background: #be2532" class="btn btn-secondary btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="dropdown header-user " style="margin-top:5px">
+
+                    <button  class="btn btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>${sessionScope.trainerDTO.username}</span>
                     </button>
                     <div class="dropdown-content">
                         <a class="btn-menu-item" href="<%=headerUrl%>/Authorization/TrainerPrivilege/profile.jsp">Profile</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/Public/changePass.jsp">Change password</a>
                         <a class="btn-menu-item" href="<%=headerUrl%>/TrainerScheduleController?action=TrainerSchedule">View Trainer schedule</a>
-                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController/?action=MyBlog"><b style="color: black">My Blog</b></a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/BLogController?action=MyBlog">My Blog  </a>
+                        <a class="btn-menu-item" href="<%=headerUrl%>/TrainerController?action=classList">My Class</a>
+
                         <a class="btn-menu-item" href="<%=headerUrl%>/LoginController/signup?action=logout"><b style="color: black">Logout</b></a>
                     </div>
                 </div>                  

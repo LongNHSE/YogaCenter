@@ -64,6 +64,14 @@
         <servlet-name>BlogAdminController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
     </servlet>
+    <servlet>
+
+        <servlet-name>VoucherController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.VoucherController</servlet-class>
+
+        <servlet-name>ExceptionController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.ExceptionController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -124,13 +132,21 @@
         <servlet-name>BlogAdminController</servlet-name>
         <url-pattern>/BlogAdminController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+
+        <servlet-name>VoucherController</servlet-name>
+        <url-pattern>/VoucherController</url-pattern>
+
+        <servlet-name>ExceptionController</servlet-name>
+        <url-pattern>/ExceptionController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             600
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Public/signin.jsp</welcome-file>
+        <welcome-file>Public/home.jsp</welcome-file>
     </welcome-file-list>
     <filter>
         <filter-name>AuthenticationFilter</filter-name>

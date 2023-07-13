@@ -21,9 +21,12 @@ public class Constants {
     public static final String MA_TRAINER_FORMAT = "TR%04d";
     public static final String MA_DESCRIPTION_FORMAT = "DES%04d";
     public static final String MA_ATTENDANCE_FORMAT = "AT%04d";
-     public static final String MA_BLOG_FORMAT = "B%04d";
+
+    public static final String MA_APPLICATION_FORMAT = "AP%04d";
+    public static final String MA_BLOG_FORMAT = "B%04d";
     public static final String PENDING = "PENDING";
     public static final String ABSENT = "ABSENT";
     public static final String ATTENDED = "ATTENDED";
+    public static final String VOUCHER_ID_FORMAT = "V%04d";
 
 }

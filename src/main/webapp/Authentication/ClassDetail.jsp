@@ -263,8 +263,11 @@
             }
 
             .product-deatil .name {
+                font-size: 24px;
+                font-weight: bold;
+                color: #555;
+                margin-bottom: 10px;
                 margin-top: 0;
-                margin-bottom: 0
             }
 
             .product-deatil .name small {
@@ -276,9 +279,10 @@
             }
 
             .product-deatil .price-container {
-                font-size: 24px;
-                margin: 0;
-                font-weight: 300
+                font-size: 20px;
+                font-weight: bold;
+                color: #333;
+                text-align: right;
             }
 
             .product-deatil .price-container small {
@@ -376,8 +380,8 @@
                 position: relative;
                 padding: 10px 24px;
                 font-size: 18px;
-                color: rgb(193, 163, 98);
-                border: 2px solid rgb(193, 163, 98);
+                color: #770737;
+                border: 2px solid rgb(103, 49, 71);
                 border-radius: 34px;
                 background-color: transparent;
                 font-weight: 600;
@@ -395,7 +399,7 @@
                 border-radius: inherit;
                 scale: 0;
                 z-index: -1;
-                background-color: rgb(193, 163, 98);
+                background-color: rgb(218, 112, 214);
                 transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             }
 
@@ -404,7 +408,7 @@
             }
 
             .button:hover {
-                color: #212121;
+                color: #ffff;
                 scale: 1.1;
                 box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
             }
@@ -415,6 +419,8 @@
 
 
             .box {
+                display:flex;
+                align-items: center;
                 position: absolute;
                 top: 27px ;
                 right: -265px;
@@ -422,11 +428,12 @@
             }
 
             .box select {
-                background-color: rgb(193, 163, 98);
-                color: white;
+                background-color: rgb(218, 112, 214);
+                color: #ffff;
                 padding: 12px;
                 padding-top: 20px;
                 width: 350px;
+                margin-right: 5px;
                 border: none;
                 font-size: 20px;
                 box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -467,25 +474,80 @@
             }
 
             .title{
-                width: 500px;
+                width: 100%;
                 height: auto;
             }
             .title h1 {
+                color:rgb(191, 64, 191);
                 border-bottom: 5px solid #554c86
             }
             .Description .description{
+                color: #5a5a5a;
                 font-size: 25px;
-                display: block;
-                text-align: center;
-                margin: 20px;
-                line-height: 30px;
+                text-align: left;
+                line-height: 40px;
             }
             .Custom{
-
-
                 margin-left: 98px;
+            }
+
+            .alert {
+                padding: 20px;
+                background-color: #ffff4d;
+                color: black;
+            }
+
+            .closebtn {
+                margin-left: 15px;
+                color: black;
+                font-weight: bold;
+                float: right;
+                font-size: 22px;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .closebtn:hover {
+                color: black;
+            }
+            .price-container{
+                position: relative;
+                padding: 20px;
+                padding-left: 60%
+            }
+            .name{
+                padding 20px;
+                padding-left: 0%;
+            }
+            .row{
+                padding 20px;
+            }
+            .box select{
+                padding :20px;
+                position: relative;
+                left: 100px;
+                border-radius: 20px;
+                text-align: center;
+            }
+            .button{
+                margin: 100px;
+                margin-left: 59%;
 
             }
+
+            .class-information{
+                margin-left: 40px;
+            }
+            .class-information h1{
+                text-align: center;
+
+            }
+            .infor-line{
+
+                border-top: 2px solid #554c86;
+            }
+
         </style>            
     </head>
 
@@ -494,7 +556,14 @@
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
         <div class="container">
+            <% String popupMessage = (String) request.getAttribute("popupMessage");
+                String popupMessageSuccessful = (String) request.getAttribute("popupMessageSuccessful"); %>
+            <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+                <strong>!</strong>  ${popupMessage} 
+            </div>
 
+            <% }%>
             <div class="product-content product-wrap clearfix product-deatil">
                 <div class="row">
 
@@ -538,18 +607,16 @@
 
 
 
-                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12 class-information">
                         <h1 class="name">
                             ${requestScope.details.getTenLoaiLopHoc()}
                         </h1>
-                        <hr/>
-                        <h3 class="price-container">
+                        <hr class="infor-line"/>
+                        <p class="price-container text-right">
                             <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
                             ${formattedHocPhi}
-                        </h3>
-                        <hr/>
-
-                        <hr/>
+                        </p>
+                        <hr class="infor-line"/>
 
                         <form action="<%=url%>/ClassController" method="POST">
                             <div class="row">
@@ -571,27 +638,38 @@
 
 
 
+                                    <div class="Custom">
+                                        <button class="button" type="submit" name="action" value="Register">
+                                            Register now!
+                                        </button>
+                                        <% String cid = (String) request.getAttribute("cid");%>
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                        <input type="hidden" name="returnID" value="<%=cid%>" />
+                                    </div>
+
+                                </div>
+                                <div style="width: 357px;
+                                     position: absolute;
+                                     margin-top: 10px;
+                                     right: 223px;
+                                     color: red;
+                                     font-weight: BOLD;">
+
+                                    <% String errorMessage = (String) request.getAttribute("error");%>
+                                    <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                                 </div>
 
-                                <div class="Custom">
-                                    <button class="button" type="submit" name="action" value="Register">
-                                        Register now!
-                                    </button>
-                                    <% String cid = (String) request.getAttribute("cid");%>
-                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-                                    <input type="hidden" name="returnID" value="<%=cid%>" />
-                                </div>
 
                             </div>
                             <div style="width: 357px;
                                  position: absolute;
                                  margin-top: 10px;
-                                 right: 223px;
+                                 right: 172px;
                                  color: red;
                                  font-weight: BOLD;">
 
-                                <% String errorMessage = (String) request.getAttribute("error");%>
+                                <% errorMessage = (String) request.getAttribute("error");%>
                                 <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
                             </div>
@@ -604,7 +682,7 @@
 
             <div class="Description product-content product-wrap clearfix product-deatil">
                 <div class="title">
-                    <h1> ${descriptionDTO.title}</h1>
+                    <h1> 📖  ${descriptionDTO.title}</h1>
                 </div>
                 <div class="description">
                     ${descriptionDTO.content}
@@ -615,8 +693,41 @@
 
         </div>
 
+        <jsp:include page="../Components/footerComponent.jsp" />   
 
 
+
+        <!--        <script>
+                    // Get the voucher code input element
+                    const voucherCodeInput = document.getElementById('voucherCodeInput');
+        
+        // Add event listener to the voucher code input
+                    voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
+        
+                    function handleVoucherCodeChange() {
+                        const voucherCode = voucherCodeInput.value;
+        
+                        // Make an AJAX request to the server
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/check-voucher?code=' + voucherCode);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status === 200) {
+                                    // Parse the response JSON
+                                    const response = JSON.parse(xhr.responseText);
+        
+                                    // Update the prices on the page
+                                    document.getElementById('originalPrice').textContent = 'Original Price: $100';
+                                    document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
+                                } else {
+                                    console.error('Error: ' + xhr.status);
+                                }
+                            }
+                        };
+                        xhr.send();
+                    }
+        
+                </script>-->
 
     </body>
 
