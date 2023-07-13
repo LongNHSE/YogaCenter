@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <style>
  .copyright_section {
-
     width: 100%;
     float: left;
     background-color: #8b57fc;
