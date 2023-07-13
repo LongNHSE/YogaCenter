@@ -40,14 +40,14 @@
         <li  id="Application" class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
             <ul>
                 <li><a href="<%=url%>/AdminController?action=listApplicationApproved">List Application Approved</a></li>
-          
+                <li><a href="<%=url%>/AdminController?action=listApplicationUnapproved">List Application Unapproved</a></li>
             </ul>
         </li>
         <li id="Blog" class='sub-menu'><a href='#message'>Blog<div class='fa fa-caret-down right'></div></a>
             <ul>
                 <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogUnapprove">List Blog Unapproved</a></li>
                 <li><a href="<%=url%>/BlogAdminController?action=ViewListBlogApprove">List Blog Approved</a></li>
-         
+
             </ul>
         </li>
         <li>

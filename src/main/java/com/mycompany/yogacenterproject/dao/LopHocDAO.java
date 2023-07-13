@@ -954,6 +954,7 @@ public class LopHocDAO {
 
         LopHocDAO a = new LopHocDAO();
         List<LopHocDTO> listLopHocDTO = a.getListClassOfTrainee("HV0001");
+        System.out.println(a.getListClassOfTrainer("TR0001"));
 //        System.out.println(a.getSoNgayDaDay("LOP0003"));
 //        for (LopHocDTO c : listLopHocDTO) {
 //            System.out.println(c.getMaLopHoc());
@@ -975,7 +976,7 @@ public class LopHocDAO {
 //        double divisor = 5.0;
 //        double result = Math.ceil(dividend / divisor);
 ////        System.out.println(result);
-        List<LopHocDTO> listLopHocTemp = a.showClassesByType("TYPE0001");
+      
 ////
 //        // Split the selected value to retrieve maSlot and thuList
 //        String selectedMaSlot = "SL001";
@@ -1045,67 +1046,7 @@ public class LopHocDAO {
 //                System.out.println(listLopHocTemp.get(i).getThuList());
 //            }
 //        }
-        List<DayAndSlot> listDayAndSlot = new ArrayList<>();
-        for (int i = 0; i < listLopHocTemp.size(); i++) {
-            DayAndSlot dayAndSlot = new DayAndSlot();
-            String currentSlot = listLopHocTemp.get(i).getMaSlot();
-            List<String> thu = listLopHocTemp.get(i).getThuList();
-            if (i != 0) {
-                for (int j = 1; j < i; j++) {
-                    if (currentSlot.equals(listLopHocTemp.get(j).getMaSlot())) {
-                        if (compareLists(listLopHocTemp.get(i).getThuList(), listLopHocTemp.get(j).getThuList())) {
-//                            System.out.println(currentSlot + thu);
-                        }
-                    } else {
-
-                        dayAndSlot.setSlot(currentSlot);
-
-                        dayAndSlot.setDay(thu);
-                        dayAndSlot.setTimeStart(listLopHocTemp.get(i).getTimeStart());
-                        dayAndSlot.setTimeEnd(listLopHocTemp.get(i).getTimeEnd());
-                        listDayAndSlot.add(dayAndSlot);
-                    }
-                }
-            } else {
-
-                dayAndSlot.setSlot(currentSlot);
-                dayAndSlot.setTimeStart(listLopHocTemp.get(i).getTimeStart());
-                dayAndSlot.setTimeEnd(listLopHocTemp.get(i).getTimeEnd());
-                dayAndSlot.setDay(thu);
-                listDayAndSlot.add(dayAndSlot);
-            }
-
-        }
-        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
-        List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
-//        for (DayAndSlot x : distinctDayAndSlots) {
-//            System.out.println(x);
-//        }
-        LopHocDAO lopHocDAO = new LopHocDAO();
-        LopHocDTO lopHocDTO = lopHocDAO.showSlotBy1Class("LOP0006");
-        System.out.println();
-        System.out.println();
-        DayAndSlot dayAndSlota = new DayAndSlot();
-        dayAndSlota.setDay(lopHocDTO.getThuList());
-        dayAndSlota.setSlot(lopHocDTO.getMaSlot());
-
-        System.out.println(dayAndSlota);
-        System.out.println("asd");
-        for (DayAndSlot x : distinctDayAndSlots) {
-//            System.out.println(compareLists(x.getDay(), dayAndSlota.getDay()));
-//            System.out.println(x.getSlot().equalsIgnoreCase(dayAndSlota.getSlot()));
-            if (x.getSlot().equalsIgnoreCase(dayAndSlota.getSlot()) && compareLists(x.getDay(), dayAndSlota.getDay())) {
-//                System.out.println(x);
-            } else {
-                System.out.println(x);
-            }
-        }
-        System.out.println("asd");
-        for (DayAndSlot x : distinctDayAndSlots) {
-
-            System.out.println(x);
-
-        }
+       
 //        List<List<String>> thulist = new ArrayList<>();
 //        for (int i = 0; i < listLopHocTemp.size(); i++) {
 //

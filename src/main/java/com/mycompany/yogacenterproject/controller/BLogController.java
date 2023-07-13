@@ -295,9 +295,10 @@ public class BLogController extends HttpServlet {
         String title = request.getParameter("title");
         String maBlog = request.getParameter("maBlog");
         HttpSession session = request.getSession();
+        blogDTO = blogDAO.getBlogByID(maBlog);
         blogDTO.setContent(content);
         blogDTO.setTitle(title);
-        blogDTO.setMaBlog(maBlog);
+      
         blogDAO.updateBlog(blogDTO);
 
         viewMyBlog(request, response);

@@ -22,11 +22,9 @@
 
         <!--AlertMessage-->                                       
         <div id="alertMessage" class="alert-message">
-            Vui lòng điền đầy đủ thông tin
+            Please assign information!!!
             <div id="progressBar" class="progress-bar"></div>
         </div>
-
-
         <c:set var="blogDTO" value="${requestScope.blogDTO}"></c:set> 
             <div class="container">
                 <div class="row align-items-start">
@@ -34,9 +32,7 @@
                         <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
                         <article class="article">
 
-                            <div style="height:250px"id="previewThumb" class="previewThumb">
-
-                            </div>
+                         
                             <!--                                                 <div class="image-input">
                                                                                      <input class="input-style"  type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">                
                                                                              </div>-->
@@ -60,7 +56,8 @@
                                     </button>
                                     <button class="button-blog" id="submitButton">
                                         <input type="hidden" name="action" value="UpdateAction">
-                                        Submit
+                                        <input type="hidden" name="maBlog" value="${blogDTO.maBlog}">
+                                        Update
                                     </button>                                                           
                                 </div>
 

@@ -22,7 +22,7 @@
 
         <!--AlertMessage-->                                       
         <div id="alertMessage" class="alert-message">
-            Vui lòng điền đầy đủ thông tin
+            Please assign information!!!
             <div id="progressBar" class="progress-bar"></div>
         </div>
 

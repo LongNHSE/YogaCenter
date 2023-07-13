@@ -15,6 +15,7 @@ import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import static com.mycompany.yogacenterproject.dao.LopHocDAO.compareLists;
 import com.mycompany.yogacenterproject.dao.LopHocImageDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
+import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dto.ApplicationDTO;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
@@ -23,6 +24,7 @@ import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.Application;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -72,9 +75,54 @@ public class ExceptionController extends HttpServlet {
                 changeClass(request, response);
             } else if (action.equals("Reserve")) {
                 reserve(request, response);
+            } else if (action.equals("Request Off")) {
+                requestOff(request, response);
+            } else if (action.equals("Approve and Change trainer")) {
+                thongTinAssignPage(request, response);
+            } else if (action.equals("AssignTrainer")) {
+                assignTrainer(request, response);
             }
 
         }
+    }
+
+    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        String maLopHoc = request.getParameter("maLopHoc");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        if (lopHocDAO.getSoNgayDaDay(maLopHoc) > 2) {
+            String popupMessage = maLopHoc;
+            request.setAttribute("popupMessage", popupMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("/TrainerController?action=classList");
+            rd.forward(request, response);
+        } else {
+            LocalDate currentDate = LocalDate.now();
+            String AUTO_APPLICATION_ID = String.format(Constants.MA_APPLICATION_FORMAT, (applicationDAO.lastIDIndexOfBlog() + 1));
+
+            //HOCVIEN CONSTRUCTOR
+            String maApp = AUTO_APPLICATION_ID;
+            ApplicationDTO applicationDTO = new ApplicationDTO();
+
+            applicationDTO.setMaLopHoc(maLopHoc);
+            applicationDTO.setNoiDung("Trainer " + trainerDTO.getMaTrainer() + " reserve class " + maLopHoc);
+            applicationDTO.setMaApplicationType("TYPE0004");
+            applicationDTO.setDate(Date.valueOf(currentDate));
+            applicationDTO.setMaTrainer(trainerDTO.getMaTrainer());
+            applicationDTO.setMaDon(maApp);
+            applicationDTO.setStatus("Pending");
+//            applicationDAO.create(applicationDTO);
+            String popupMessage = "The request has been sended successfully. Please check your mail for your response";
+            request.setAttribute("popupMessageSuccessful", popupMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("/TrainerController?action=classList");
+            rd.forward(request, response);
+        }
+
+      
     }
 
     public void sendMailClassChange(HttpServletRequest request, HttpServletResponse response, LopHocDTO lopHocDTO, String maLopHocCu) throws EmailException, MalformedURLException {
@@ -317,6 +365,50 @@ public class ExceptionController extends HttpServlet {
             request.setAttribute("popupMessageSuccessful", popupMessageSuccessful);
             request.getRequestDispatcher("/ProfileController?action=classList").forward(request, response);
         }
+    }
+
+    public void thongTinAssignPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String maApplication = request.getParameter("maApplication");
+
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        String maLopHoc = request.getParameter("maLopHoc");
+        TrainerDAO trainerDAO = new TrainerDAO();
+        List<TrainerDTO> listTrainer = new ArrayList();
+
+        listTrainer = trainerDAO.readListTrainerByTypeAndStatus(lopHocDAO.IDLoaiLopHoc(maLopHoc));
+
+        request.setAttribute("listTrainer", listTrainer);
+        request.setAttribute("maLopHoc", maLopHoc);
+        request.setAttribute("maApplication", maApplication);
+        RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/AssignTrainerOff.jsp");
+        rd.forward(request, response);
+
+    }
+
+    //ASSIGN GIAO VIEN VAO SCHEDULE
+    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, EmailException {
+        String maLopHoc = request.getParameter("maLopHoc");
+        String maApplication = request.getParameter("maApplication");
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        ApplicationDTO applicationDTO = applicationDAO.search(maApplication);
+        String maTrainer = request.getParameter("listTrainer");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        TrainerDAO trainerDAO = new TrainerDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+
+        scheduleDAO.updateTrainerOff(maLopHoc, maTrainer);
+
+//        scheduleDAO.deleteScheduleTrainerOff(maLopHoc, applicationDTO.getMaTrainer());
+        trainerDAO.updateTrainerStatus(maTrainer, true);
+        trainerDAO.updateTrainerStatus(applicationDTO.getMaTrainer(), false);
+        EmailController.trainerDTOAssign(trainerDAO.readTrainer(maTrainer), lopHocDAO.searchClassById(maLopHoc));
+
+        applicationDAO.updateStatusApprove(maApplication);
+        response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
