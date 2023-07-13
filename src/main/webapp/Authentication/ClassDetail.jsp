@@ -547,7 +547,40 @@
 
                 border-top: 2px solid #554c86;
             }
-
+           
+            .voucher-check input{
+                position: absolute;
+                top: 30%;
+                left: 60%;
+                padding: 10px;
+                font-size: 20px;
+                text-align: center;
+                background-color:rgb(218, 112, 214);
+                color:#fff ; 
+                border-radius: 10px;
+            }
+            .voucher-check button{
+                position: absolute;
+                left:100%;
+                bottom: 15%;
+            }
+            .voucher-note{
+                position: relative;
+                left: 130%;
+                top: 10%;
+                color:#FF0000;
+                font-weight: bold;
+                padding: 5px;
+                width:100%;
+                height: auto;
+                
+            }
+            .Custom button{
+                position:relative;
+                top:75px;
+                right: 5%
+                
+            }
         </style>            
     </head>
 
@@ -601,12 +634,6 @@
 
 
 
-
-
-
-
-
-
                     <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12 class-information">
                         <h1 class="name">
                             ${requestScope.details.getTenLoaiLopHoc()}
@@ -640,13 +667,13 @@
                                             
                                         </div>
                                     </c:if>
-                                    <div>
-                                        <input type="text" name="voucher" value="${voucher}" />
+                                    <div class="voucher-check">
+                                        <input type="text" name="voucher" value="${voucher}" placeholder="Your voucher..."/>
                                         <button class="button" type="submit" name="action" value="CheckVoucher">
                                             Check
                                         </button>
                                     </div>
-                                    <div style="color: red; font-weight: BOLD">
+                                    <div class="voucher-note">
                                         <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
                                         <% if (voucherMessage != null) {%> <%= voucherMessage%> <% }%>
                                     </div>
