@@ -10,6 +10,10 @@ import com.mycompany.yogacenterproject.util.Constants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,15 +37,16 @@ public class VoucherController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
 
-            if (action.equals("listHocVien")) {
-
+            if (action.equals("listVouchers")) {
+                out.print("kill all niggers");
+                viewAllVouchers(request, response);
             }
         }
     }
@@ -92,6 +97,16 @@ public class VoucherController extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
         rd.forward(request, response);
     }
+     
+    public void viewAllVouchers(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+        VoucherDAO voucherDAO = new VoucherDAO();
+        List<VoucherDTO> listVouchers = new ArrayList<>();
+        
+        listVouchers = voucherDAO.listVouchers();
+        request.setAttribute("listVouchers", listVouchers);
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/Admin/Voucher/ListVouchers.jsp");
+        rd.forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -105,7 +120,11 @@ public class VoucherController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(VoucherController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -119,7 +138,11 @@ public class VoucherController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(VoucherController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

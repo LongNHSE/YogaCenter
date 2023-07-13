@@ -100,7 +100,6 @@ public class ClassController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
-//                out.print("NIGGGERRRRRRRRRRRRRRRRRRR");
                 showClass(request, response);
             } else if (action.equals("Register")) {
                 payment(request, response);
