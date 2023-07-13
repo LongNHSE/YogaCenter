@@ -34,6 +34,7 @@ import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
+import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.mycompany.yogacenterproject.util.Constants;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
@@ -99,7 +100,7 @@ public class ClassController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
-                out.print("NIGGGERRRRRRRRRRRRRRRRRRR");
+//                out.print("NIGGGERRRRRRRRRRRRRRRRRRR");
                 showClass(request, response);
             } else if (action.equals("Register")) {
                 payment(request, response);
@@ -378,7 +379,7 @@ public class ClassController extends HttpServlet {
     }
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
-    public void payment(HttpServletRequest request, HttpServletResponse response)  {
+    public void payment(HttpServletRequest request, HttpServletResponse response) {
         try {
             boolean error = true;
             HttpSession session = request.getSession();
@@ -388,13 +389,23 @@ public class ClassController extends HttpServlet {
                 LopHocDAO lopHocDAO = new LopHocDAO();
                 HoaDonDAO hoaDonDAO = new HoaDonDAO();
                 VoucherDAO voucherDAO = new VoucherDAO();
+                VoucherDTO voucherDTO = new VoucherDTO();
+
                 String errorMessage = "";
 
                 String selectedValue = request.getParameter("maSlot");
                 String voucherID = request.getParameter("voucherID");
-                    if (voucherID == null) {
-                        voucherID = "V0001";
+                
+                voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+                String verifiedVoucherID="";
+                if (voucherDTO == null) {
+                    verifiedVoucherID = "None";
+                } else if (voucherDTO.getTotalUsage() < voucherDTO.getUsageLimit()) {
+                    if (voucherDAO.getUsageCountForIndividual(voucherID, hocVienDTO.getMaHV())
+                            < voucherDTO.getUsageLimitPerUser()) {
+                        verifiedVoucherID = voucherID;
                     }
+                }
 
                 // Split the selected value to retrieve maSlot and thuList
                 String[] parts = selectedValue.split("\\|");
@@ -426,7 +437,7 @@ public class ClassController extends HttpServlet {
                 if (error) {
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
                     PaymentServices paymentServices = new PaymentServices();
-                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, voucherID);
+                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
                     response.sendRedirect(approvalLink);
                 } else {
                     request.setAttribute("error", errorMessage);
@@ -446,8 +457,8 @@ public class ClassController extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.getAttribute("hocVienDTO") != null) {
             String maLopHoc = request.getParameter("returnID");
+            String voucherID = request.getParameter("voucherID");
             HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
-
             Date ngayThanhToan = Date.valueOf(LocalDate.now());
 
             LopHocDAO lopHocDAO = new LopHocDAO();
@@ -455,10 +466,18 @@ public class ClassController extends HttpServlet {
             HoaDonDAO hoaDonDAO = new HoaDonDAO();
             ScheduleDAO scheduleDAO = new ScheduleDAO();
             AttendanceDAO attendanceDAO = new AttendanceDAO();
+            VoucherDAO voucherDAO = new VoucherDAO();
+            double multiplier;
+            if(voucherID.equals("None")){
+                multiplier = 0;
+            }else{
+                multiplier = voucherDAO.getMultiplierByID(voucherID)/100;
+            }
 
             String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
 
             long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+            long finalPrice = (long)(hocPhi *(1-multiplier));
 
             String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
             String maHoaDon = AUTO_HOADON_ID;
@@ -467,21 +486,26 @@ public class ClassController extends HttpServlet {
             hoaDonDTO.setMahoaDon(maHoaDon);
             hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
             hoaDonDTO.setMaLopHoc(maLopHoc);
-            hoaDonDTO.setGiaTien(hocPhi);
+            hoaDonDTO.setGiaTien(finalPrice);
             hoaDonDTO.setNgayThanhToan(ngayThanhToan);
 
             hoaDonDAO.createHoaDonDTO(hoaDonDTO);
 
             lopHocDAO.increase(maLopHoc);
-
+            if (multiplier != 1) {
+                if (voucherDAO.getUsageCountForIndividual(voucherID, hocVienDTO.getMaHV())<0) {
+                    voucherDAO.insertUserAndVoucher(voucherID, hocVienDTO.getMaHV());
+                }
+                voucherDAO.increaseIndividualUsageCount(voucherID, hocVienDTO.getMaHV());
+                voucherDAO.increaseTotalUsageCount(voucherID);
+            }
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
             attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
             rd.forward(request, response);
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
             rd.forward(request, response);
-
         }
     }
 

@@ -97,6 +97,71 @@ public class VoucherDAO {
         return multiplier;
     }
 
+    public void insertUserAndVoucher(String voucherID, String maHV) {
+        String sql = "INSERT INTO UserVoucherUsage (VoucherID, maHV) "
+                + "VALUES (?, ?)";
+
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql)) {
+            ps.setString(1, voucherID);
+            ps.setString(2, maHV);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getUsageCountForIndividual(String voucherID, String maHV) {
+        int usageCount = 0;
+        String sql = "SELECT [usageCount]\n"
+                + "FROM [dbo].[UserVoucherUsage]\n"
+                + "WHERE maHV = ?\n"
+                + "  AND VoucherID = ?";
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql)) {
+            ps.setString(1, maHV);
+            ps.setString(2, voucherID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                usageCount = rs.getInt("usageCount");
+                return usageCount;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public void increaseIndividualUsageCount(String voucherID, String maHV) {
+        String sql = "UPDATE UserVoucherUsage\n"
+                + "SET usageCount = usageCount + 1\n"
+                + "WHERE maHV = ?\n"
+                + "  AND VoucherID = ?";
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql)) {
+            ps.setString(1, maHV);
+            ps.setString(2, voucherID);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void increaseTotalUsageCount(String voucherID) {
+        String sql = "UPDATE Voucher\n"
+                + "SET totalUsage = totalUsage + 1\n"
+                + "WHERE VoucherID = ?";
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql)) {
+            ps.setString(1, voucherID);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteVoucher(String voucherID) throws SQLException {
         String sql = "delete [dbo].[Voucher]\n"
                 + "where [voucherID]=?";

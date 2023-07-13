@@ -32,8 +32,8 @@
         <div class="container">
             <div class="box">
                 <div class="form sign_in">
-                    <h3>Sign In</h3>
-                    <span>or use your account</span>
+                    <h3>Welcome back</h3>
+                    <span>Please Enter Your Credentials</span>
 
                     <form action="<%=url%>/LoginController/login" id="form_input" method="POST">
 
@@ -72,8 +72,8 @@
 
             <div class="overlay">
                 <div class="page page_signIn">
-                    <h3>Welcome Back!</h3>
-                    <p>To keep with us please login with your personal info</p>
+                    <h3>Sign up</h3>
+                    <p>Create an account to Join the Community!</p>
 
 
 

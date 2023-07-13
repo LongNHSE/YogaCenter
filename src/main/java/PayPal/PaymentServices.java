@@ -47,7 +47,7 @@ public class PaymentServices {
         // Create a Payment object using the PayPal SDK
         Payer payer = getPayerInformation(hocVienDTO);
         Transaction transaction = getTransactionInformation(lopHocDTO, voucherID);
-        RedirectUrls redirectUrls = getRedirectURL(lopHocDTO);
+        RedirectUrls redirectUrls = getRedirectURL(lopHocDTO, voucherID);
 
         Payment requestPayment = new Payment();
         requestPayment.setTransactions(Collections.singletonList(transaction));
@@ -77,40 +77,44 @@ public class PaymentServices {
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         VoucherDAO voucherDAO = new VoucherDAO();
         VoucherDTO voucherDTO = new VoucherDTO();
-        
+
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        voucherID="V0002";
         voucherDTO = voucherDAO.searchVoucherByID(voucherID);
-        
-        double totalAmount;
+//        System.out.println(voucherDTO);
+        String voucherName;
         double tax = 0;
         double shipping = 0;
-        long subtotal = (loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())) / 21000;
-       
-//        if (voucherDTO != null) {
-            double discounted = (voucherDAO.getMultiplierByID(voucherID)/100.0);
-            totalAmount = subtotal*(1-discounted) + tax + shipping;
-<<<<<<< Updated upstream
-=======
-            decimalFormat.format(totalAmount);
->>>>>>> Stashed changes
-//        } else {
-//            totalAmount = subtotal + tax + shipping;
-//            decimalFormat.format(totalAmount);
-//        }
-<<<<<<< Updated upstream
-=======
-        System.out.println(decimalFormat.format(totalAmount));
->>>>>>> Stashed changes
+        double productPrice = loaiLopHocDAO
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000;
+        double discountMultiplier;
+        if (voucherDTO != null) {
+            discountMultiplier = voucherDAO.getMultiplierByID(voucherID) / 100;
+            voucherName = voucherDTO.getVoucherName();
+        } else {
+            discountMultiplier = 0;
+            voucherName = "None";
+        }
+
+        double subtotal = productPrice - productPrice * discountMultiplier;
+//        System.out.println(discountMultiplier);
+//        System.out.println(productPrice * discountMultiplier);
+//        System.out.println(productPrice);
+//        System.out.println(subtotal);
+        double totalAmount = subtotal + tax + shipping;
+
+        String finalSubtotal = String.format("%.2f", subtotal);
+        String finalProductPrice = String.format("%.2f", productPrice);
+        String finalDiscountedPrice = String.format("%.2f", productPrice * discountMultiplier);
+        String finalTotalAmount = String.format("%.2f", totalAmount);
+
         Details details = new Details();
         details.setShipping("0");
-        details.setSubtotal(String.valueOf(subtotal));
+        details.setSubtotal(finalSubtotal);
         details.setTax("0");
 
         Amount amount = new Amount();
         amount.setCurrency("USD");
-        amount.setTotal(String.valueOf(decimalFormat.format(totalAmount)));
+        amount.setTotal(finalTotalAmount);
         amount.setDetails(details);
 
         Transaction transaction = new Transaction();
@@ -122,24 +126,23 @@ public class PaymentServices {
         Item item = new Item();
         item.setCurrency("USD");
         item.setName(loaiLopHocDAO.searchTenLoaiLopHoc(lopHocDTO.getMaLoaiLopHoc()));
-        item.setPrice("-"+String.valueOf((loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000)
-                *voucherDAO.getMultiplierByID(voucherID)/100.0));
+        item.setPrice(finalProductPrice);
         item.setTax("0");
         item.setQuantity("1");
         items.add(item);
 
 //        voucherDTO = voucherDAO.searchVoucherByID("V0002");
 //        System.out.println();
-        Item discountItem = new Item();
-        discountItem.setCurrency("USD");
-        discountItem.setName("Voucher: " + voucherDTO.getVoucherName());
-        discountItem.setPrice("-" + decimalFormat.format((loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())/21000)));
-        discountItem.setTax("0");
-        discountItem.setQuantity("1");
-        items.add(discountItem);
-
+        if (discountMultiplier != 0) {
+            Item discountItem = new Item();
+            discountItem.setCurrency("USD");
+            discountItem.setName("Voucher: " + voucherName);
+            discountItem.setPrice("-" + finalDiscountedPrice);
+            discountItem.setTax("0");
+            discountItem.setQuantity("1");
+            items.add(discountItem);
+        }
+        
         itemList.setItems(items);
         transaction.setItemList(itemList);
 
@@ -149,10 +152,10 @@ public class PaymentServices {
         return transaction;
     }
 
-    private RedirectUrls getRedirectURL(LopHocDTO lopHocDTO) {
+    private RedirectUrls getRedirectURL(LopHocDTO lopHocDTO, String voucherID) {
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLoaiLopHoc() + "&action=showDetails");
-        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() + "&action=SuccessfulPayment");
+        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() +"&voucherID="+voucherID+ "&action=SuccessfulPayment");
 
         return redirectUrls;
     }
