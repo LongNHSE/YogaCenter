@@ -6,8 +6,10 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
+import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -31,10 +33,9 @@ public class ProfileController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
+        try {PrintWriter out = response.getWriter();
             // log("chay vao process request");////////////////////
             String action = request.getParameter("action");
-            log("action:" + action);
             if (action.equals("viewProfile")) {
                 viewProfile(request, response, "profile");
             } else if (action.equals("viewTransaction")) {
@@ -44,16 +45,38 @@ public class ProfileController extends HttpServlet {
             } else if (action.equals("viewUpdateProfile")) {
                 log("action====" + action);
                 viewProfile(request, response, "updateProfile");
+            } else if (action.equals("classList")) {
+//                HttpSession session = request.getSession();
+//                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+//                out.print(hocVienDTO.getMaHV());
+                classList(request, response);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public void viewProfile(HttpServletRequest request, HttpServletResponse response, String whereTo) throws ServletException, IOException {
+
+    public void classList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // View profile trainee
-        log("chay vao view Profile");////////////////////
+        //  log("chay vao view Profile");////////////////////
+        HttpSession session = request.getSession();
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        List<LopHocDTO> listLopHocDTO = new ArrayList<>();
+        listLopHocDTO = lopHocDAO.getListClassOfTrainee(hocVienDTO.getMaHV());
+        ///set Attribute
+//        session.setAttribute("hocVienDTO", hocVienDTO);
+        request.setAttribute("listLopHocDTO", listLopHocDTO);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/ClassList.jsp");
+        rd.forward(request, response);
+    }
+
+    public void viewProfile(HttpServletRequest request, HttpServletResponse response, String whereTo) throws ServletException, IOException {        // View profile trainee
+       // log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
         HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         HocVienDAO hocVienDAO = new HocVienDAO();
@@ -104,14 +127,14 @@ public class ProfileController extends HttpServlet {
 
     public void viewHocVienTransaction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String maHocVien = request.getParameter("maHocVien");
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         HoaDonDAO hoaDonDAO = new HoaDonDAO();
         List<HoaDonDTO> listHoaDon = new ArrayList<HoaDonDTO>();
-        listHoaDon = hoaDonDAO.listHoaDon(maHocVien);
+        listHoaDon = hoaDonDAO.listHoaDon(hocVienDTO.getMaHV());
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hvDTO = hocVienDAO.searchHocVienById(maHocVien);
+
         ///set Attribute
-        session.setAttribute("hocVienDTO", hvDTO);
+        session.setAttribute("hocVienDTO", hocVienDTO);
         session.setAttribute("listHoaDon", listHoaDon);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/transaction.jsp");
         rd.forward(request, response);

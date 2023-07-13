@@ -219,13 +219,16 @@
                                 <td><%= hocVienDTO.getGender()%> </td>
                                 <td><select name="attendance">
                                         <c:set var="getMaHV" value="<%= hocVienDTO.getMaHV()%>" />
-                                        <c:forEach var="listAttendanceDTO" items="${requestScope.listAttendanceDTO}" >
-                                            <c:if test="${listAttendanceDTO.maHV == getMaHV}">
-                                                <option value="${listAttendanceDTO.status}">${listAttendanceDTO.status}</option>
-                                                <option value="Attended">Attended</option>
-                                                <option value="Absent">Absent</option>
+                                        <c:set var="breakLoop" value="false" /> <!-- Initialize the break flag -->
+                                        <c:forEach var="listAttendanceDTO" items="${requestScope.listAttendanceDTO}" varStatus="loopStatus">
+                                            <c:if test="${breakLoop eq false}">
+                                                <c:if test="${listAttendanceDTO.maHV == getMaHV}">
+                                                    <option value="${listAttendanceDTO.status}">${listAttendanceDTO.status}</option>
+                                                    <option value="Attended">Attended</option>
+                                                    <option value="Absent">Absent</option>
+                                                    <c:set var="breakLoop" value="true" /> <!-- Set the break flag to true -->
+                                                </c:if>
                                             </c:if>
-
                                         </c:forEach>
 
                                     </select>

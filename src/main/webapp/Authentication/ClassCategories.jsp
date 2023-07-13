@@ -217,88 +217,88 @@
             .quantity [class*="fa-"]:hover {
                 color: #455a64;
             }
-/*            .button {
+            /*            .button {
+                            position: relative;
+                            overflow: hidden;
+                            height: 3rem;
+                            padding: 0 2rem;
+                            border-radius: 1.5rem;
+                            background: #3d3a4e;
+                            background-size: 400%;
+                            color: #fff;
+                            border: none;
+                        }
+            
+                        .button:hover::before {
+                            transform: scaleX(1);
+                        }
+            
+                        .button-content {
+                            position: relative;
+                            z-index: 1;
+                        }
+            
+                        .button::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            transform: scaleX(0);
+                            transform-origin: 0 50%;
+                            width: 100%;
+                            height: inherit;
+                            border-radius: inherit;
+                            background: linear-gradient(
+                                82.3deg,
+                                rgba(150, 93, 233, 1) 10.8%,
+                                rgba(99, 88, 238, 1) 94.3%
+                                );
+                            transition: all 0.475s;
+                        }*/
+            .button {
+                cursor: pointer;
                 position: relative;
+                padding: 10px 24px;
+                font-size: 18px;
+                color: rgb(193, 163, 98);
+                border: 2px solid rgb(193, 163, 98);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
                 overflow: hidden;
-                height: 3rem;
-                padding: 0 2rem;
-                border-radius: 1.5rem;
-                background: #3d3a4e;
-                background-size: 400%;
-                color: #fff;
-                border: none;
-            }
-
-            .button:hover::before {
-                transform: scaleX(1);
-            }
-
-            .button-content {
-                position: relative;
-                z-index: 1;
             }
 
             .button::before {
                 content: '';
                 position: absolute;
-                top: 0;
-                left: 0;
-                transform: scaleX(0);
-                transform-origin: 0 50%;
-                width: 100%;
-                height: inherit;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
                 border-radius: inherit;
-                background: linear-gradient(
-                    82.3deg,
-                    rgba(150, 93, 233, 1) 10.8%,
-                    rgba(99, 88, 238, 1) 94.3%
-                    );
-                transition: all 0.475s;
-            }*/
-            .button {
-              cursor: pointer;
-              position: relative;
-              padding: 10px 24px;
-              font-size: 18px;
-              color: rgb(193, 163, 98);
-              border: 2px solid rgb(193, 163, 98);
-              border-radius: 34px;
-              background-color: transparent;
-              font-weight: 600;
-              transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-              overflow: hidden;
-            }
-
-            .button::before {
-              content: '';
-              position: absolute;
-              inset: 0;
-              margin: auto;
-              width: 50px;
-              height: 50px;
-              border-radius: inherit;
-              scale: 0;
-              z-index: -1;
-              background-color: rgb(193, 163, 98);
-              transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(193, 163, 98);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             }
 
             .button:hover::before {
-              scale: 3;
+                scale: 3;
             }
 
             .button:hover {
-              color: #212121;
-              scale: 1.1;
-              box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+                color: #212121;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
             }
 
             .button:active {
-              scale: 1;
+                scale: 1;
             }
 
 
-            
+
         </style>            
     </head>
     <body>
@@ -310,50 +310,134 @@
         <!--Container: Start-->
 
         <div class="container bootstrap snipets " style="margin-top:15px">
-            <h1 class="text-center text-muted">CÔNG NGHỆ ĐỂ AN LẠC</h1>
+            <h1 class="text-center text-muted">FIND PEACE IN YOUR SOUL</h1>
+            <% String popupMessage = (String) request.getAttribute("popupMessage"); %>
+            <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+                <strong>!</strong> You have registered class ${popupMessage} successfully. Please check your mail for more information.
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <% }%>
+            </div>
             <div class="row">
                 <c:forEach items="${requestScope.listCate}" var="a">
                     <div class="col-xs-6 col-md-4">
 <!--                        <form action="<%=url%>/ImageController}">-->
-                            <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
-                                <c:forEach items="${a.image}" var ="imageData">
-                                    <a href="ClassController?returnID=${a.getMaLoaiLopHoc()}">
-                                        <c:if test="${not empty imageData.tenAnh and imageData.tenAnh.equalsIgnoreCase('THUMBNAIL')}">
-                                            <img src="data:image/jpeg;base64,${imageData.image}" alt="" style="width: 100%; height: 100%;">
-                                        </c:if>
+                        <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
+                            <c:forEach items="${a.image}" var ="imageData">
+                                <a href="ClassController?returnID=${a.getMaLoaiLopHoc()}">
+                                    <c:if test="${not empty imageData.tenAnh and imageData.tenAnh.equalsIgnoreCase('THUMBNAIL')}">
+                                        <img src="data:image/jpeg;base64,${imageData.image}" alt="" style="width: 100%; height: 100%;">
+                                    </c:if>
 
-                                    </a>
-                                </c:forEach>
-                                <div class="caption text-center">
-                                    <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenLoaiLopHoc()}</a></h2>
-                                    <span class="price"></span
-                                    <input type="hidden" value="${a.getMaLoaiLopHoc()}" name="returnID">
-<!--                                          <button class="button" type="submit" name="action" value="showDetails"></button>
-                                              <span class="button-content">DETAILS</span>
-                                          </button>  
--->
-                                    <form action="<%=url%>/ClassController" method="GET">
-                                      <input type="hidden" name="returnID" value="${a.getMaLoaiLopHoc()}" />
-                                      <input type="hidden" name="action" value="showDetails" />
-                                      <button class="button" type="submit">Details</button>
-                                    </form>
+                                </a>
+                            </c:forEach>
+                            <div class="caption text-center">
+                                <h2 ><a href="#" style="text-decoration: none; color: #333;">${a.getTenLoaiLopHoc()}</a></h2>
+                                <span class="price"></span
+                                <input type="hidden" value="${a.getMaLoaiLopHoc()}" name="returnID">
+                                <!--                                          <button class="button" type="submit" name="action" value="showDetails"></button>
+                                                                              <span class="button-content">DETAILS</span>
+                                                                          </button>  
+                                -->
+                                <form action="<%=url%>/ClassController" method="GET">
+                                    <input type="hidden" name="returnID" value="${a.getMaLoaiLopHoc()}" />
+                                    <input type="hidden" name="action" value="showDetails" />
+                                    <button class="button" type="submit">Details</button>
+                                </form>
 
 
-                                      <!-- Pass the class ID as a hidden input field -->
-                                      <!--<input type="hidden" name="classID" value="${classID}" />-->
-<!--                                    <button class="button " type="submit" name="action" value="checkID">
-                                        <span class="button-content">DETAILS</span>
-                                    </button>-->
-<!--                                    ${error} LAM THEO MESSAGE -->
-                                </div>
+                                <!-- Pass the class ID as a hidden input field -->
+                                <!--<input type="hidden" name="classID" value="${classID}" />-->
+                                <!--                                    <button class="button " type="submit" name="action" value="checkID">
+                                                                        <span class="button-content">DETAILS</span>
+                                                                    </button>-->
+                                <!--                                    ${error} LAM THEO MESSAGE -->
                             </div>
-<!--                        </form>-->
+                        </div>
+                        <!--                        </form>-->
                     </div>       
-          </c:forEach>
-      </div>      
-      </div>
-       <!--Container: End-->
-        <jsp:include page="../Components/footerComponent.jsp" />                  
-      </body>
+                </c:forEach>
+            </div>      
+        </div>
+        <style>
+            .progress {
+                height: 4px;
+                background-color: #4CAF50;
+                width: 100%;
+                position: absolute;
+                top: 61px;
+                left: 0;
+                animation: progress-animation 5s linear;
+            }
 
+            @keyframes progress-animation {
+                0% {
+                    width: 100%;
+                }
+                100% {
+                    width: 0;
+                }
+            }
+            .header-nav {
+                background-color: #8b57fc;
+                margin-bottom: 0px;
+            }
+            .alert {
+                padding: 20px;
+                background-color: greenyellow;
+                color: black;
+                
+            }
+
+            .closebtn {
+                margin-left: 15px;
+                color: white;
+                font-weight: bold;
+                float: right;
+                font-size: 22px;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .closebtn:hover {
+                color: black;
+            }
+        </style>
+
+        <!--Container: End-->
+        <jsp:include page="../Components/footerComponent.jsp" />                  
+    </body>
+    <script>
+        // Function to close the alert message
+        function closeAlert() {
+            var alert = document.getElementById("myAlert");
+            alert.style.display = "none";
+        }
+
+        // Function to automatically close the alert after 5 seconds
+        function autoCloseAlert() {
+            var alert = document.getElementById("myAlert");
+            var progress = alert.querySelector(".progress");
+
+            var duration = 500; // Duration in seconds
+            var interval = 100; // Update interval in milliseconds
+            var progressWidth = 100;
+
+            var progressInterval = setInterval(function () {
+                progressWidth -= (interval / (duration * 10)) * 100;
+                progress.style.width = progressWidth + "%";
+
+                if (progressWidth <= 0) {
+                    clearInterval(progressInterval);
+                    alert.style.display = "none";
+                }
+            }, interval);
+        }
+
+        // Call the autoCloseAlert function when the page has finished loading
+        window.onload = autoCloseAlert;
+    </script>
 </html>

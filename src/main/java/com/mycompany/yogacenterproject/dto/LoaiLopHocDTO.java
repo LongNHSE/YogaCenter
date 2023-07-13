@@ -19,7 +19,7 @@ public class LoaiLopHocDTO {
     private String tenLoaiLopHoc;
     private double hocPhi;
     private String description;
-     private String maDescription;
+    private String maDescription;
     private List<LopHocIMGDTO> image;
     private boolean status;
 

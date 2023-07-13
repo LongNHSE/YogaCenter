@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -13,6 +14,7 @@ import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.ApplicationDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
@@ -87,7 +89,10 @@ public class AdminController extends HttpServlet {
 
             } else if (action.equals("listClassType")) {
                 ListClassType(request, response);
+            } else if (action.equals("listApplicationApproved")) {
+                listApplicationApproved(request, response);
             }
+
         }
     }
 
@@ -246,6 +251,15 @@ public class AdminController extends HttpServlet {
         }
 
         request.setAttribute("weekRanges", weekRanges);
+    }
+
+    public void listApplicationApproved(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        List<ApplicationDTO> listApplication = applicationDAO.getAllApplications();
+        request.setAttribute("listApplication", listApplication);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Application/ListApplication.jsp");
+        rd.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

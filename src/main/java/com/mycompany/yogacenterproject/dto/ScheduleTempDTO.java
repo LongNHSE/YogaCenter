@@ -18,16 +18,13 @@ public class ScheduleTempDTO {
     private String thu;
     private boolean status;
 
-    public boolean isStatus() {
-        return status;
-    }
-
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
-    
-    
+
+    public boolean isStatus() {
+        return status;
+    }
 
     public ScheduleTempDTO(String maLopHoc, Date ngayHoc, String maSlot, String thu) {
         this.maLopHoc = maLopHoc;

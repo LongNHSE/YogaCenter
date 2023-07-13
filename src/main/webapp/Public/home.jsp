@@ -38,24 +38,18 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <h1 class="yoga_text ">Yoga For New</h1>
-                                    <h1 class="body_text">Body Energy</h1>
-                                    <p class="contrary_text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
-                                        in a </p>
-                                    <div class="contact_bt"><a href="#">Contact Us</a></div>
+                                    <h1 class="body_text">Energy</h1>
+                                    <p class="contrary_text">Find your positive energy and live happily with yourself from now on </p>
                                 </div>
                                 <div class="carousel-item">
                                     <h1 class="yoga_text">Yoga For New</h1>
-                                    <h1 class="body_text">Body Energy</h1>
-                                    <p class="contrary_text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
-                                        in a </p>
-                                    <div class="contact_bt"><a href="#">Contact Us</a></div>
+                                    <h1 class="body_text">Body</h1>
+                                    <p class="contrary_text">To have happy life, firstly you should have a healthy body</p>
                                 </div>
                                 <div class="carousel-item">
                                     <h1 class="yoga_text">Yoga For New</h1>
-                                    <h1 class="body_text">Body Energy</h1>
-                                    <p class="contrary_text">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
-                                        in a </p>
-                                    <div class="contact_bt"><a href="#">Contact Us</a></div>
+                                    <h1 class="body_text">People</h1>
+                                    <p class="contrary_text">Joining us now and together to achieve the tranquility in our soul</p>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +65,7 @@
                     <div class="col-sm-3">
                         <div class="image_1"><img src="<%=url%>/images/img-1.png"></div>
                         <h1 class="meditation_text">Meditation</h1>
-                        <p class="lorem_tetx">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt </p>
+                        <p class="lorem_tetx"> Focus on relaxing the muscles of the spine and lower back as you breathe. </p>
                     </div>
                     <div class="col-sm-3">
                         <div class="image_1"><img src="<%=url%>/images/img-2.png"></div>
@@ -113,34 +106,6 @@
             </div>
         </div>
         <!-- about section end -->
- 
-        <!-- pricing section start -->
-        <div class="pricing_section layout_padding">
-            <div class="container">
-                    <div>
-                        <h1 class="pricing_taital">Our Pricing</h1>
-                    </div>
-                <div class="pricing_section_2">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="plane_section">
-                                <h1 class="starter_text">STARTER PLAN</h1>
-                                <div class="number_text">50<span style="font-size: 16px;">/$</span></div>
-                                <p class="lorem_amet_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="plane_section">
-                                <h1 class="starter_text">STARTER PLAN</h1>
-                                <div class="number_text">50<span style="font-size: 16px;">/$</span></div>
-                                <p class="lorem_amet_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- pricing section end -->
         <!-- contact section start -->
         <div class="contact_section layout_padding">
             <div class="container">
@@ -148,15 +113,7 @@
                     <div class="col-md-6">
                         <h1 class="contact_text">Contact Us</h1>
                         <div class="mail_section">
-                            <input type="text" class="mail_text" placeholder="Name" name="text">
-                            <input type="text" class="mail_text" placeholder="Email" name="text">
-                            <input type="text" class="mail_text" placeholder="Phone Number" name="text">
-                            <textarea class="massage-bt" placeholder="Massage" rows="5" id="comment" name="Massage"></textarea>
-                            <div class="send_bt"><a href="#">SEND</a></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="social_icon">
+                            <div class="social_icon">
                             <ul>
                                 <li><a href="#"><img src="<%=url%>/images/fb-icon.png"></a></li>
                                 <li><a href="#"><img src="<%=url%>/images/twitter-icon.png"></a></li>
@@ -164,6 +121,10 @@
                                 <li><a href="#"><img src="<%=url%>/images/linkdin-icon.png"></a></li>
                             </ul>
                         </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        
                         <div class="map">
                             <div class="map-responsive">
                                 <iframe

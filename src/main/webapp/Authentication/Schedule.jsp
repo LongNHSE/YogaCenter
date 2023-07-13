@@ -193,6 +193,10 @@
                                 <div class="bg-green" style="background-color: #00FF00">
                                     <%=status%>
                                 </div>
+                                <%} else {%> 
+                                <div class="bg-green" style="background-color: gray">
+                                    <%=status%>
+                                </div>
                                 <%} %>
 
                             </div>

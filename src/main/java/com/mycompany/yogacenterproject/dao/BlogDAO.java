@@ -459,7 +459,7 @@ public class BlogDAO {
 
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
-        System.out.println(dao.getAllBlogsApprove());
+        System.out.println(dao.lastIDIndexOfBlog());
 //        BlogDTO blogDTO = dao.getBlogByID("B0001");
 //        dao.approveBlog("B0003", "BC0001");
 //        System.out.println();

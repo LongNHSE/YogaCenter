@@ -486,6 +486,26 @@
                 margin-left: 98px;
 
             }
+            .alert {
+                padding: 20px;
+                background-color: #ffff4d;
+                color: black;
+            }
+
+            .closebtn {
+                margin-left: 15px;
+                color: black;
+                font-weight: bold;
+                float: right;
+                font-size: 22px;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .closebtn:hover {
+                color: black;
+            }
         </style>            
     </head>
 
@@ -494,7 +514,14 @@
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
         <div class="container">
+            <% String popupMessage = (String) request.getAttribute("popupMessage");
+                String popupMessageSuccessful = (String) request.getAttribute("popupMessageSuccessful"); %>
+            <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+                <strong>!</strong>  ${popupMessage} 
+            </div>
 
+            <% }%>
             <div class="product-content product-wrap clearfix product-deatil">
                 <div class="row">
 
@@ -587,7 +614,7 @@
                             <div style="width: 357px;
                                  position: absolute;
                                  margin-top: 10px;
-                                 right: 223px;
+                                 right: 172px;
                                  color: red;
                                  font-weight: BOLD;">
 

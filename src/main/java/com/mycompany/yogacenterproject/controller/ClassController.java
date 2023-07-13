@@ -5,9 +5,11 @@
 package com.mycompany.yogacenterproject.controller;
 
 import PayPal.PaymentServices;
+import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
+import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
@@ -40,6 +42,7 @@ import com.mycompany.yogacenterproject.util.Constants;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -62,6 +65,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -95,6 +99,10 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("Assign Trainer")) {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                String maTrainer = request.getParameter("listTrainer");
+//                out.print(maLopHoc);
+//                out.print(maTrainer);
                 assignTrainer(request, response);
             } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
@@ -104,7 +112,7 @@ public class ClassController extends HttpServlet {
                 showClass(request, response);
             } else if (action.equals("SuccessfulPayment")) {
                 assignClassAfterPayment(request, response);
-
+//                out.print("asdasd");
             } else if (action.equals("Register")) {
                 payment(request, response);
             } else if (action.equals("showDetails")) {
@@ -123,7 +131,7 @@ public class ClassController extends HttpServlet {
                 updateClass(request, response);
             } else if (action.equals("Delete")) {
                 deleteClass(request, response);
-            } else if (action.equals("ClassDetailTrainee")) {
+            } else if (action.equals("ClassDetailTrainee") || action.equals("Detail")) {
                 classDetailTrainee(request, response);
             } else if (action.equals("ClassDetailTrainer")) {
                 classDetailTrainer(request, response);
@@ -356,7 +364,7 @@ public class ClassController extends HttpServlet {
     }
 
     //ASSIGN GIAO VIEN VAO SCHEDULE
-    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public void assignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, EmailException {
         String maLopHoc = request.getParameter("maLopHoc");
         String maTrainer = request.getParameter("listTrainer");
         LopHocDAO lopHocDAO = new LopHocDAO();
@@ -366,6 +374,7 @@ public class ClassController extends HttpServlet {
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
         scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
+        EmailController.trainerDTOAssign(trainerDAO.readTrainer(maTrainer), lopHocDAO.searchClassById(maLopHoc));
         response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
 
     }
@@ -382,12 +391,14 @@ public class ClassController extends HttpServlet {
     }
 
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
-    public void payment(HttpServletRequest request, HttpServletResponse response)  {
+    public void payment(HttpServletRequest request, HttpServletResponse response) {
         try {
+            String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
             boolean error = true;
             HttpSession session = request.getSession();
             LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
             AttendanceDAO attendanceDAO = new AttendanceDAO();
+            ApplicationDAO applicationDAO = new ApplicationDAO();
             if (session.getAttribute("hocVienDTO") != null) {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
                 LopHocDTO lopHocDTO = new LopHocDTO();
@@ -409,7 +420,6 @@ public class ClassController extends HttpServlet {
                 String[] elements = cleanedValue.split(",");
 
 // Convert the array to a List<String>
-                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
                 String maSlot = selectedMaSlot;
                 List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
@@ -424,18 +434,32 @@ public class ClassController extends HttpServlet {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
                 //check availability before registering
                 if (error) {
-                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                    PaymentServices paymentServices = new PaymentServices();
-                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO);
-                    response.sendRedirect(approvalLink);
+                    if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        PaymentServices paymentServices = new PaymentServices();
+                        String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO);
+                        response.sendRedirect(approvalLink);
+                    } else {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()));
+                        assignClassAfterPayment(request, response, maLopHoc);
+//                        RequestDispatcher rd = request.getRequestDispatcher("./ClassController?returnID=" + lopHocDTO.getMaLopHoc() + "&action = SuccessfulPayment");
+//                        rd.forward(request, response);
+                    }
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
                 }
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
                 rd.forward(request, response);
 
             }
@@ -445,7 +469,55 @@ public class ClassController extends HttpServlet {
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 
-    public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response) throws SQLException, NumberFormatException, ServletException, IOException {
+    public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response, String maLopHoc) throws SQLException, NumberFormatException, ServletException, IOException, EmailException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("hocVienDTO") != null) {
+
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+            Date ngayThanhToan = Date.valueOf(LocalDate.now());
+
+            LopHocDAO lopHocDAO = new LopHocDAO();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            HoaDonDAO hoaDonDAO = new HoaDonDAO();
+            ScheduleDAO scheduleDAO = new ScheduleDAO();
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
+
+            String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
+
+            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+
+            String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
+            String maHoaDon = AUTO_HOADON_ID;
+
+            HoaDonDTO hoaDonDTO = new HoaDonDTO();
+            hoaDonDTO.setMahoaDon(maHoaDon);
+            hoaDonDTO.setMaHV(hocVienDTO.getMaHV());
+            hoaDonDTO.setMaLopHoc(maLopHoc);
+            hoaDonDTO.setGiaTien(hocPhi);
+            hoaDonDTO.setNgayThanhToan(ngayThanhToan);
+
+            hoaDonDAO.createHoaDonDTO(hoaDonDTO);
+
+            lopHocDAO.increase(maLopHoc);
+
+            scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
+            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
+            sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
+            String popupMessage = maLopHoc;
+            request.setAttribute("popupMessage", popupMessage);
+            showClass(request, response);
+//            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+//            rd.forward(request, response);
+
+        } else {
+            RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
+            rd.forward(request, response);
+
+        }
+    }
+
+    public void assignClassAfterPayment(HttpServletRequest request, HttpServletResponse response) throws SQLException, NumberFormatException, ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
         if (session.getAttribute("hocVienDTO") != null) {
             String maLopHoc = request.getParameter("returnID");
@@ -479,16 +551,36 @@ public class ClassController extends HttpServlet {
 
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
             attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
-            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
-            rd.forward(request, response);
+            sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
+            String popupMessage = maLopHoc;
+            request.setAttribute("popupMessage", popupMessage);
+            showClass(request, response);
+//            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=classes");
+//            rd.forward(request, response);
+
         } else {
-            RequestDispatcher rd = request.getRequestDispatcher("/Authentication/signin.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
             rd.forward(request, response);
 
         }
     }
 
+    public void sendMailClassRegister(HttpServletRequest request, HttpServletResponse response, LopHocDTO lopHocDTO) throws EmailException, MalformedURLException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("hocVienDTO") != null) {
+            String maLopHoc = request.getParameter("returnID");
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+            EmailController.ClassRegister(lopHocDTO, hocVienDTO.getEmail());
+        }
+    }
+
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
+    public boolean checkTraineeClass(HttpServletRequest request, HttpServletResponse response, String maHocVien, String maLoaiLopHoc) {
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        return scheduleDAO.checkTraineeClass(maHocVien, maLoaiLopHoc);
+    }
+
     public boolean checkTraineeSchedule(HttpServletRequest request, HttpServletResponse response, String maSlot, List<String> thuList, String maHocVien) {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         return scheduleDAO.checkTraineeSchedule(maSlot, maHocVien, thuList);
@@ -568,8 +660,10 @@ public class ClassController extends HttpServlet {
 
 //    Show classes' details
     public void showDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        HttpSession session = request.getSession();
         String cid = request.getParameter("returnID");
         LopHocDAO lopHocDAO = new LopHocDAO();
+        ApplicationDAO applicationDAO = new ApplicationDAO();
 //          Get class information
         LoaiLopHocDAO dao = new LoaiLopHocDAO();
         LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
@@ -619,6 +713,13 @@ public class ClassController extends HttpServlet {
         Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
 
+        if (session.getAttribute("hocVienDTO") != null) {
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            if (applicationDAO.getApplicationFromTrainee(cid, hocVienDTO.getMaHV()) != null) {
+                String popupMessage = "You dont have to purchase this course because you rerserved it";
+                request.setAttribute("popupMessage", popupMessage);
+            }
+        }
         //
         request.setAttribute("distinctDayAndSlots", distinctDayAndSlots);
         request.setAttribute("cid", cid);
@@ -692,7 +793,7 @@ public class ClassController extends HttpServlet {
         LopHocDAO lopHocDAO = new LopHocDAO();
         scheduleDAO.deleteScheduleTrainer(classID);
         scheduleDAO.deleteScheduleHV(classID);
-        lopHocDAO.deleteClassById(classID);
+        lopHocDAO.updateStatusClass(classID);
 
         RequestDispatcher rd = request.getRequestDispatcher("/AdminController?action=listLopHoc&page=1");
         rd.forward(request, response);

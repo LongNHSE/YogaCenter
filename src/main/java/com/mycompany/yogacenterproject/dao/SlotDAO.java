@@ -100,7 +100,7 @@ public class SlotDAO {
 
     //RETURN 1 SLOT with maSlot
     public SlotDTO searchByMaSlot(String maSlot) {
-        String sql = "SELECT * FROM [dbo].[slot] WHERE maSlot = ?";
+        String sql = "SELECT maSlot,CAST(slot.timeStart AS VARCHAR(5)) AS timeStart ,CAST(slot.timeEnd AS VARCHAR(5)) AS timeEnd FROM [dbo].[slot] WHERE maSlot = ?";
         SlotDTO slotDTO = new SlotDTO();
         try {
             Connection conn = DBUtils.getConnection();
@@ -122,7 +122,27 @@ public class SlotDAO {
         }
         return slotDTO;
     }
-    
+     public String getMaSlot(String maLopHoc) {
+        String sql = "SELECT top 1 maSlot FROM [dbo].[ScheduleTrainer] WHERE maLopHoc = ?";
+        SlotDTO slotDTO = new SlotDTO();
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("maSlot");
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
     
     
     
@@ -139,21 +159,22 @@ public class SlotDAO {
     public static void main(String[] args) {
 
         SlotDAO slotDAO = new SlotDAO();
+
+//        System.out.println(slotDAO.maSlot("Lop0003"));
 //        Time timeStart = new Time(9, 15, 00);
 //        Time timeEnd = new Time(10, 45, 00);
-//        slotDAO.createSlot("SL0002", timeStart, timeEnd);
-        List<SlotDTO> listSlotDTO = new ArrayList<SlotDTO>();
-        listSlotDTO = slotDAO.readSlot();
-        for (SlotDTO x : listSlotDTO) {
-            System.out.println(x.toString());
-            
-           
-        }
-        
-        
-        List<SlotDTO> slotDTO = slotDAO.readSlot();
-        System.out.println(slotDTO.toString());
-        
-        
-    }
-}
+////        slotDAO.createSlot("SL0002", timeStart, timeEnd);
+//        List<SlotDTO> listSlotDTO = new ArrayList<SlotDTO>();
+//        listSlotDTO = slotDAO.readSlot();
+//        for (SlotDTO x : listSlotDTO) {
+//            System.out.println(x.toString());
+//            
+//           
+//        }
+//        
+//        
+//        List<SlotDTO> slotDTO = slotDAO.readSlot();
+//        System.out.println(slotDTO.toString());
+//        
+//        
+    }}
