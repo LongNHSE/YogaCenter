@@ -617,9 +617,9 @@ img {
 
 .article {
     width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 20px;
+    border: 2px solid #8b57fc;
+    border-radius: 50px;
     font-size: 16px;
 }
 .blog textarea {
@@ -724,4 +724,9 @@ textarea.input-style:focus {
     100% {
         width: 0%; /* Kết thúc với chiều rộng 0% */
     }
+}
+.blog-main-head{
+    text-align: center;
+    color: #9F2B68;
+    letter-spacing: 3px;
 }

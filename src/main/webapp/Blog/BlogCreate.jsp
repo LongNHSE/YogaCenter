@@ -26,6 +26,7 @@
                     </div>
          
                     <div class="container">
+                        <h1 class="blog-main-head">Create Your Own Blog</h1>
                          <div class="row align-items-start">
                              <div class="col-lg-8 m-15px-tb">
                                  <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
