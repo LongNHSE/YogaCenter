@@ -47,7 +47,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="LoaiLopHoc" class="form-control form-control-lg" name="tenLoaiLopHoc" required="required"/>
-                                                <label class="form-label" for="LoaiLopHoc">Ten Loai Lop Hoc</label>
+                                                <label class="form-label" for="LoaiLopHoc">Name of Class Type</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -60,9 +60,9 @@
 
                                             <div class="form-outline">
                                                 <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.5">
+                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1">
                                                     <span class="currency">x1.000.000VND</span>
-                                                    <label class="form-label" for="hocPhi">Hoc Phi</label>
+                                                    <label class="form-label" for="hocPhi">Fee</label>
                                                 </div>
                                             </div>
 

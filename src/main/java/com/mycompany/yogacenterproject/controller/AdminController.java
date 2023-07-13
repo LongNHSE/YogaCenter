@@ -91,6 +91,8 @@ public class AdminController extends HttpServlet {
                 ListClassType(request, response);
             } else if (action.equals("listApplicationApproved")) {
                 listApplicationApproved(request, response);
+            } else if (action.equals("listApplicationUnapproved")) {
+                listApplicationUnapproved(request, response);
             }
 
         }
@@ -258,6 +260,15 @@ public class AdminController extends HttpServlet {
         List<ApplicationDTO> listApplication = applicationDAO.getAllApplications();
         request.setAttribute("listApplication", listApplication);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Application/ListApplication.jsp");
+        rd.forward(request, response);
+
+    }
+
+    public void listApplicationUnapproved(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        List<ApplicationDTO> listApplication = applicationDAO.getAllApplicationsUnapprove();
+        request.setAttribute("listApplication", listApplication);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Application/ListApplicationUnapproved.jsp");
         rd.forward(request, response);
 
     }

@@ -487,18 +487,18 @@ public class BlogDAO {
 
     public void updateBlog(BlogDTO blogDTO) {
         String sql = "Update [dbo].[blogPost] "
-                + "Set [status] = 'false', tieuDe=?,noiDung=? ,ngayCapNhat=?,maCate=null"
+                + "Set [status] = 'false', tieuDe=?,noiDung=? ,ngayCapNhat=?,maCate=null "
                 + "where maBlog=?";
 
         try {
             LocalDate currentDate = LocalDate.now();
-            
-             Connection conn = DBUtils.getConnection();
+
+            Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, blogDTO.getTitle());
             ps.setString(2, blogDTO.getContent());
             ps.setDate(3, Date.valueOf(currentDate));
-            ps.setString(4,blogDTO.getMaBlog() );
+            ps.setString(4, blogDTO.getMaBlog());
 
             ps.executeUpdate();
 
@@ -513,6 +513,10 @@ public class BlogDAO {
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
         System.out.println(dao.lastIDIndexOfBlog());
+        BlogDTO blogDTO = new BlogDTO();
+        blogDTO = dao.getBlogByID("B0003");
+        blogDTO.setContent("Yoga");
+        dao.updateBlog(blogDTO);
 //        BlogDTO blogDTO = dao.getBlogByID("B0001");
 //        dao.approveBlog("B0003", "BC0001");
 //        System.out.println();

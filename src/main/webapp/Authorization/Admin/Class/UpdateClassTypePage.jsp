@@ -61,7 +61,7 @@
 
                                             <div class="form-outline">
                                                 <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.5" value="${loaiLopHoc.getHocPhiWith3Number()}">
+                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1" value="${loaiLopHoc.getHocPhiWith3Number()}">
                                                     <span class="currency">x1.000.000VND</span>
                                                     <label class="form-label" for="hocPhi">Fee </label>
                                                 </div>

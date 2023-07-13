@@ -164,8 +164,8 @@
                             <input type="hidden" name="maLopHoc" value="${lopHocDTO.maLopHoc}" >
                         </form>
                         <form action="<%=url%>/ExceptionController" method="POST">
-                            <td> <input class="btn btn-outline-danger" type="submit" name="action" value="Request " ></td>
-                            <td> <input class="btn btn-outline-danger" type="submit" name="action" value="Reserve" ></td>
+                            <td> <input class="btn btn-outline-danger" type="submit" name="action" value="Request Off" ></td>
+                       
                             <input type="hidden" name="maLopHoc" value="${lopHocDTO.maLopHoc}" >
                         </form>
                         </tr>

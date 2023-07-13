@@ -634,7 +634,7 @@ public class ClassController extends HttpServlet {
             lopHocDAO.increase(maLopHoc);
 
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
-            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV()));
+            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV(),maLopHoc));
             sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
             String popupMessage = maLopHoc;
             request.setAttribute("popupMessage", popupMessage);
