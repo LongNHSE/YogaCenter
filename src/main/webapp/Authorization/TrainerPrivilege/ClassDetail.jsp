@@ -142,6 +142,30 @@
 
         <jsp:include page="${url}/Components/headerComponent.jsp" />    
         <div class="Controller">
+            <% String popupMessage = (String) request.getAttribute("popupMessage");
+                String popupMessageSuccessful = (String) request.getAttribute("popupMessageSuccessful"); %>
+            <% if (popupMessage != null) {%> <div id="myAlert" class="alert"  style="background-color: red;color: black;">
+                 <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+                <strong>!!</strong> ${popupMessage}
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+
+            </div>
+
+            <% }
+                if (popupMessageSuccessful != null) {%>  
+
+            <div id="myAlert" class="alert" style="background-color: greenyellow; color: black; ">
+                <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+                <strong>!</strong> ${popupMessageSuccessful} 
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+
+            </div>
+
+            <%}%>
             <div class="Table">
                 <div class="ClassDetail">
                     <div class="ClassName">
@@ -263,7 +287,81 @@
                     <input type="submit"  value="submit" >
                 </form>
             </div>
-            <script>  $(document).ready(function () {
+            <style>
+                .progress {
+                    height: 4px;
+                    background-color: #4CAF50;
+                    width: 100%;
+                    position: absolute;
+                    top: 61px;
+                    left: 0;
+                    animation: progress-animation 5s linear;
+                }
+
+                @keyframes progress-animation {
+                    0% {
+                        width: 100%;
+                    }
+                    100% {
+                        width: 0;
+                    }
+                }
+                .header-nav {
+                    background-color: #8b57fc;
+                    margin-bottom: 0px;
+                }
+                .alert {
+                    padding: 20px;
+                    background-color: #f44336;
+                    color: white;
+                }
+
+                .closebtn {
+                    margin-left: 15px;
+                    color: white;
+                    font-weight: bold;
+                    float: right;
+                    font-size: 22px;
+                    line-height: 20px;
+                    cursor: pointer;
+                    transition: 0.3s;
+                }
+
+                .closebtn:hover {
+                    color: black;
+                }
+            </style>
+            <script>
+                   // Function to close the alert message
+                function closeAlert() {
+                    var alert = document.getElementById("myAlert");
+                    alert.style.display = "none";
+                }
+
+                // Function to automatically close the alert after 5 seconds
+                function autoCloseAlert() {
+                    var alert = document.getElementById("myAlert");
+                    var progress = alert.querySelector(".progress");
+
+                    var duration = 500; // Duration in seconds
+                    var interval = 100; // Update interval in milliseconds
+                    var progressWidth = 100;
+
+                    var progressInterval = setInterval(function () {
+                        progressWidth -= (interval / (duration * 10)) * 100;
+                        progress.style.width = progressWidth + "%";
+
+                        if (progressWidth <= 0) {
+                            clearInterval(progressInterval);
+                            alert.style.display = "none";
+                        }
+                    }, interval);
+                }
+
+                // Call the autoCloseAlert function when the page has finished loading
+                window.onload = autoCloseAlert;
+
+                $(document).ready(function () {
                     $('.sub-menu ul#active').show();
                     $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
                 });

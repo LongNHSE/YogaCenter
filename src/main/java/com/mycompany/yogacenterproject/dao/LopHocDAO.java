@@ -850,6 +850,41 @@ public class LopHocDAO {
         return 0;
     }
 
+    public List<LopHocDTO> getListClassOfTrainer(String maTrainer) {
+        List<LopHocDTO> listLopHocDTO = new ArrayList<>();
+        String sql = "SELECT lopHoc.maLopHoc,lopHoc.maLoaiLopHoc,lopHoc.ngay,lopHoc.soBuoi FROM lopHoc\n"
+                + "inner join ScheduleTrainer on ScheduleTrainer.maLopHoc = lopHoc.maLopHoc\n"
+                + "where ScheduleTrainer.maTrainer=?\n"
+                + "group by lopHoc.maLopHoc,lopHoc.maLoaiLopHoc,lopHoc.ngay,lopHoc.soBuoi ";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maTrainer);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LopHocDTO lopHocDTO = new LopHocDTO();
+                LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+                TrainerDAO trainerDAO = new TrainerDAO();
+                lopHocDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                lopHocDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                lopHocDTO.setNgayBatDau(rs.getDate("ngay"));
+                lopHocDTO.setSoBuoi(rs.getInt("soBuoi"));
+                lopHocDTO.setSoBuoiDaDay(rs.getInt("soBuoi"));
+                lopHocDTO.setSoBuoiDaDay(getSoNgayDaDay(lopHocDTO.getMaLopHoc()));
+                lopHocDTO.setNgayKetThuc(getLastDay(lopHocDTO.getMaLopHoc()));
+                lopHocDTO.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(lopHocDTO.getMaLoaiLopHoc()));
+                lopHocDTO.setTrainerDTO(trainerDAO.searchTrainerByClassID(lopHocDTO.getMaLopHoc()));
+                listLopHocDTO.add(lopHocDTO);
+            }
+
+            return listLopHocDTO;
+        } catch (SQLException e) {
+
+        }
+
+        return null;
+    }
+
     public List<LopHocDTO> getListClassOfTrainee(String maHocVien) {
         List<LopHocDTO> listLopHocDTO = new ArrayList<>();
         String sql = "SELECT lopHoc.maLopHoc,lopHoc.maLoaiLopHoc,lopHoc.ngay,lopHoc.soBuoi FROM lopHoc\n"
