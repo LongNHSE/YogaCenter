@@ -58,17 +58,17 @@ public class AttendanceController extends HttpServlet {
                 String attendance = attendances[i];
                 attendanceDAO.updateAttendance(ngayHoc, maSlot, classID, maHV, attendance);
             }
-            String popupMessageSuccessful = "Take attendance successfully.";
+            String popupMessageSuccessful = "Attendance has been taken successfully.";
             request.setAttribute("popupMessageSuccessful", popupMessageSuccessful);
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
             rd.forward(request, response);
         } else if (currentDate.isAfter(DateUtils.asLocalDate(ngayHoc))) {
-            String popupMessage = "You can't take attendance because date is exspire.";
+            String popupMessage = "You can't take attendance now because it has already passed the due date.";
             request.setAttribute("popupMessage", popupMessage);
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
             rd.forward(request, response);
         } else {
-            String popupMessage = "You can't take attendance because date not come yet.";
+            String popupMessage = "You can't take attendance now because it is not the due date.";
             request.setAttribute("popupMessage", popupMessage);
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
             rd.forward(request, response);
