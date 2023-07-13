@@ -143,6 +143,7 @@
                             <th scope="col">Type Of Yoga</th>
                             <th scope="col">Trainer</th>
                             <th scope="col">Slots</th>
+                            <th scope="col">Day-Off</th>
                             <th scope="col">Date Start</th>
                             <th scope="col">Date End</th>
                         </tr>
@@ -155,6 +156,7 @@
                                 <td>${lopHocDTO.loaiLopHocDTO.tenLoaiLopHoc} </td>
                                 <td>${lopHocDTO.trainerDTO.ho} ${lopHocDTO.trainerDTO.ten} </td>
                                 <td>${lopHocDTO.soBuoiDaDay}/${lopHocDTO.soBuoi}</td>
+                                <td>${lopHocDTO.trainerDTO.soNgayNghi}</td>
                                 <td>${lopHocDTO.ngayBatDau}</td>
                                 <td>${lopHocDTO.ngayKetThuc}</td>
                         <form action="<%=url%>/ClassController" method="POST">

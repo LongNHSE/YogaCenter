@@ -68,6 +68,61 @@ public class TrainerDAO {
         return null;
     }
 
+    public int getSoNgayNghi(String maTrainer) {
+
+        try {
+            String sql = "SELECT COUNT(*) as [soNgayNghi]\n"
+                    + "FROM (\n"
+                    + "  SELECT ScheduleTrainer.maLopHoc, Attendance.ngayHoc\n"
+                    + "  FROM Attendance\n"
+                    + "  INNER JOIN ScheduleTrainer ON ScheduleTrainer.maLopHoc = Attendance.maLopHoc\n"
+                    + "  WHERE Attendance.ngayHoc < ? AND Attendance.status = 'Unmarked attendance' AND maTrainer = ?\n"
+                    + "  GROUP BY ScheduleTrainer.maLopHoc, Attendance.ngayHoc\n"
+                    + ") AS groupedData;";
+            LocalDate currentDate = LocalDate.now();
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setDate(1, Date.valueOf(currentDate));
+            stm.setString(2, maTrainer);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("soNgayNghi");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getSoNgayNghi1Lop(String maTrainer,String maLopHoc) {
+
+        try {
+            String sql = "SELECT COUNT(*) as [soNgayNghi]\n"
+                    + "FROM (\n"
+                    + "  SELECT ScheduleTrainer.maLopHoc, Attendance.ngayHoc\n"
+                    + "  FROM Attendance\n"
+                    + "  INNER JOIN ScheduleTrainer ON ScheduleTrainer.maLopHoc = Attendance.maLopHoc\n"
+                    + "  WHERE Attendance.ngayHoc < ? AND Attendance.status = 'Unmarked attendance' AND maTrainer = ? AND ScheduleTrainer.maLopHoc=?\n"
+                    + "  GROUP BY ScheduleTrainer.maLopHoc, Attendance.ngayHoc\n"
+                    + ") AS groupedData;";
+            LocalDate currentDate = LocalDate.now();
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setDate(1, Date.valueOf(currentDate));
+            stm.setString(2, maTrainer);
+            stm.setString(3, maLopHoc);
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("soNgayNghi");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public void CheckClass() {
         LopHocDAO lopHocDAO = new LopHocDAO();
         List<String> listMaLopHoc = lopHocDAO.readListIDClass();
@@ -186,7 +241,7 @@ public class TrainerDAO {
                 long salary = rs.getLong("salary");
                 String username = rs.getString("username");
                 String psw = rs.getString("psw");
-                int soNgayNghi = rs.getInt("soNgayNghi");
+                int soNgayNghi = getSoNgayNghi(maTrainer);
                 boolean status = rs.getBoolean("status");
                 String trainerType = rs.getString("trainerType");
                 String gender = rs.getString("gender");
@@ -264,6 +319,7 @@ public class TrainerDAO {
                 String Ho = rs.getString("Ho");
                 String Ten = rs.getString("Ten");
                 String maTrainer = rs.getString("maTrainer");
+                trainerDTO.setSoNgayNghi(getSoNgayNghi1Lop(maTrainer, maLopHoc));
                 trainerDTO.setMaTrainer(maTrainer);
                 trainerDTO.setHo(Ho);
                 trainerDTO.setTen(Ten);
@@ -520,7 +576,8 @@ public class TrainerDAO {
 //        LopHocDAO lopHocDAO = new LopHocDAO();
 //
         TrainerDAO trainerDAO = new TrainerDAO();
-        System.out.println(trainerDAO.searchTrainerByClassID("LOP0001"));
+        System.out.println(trainerDAO.getSoNgayNghi1Lop("TR0003","LOP0016"));
+//        System.out.println(trainerDAO.searchTrainerByClassID("LOP0001"));
 //        List<TrainerDTO> listTrainer = new ArrayList();
 //        trainerDAO.updateTrainerStatus("TR0004", false);
 //        System.out.println();
