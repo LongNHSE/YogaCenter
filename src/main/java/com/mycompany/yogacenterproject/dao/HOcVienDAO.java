@@ -5,7 +5,6 @@
 package com.mycompany.yogacenterproject.dao;
 
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
-import com.mycompany.yogacenterproject.util.Constants;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import com.mycompany.yogacenterproject.util.DateUtils;
 import java.sql.Connection;
@@ -16,11 +15,8 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -308,8 +304,6 @@ public class HocVienDAO {
             // Bước 5:
             DBUtils.closeConnection(con);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
         return false;
     }
@@ -365,12 +359,12 @@ public class HocVienDAO {
 
 //        List<HocVienDTO> listHocVienDTO = new ArrayList<>();
         HocVienDAO hocVienDAO = new HocVienDAO();
-        HocVienDTO hocVienDTO = new HocVienDTO();
+//        HocVienDTO hocVienDTO = new HocVienDTO();
 
-        DateUtils dateUtils = new DateUtils();
+//        DateUtils dateUtils = new DateUtils();
          List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
   
-        listHocVienDTO = hocVienDAO.readListHocVienWithScheduleHV("LOP0001");
+        listHocVienDTO = hocVienDAO.readListHocVien();
         for(HocVienDTO x : listHocVienDTO){
             System.out.println(x);
         }
@@ -379,7 +373,7 @@ public class HocVienDAO {
 //        hocVienDAO.updateHocVien(hocVienDTO);
 
 //        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
-        System.out.println(hocVienDTO);
+//        System.out.println(hocVienDTO);
 
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {

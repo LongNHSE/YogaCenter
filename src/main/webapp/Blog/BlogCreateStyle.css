@@ -9,6 +9,7 @@
 }
 
 
+
 .button-blog {
     background-color: #eee;
     border: none;
@@ -585,6 +586,7 @@ img {
   max-width: 100%;
   max-height: 100%;
   margin: auto;
+ margin: auto;
 }
 .deleteButton {
   position: absolute;

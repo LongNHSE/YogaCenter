@@ -74,6 +74,32 @@ public class DescriptionDAO {
         }
     }
 
+    public boolean updateDescriptionDTO(DescriptionDTO descriptionDTO) {
+        String sql = "Update [dbo].[description] set title=?, content=? "
+                + "where maDescription=?";
+        int check = 1;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, descriptionDTO.getTitle());
+            ps.setString(2, descriptionDTO.getContent());
+            ps.setString(3, descriptionDTO.getMaDescription());
+            check = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        if (check == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 maDescription FROM [dbo].[description] ORDER BY maDescription DESC";
         int index = 0;

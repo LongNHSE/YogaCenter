@@ -46,6 +46,25 @@ public class AttendanceDAO {
 
     }
 
+    public void autoUpdateStatusAttendance() throws SQLException {
+        List<AttendanceDTO> listAttendanceDTO = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+        String sql = "UPDATE [dbo].[Attendance] set status=?  "
+                + "where ngayHoc < ? and status='Pending'\n";
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Unmarked attendance");
+            ps.setDate(2, java.sql.Date.valueOf(currentDate));
+    
+            int row = ps.executeUpdate();
+
+            System.out.println(row);
+        } catch (SQLException e) {
+        }
+
+    }
+
     public List<AttendanceDTO> readTraineeAttendance(String maHocVien) throws SQLException {
         List<AttendanceDTO> listAttendanceDTO = new ArrayList<>();
         String sql = "SELECT * from [dbo].[Attendance]  "
@@ -155,6 +174,16 @@ public class AttendanceDAO {
         return false;
     }
 
+    public void deleteAttendaceHV(String maHocVien, String maLopHoc) throws SQLException {
+        String sql = "DELETE FROM [dbo].[Attendance] where maHV = ? and maLopHoc=? ";
+        Connection conn = DBUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, maHocVien);
+        ps.setString(2, maLopHoc);
+        ps.executeUpdate();
+
+    }
+
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 attendanceID FROM [dbo].[Attendance] ORDER BY attendanceID DESC";
         int index = 0;
@@ -180,6 +209,6 @@ public class AttendanceDAO {
         AttendanceDAO attendanceDAO = new AttendanceDAO();
         LocalDate date = LocalDate.now();
 //        System.out.println(attendanceDAO.readAttendance(Date.valueOf(date), "SL002", "LOP0003"));
-System.out.println(attendanceDAO.readTraineeAttendance("HV0001"));
+        attendanceDAO.deleteAttendaceHV("HV0001", "LOP0009");
     }
 }

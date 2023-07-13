@@ -37,6 +37,7 @@
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
+
                                     <h1 class="yoga_text ">Yoga For Beginners</h1>
                                     <h1 class="body_text">Boost Your Energy</h1>
                                     <p class="contrary_text">Contrary to popular belief, yoga is not just exercise. It's a holistic practice that combines physical movement, breath control, and mindfulness. Regular yoga practice can increase your energy levels, improve circulation, and promote overall vitality. </p>
@@ -64,6 +65,7 @@
                 <div class="row customTest">
                     <div class="col-sm-3 col-trainer">
                         <div class="image_1"><img src="<%=url%>/images/img-1.png"></div>
+
                         <h2 class="meditation_text">Build Endurance</h2>
                         <p class="lorem_tetx">Balance of body and mind is what yoga brings to practitioners. Yoga requires perseverance and belief to achieve the desired state through personal effort. </p>
                     </div>
@@ -100,7 +102,7 @@
         </div>
 
         <!-- about section end -->
- 
+
         <!-- contact section start -->
         <div class="contact_section layout_padding">
             <div class="container ">
