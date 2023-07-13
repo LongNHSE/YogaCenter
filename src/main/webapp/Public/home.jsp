@@ -135,18 +135,7 @@
         </div>
                         
                         <style>
-                            .customTest{
-    right: 120px;
-    /* margin-left: 20px; */
-    width: 1350px;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: 10px;
-    margin-left: -15px;
-    position: relative;
-}
+
                         </style>
         <!-- contact section end -->
         <!-- copyright section start -->
