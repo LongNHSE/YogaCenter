@@ -65,6 +65,10 @@
         <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
     </servlet>
     <servlet>
+
+        <servlet-name>VoucherController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.VoucherController</servlet-class>
+
         <servlet-name>ExceptionController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ExceptionController</servlet-class>
     </servlet>
@@ -129,6 +133,10 @@
         <url-pattern>/BlogAdminController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
+        <servlet-name>VoucherController</servlet-name>
+        <url-pattern>/VoucherController</url-pattern>
+
         <servlet-name>ExceptionController</servlet-name>
         <url-pattern>/ExceptionController</url-pattern>
     </servlet-mapping>

@@ -37,32 +37,7 @@
         <!-- about section end -->
         <jsp:include page="../Components/footerComponent.jsp" />       
 
-        <!-- header section end -->
-        <!-- about section start -->
-        <div class="about_section layout_padding">
-            <div class="container">
-                <div class="about_main">
-                    <h1 class="about_text">About Us</h1>
-                    <p class="ipsum_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                        ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum dolor sit amet, consectetur adipiscing
-                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniamLorem ipsum
-                        dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. </p>
-                </div>
-                <div class="about_bt_main">
-                    <div class="about_bt"><a href="#">About More</a></div>
-                </div>
-            </div>
-        </div>
-        <!-- about section end -->
-        <!-- copyright section start -->
-        <div class="copyright_section">
-            <div class="container">
-                <p class="copyright_text">Copyright 2019 All Right Reserved By.<a href="https://html.design"> Free html
-                        Templates</a> Distributed By. <a href="https://themewagon.com">ThemeWagon </a></p>
-            </div>
-        </div>
-        <!-- copyright section end -->
+        
         <!-- Javascript files-->
         <script src="<%=url%>/js/jquery.min.js"></script>
         <script src="<%=url%>/js/popper.min.js"></script>

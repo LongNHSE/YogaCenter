@@ -4,7 +4,6 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
-import static com.mycompany.yogacenterproject.dao.LopHocDAO.compareLists;
 import com.mycompany.yogacenterproject.dto.DateAndDay;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
@@ -17,17 +16,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
