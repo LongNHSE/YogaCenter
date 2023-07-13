@@ -376,8 +376,8 @@
                 position: relative;
                 padding: 10px 24px;
                 font-size: 18px;
-                color: rgb(193, 163, 98);
-                border: 2px solid rgb(193, 163, 98);
+                color: #770737;
+                border: 2px solid rgb(103, 49, 71);
                 border-radius: 34px;
                 background-color: transparent;
                 font-weight: 600;
@@ -395,7 +395,7 @@
                 border-radius: inherit;
                 scale: 0;
                 z-index: -1;
-                background-color: rgb(193, 163, 98);
+                background-color: rgb(218, 112, 214);
                 transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             }
 
@@ -404,7 +404,7 @@
             }
 
             .button:hover {
-                color: #212121;
+                color: #ffff;
                 scale: 1.1;
                 box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
             }
@@ -415,6 +415,8 @@
 
 
             .box {
+                display:flex;
+                align-items: center;
                 position: absolute;
                 top: 27px ;
                 right: -265px;
@@ -422,11 +424,12 @@
             }
 
             .box select {
-                background-color: rgb(193, 163, 98);
-                color: white;
+                background-color: rgb(218, 112, 214);
+                color: #ffff;
                 padding: 12px;
                 padding-top: 20px;
                 width: 350px;
+                  margin-right: 5px;
                 border: none;
                 font-size: 20px;
                 box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -467,18 +470,18 @@
             }
 
             .title{
-                width: 500px;
+                width: 100%;
                 height: auto;
             }
             .title h1 {
+                color:rgb(191, 64, 191);
                 border-bottom: 5px solid #554c86
             }
             .Description .description{
+                color: #5a5a5a;
                 font-size: 25px;
-                display: block;
-                text-align: center;
-                margin: 20px;
-                line-height: 30px;
+                text-align: left;
+                line-height: 40px;
             }
             .Custom{
 
@@ -604,7 +607,7 @@
 
             <div class="Description product-content product-wrap clearfix product-deatil">
                 <div class="title">
-                    <h1> ${descriptionDTO.title}</h1>
+                    <h1> 📖  ${descriptionDTO.title}</h1>
                 </div>
                 <div class="description">
                     ${descriptionDTO.content}
@@ -615,7 +618,7 @@
 
         </div>
 
-
+                <jsp:include page="../Components/footerComponent.jsp" />        
 
 
     </body>

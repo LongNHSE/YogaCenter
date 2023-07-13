@@ -9,12 +9,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 * {
-  margin: 0;
-  padding: 0;
-  font: inherit;
+    margin: 0;
+    padding: 0;
+    font: inherit;
 }
 .layout_padding {
     padding-top: 90px;
@@ -32,21 +32,21 @@ ul, li, ol {
 input,
 select,
 textarea {
-  background-color: transparent;
-  outline: none;
+    background-color: transparent;
+    outline: none;
 }
 button {
-  cursor: pointer;
-  background-color: transparent;
-  outline: none;
-  border: 0;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: 0;
 }
 body {
-  min-height: 100vh;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1;
-      font-family: Raleway !important ;
+    min-height: 100vh;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+    font-family: Raleway !important ;
 }
 textarea {
     overflow: auto;
@@ -176,7 +176,7 @@ a, .btn {
 
 }
 .image_1 img{
-        margin: auto;
+    margin: auto;
 }
 .meditation_text {
     width: 100%;
@@ -280,7 +280,7 @@ col-trainer{
     height: auto;
     background-size: 100%;
     padding-bottom: 320px;
-    background-color: #8b57fc;    
+    background-color: #8b57fc;
 }
 .pricing_taital {
     width: 24%;
@@ -295,7 +295,7 @@ col-trainer{
     width: 100%;
     float: left;
     margin-top: 70px;
-    
+
 }
 .plane_section {
     width: 100%;
@@ -436,7 +436,7 @@ p {
 
 .contact-column {
     order: 1;
-     display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -445,19 +445,19 @@ p {
     order: 2;
 }
 .contact-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .contact-info .call_text {
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
 }
 
 .contact-info .call_text img {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 
@@ -465,4 +465,14 @@ p {
     display: inline-block;
     margin-right: 10px;
 }
-
+.customTest{
+    right: 120px;
+    width: 1350px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 10px;
+    margin-left: -15px;
+    position: relative;
+}

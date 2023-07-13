@@ -61,7 +61,7 @@
         <!-- trainer section start -->
         <div class="trainer_section layout_padding">
             <div class="container">
-                <div class="row">
+                <div class="row customTest">
                     <div class="col-sm-3 col-trainer">
                         <div class="image_1"><img src="<%=url%>/images/img-1.png"></div>
                         <h2 class="meditation_text">Build Endurance</h2>
@@ -133,6 +133,21 @@
                 </div>
             </div>
         </div>
+                        
+                        <style>
+                            .customTest{
+    right: 120px;
+    /* margin-left: 20px; */
+    width: 1350px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 10px;
+    margin-left: -15px;
+    position: relative;
+}
+                        </style>
         <!-- contact section end -->
         <!-- copyright section start -->
 <!--        <div class="copyright_section">

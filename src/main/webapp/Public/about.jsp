@@ -19,9 +19,9 @@
   <div class="about_section layout_padding">
     <div class="container">
       <div class="about_main">
-        <h1 class="about_text">Về Yoga San</h1>
-        <p class="ipsum_text"> Yoga San là một trung tâm yoga hàng đầu với đội ngũ giảng viên chuyên nghiệp và các khóa học đa dạng phù hợp với mọi đối tượng. Chúng tôi tập trung vào sự phát triển toàn diện của học viên, từ việc rèn luyện cơ thể linh hoạt đến trạng thái tĩnh lặng của tâm hồn.</p>
-         <p class="ipsum_text">Với phương pháp giảng dạy tận tâm và chuẩn mực, chúng tôi đảm bảo bạn sẽ có một trải nghiệm yoga an lành và bổ ích tại Yoga San. Hãy đến và khám phá thế giới của yoga cùng chúng tôi và khám phá tiềm năng tối đa của bạn. </p>
+        <h1 class="about_text">About us </h1>
+         <p class="ipsum_text">Yoga San is a leading yoga center with a team of professional instructors and a variety of courses suitable for all individuals. We focus on the holistic development of our students, from cultivating physical flexibility to attaining inner tranquility of the soul.</p>
+         <p class="ipsum_text">With our dedicated and high-standard teaching methodology, we guarantee you a peaceful and enriching yoga experience at Yoga San. Come and explore the world of yoga with us, and unleash your maximum potential.</p>
 
       </div>
       <div class="about_bt_main">
