@@ -19,9 +19,18 @@ public class LoaiLopHocDTO {
     private String tenLoaiLopHoc;
     private double hocPhi;
     private String description;
-     private String maDescription;
+    private String maDescription;
     private List<LopHocIMGDTO> image;
     private boolean status;
+    private DescriptionDTO descriptionDTO;
+
+    public DescriptionDTO getDescriptionDTO() {
+        return descriptionDTO;
+    }
+
+    public void setDescriptionDTO(DescriptionDTO descriptionDTO) {
+        this.descriptionDTO = descriptionDTO;
+    }
 
     public boolean isStatus() {
         return status;
@@ -46,7 +55,6 @@ public class LoaiLopHocDTO {
     public void setImage(List<LopHocIMGDTO> image) {
         this.image = image;
     }
-  
 
     public LoaiLopHocDTO() {
     }
@@ -58,8 +66,6 @@ public class LoaiLopHocDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-
-   
 
     public String getMaLoaiLopHoc() {
         return maLoaiLopHoc;
@@ -99,10 +105,15 @@ public class LoaiLopHocDTO {
         return decimalFormat.format(hocPhi);
     }
 
-      @Override
-      public String toString() {
-            return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + hocPhi + ", description=" + description + '}';
-      }
+    public double getHocPhiWith3Number() {
+        double hocPhi = getHocPhi()/1000000;
 
-    
+        return hocPhi;
+    }
+
+    @Override
+    public String toString() {
+        return "LoaiLopHocDTO{" + "maLoaiLopHoc=" + maLoaiLopHoc + ", tenLoaiLopHoc=" + tenLoaiLopHoc + ", hocPhi=" + hocPhi + ", description=" + description + ", maDescription=" + maDescription + ", image=" + image + ", status=" + status + ", descriptionDTO=" + descriptionDTO + '}';
+    }
+
 }

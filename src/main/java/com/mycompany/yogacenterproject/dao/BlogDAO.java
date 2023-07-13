@@ -87,6 +87,34 @@ public class BlogDAO {
         return listBlog;
     }
 
+    public List<BlogDTO> getAllBlogsByMaTrainer(String maTrainer) {
+        List<BlogDTO> listBlog = new ArrayList<>();
+        BlogImageDAO daoImg = new BlogImageDAO();
+        String sql = "SELECT * FROM [dbo].[blogPost] where maTrainer=?";
+        try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, maTrainer);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                BlogDTO blogDTO = new BlogDTO();
+                String maBlog = rs.getString("maBlog");
+                List<BlogImgDTO> blogImgDTO = daoImg.getImageDataByID(maBlog);
+                blogDTO.setMaBlog(maBlog);
+                blogDTO.setTitle(rs.getString("tieuDe"));
+                blogDTO.setContent(rs.getString("noiDung"));
+                blogDTO.setDate(rs.getString("ngayTaoPost"));
+                blogDTO.setMaTrainer(rs.getString("maTrainer"));
+
+                blogDTO.setStatus(rs.getBoolean("status"));
+                blogDTO.setImage(blogImgDTO);
+                listBlog.add(blogDTO);
+            }
+        } catch (Exception e) {
+        }
+        return listBlog;
+    }
+
     public List<BlogDTO> getAllBlogsUnapprove() {
         List<BlogDTO> listBlog = new ArrayList<>();
         BlogImageDAO daoImg = new BlogImageDAO();
@@ -457,9 +485,34 @@ public class BlogDAO {
 
     }
 
+    public void updateBlog(BlogDTO blogDTO) {
+        String sql = "Update [dbo].[blogPost] "
+                + "Set [status] = 'false', tieuDe=?,noiDung=? ,ngayCapNhat=?,maCate=null"
+                + "where maBlog=?";
+
+        try {
+            LocalDate currentDate = LocalDate.now();
+            
+             Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, blogDTO.getTitle());
+            ps.setString(2, blogDTO.getContent());
+            ps.setDate(3, Date.valueOf(currentDate));
+            ps.setString(4,blogDTO.getMaBlog() );
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+    }
+
     public static void main(String[] args) {
         BlogDAO dao = new BlogDAO();
-        System.out.println(dao.getAllBlogsApprove());
+        System.out.println(dao.lastIDIndexOfBlog());
 //        BlogDTO blogDTO = dao.getBlogByID("B0001");
 //        dao.approveBlog("B0003", "BC0001");
 //        System.out.println();

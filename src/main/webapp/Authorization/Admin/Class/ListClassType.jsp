@@ -197,7 +197,7 @@
                             <td>${Cate.status}</td>
 
 
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"   > </td>
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Update Class Type"name="action"   > </td>
 
                             <td > <input class="btn btn-outline-danger" type='submit' value="Change Status" name="action" /></td> 
 
