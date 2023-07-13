@@ -224,7 +224,6 @@ public class BLogController extends HttpServlet {
     public void createBlog(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         BlogDTO blogDTO = new BlogDTO();
-
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
         content = content.replace("\n", "<br>");
@@ -250,6 +249,7 @@ public class BLogController extends HttpServlet {
         blogDTO.setMaTrainer(maTrainer);
         blogDAO.createBlog(blogDTO);
         insertBanner(request, response, maBlog);
+        
     }
 
     public void insertBanner(HttpServletRequest request, HttpServletResponse response, String maBlog) throws SQLException, IOException {
