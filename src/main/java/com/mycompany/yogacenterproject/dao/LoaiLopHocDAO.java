@@ -265,7 +265,7 @@ public class LoaiLopHocDAO {
     public List<LoaiLopHocDTO> getAllLoaiLopHoc() throws SQLException, IOException {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        String sql = "SELECT * FROM loaiLopHoc";
+        String sql = "SELECT * FROM loaiLopHoc where status='true'";
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {

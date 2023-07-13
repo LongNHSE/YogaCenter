@@ -31,6 +31,8 @@ import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
+import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
 import com.mycompany.yogacenterproject.dto.SlotDTO;
@@ -134,6 +136,12 @@ public class ClassController extends HttpServlet {
                 classDetailTrainer(request, response);
             } else if (action.equals("Change Status")) {
                 changeStatusClassType(request, response);
+            } else if (action.equals("ViewSchedulePublic")) {
+                listSchedulePublic(request, response);
+                datePublic(request, response);
+                RequestDispatcher rd = request.getRequestDispatcher("./Authentication/SchedulePublic.jsp");
+                rd.forward(request, response);
+
             }
         } catch (Exception e) {
 
@@ -839,6 +847,81 @@ public class ClassController extends HttpServlet {
         request.setAttribute("trainerDTO", trainerDTO);
         RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/ClassDetail.jsp");
         rd.forward(request, response);
+    }
+
+    public void listSchedulePublic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        List<LoaiLopHocDTO> listLoaiLopHoc = loaiLopHocDAO.getAllLoaiLopHoc();
+        List<ScheduleTrainerDTO> listScheduleTrainer = new ArrayList();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+
+        listScheduleTrainer = scheduleDAO.readScheduleTrainer();
+        SlotDAO slotDAO = new SlotDAO();
+
+        List<SlotDTO> listSlot = slotDAO.readSlot();
+        request.setAttribute("listSlot", listSlot);
+
+        request.setAttribute("listLoaiLopHoc", listLoaiLopHoc);
+
+        String weekRange = request.getParameter("weekRange");
+        LocalDate today = LocalDate.now();
+        if (weekRange != null) {
+
+            LocalDate localDate = LocalDate.parse(weekRange);
+            today = localDate; // Get the current date
+        }
+        String loaiLopHoc = "all";
+        if (request.getParameter("loaiLopHoc") != null) {
+            loaiLopHoc = request.getParameter("loaiLopHoc");
+        }
+        
+
+        if (!loaiLopHoc.equals("all")) {
+            listScheduleTrainer = scheduleDAO.readScheduleTrainerWithType(loaiLopHoc);
+        }
+        request.setAttribute("listScheduleTrainer", listScheduleTrainer);
+        LocalDate monday = today.with(DayOfWeek.MONDAY);
+
+        List<LocalDate> days = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            String a = (monday.plusDays(i).toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate datea = LocalDate.parse(a, formatter);
+            days.add(datea);
+
+        }
+        request.setAttribute("listDate", days);
+
+    }
+
+    public void datePublic(HttpServletRequest request, HttpServletResponse response) {
+        LocalDate currentDateNow = LocalDate.now();
+        LocalDate startDateOfMonth = currentDateNow.withDayOfMonth(1);
+        LocalDate startDate = startDateOfMonth;
+        LocalDate endDate = startDate.plusMonths(3).minusDays(1);
+
+        List<DateStartAndDateEnd> weekRanges = new ArrayList<>();
+
+        LocalDate currentDate = startDate;
+        while (currentDate.isBefore(endDate) || currentDate.isEqual(endDate)) {
+            DateStartAndDateEnd date = new DateStartAndDateEnd();
+            LocalDate weekStart = currentDate.with(DayOfWeek.MONDAY);
+
+            LocalDate weekEnd = currentDate.with(DayOfWeek.SUNDAY);
+
+            String formattedStartDate = weekStart.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String formattedEndDate = weekEnd.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            date.setDateStart(weekStart);
+            date.setDateEnd(weekEnd);
+            date.setFormattedStartDate(formattedStartDate);
+            date.setFormattedEndDate(formattedEndDate);
+            weekRanges.add(date);
+
+            currentDate = currentDate.plusWeeks(1);
+        }
+
+        request.setAttribute("weekRanges", weekRanges);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
