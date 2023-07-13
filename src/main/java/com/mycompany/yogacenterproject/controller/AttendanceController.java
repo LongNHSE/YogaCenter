@@ -63,7 +63,7 @@ public class AttendanceController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
             rd.forward(request, response);
         } else if (currentDate.isAfter(DateUtils.asLocalDate(ngayHoc))) {
-            String popupMessage = "You can't take attendance because date is exspire.";
+            String popupMessage = "You can't take attendance because date is expired.";
             request.setAttribute("popupMessage", popupMessage);
             RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
             rd.forward(request, response);
