@@ -633,14 +633,30 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-
-                                    
+                                    <c:set var="voucher" value="${voucherDTO}"/>
+                                    <c:if test="${voucher!=null}" >
+                                        <div>
+                                            <input type="text" name="voucherID" value="${voucher.voucherID}" />
+                                            
+                                        </div>
+                                    </c:if>
+                                    <div>
+                                        <input type="text" name="voucher" value="${voucher}" />
+                                        <button class="button" type="submit" name="action" value="CheckVoucher">
+                                            Check
+                                        </button>
+                                    </div>
+                                    <div style="color: red; font-weight: BOLD">
+                                        <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
+                                        <% if (voucherMessage != null) {%> <%= voucherMessage%> <% }%>
+                                    </div>
 
 
                                     <div class="Custom">
                                         <button class="button" type="submit" name="action" value="Register">
                                             Register now!
                                         </button>
+
                                         <% String cid = (String) request.getAttribute("cid");%>
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                         <input type="hidden" name="returnID" value="<%=cid%>" />

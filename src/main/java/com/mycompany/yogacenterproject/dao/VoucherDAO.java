@@ -60,6 +60,28 @@ public class VoucherDAO {
         }
         return null;
     }
+    public VoucherDTO searchVoucherByName(String voucherName) throws SQLException {
+        VoucherDTO voucherDTO = new VoucherDTO();
+        String sql = "select * from [dbo].[Voucher]\n"
+                + "where voucherName = ?";
+
+        try (PreparedStatement ps = DBUtils.getConnection().prepareStatement(sql);) {
+            ps.setString(1, voucherName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                voucherDTO.setVoucherID(rs.getString("voucherID"));
+                voucherDTO.setVoucherName(rs.getString("voucherName"));
+                voucherDTO.setMultiplier(rs.getInt("multiplier"));
+                voucherDTO.setUsageLimit(rs.getInt("usageLimit"));
+                voucherDTO.setUsageLimitPerUser(rs.getInt("usageLimitPerUser"));
+                voucherDTO.setTotalUsage(rs.getInt("totalUsage"));
+                return voucherDTO;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
 
     public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
         String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier],[usageLimit],[usageLimitPerUser])\n"

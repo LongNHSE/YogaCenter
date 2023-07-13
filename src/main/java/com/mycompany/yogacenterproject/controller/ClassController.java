@@ -148,9 +148,27 @@ public class ClassController extends HttpServlet {
                 UpdateLoaiLopHoc(request, response);
 
                 response.sendRedirect("./AdminController?action=listClassType");
+            } else if (action.equals("CheckVoucher")) {
+                checkVoucher(request, response);
             }
         } catch (Exception e) {
 
+        }
+
+    }
+
+    public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String voucher = request.getParameter("voucher");
+        VoucherDTO voucherDTO = new VoucherDTO();
+        VoucherDAO voucherDAO = new VoucherDAO();
+        if (voucherDAO.checkVoucherName(voucher)) {
+            voucherDTO = voucherDAO.searchVoucherByName(voucher);
+            request.setAttribute("voucherDTO", voucherDTO);
+            showDetails(request, response);
+        } else {
+            String voucherMessage = "Voucher is not exist";
+            request.setAttribute("voucherMessage", voucherMessage);
+            showDetails(request, response);
         }
 
     }
@@ -480,9 +498,11 @@ public class ClassController extends HttpServlet {
                 VoucherDTO voucherDTO = new VoucherDTO();
 
                 String errorMessage = "";
-
+                String voucherID = null;
                 String selectedValue = request.getParameter("maSlot");
-                String voucherID = request.getParameter("voucherID");
+                if (request.getParameter("voucher") != null) {
+                    voucherID = request.getParameter("voucherID");
+                }
 
                 voucherDTO = voucherDAO.searchVoucherByID(voucherID);
                 String verifiedVoucherID = "";
@@ -541,18 +561,18 @@ public class ClassController extends HttpServlet {
                         applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()));
                         assignClassAfterPayment(request, response, maLopHoc);
                     }
-                }else {
-                        request.setAttribute("error", errorMessage);
-                        showDetails(request, response);
-                    }
                 } else {
-
-                    String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
-                    session.setAttribute("redirectUrl", url);
-                    RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
-
-                    rd.forward(request, response);
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
                 }
+            } else {
+
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
+
+                rd.forward(request, response);
+            }
         } catch (PayPalRESTException | IOException | SQLException | ServletException e) {
         }
     }
@@ -653,7 +673,7 @@ public class ClassController extends HttpServlet {
                 voucherDAO.increaseTotalUsageCount(voucherID);
             }
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
-            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV(),maLopHoc));
+            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV(), maLopHoc));
             sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
             String popupMessage = maLopHoc;
             request.setAttribute("popupMessage", popupMessage);
