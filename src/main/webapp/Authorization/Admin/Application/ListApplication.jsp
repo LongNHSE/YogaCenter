@@ -207,8 +207,7 @@
                             </c:choose>
 
 
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"   "> </td>
-
+                            
 
 
                             <input type="hidden" name="maApplication" value="${application.maDon}" >
