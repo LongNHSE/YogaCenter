@@ -732,3 +732,8 @@ textarea.input-style:focus {
     color: #9F2B68;
     letter-spacing: 3px;
 }
+.blog-create-title{
+   color: #9F2B68;
+    letter-spacing: 3px;
+    text-align: center;
+}

@@ -26,8 +26,9 @@
         </div>
 
         <div class="container">
+            <h1 class="blog-create-title text-center">Get Creative</h1>
             <div class="row align-items-start">
-                <div class="col-lg-8 m-15px-tb">
+                <div class="col-lg-8 m-15px-tb" style="margin: auto">
                     <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
                         <article class="article">
 
@@ -66,34 +67,7 @@
 
                         </article>
                     </form>
-                </div>
-                                <div class="col-lg-4 m-15px-tb blog-aside">
-                                 <div class="widget widget-latest-post">
-                                     <div class="widget-title">
-                                         <h3>Latest Post</h3>
-                                     </div>
-                                     <div class="widget-body">
-                                         <c:forEach items="${requestScope.blogLatest}" var="blog">
-                                             <div class="latest-post-aside media">
-                                                 <div class="lpa-left media-body">
-                                                     <div class="lpa-title">
-                                                         <h5><a href="">${blog.getTitle()}</a></h5>
-                                                     </div>
-                                                     <div class="lpa-meta">
-                                                         <a class="name" href="#">
-                                                             ${blog.maHV}
-                                                         </a>
-                                                         <a class="date" href="#">
-                                                             ${blog.date}
-                                                         </a>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </c:forEach>            
-
-                                     </div>
-                                 </div>
-                             </div>                     
+                </div>                  
 
             </div>
 
