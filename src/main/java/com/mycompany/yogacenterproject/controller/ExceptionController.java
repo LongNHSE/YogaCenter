@@ -88,7 +88,7 @@ public class ExceptionController extends HttpServlet {
         }
     }
 
-    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
 
         TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
