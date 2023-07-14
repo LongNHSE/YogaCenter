@@ -19,7 +19,6 @@
                           imgElement.className = 'img-thumbnail';
                           imgElement.src = imgData;
                           imgElement.onload = function () {
-
                           };
 
                           var deleteButton = document.createElement('button');

@@ -28,8 +28,7 @@
                                 <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
                             </div>
                             <div class="article-title">
-                                <h6><a href="#">Lifestyle</a></h6>
-                                <h2 class="header-ken">${blogDetails.title}</h2>
+                                <h2 class="">${blogDetails.title}</h2>
                                 <div class="media">
                                     <div class="avatar">
                                         <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
@@ -41,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="article-content">
-                                <p style="color:#545554; font-size: 20px">${blogDetails.content}</p>
+                                <p style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</p>
                             </div>
                             <!--        <div class="nav tag-cloud">
                                     <a href="#">Design</a>

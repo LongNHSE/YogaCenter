@@ -88,7 +88,7 @@ public class ExceptionController extends HttpServlet {
         }
     }
 
-    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
 
         TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
@@ -120,6 +120,7 @@ public class ExceptionController extends HttpServlet {
             applicationDAO.create(applicationDTO);
             String popupMessage = "The request has been sended successfully. Please check your mail for your response";
             request.setAttribute("popupMessageSuccessful", popupMessage);
+            EmailController.requestOff(trainerDTO, lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()));
             RequestDispatcher rd = request.getRequestDispatcher("/TrainerController?action=classList");
             rd.forward(request, response);
         }
