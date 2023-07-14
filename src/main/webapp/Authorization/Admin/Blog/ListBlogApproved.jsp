@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */
@@ -175,9 +175,9 @@
                         <tr class="Test">
 
 
-                            <th scope="col">ID Blog</th>
-                            <th scope="col">ID Trainee</th>
-                            <th scope="col">ID Trainer</th>
+                            <th scope="col">Blog's ID</th>
+                            <th scope="col">Trainee's ID</th>
+                            <th scope="col">Trainer's ID</th>
                             <th scope="col">Title</th>
                             <th scope="col">Date</th>
                             <th scope="col">Status</th>
@@ -195,8 +195,15 @@
                             <td>${blog.maHV} </td>
                             <td>${blog.maTrainer} </td>
                             <td>${blog.title} </td>
-                            <td>${blog.date} </td>
-                            <td>${blog.status} </td>
+                            <td style="text-align: right">${blog.date} </td>
+                            <c:choose>
+                                <c:when test="${blog.status == true}">
+                                    <td style="background-color: #3FFF00; text-align: center">Approved</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="background-color: red; text-align: center">Unapproved</td>
+                                </c:otherwise>
+                            </c:choose>
                             <td>
 
                                 <c:forEach var="listCate" items="${requestScope.listCate}" >

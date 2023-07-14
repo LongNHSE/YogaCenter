@@ -190,15 +190,15 @@
                         <tr>
                             <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
                             <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHV()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                             <td><%= lopHocDTO.getMaTrainer()%> </td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
-                            <td><%= lopHocDTO.getNgayBatDau()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getNgayBatDau()%> </td>
                             <% if (lopHocDTO.isStatus() == true) {%>
-                            <td style="background-color: #3FFF00"><%= lopHocDTO.isStatus()%> </td> <%} else {%>
-                            <td style="background-color: red"><%= lopHocDTO.isStatus()%> </td> <% }%>
+                            <td style="background-color: #3FFF00; text-align: center">Active </td> <%} else {%>
+                            <td style="background-color: red; text-align: center">Inactive </td> <% }%>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Class Detail"name="action" ></td>
 
                             <td >  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>

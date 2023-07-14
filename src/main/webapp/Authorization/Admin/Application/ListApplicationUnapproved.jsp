@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */

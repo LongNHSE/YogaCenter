@@ -262,7 +262,7 @@
 
 
 
-                            <td>
+                            <td style="text-align: center">
 
                                 <% if (hasSchedule) {
                                         for (String x : listClassTemp) {%>
@@ -276,10 +276,7 @@
                                 <% for (TrainerDTO trainer : listClassTrainer) {%>
                                 <div class  
                                      ="bg-green" style="text-align: center; margin-bottom: 10px">
-                                    <span 
-                                        class  
-
-                                        =" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"> <%= trainer.getMaLopHoc()%><br><%=trainer.getMaTrainer()%></span>
+                                    <%= trainer.getMaLopHoc()%><br><%=trainer.getMaTrainer()%>
                                 </div>
                                 
                                 <% }

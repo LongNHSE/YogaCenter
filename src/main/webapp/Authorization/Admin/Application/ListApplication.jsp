@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */
@@ -194,10 +194,17 @@
                             <td>${application.maLopHoc} </td>
                             <td>${application.maHV} </td>
                             <td>${application.maTrainer} </td>
-                            <td>${application.applicationType}</td>
+                            <td style="text-align: center">${application.applicationType}</td>
                             <td>${application.noiDung} </td>
-                            <td>${application.date} </td>
-                            <td>${application.status} </td>
+                            <td style="text-align: right">${application.date} </td>
+                            <c:choose>
+                                <c:when test="${application.status != Unapproved}">
+                                    <td style="background-color: #3FFF00; text-align: center">${application.status}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="background-color: red; text-align: center">Unapproved</td>
+                                </c:otherwise>
+                            </c:choose>
 
 
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"   "> </td>

@@ -172,7 +172,7 @@
                                 <input class="weekday" type="hidden"  name="slot" id="weekday"
                                        data-slot="<%=slot%>" value="<%=slot%>" 
                                        /> 
-                                <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
+                                <td style="align-content:  center" class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></td>
                                     <% for (int day = 0; day < 7; day++) {
                                             String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
@@ -191,21 +191,19 @@
                                             }
 
                                     %>
-
-
-
+                                    
+                                    
                                 <td>
-
                                     <% if (!phongTrong) {%>
-                                    <div style="align: center; background-color: yellow; ">
-                                        <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=message%></span>
+                                    <div style="text-align: center; background-color: yellow; ">
+                                        <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="display: inline-block; text-align: center;"><%=message%></span>
                                     </div>
 
                                     <% } else {%>
 
                                     <div onchange="checkSlot()">
-                                        <div style="align: center; background-color: greenyellow; ">
-                                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="text-align: center;"><%=message%></span>
+                                        <div style="text-align: center; background-color: greenyellow; ">
+                                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="display: inline-block; text-align: center;"><%=message%></span>
                                         </div>
                                         <input class="weekday" type="checkbox" name="weekday" id="weekday"
                                                data-slot="<%=slot%>" data-day="<%=dayOfWeek%>" value="<%=dayOfWeek%>"
