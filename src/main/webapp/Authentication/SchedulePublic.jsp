@@ -196,10 +196,10 @@
                                 <% if (hasTrainerSchedule) {%>
                                 <% for (LopHocDTO lopHoc : listClassDTO) {%>
                                 <a href="<%=url%>/ClassController?action=showDetails&returnID=<%=lopHoc.getMaLoaiLopHoc()%>">
-                                    <div class="class-code lop-code" data-maLopHoc="<%= lopHoc.getMaLopHoc()%>">
+                                     <div class="class-code lop-code" data-maLopHoc="<%= lopHoc.getMaLopHoc()%>">
 
-                                        <div class="class-details" style="text-align: center; margin-bottom: 10px; ">
-                                            <span class="padding-5px-tb padding-15px-lr border-radius-5   font-size16 xs-font-size13"><%= lopHoc.getLoaiLopHocDTO().getTenLoaiLopHoc()%><br><%= lopHoc.getMaLopHoc()%></span>
+                                        <div class="bg-green class-details" style="text-align: center; margin-bottom: 10px; border: solid 0.1px">
+                                            <span class="padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16 xs-font-size13"><%= lopHoc.getLoaiLopHocDTO().getTenLoaiLopHoc()%><br><%= lopHoc.getMaLopHoc()%></span>
                                         </div>
                                     </div>
                                 </a>
