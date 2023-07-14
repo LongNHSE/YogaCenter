@@ -183,10 +183,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 .article {
     box-shadow: 0 0 30px rgba(31, 45, 61, 0.125);
-    border-radius: 5px;
+    border: 2px solid #8b57fc;
+    border-radius: 50px;
     overflow: hidden;
     background: #ffffff;
-    padding: 15px;
+    padding: 21px;
     margin: 15px 0 30px;
 }
 .article .article-title {
