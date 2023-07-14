@@ -26,3 +26,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     letter-spacing: 3px;
     text-align: center
 }
+class-code:hover{
+    background: rgb(106, 90, 249);
+    color: #ffffff;
+    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+}

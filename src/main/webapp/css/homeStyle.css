@@ -113,8 +113,10 @@ a, .btn {
 
 #myCarousel .carousel-indicators .active {
     background-color: #ff47d9;
+     border-radius: 50%;
 }
 #myCarousel .carousel-indicators li {
+    border-radius: 50%;
     width: 50px;
     height: 50px;
     background-color: #8b57fc;
