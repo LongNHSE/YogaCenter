@@ -281,7 +281,7 @@
 
                                         =" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"> <%= trainer.getMaLopHoc()%><br><%=trainer.getMaTrainer()%></span>
                                 </div>
-
+                                
                                 <% }
                                     }%> 
 

@@ -175,11 +175,11 @@
                         <tr class="Test">
 
 
-                            <th scope="col">ID Class Type</th>
-                            <th scope="col">Name Class Type</th>
-                            <th scope="col">Value</th>
-                            <th scope="col">ID Description</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Class' Type ID</th>
+                            <th scope="col">Class' Type Name</th>
+                            <th scope="col">Base Price</th>
+                            <th scope="col">Description ID</th>
+                            <th scope="col">Availability</th>
 
 
                         </tr>

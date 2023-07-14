@@ -18,10 +18,6 @@
         <title>JSP Page</title>
     </head>
     <style>
-
-
-
-
         .Table{
             position: relative;
 
@@ -42,6 +38,7 @@
 
         .Test th {
             background-color: #97EA5D; /* Set background color for table headers */
+            text-align: center;     /*Keep the context at the center*/
         }
 
         tr:nth-child(even) {
@@ -62,19 +59,21 @@
                     <tr class="Test">
                         <!--trong phan log in phai them set user de co the goi ra trong session Scope-->
                         <th >No</td> 
-                        <th >Gia Tien</td>
-                        <th >Ngay Thanh Toan</td>
+                        <th >Class ID</td>
+                        <th >Tuition</td>
+                        <th >Settlement Date</td>
                             <!--Consider co them ten lop hoc-->
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="row" items="${sessionScope.listHoaDon}" varStatus="counter"> 
                         <tr>
-                            <th>${counter.count}</td>
-                            <td class="price-container">
+                            <th style="text-align:center">${counter.count}</td>
+                            <td style="text-align:left">${row.maLopHoc}</td>
+                            <td class="price-container" style="text-align:right">
                     <fmt:formatNumber value="${row.giaTien}" pattern="#,##0 VNĐ" var="formattedGiaTien" />
                     ${formattedGiaTien}</td>
-                    <td>${row.ngayThanhToan}</td>
+                    <td style="text-align:right">${row.ngayThanhToan}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

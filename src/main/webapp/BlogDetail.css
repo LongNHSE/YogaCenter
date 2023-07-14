@@ -532,6 +532,15 @@ img {
 #comments .media-detail li:last-child {
     padding-right:0;
 }
+<<<<<<< HEAD
+=======
+
+#comments .media-detail li i {
+    color:#666666;
+    font-size:15px;
+    margin-right:10px;
+}
+>>>>>>> a91f3bf00c9a2c8f27d66acc2cdd704fd898d70b
 
 #comments .media-detail li i {
     color:#666666;

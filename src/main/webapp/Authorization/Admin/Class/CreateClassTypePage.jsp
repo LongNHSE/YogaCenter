@@ -47,7 +47,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="LoaiLopHoc" class="form-control form-control-lg" name="tenLoaiLopHoc" required="required"/>
-                                                <label class="form-label" for="LoaiLopHoc">Name of Class Type</label>
+                                                <label class="form-label" for="LoaiLopHoc">Class' Type</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -62,7 +62,7 @@
                                                 <div class="input-container">
                                                     <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1">
                                                     <span class="currency">x1.000.000VND</span>
-                                                    <label class="form-label" for="hocPhi">Fee</label>
+                                                    <label class="form-label" for="hocPhi">Participation Fee</label>
                                                 </div>
                                             </div>
 
@@ -90,7 +90,7 @@
                                         <div class="col-md-6 mb-4">
                                             <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
-                                            <label class="form-label" for="Thumbnail">Thumbnail</label>
+                                            <label class="form-label" for="Thumbnail">Preview Image</label>
                                             <div id="previewThumb" class="previewThumb"></div>
                                         </div>
                                     </div>

@@ -172,95 +172,71 @@
         }</style>
         <%
             List<VoucherDTO> listVouchers = (List<VoucherDTO>) request.getAttribute("listVouchers");
-            int count = (int) request.getAttribute("count");
-            int pageCount = (int) request.getAttribute("pageCount");
+
         %>
 
     <body>
-        
-            <h1>nigger</h1>
 
-            <div class="Table">
-                <table class="table">
+        <h1>nigger</h1>
 
-                    <thead>
-                        <tr>
-                            <th scope="col">Voucher ID</th>
-                            <th scope="col">Voucher Name</th>
-                            <th scope="col">Discount Value</th>
-                            <th scope="col">Global Usage Limit</th>
-                            <th scope="col">Individual Usage Limit</th>
-                            <th scope="col">Total Used</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (listVouchers != null) {
-                                for (VoucherDTO list : listVouchers) {
-                        %>
-                    <form action="<%=url%>/VoucherController">
-                        <tr>
-                            <th scope="row"><%= list.getVoucherID()%></th>
-                            <td><%= list.getVoucherName()%> </td>
-                            <td><%= list.getMultiplier()%> </td>
-                            <td><%= list.getUsageLimit()%> </td>
-                            <td><%= list.getUsageLimitPerUser()%> </td>
-                            <td><%= list.getTotalUsage()%> </td>
+        <div class="Table">
+            <table class="table">
 
-
-
-                            
-
-                        </tr>
-                    </form>
-                    
+                <thead>
                     <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <th scope="col">Voucher ID</th>
+                        <th scope="col">Voucher Name</th>
+                        <th scope="col">Discount Value</th>
+                        <th scope="col">Global Usage Limit</th>
+                        <th scope="col">Individual Usage Limit</th>
+                        <th scope="col">Total Used</th>
                     </tr>
+                </thead>
+                <tbody>
+                    <% if (listVouchers != null) {
+                            for (VoucherDTO list : listVouchers) {
+                    %>
+                <form action="<%=url%>/VoucherController">
+                    <tr>
+                        <th scope="row"><%= list.getVoucherID()%></th>
+                        <td><%= list.getVoucherName()%> </td>
+                        <td><%= list.getMultiplier()%> </td>
+                        <td><%= list.getUsageLimit()%> </td>
+                        <td><%= list.getUsageLimitPerUser()%> </td>
+                        <td><%= list.getTotalUsage()%> </td>
 
-                    </tbody>
-                    
-                </table>
-            </div>
 
+
+                        <%}
+                            }%>
+
+                    </tr>
+                </form>
+
+
+                </tbody>
+
+            </table>
         </div>
 
-        <div class="center">
-            <div class="pagination">
-
-                <div class="pagination">
-                    <a href="#">&laquo;</a>
+    </div>
 
 
 
 
-                    
-                    <a href="#">&raquo;</a>
-                </div>
-            </div>
-        </div>
+    <script>
+        $(document).ready(function () {
+            $('.sub-menu ul#active').show();
+            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
 
+        $('.sub-menu ul').hide();
 
-        <script>
-            $(document).ready(function () {
-                $('.sub-menu ul#active').show();
-                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
 
-            $('.sub-menu ul').hide();
-
-            $(".sub-menu a").click(function () {
-                $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
-        </script>
-
-    </body>
+</body>
 </html>
