@@ -203,8 +203,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     border-bottom: 1px solid #fc5356;
 }
 .article .article-title h2 {
-    color: #20247b;
+    color: #5D3FD3;
     font-weight: 600;
+    font-size: 50px;
+    line-height:50px
 }
 .article .article-title .media {
     padding-top: 15px;
@@ -537,3 +539,14 @@ img {
     margin-right:10px;
 }
 
+
+#comments .media-detail li i {
+    color:#666666;
+    font-size:15px;
+    margin-right:10px;
+}
+.blogContent{
+    font-size: 20px;
+    line-height: 22.5px;
+    text-align: left;
+}

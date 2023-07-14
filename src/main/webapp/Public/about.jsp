@@ -19,7 +19,7 @@
         <div class="about_section layout_padding">
             <div class="container">
                 <div class="about_main">
-                    <h1 class="about_text">About us </h1>
+                    <h1 class="about_text"> 💪 About us 🧘‍♂️</h1>
                     <p class="ipsum_text">Yoga San is a leading yoga center with a team of professional instructors and a variety of courses suitable for all individuals. We focus on the holistic development of our students, from cultivating physical flexibility to attaining inner tranquility of the soul.</p>
                     <p class="ipsum_text">With our dedicated and high-standard teaching methodology, we guarantee you a peaceful and enriching yoga experience at Yoga San. Come and explore the world of yoga with us, and unleash your maximum potential.</p>
 
