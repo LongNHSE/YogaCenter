@@ -546,10 +546,10 @@ public class ClassController extends HttpServlet {
 //                    PaymentServices paymentServices = new PaymentServices();
 //                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
 //                    response.sendRedirect(approvalLink);
-//                    if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
-//                        error = false;
-//                        errorMessage += "You already have registered this class.";
-//                    }
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
                 //check availability before registering
                 if (error) {
                     if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
