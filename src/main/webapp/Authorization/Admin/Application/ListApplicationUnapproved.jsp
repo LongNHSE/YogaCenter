@@ -200,8 +200,8 @@
                             <td>${application.status} </td>
 
 
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"   "> </td>
-
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"> </td>
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Unapprove"name="action"   > </td>
 
                             <input type="hidden" name="maLopHoc" value="${application.maLopHoc}" >
                             <input type="hidden" name="maApplication" value="${application.maDon}" >

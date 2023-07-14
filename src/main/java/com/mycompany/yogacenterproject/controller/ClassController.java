@@ -807,8 +807,8 @@ public class ClassController extends HttpServlet {
             DayAndSlot dayAndSlot = new DayAndSlot();
             String currentSlot = listLopHocDTO.get(i).getMaSlot();
             List<String> thu = listLopHocDTO.get(i).getThuList();
-            if (i != 0) {
-                for (int j = 1; j < i; j++) {
+            if (i < 0) {
+                for (int j = 1; j <= i; j++) {
                     if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
                         if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
 //                            System.out.println(currentSlot + thu);
@@ -893,13 +893,14 @@ public class ClassController extends HttpServlet {
 
     public void updateClass(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String classID = request.getParameter("maLopHoc");
-
+        TrainerDAO trainerDAO = new TrainerDAO();
         String maRoom = request.getParameter("listPhongHocDTO");
         int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
         String listTrainer = request.getParameter("listTrainer");
 
         LopHocDAO lopHocDAO = new LopHocDAO();
         LopHocDTO lopHocDTO = lopHocDAO.searchClassById(classID);
+        trainerDAO.updateTrainerStatus(trainerDAO.searchTrainerByClassID(classID).getMaTrainer(), true);
         lopHocDTO.setMaRoom(maRoom);
         lopHocDTO.setMaTrainer(listTrainer);
         lopHocDTO.setSoLuongHV(soLuongHV);
