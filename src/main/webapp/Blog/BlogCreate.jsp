@@ -24,8 +24,8 @@
             Please assign information!!!
             <div id="progressBar" class="progress-bar"></div>
         </div>
-
-        <div class="container">
+        <div class="background-image-container">
+        <div class="container ">
             <h1 class="blog-create-title text-center">Get Creative</h1>
             <div class="row align-items-start">
                 <div class="col-lg-8 m-15px-tb" style="margin: auto">
@@ -72,10 +72,15 @@
             </div>
 
         </div>     
-
+</div>
                          </div>
 
                      </div>     
     </body>
     <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+     <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('contentInput');
+        </script>
+
 </html>
