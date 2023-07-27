@@ -32,8 +32,8 @@
         <div class="container">
             <div class="box">
                 <div class="form sign_in">
-                    <h3>Welcome back</h3>
-                    <span>Please Enter Your Credentials</span>
+                    <h3 class="welcome-form">Yoga San Welcome</h3>
+                    <span class="message-form">Log in to our system</span>
 
                     <form action="<%=url%>/LoginController/login" id="form_input" method="POST">
 
@@ -48,15 +48,16 @@
                                 id="password"
                                 />
                         </div>
-
-                        <div class="forgot">
-                            <a href="<%=url%>/Public/resetPass.jsp">Forgot your password?</a>
+                        <button class="btn bkg">Sign In</button>  
+                        <div class="signin-footer">
+                            <div class="admin-signin w-50 text-left">
+                                <a href="<%=url%>/Public/adminLogin.jsp">Sign in as an Admin</a>               
+                            </div>
+                            <div class="forget-psw forgot">
+                                <a href="<%=url%>/Public/resetPass.jsp">Forgot your password?</a>
+                            </div>                        
+                            <input type="hidden" id="thisField" name="action" value="login">                            
                         </div>
-
-                        <button class="btn bkg">Sign In</button>                      
-                        <input type="hidden" id="thisField" name="action" value="login">
-                        <br>
-                        <a href="<%=url%>/Public/adminLogin.jsp">Sign in as an Admin</a>
                     </form>
                     
                 </div>
@@ -64,21 +65,19 @@
                 <div class="form sign_up">
                     <h3>Sign Up</h3>
                     <span>or use your email for register</span>
-
-
                 </div>
                     
             </div>
 
             <div class="overlay">
-                <div class="page page_signIn">
+                <div class="page page_signIn ">
                     <h3>Sign up</h3>
                     <p>Create an account to Join the Community!</p>
 
 
 
 
-                    <a href="<%=url%>/Public/signup_1.jsp"><button class="btn bkg">Sign Up</button></a>
+                    <a href="<%=url%>/Public/signup_1.jsp"><button class="btn bkg  btn-signup">Sign Up</button></a>
 
 
                 </div>
