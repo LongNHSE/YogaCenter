@@ -135,6 +135,7 @@
                                     <c:if test="${voucher!=null}" >
                                         <div>
                                             <input type="hidden" name="voucherID" value="${voucher.voucherID}" />
+
                                         </div>
                                     </c:if>
                                     <div class="voucher-check">
@@ -161,11 +162,13 @@
                                     <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
                                 </div>  
                                 <div style="width: 357px;
+
                                      position: absolute;
-                                     margin-top: 10px;
-                                     right: 223px;
+                                     margin-top: 171px;
+                                     right: 293px;
                                      color: red;
-                                     font-weight: BOLD;">
+                                     font-weight: BOLD;
+                                     ">
 
                                     <% String errorMessage = (String) request.getAttribute("error");%>
                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -174,17 +177,7 @@
 
 
                             </div>
-                            <div style="width: 357px;
-                                 position: absolute;
-                                 margin-top: 10px;
-                                 right: 172px;
-                                 color: red;
-                                 font-weight: BOLD;">
 
-                                <% errorMessage = (String) request.getAttribute("error");%>
-                                <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
-
-                            </div>
                         </form>
 
                     </div>

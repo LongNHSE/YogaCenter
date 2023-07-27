@@ -56,6 +56,7 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -842,7 +843,10 @@ public class ClassController extends HttpServlet {
             }
 
         }
-        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        
+         Set<DayAndSlot> uniqueDayAndSlots = new TreeSet<>(new DayAndSlot.slotComparator());
+         uniqueDayAndSlots.addAll(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
 
         if (session.getAttribute("hocVienDTO") != null) {

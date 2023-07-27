@@ -87,7 +87,4 @@
                 config.disallowedContent = 'p';
             };       
         </script>
-
-
-
 </html>

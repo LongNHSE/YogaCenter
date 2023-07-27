@@ -72,6 +72,14 @@
         <servlet-name>ExceptionController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ExceptionController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewServlet1</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashBoardController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.DashBoardController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -139,6 +147,14 @@
     <servlet-mapping>
         <servlet-name>ExceptionController</servlet-name>
         <url-pattern>/ExceptionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet1</servlet-name>
+        <url-pattern>/NewServlet1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashBoardController</servlet-name>
+        <url-pattern>/DashBoardController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

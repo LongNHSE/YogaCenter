@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.google.gson.Gson;
 import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 
@@ -96,6 +97,9 @@ public class AdminController extends HttpServlet {
             }
 
         }
+    }
+    public void dashBoard(HttpServletRequest request, HttpServletResponse response){
+        Gson gson = new Gson();
     }
 
     public void ListClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

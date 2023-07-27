@@ -95,6 +95,7 @@ public class LoginController extends HttpServlet {
         boolean error = true;
         String errorMessageMail = "";
         HocVienDAO hocVienDAO = new HocVienDAO();
+        //Test Email
         if (hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "Email has already existed";
             error = false;
@@ -147,7 +148,7 @@ public class LoginController extends HttpServlet {
         String psw = request.getParameter("psw");
         String ho = request.getParameter("Ho");
         String ten = request.getParameter("Ten");
-
+        //TEST DAte
         try {
             dateOfBirth = Date.valueOf(request.getParameter("dateOfBirth"));
         } catch (Exception e) {

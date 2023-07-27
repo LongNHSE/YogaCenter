@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.google.gson.Gson;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
@@ -15,8 +16,11 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  *
@@ -385,10 +389,38 @@ public class LoaiLopHocDAO {
 
     }
 
+    ///RETURN MAP OF tenLoaiLopHoc and numberOfTrainees who register it
+    public HashMap<String, Integer> countTrainee() throws SQLException {
+        HashMap<String, Integer> counTrainee = new HashMap<>();
+
+        String sql = "SELECT loaiLopHoc.maLoaiLopHoc,loaiLopHoc.tenLoaiLopHoc, sum(lopHoc.soLuongHvHienTai) as 'numberOfTrainee'  from  lopHoc FULL OUTER JOIN loaiLopHoc on loaiLopHoc.maLoaiLopHoc = lopHoc.maLoaiLopHoc\n"
+                + "group by lophoc.maLoaiLopHoc, loaiLopHoc.maLoaiLopHoc,loaiLopHoc.tenLoaiLopHoc "
+                + "order by loaiLopHoc.maLoaiLopHoc";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+            int numberOfTrainees = rs.getInt("numberOfTrainee");
+            counTrainee.put(tenLoaiLopHoc, numberOfTrainees);
+
+        }
+        return counTrainee;
+    }
+
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
-        System.out.println(a.searchLoaiLopHoc("TYPE0001"));
+
+        HashMap<String, Integer> counTrainee = new HashMap();
+        System.out.println("asdsd");
+        counTrainee = a.countTrainee();
+        System.out.println(counTrainee);
+        Gson gson = new Gson();
+
+        String jsonString = gson.toJson(counTrainee);
+        System.out.println(jsonString);
+//        System.out.println(a.searchLoaiLopHoc("TYPE0001"));
 //        System.out.println(a.searchStatusLoaiLopHoc("TYPE0001"));
 //        a.changeStatus("TYPE0001", !a.searchStatusLoaiLopHoc("TYPE0001"));
 //        LopHocDTO lopHocDTO = new LopHocDTO();
@@ -406,7 +438,6 @@ public class LoaiLopHocDAO {
 //        }
 //          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
 //          System.out.println(DTO.toString());
-
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
