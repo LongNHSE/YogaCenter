@@ -159,10 +159,19 @@ public class ClassController extends HttpServlet {
 
     public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String voucher = request.getParameter("voucher");
+       
         VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
+        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         if (voucherDAO.checkVoucherName(voucher)) {
+             String loaiLopHoc = request.getParameter("maLoaiLopHoc");
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
+            double currentPrice = 
+                    Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
+            
+            currentPrice = currentPrice* (100-10)/100;
+            request.setAttribute("currentPrice", currentPrice);
             request.setAttribute("voucherDTO", voucherDTO);
             showDetails(request, response);
         } else {

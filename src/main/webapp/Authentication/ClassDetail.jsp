@@ -107,6 +107,12 @@
                         <p class="price-container text-right">
                             <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
                             ${formattedHocPhi}
+
+
+                            <c:set var="currentPrice" value="${currentPrice}"/>
+                            <c:if test="${currentPrice!=null}" >
+                                ${currentPrice}
+                            </c:if>
                         </p>
                         <hr class="infor-line"/>
 
@@ -137,7 +143,7 @@
                                             Check
                                         </button>
                                     </div>
-                
+
 
 
                                     <div class="Custom">
@@ -150,10 +156,10 @@
                                         <input type="hidden" name="returnID" value="<%=cid%>" />
                                     </div>                
                                 </div>
-                                    <div class="voucher-note">
-                                            <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
-                                            <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
-                                    </div>  
+                                <div class="voucher-note">
+                                    <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
+                                    <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
+                                </div>  
                                 <div style="width: 357px;
                                      position: absolute;
                                      margin-top: 10px;
@@ -184,9 +190,9 @@
                     </div>
                 </div>
                 <c:set var="descriptionDTO" value="${descriptionDTO}" />
-                   <div id="alertMessage" class="alert-message">
+                <div id="alertMessage" class="alert-message">
 
-                   </div>
+                </div>
             </div>
 
             <div class="Description product-content product-wrap clearfix product-deatil">
@@ -197,7 +203,6 @@
                     ${descriptionDTO.content}
                 </div>
             </div>
-
 
 
         </div>
