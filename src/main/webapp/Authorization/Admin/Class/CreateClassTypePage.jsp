@@ -28,45 +28,9 @@
         <title>Create Class Type</title>
     </head>
     <body>
-
         <div class="Controller">
             <div class="wrapper">
-                <nav class='animated bounceInDown bg-dark'>
-                    <ul>
-                        <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                        <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                            <ul id="active">
-                                <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                                <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                                <li id="active-element"><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                                <li><a href='#settings'>Submit a Ticket</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href='<%=url%>/Authorization/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href="">Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
-                    </ul>
-                </nav>
+                <%@include file="../NavComponents.jsp" %>
             </div>
 
             <div class="container py-5 h-100">
@@ -83,7 +47,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="LoaiLopHoc" class="form-control form-control-lg" name="tenLoaiLopHoc" required="required"/>
-                                                <label class="form-label" for="LoaiLopHoc">Ten Loai Lop Hoc</label>
+                                                <label class="form-label" for="LoaiLopHoc">Class' Type</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -96,9 +60,9 @@
 
                                             <div class="form-outline">
                                                 <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.5">
+                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1">
                                                     <span class="currency">x1.000.000VND</span>
-                                                    <label class="form-label" for="hocPhi">Hoc Phi</label>
+                                                    <label class="form-label" for="hocPhi">Participation Fee</label>
                                                 </div>
                                             </div>
 
@@ -126,7 +90,7 @@
                                         <div class="col-md-6 mb-4">
                                             <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
-                                            <label class="form-label" for="Thumbnail">Thumbnail</label>
+                                            <label class="form-label" for="Thumbnail">Preview Image</label>
                                             <div id="previewThumb" class="previewThumb"></div>
                                         </div>
                                     </div>
@@ -240,6 +204,17 @@
                 reader.readAsDataURL(file);
             }
         }
+        const navMenu = document.querySelector("nav");
+
+        // Find the desired element and assign it the "active" id
+        const blogLiElement = navMenu.querySelector("#Class");
+        if (blogLiElement) {
+            const ulElement = blogLiElement.querySelector("ul");
+            if (ulElement) {
+                ulElement.id = "active";
+            }
+        }
+
         $(document).ready(function () {
             $('.sub-menu ul#active').show();
             $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");

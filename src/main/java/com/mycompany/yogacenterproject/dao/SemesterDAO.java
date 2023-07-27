@@ -13,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -87,6 +89,40 @@ public class SemesterDAO {
 
     }
 
+    public List<SemesterDTO> getAllSemester() {
+        List<SemesterDTO> listSemester = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Semester]  order by courses";
+        Date startDate = new Date();
+        Date endDate = new Date();
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                SemesterDTO semesterDTO = new SemesterDTO();
+                startDate = rs.getDate("startDate");
+                endDate = rs.getDate("endDate");
+
+                semesterDTO.setQuarterID(rs.getInt("quarterID"));
+                semesterDTO.setCourses(rs.getString("courses"));
+                semesterDTO.setStartDate(rs.getDate("startDate"));
+                semesterDTO.setEndDate(rs.getDate("endDate"));
+                //                System.out.println( (date.after(startDate) && date.before(endDate))|| date.equals(startDate));
+                //                System.out.println(startDate);
+                //                System.out.println(endDate);
+                listSemester.add(semesterDTO);
+            }
+            rs.close();
+            conn.close();
+            ps.close();
+            return listSemester;
+        } catch (SQLException e) {
+        }
+        return listSemester;
+    }
+
     public static void main(String[] args) {
         SemesterDAO semesterDAO = new SemesterDAO();
         LocalDate currentDate = LocalDate.now();
@@ -95,7 +131,7 @@ public class SemesterDAO {
         date = DateUtils.asDate(currentDate);
 //        System.out.println(currentDate);
 //        System.out.println(date);
-        System.out.println(semesterDAO.getCurrentSemester());
+        System.out.println(semesterDAO.getAllSemester());
     }
 
 }

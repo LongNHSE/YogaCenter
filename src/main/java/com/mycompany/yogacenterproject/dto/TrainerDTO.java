@@ -5,7 +5,10 @@
 package com.mycompany.yogacenterproject.dto;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 
 
 public class TrainerDTO {
@@ -172,6 +175,19 @@ private String gender;
 
     public void setMaLoaiTK(String maLoaiTK) {
         this.maLoaiTK = maLoaiTK;
+    }
+      public String getHocPhiWithDot() {
+        double hocPhi = getSalary();
+
+// Create a DecimalFormatSymbols instance for the default locale
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator('.');
+
+// Create a DecimalFormat instance with the desired pattern and symbols
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        decimalFormat.setDecimalSeparatorAlwaysShown(false);
+
+        return decimalFormat.format(hocPhi);
     }
     
 

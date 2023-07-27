@@ -164,6 +164,10 @@
                                     <span class="property-value"><%=lopHocDTO.getMaRoom()%></span>
                                 </li>
                                 <li>
+                                    <span class="property-name">Day: </span>
+                                    <span class="property-value"><%=lopHocDTO.printDays()%></span>
+                                </li>
+                                <li>
                                     <span class="property-name">Start date: </span>
                                     <span class="property-value"><%=lopHocDTO.getNgayBatDau()%></span>
                                 </li>

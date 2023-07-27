@@ -162,44 +162,7 @@
         %>
         <div class="Controller">
             <div class="wrapper">
-                <nav class='animated bounceInDown bg-dark'>
-                    <ul>
-                        <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                        <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                            <ul id="active">
-                                <li id="active-element"><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                                <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                                <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                                <li><a href='#settings'>Submit a Ticket</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href="">Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
-
-                    </ul>
-                </nav>
-            </div>
+                <%@include file="../NavComponents.jsp" %>            </div>
             <div class="Table">
                 <table class="table">
 
@@ -207,16 +170,14 @@
                         <tr class="Test">
 
 
-                            <th scope="col">Ma Lop Hoc</th>
-                            <th scope="col">Ma Loai Lop Hoc</th>
-                            <th scope="col">So Luong Hoc Vien</th>
-                            <th scope="col">So Luong Hoc Vien Hien Tai</th>
-                            <th scope="col">Ma Trainer</th>
-                            <th scope="col">Ma Phong</th>
-                            <th scope="col">Ma Slot</th>
-
-
-                            <th scope="col">Ngay bat dau</th>
+                            <th scope="col">Class' ID</th>
+                            <th scope="col">Type of Class</th>
+                            <th scope="col">Max No. of Attendees</th>
+                            <th scope="col">Current No. of Attendees</th>
+                            <th scope="col">Trainer In Charge</th>
+                            <th scope="col">Room's ID</th>
+                            <th scope="col">Slot's ID</th>
+                            <th scope="col">Initial Date</th>
                             <th scope="col">Status</th>
 
                         </tr>
@@ -229,15 +190,15 @@
                         <tr>
                             <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
                             <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHV()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                             <td><%= lopHocDTO.getMaTrainer()%> </td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
-                            <td><%= lopHocDTO.getNgayBatDau()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getNgayBatDau()%> </td>
                             <% if (lopHocDTO.isStatus() == true) {%>
-                            <td style="background-color: #3FFF00"><%= lopHocDTO.isStatus()%> </td> <%} else {%>
-                            <td style="background-color: red"><%= lopHocDTO.isStatus()%> </td> <% }%>
+                            <td style="background-color: #3FFF00; text-align: center">Active </td> <%} else {%>
+                            <td style="background-color: red; text-align: center">Inactive </td> <% }%>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Class Detail"name="action" ></td>
 
                             <td >  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
@@ -292,17 +253,28 @@
             </div>
         </div>
         <script>
-            $(document).ready(function () {
-                $('.sub-menu ul#active').show();
-                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+           const navMenu = document.querySelector("nav");
 
-            $('.sub-menu ul').hide();
+                // Find the desired element and assign it the "active" id
+                const blogLiElement = navMenu.querySelector("#Class");
+                if (blogLiElement) {
+                    const ulElement = blogLiElement.querySelector("ul");
+                    if (ulElement) {
+                        ulElement.id = "active";
+                    }
+                }
 
-            $(".sub-menu a").click(function () {
-                $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+                $(document).ready(function () {
+                    $('.sub-menu ul#active').show();
+                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                });
+
+                $('.sub-menu ul').hide();
+
+                $(".sub-menu a").click(function () {
+                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                });
         </script>
     </body>
 </html>

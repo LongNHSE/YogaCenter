@@ -142,42 +142,7 @@
     </head>
     <div class="Controller">
         <div class="wrapper">
-            <nav class='animated bounceInDown bg-dark'>
-                <ul>
-                    <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                    <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                        <ul id="active">
-                            <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                            <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                            <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                            <li  id="active-element"><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                            <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                            <li><a href='#settings'>Submit a Ticket</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                            <li><a href='<%=url%>/Authorization/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                            <li><a href="">Add Trainer</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
-                </ul>
-            </nav>
+          <%@include file="../NavComponents.jsp" %>
         </div>
         <div class="content">
 
@@ -297,7 +262,7 @@
 
 
 
-                            <td>
+                            <td style="text-align: center">
 
                                 <% if (hasSchedule) {
                                         for (String x : listClassTemp) {%>
@@ -311,12 +276,9 @@
                                 <% for (TrainerDTO trainer : listClassTrainer) {%>
                                 <div class  
                                      ="bg-green" style="text-align: center; margin-bottom: 10px">
-                                    <span 
-                                        class  
-
-                                        =" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16  xs-font-size13"> <%= trainer.getMaLopHoc()%><br><%=trainer.getMaTrainer()%></span>
+                                    <%= trainer.getMaLopHoc()%><br><%=trainer.getMaTrainer()%>
                                 </div>
-
+                                
                                 <% }
                                     }%> 
 
@@ -336,16 +298,28 @@
             </div>
         </div>
         <script>
-            $(document).ready(function () {
-                $('.sub-menu ul#active').show();
-                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
-            $('.sub-menu ul').hide();
+            const navMenu = document.querySelector("nav");
 
-            $(".sub-menu a").click(function () {
-                $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+                // Find the desired element and assign it the "active" id
+                const blogLiElement = navMenu.querySelector("#Class");
+                if (blogLiElement) {
+                    const ulElement = blogLiElement.querySelector("ul");
+                    if (ulElement) {
+                        ulElement.id = "active";
+                    }
+                }
+
+                $(document).ready(function () {
+                    $('.sub-menu ul#active').show();
+                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                });
+
+                $('.sub-menu ul').hide();
+
+                $(".sub-menu a").click(function () {
+                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                });
             //scroll slides on swipe for touch enabled devices
 
         </script>    

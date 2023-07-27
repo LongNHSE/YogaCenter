@@ -3,14 +3,16 @@
     Created on : Jun 23, 2023, 7:36:18 PM
     Author     : Oalskad
 --%>
+<%@page import="com.mycompany.yogacenterproject.dto.BlogDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,7 +31,10 @@
     <body>
 
         <style>
-
+            .container{
+                position: relative;
+                left: 1000px;
+            }
             .center {
                 text-align: center;
             }
@@ -156,49 +161,12 @@
             }</style>
 
         <%
-            List<LopHocDTO> listLopHocDTO = (List<LopHocDTO>) request.getAttribute("listLopHocDTO");
-            int count = (int) request.getAttribute("count");
-            int pageCount = (int) request.getAttribute("pageCount");
+            List<BlogDTO> listBlogDTO = (List<BlogDTO>) request.getAttribute("listBlogDTO");
         %>
         <div class="Controller">
             <div class="wrapper">
-                <nav class='animated bounceInDown bg-dark'>
-                    <ul>
-                        <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                        <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                            <ul id="active">
-                                <li id="active-element"><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                                <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                                <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                                <li><a href='#settings'>Submit a Ticket</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                            <ul>
-                                <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                                <li><a href="">Add Trainer</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
 
-                    </ul>
-                </nav>
+                <%@include file="../NavComponents.jsp" %>
             </div>
             <div class="Table">
                 <table class="table">
@@ -207,98 +175,96 @@
                         <tr class="Test">
 
 
-                            <th scope="col">Ma Lop Hoc</th>
-                            <th scope="col">Ma Loai Lop Hoc</th>
-                            <th scope="col">So Luong Hoc Vien</th>
-                            <th scope="col">So Luong Hoc Vien Hien Tai</th>
-                            <th scope="col">Ma Trainer</th>
-                            <th scope="col">Ma Phong</th>
-                            <th scope="col">Ma Slot</th>
-
-
-                            <th scope="col">Ngay bat dau</th>
+                            <th scope="col">Blog's ID</th>
+                            <th scope="col">Trainee's ID</th>
+                            <th scope="col">Trainer's ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Category</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <% if (listLopHocDTO != null) {
-                                for (LopHocDTO lopHocDTO : listLopHocDTO) {
-                        %>
-                    <form action="<%=url%>/ClassController" method="POST">
-                        <tr>
-                            <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
-                            <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHV()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
-                            <td><%= lopHocDTO.getMaTrainer()%> </td>
-                            <td><%= lopHocDTO.getMaRoom()%> </td>
-                            <td><%= lopHocDTO.getMaSlot()%> </td>
-                            <td><%= lopHocDTO.getNgayBatDau()%> </td>
-                            <% if (lopHocDTO.isStatus() == true) {%>
-                            <td style="background-color: #3FFF00"><%= lopHocDTO.isStatus()%> </td> <%} else {%>
-                            <td style="background-color: red"><%= lopHocDTO.isStatus()%> </td> <% }%>
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Class Detail"name="action" ></td>
 
-                            <td >  <input class="btn btn-outline-danger" type='submit'value="Update"name="action"  ></td>
+                        <c:forEach items="${listBlogDTO}" var="blog">
+                            <tr>
+                        <form action="<%=url%>/BlogAdminController" method="POST">
 
-                            <% if (lopHocDTO.isStatus() == false || lopHocDTO.getSoLuongHvHienTai() < 1) {%>
-                            <td >  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"    ></td> <%} else {%>
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"    disabled=""></td> <% }%>
+                            <th scope="row">${blog.maBlog}</th>
+                            <td>${blog.maHV} </td>
+                            <td>${blog.maTrainer} </td>
+                            <td>${blog.title} </td>
+                            <td style="text-align: right">${blog.date} </td>
+                            <c:choose>
+                                <c:when test="${blog.status == true}">
+                                    <td style="background-color: #3FFF00; text-align: center">Approved</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="background-color: red; text-align: center">Unapproved</td>
+                                </c:otherwise>
+                            </c:choose>
+                            <td style="text-align: center">
+                                <select name="cate" required class="cate">
+                                    <option style="text-align: center" value="">Please choose Category</option>
+                                    <c:forEach var="listCate" items="${requestScope.listCate}" >
+                                        <option value="${listCate.maCate}">${listCate.tenCate}</option>
+                                    </c:forEach>
+                                </select>
+                            </td> 
+
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Detail"name="action"   onclick="removeSelectRequired(this)"> </td>
+                            <td > <input class="btn btn-outline-danger" type='submit'value="Approve"name="action"    ></td> 
+                            <td > <input class="btn btn-outline-danger" type='submit' value="Delete" name="action" onclick="removeSelectRequired(this)" /></td> 
 
 
-                        <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >
-                    </form>
+                            <input type="hidden" name="maBlog" value="${blog.maBlog}" >
+                        </form>
+                        </tr>
+                    </c:forEach>       
 
-                    </tr>
 
-                    <% }
-                    } else {%>
-                    <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+
+
 
                     </tbody>
-                    <% }%>
+
                 </table>
             </div>      
         </div>
-        <div class="center">
-            <div class="pagination">
 
-                <div class="pagination">
-                    <a href="#">&laquo;</a>
-
-
-
-
-                    <% for (int i = 1; i <= count; i++) {%>
-                    <% if (i == pageCount) {%>
-                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>' class="active"><%=i%></a>
-                    <% } else {%>
-                    <a href='<%=url%>/AdminController?action=listLopHoc&page=<%=i%>'><%=i%></a>
-                    <% }
-                        }%>
-                    <a href="#">&raquo;</a>
-                </div>
-            </div>
-        </div>
         <script>
+            function removeSelectRequired(button) {
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = false;
+                }
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = true;
+                }
+            });
+
+
+            document.getElementsByClassName("cate").required = true;
+            const navMenu = document.querySelector("nav");
+            // Find the desired element and assign it the "active" id
+            const blogLiElement = navMenu.querySelector("#Blog");
+            if (blogLiElement) {
+                const ulElement = blogLiElement.querySelector("ul");
+                if (ulElement) {
+                    ulElement.id = "active";
+                }
+            }
+
             $(document).ready(function () {
                 $('.sub-menu ul#active').show();
                 $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
             });
-
             $('.sub-menu ul').hide();
-
             $(".sub-menu a").click(function () {
                 $(this).parent(".sub-menu").children("ul").slideToggle("100");
                 $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");

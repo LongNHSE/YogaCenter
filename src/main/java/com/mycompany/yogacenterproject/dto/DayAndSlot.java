@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dto;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,8 +69,6 @@ public class DayAndSlot {
         return "DayAndSlot{" + "day=" + day + ", slot=" + slot + ", timeStart=" + timeStart + ", timeEnd=" + timeEnd + '}';
     }
 
-   
-
     public String getSlot() {
         return slot;
     }
@@ -77,4 +76,20 @@ public class DayAndSlot {
     public void setSlot(String slot) {
         this.slot = slot;
     }
+public static class slotComparator implements Comparator<DayAndSlot>{
+
+        @Override
+        public int compare(DayAndSlot o1, DayAndSlot o2) {
+                int compareSlot=  o1.getSlot().compareTo(o2.getSlot());
+                if(compareSlot!= 0){
+                    return compareSlot;
+                }else{
+                    return o1.getDay().size() - o2.getDay().size();
+                }
+        }
+
+       
+
+    }
+    
 }

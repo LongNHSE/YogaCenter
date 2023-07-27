@@ -4,17 +4,22 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.google.gson.Gson;
+import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
+import com.mycompany.yogacenterproject.dao.LoaiLopHocDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
 import com.mycompany.yogacenterproject.dao.ScheduleDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
+import com.mycompany.yogacenterproject.dto.ApplicationDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
+import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
@@ -83,8 +88,28 @@ public class AdminController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/Schedule.jsp");
                 rd.forward(request, response);
 
+            } else if (action.equals("listClassType")) {
+                ListClassType(request, response);
+            } else if (action.equals("listApplicationApproved")) {
+                listApplicationApproved(request, response);
+            } else if (action.equals("listApplicationUnapproved")) {
+                listApplicationUnapproved(request, response);
             }
+
         }
+    }
+    public void dashBoard(HttpServletRequest request, HttpServletResponse response){
+        Gson gson = new Gson();
+    }
+
+    public void ListClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<LoaiLopHocDTO> listCate = new ArrayList<>();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        listCate = loaiLopHocDAO.getAllLoaiLopHoc();
+        request.setAttribute("listCate", listCate);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/ListClassType.jsp");
+        rd.forward(request, response);
+
     }
 
     public void listHocVienDTO(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -232,6 +257,24 @@ public class AdminController extends HttpServlet {
         }
 
         request.setAttribute("weekRanges", weekRanges);
+    }
+
+    public void listApplicationApproved(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        List<ApplicationDTO> listApplication = applicationDAO.getAllApplications();
+        request.setAttribute("listApplication", listApplication);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Application/ListApplication.jsp");
+        rd.forward(request, response);
+
+    }
+
+    public void listApplicationUnapproved(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        List<ApplicationDTO> listApplication = applicationDAO.getAllApplicationsUnapprove();
+        request.setAttribute("listApplication", listApplication);
+        RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Application/ListApplicationUnapproved.jsp");
+        rd.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

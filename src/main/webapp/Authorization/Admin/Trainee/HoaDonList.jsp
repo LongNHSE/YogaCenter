@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-             <meta charset="utf-8">
+        <meta charset="utf-8">
         <title>YogaCenter</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
@@ -140,37 +140,16 @@
         tr:hover {
             background-color: #e6e6e6; /* Set background color for hovered rows */
         }</style>
-    <%
-        List<HoaDonDTO> listHoaDon = (List<HoaDonDTO>) request.getAttribute("listHoaDon");
+        <%
+            List<HoaDonDTO> listHoaDon = (List<HoaDonDTO>) request.getAttribute("listHoaDon");
 
-    %>
+        %>
 
     <body>
         <div class="Controller">
 
             <div class="wrapper">
-                <nav class='animated bounceInDown bg-dark'>
-                    <ul>
-                        <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                        <li  class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                            <ul >
-                              <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                                <li ><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                                <li ><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                                <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                                <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                            </ul>
-                        </li>
-                        <li id="active" class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                            <ul id="active">
-                                <li id="active-element"><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                                <li><a href='#settings'>Submit a Ticket</a></li>
-                                <li><a href='#settings'>Network Status</a></li>
-                            </ul>
-                        </li>
-                        <li><a href='#message'>Logout</a></li>
-                    </ul>
-                </nav>
+                 <%@include file="../NavComponents.jsp" %>
             </div>
 
             <div class="Table">
@@ -199,7 +178,7 @@
                         </tr>
                     </form>
                     <% }
-                } else {%>
+                    } else {%>
                     <tr>
                         <th scope="row"></th>
                         <td></td>
@@ -216,7 +195,18 @@
                     <% }%>
                 </table>
             </div>
-            <script>  $(document).ready(function () {
+            <script>   const navMenu = document.querySelector("nav");
+
+                // Find the desired element and assign it the "active" id
+                const blogLiElement = navMenu.querySelector("#Trainee");
+                if (blogLiElement) {
+                    const ulElement = blogLiElement.querySelector("ul");
+                    if (ulElement) {
+                        ulElement.id = "active";
+                    }
+                }
+
+                $(document).ready(function () {
                     $('.sub-menu ul#active').show();
                     $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
                 });

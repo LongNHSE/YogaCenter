@@ -5,10 +5,12 @@
 package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
+import com.mycompany.yogacenterproject.util.DateUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -42,21 +44,37 @@ public class AttendanceController extends HttpServlet {
     }
 
     public void checkAttendance(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String classID = request.getParameter("maLopHoc");
+        LocalDate currentDate = LocalDate.now();
+        Date ngayHoc = Date.valueOf(request.getParameter("ngayHoc"));
         String[] maHVs = request.getParameterValues("maHV");
         String[] attendances = request.getParameterValues("attendance");
-        Date ngayHoc = Date.valueOf(request.getParameter("ngayHoc"));
-        String classID = request.getParameter("maLopHoc");
+
         String maSlot = request.getParameter("maSlot");
-        AttendanceDAO attendanceDAO = new AttendanceDAO();
-        // Process the maHV and attendance arrays as needed
-        // Example: Print the maHV and attendance values for each student
-        for (int i = 0; i < maHVs.length; i++) {
-            String maHV = maHVs[i];
-            String attendance = attendances[i];
-            attendanceDAO.updateAttendance(ngayHoc, maSlot, classID, maHV, attendance);
+        if (ngayHoc.equals(Date.valueOf(currentDate))) {
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
+            for (int i = 0; i < maHVs.length; i++) {
+                String maHV = maHVs[i];
+                String attendance = attendances[i];
+                attendanceDAO.updateAttendance(ngayHoc, maSlot, classID, maHV, attendance);
+            }
+            String popupMessageSuccessful = "Attendance has been taken successfully.";
+            request.setAttribute("popupMessageSuccessful", popupMessageSuccessful);
+            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
+            rd.forward(request, response);
+        } else if (currentDate.isAfter(DateUtils.asLocalDate(ngayHoc))) {
+
+            String popupMessage = "You can't take attendance now because it has already passed the due date.";
+
+            request.setAttribute("popupMessage", popupMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
+            rd.forward(request, response);
+        } else {
+            String popupMessage = "You can't take attendance now because it is not the due date.";
+            request.setAttribute("popupMessage", popupMessage);
+            RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
+            rd.forward(request, response);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/ClassController?action=ClassDetailTrainer&maLopHoc=" + classID + "&ngayHoc=" + ngayHoc + "&maSlot=" + maSlot);
-        rd.forward(request, response);
 
     }
 

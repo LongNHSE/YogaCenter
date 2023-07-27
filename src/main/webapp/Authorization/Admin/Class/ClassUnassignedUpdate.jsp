@@ -107,108 +107,72 @@
             }
 
         </style>
-    <c:set var="lopHocDTO" value="${lopHocDTO}" />
+        <c:set var="lopHocDTO" value="${lopHocDTO}" />
 
-    <div class="Controller">
+        <div class="Controller">
 
-        <div class="wrapper">
-            <nav class='animated bounceInDown bg-dark'>
-                <ul>
-                    <li><a href='<%=url%>/Authorization/Admin/AdminHomepage.jsp'>Profile</a></li>
-                    <li id="active" class='sub-menu'><a href='#settings'><i class="fa-solid fa-school"></i>Class<div class='fa fa-caret-down right'></div></a>
-                        <ul id="active">
-                            <li ><a href='<%=url%>/AdminController?action=listLopHoc&page=1'>List Class</a></li>
-                            <li id="active-element"><a href='<%=url%>/AdminController?action=listClassUnassigned'>List Class Unassigned</a></li>
-                            <li><a href='<%=url%>/ClassController?action=CheckEmptyRoom'>Create Class</a></li>
-                            <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
-                            <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
-                            <li><a href='#settings'>Submit a Ticket</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Trainer<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                            <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Trainer</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li class='sub-menu'><a href='#message'>Application<div class='fa fa-caret-down right'></div></a>
-                        <ul>
-                            <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainer</a></li>
-                            <li><a href="">Add Trainer</a></li>
-                            <li><a href='#settings'>Network Status</a></li>
-                        </ul>
-                    </li>
-                    <li><a href='<%=url%>/LoginController?action=adminLogout'>Logout</a></li>
+            <div class="wrapper">
+                <%@include file="../NavComponents.jsp" %>
+            </div>
+            <div class="Class">
 
-                </ul>
-            </nav>
-        </div>
-        <div class="Class">
-
-            <form action="<%=url%>/ClassUnassignedController" method="POST">
-                <section class="vh-100 gradient-custom">
-                    <div class="container py-5 h-100">
-                        <div class="row justify-content-center align-items-center h-100">
-                            <div class="col-12 col-lg-9 col-xl-7">
-                                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                                    <div class="card-body p-4 p-md-5">
-                                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
+                <form action="<%=url%>/ClassUnassignedController" method="POST">
+                    <section class="vh-100 gradient-custom">
+                        <div class="container py-5 h-100">
+                            <div class="row justify-content-center align-items-center h-100">
+                                <div class="col-12 col-lg-9 col-xl-7">
+                                    <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                                        <div class="card-body p-4 p-md-5">
+                                            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Create Class</h3>
 
 
-                                        <div class="row">
-                                            <div class="col-md-6 mb-4">
-                                                <div class="form-outline">
-                                                    <input type="number" id="soLuongHV" class="form-control form-control-lg" name="soLuongHV" value="${lopHocDTO.soLuongHV}" required="required" />
-                                                    <label class="form-label" for="soLuongHV">Number of Trainees</label>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="form-outline">
+                                                        <input type="number" id="soLuongHV" class="form-control form-control-lg" name="soLuongHV" value="${lopHocDTO.soLuongHV}" required="required" />
+                                                        <label class="form-label" for="soLuongHV">Number of Trainees</label>
+                                                    </div>
+
+
                                                 </div>
-                                             
 
                                             </div>
-
-                                        </div>
-                                        <div class="row" id="lichHoc" >
-                                            <div class="col-md-6 mb-4 ">
-                                                <div class="form-outline">
-                                                    <select name="listPhongHocDTO"  class="selected-control ">
-                                                        <option class="form-label" value="${lopHocDTO.maRoom}">Recent Room : ${lopHocDTO.maRoom}</option>
-                                                        <c:forEach items="${listPhongHocDTO}" var="listPhongHocDTO">
-                                                            <option class="form-label" value="${listPhongHocDTO.maRoom}">${listPhongHocDTO.maRoom}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                    <label class="form-label" for="Room">Room</label>
+                                            <div class="row" id="lichHoc" >
+                                                <div class="col-md-6 mb-4 ">
+                                                    <div class="form-outline">
+                                                        <select name="listPhongHocDTO"  class="selected-control ">
+                                                            <option class="form-label" value="${lopHocDTO.maRoom}">Recent Room : ${lopHocDTO.maRoom}</option>
+                                                            <c:forEach items="${listPhongHocDTO}" var="listPhongHocDTO">
+                                                                <option class="form-label" value="${listPhongHocDTO.maRoom}">${listPhongHocDTO.maRoom}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                        <label class="form-label" for="Room">Room</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+
+
+                                        <div class="mt-4 pt-2">
+                                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
+                                            <input class="btn btn-outline-danger" type="hidden" value="UpdateClass" id="submit" name="action"  />
+                                            <input class="btn btn-outline-danger" type="hidden" value="${lopHocDTO.maLopHoc}" id="submit" name="maLopHoc"  />
+                                        </div>
+
+
+
+
                                     </div>
-
-
-
-
-
-                                    <div class="mt-4 pt-2">
-                                        <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
-                                        <input class="btn btn-outline-danger" type="hidden" value="UpdateClass" id="submit" name="action"  />
-                                        <input class="btn btn-outline-danger" type="hidden" value="${lopHocDTO.maLopHoc}" id="submit" name="maLopHoc"  />
-                                    </div>
-
-
-
-
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </div>
-                </section>
-            </form>
-        </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
 
     </body>
 
@@ -216,6 +180,17 @@
 
 
 
+
+        const navMenu = document.querySelector("nav");
+
+        // Find the desired element and assign it the "active" id
+        const blogLiElement = navMenu.querySelector("#Class");
+        if (blogLiElement) {
+            const ulElement = blogLiElement.querySelector("ul");
+            if (ulElement) {
+                ulElement.id = "active";
+            }
+        }
 
         $(document).ready(function () {
             $('.sub-menu ul#active').show();
