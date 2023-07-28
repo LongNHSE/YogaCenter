@@ -81,6 +81,10 @@
      <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
         <script>
             CKEDITOR.replace('contentInput');
+            CKEDITOR.editorConfig = function (config) {
+                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                config.allowedContent = 'span(*)';
+                config.disallowedContent = 'p';
+            };       
         </script>
-
 </html>

@@ -106,7 +106,7 @@
     }
     .header-user{
         background-color: #CBC3E3;
-        margin-left:20px;
+        border-radius: 50px
     }
     .navbar-nav{
         margin-left: 800px;

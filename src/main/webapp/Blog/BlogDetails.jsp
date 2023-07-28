@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="article-content">
-                                <p style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</p>
+                                <span style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</span>
                             </div>
                             <!--        <div class="nav tag-cloud">
                                     <a href="#">Design</a>

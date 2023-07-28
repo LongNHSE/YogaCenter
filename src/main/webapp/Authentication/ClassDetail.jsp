@@ -134,7 +134,6 @@
                                     <c:set var="voucher" value="${voucherDTO}"/>
                                     <c:if test="${voucher!=null}" >
                                         <div>
-
                                             <input type="hidden" name="voucherID" value="${voucher.voucherID}" />
 
                                         </div>
@@ -162,7 +161,6 @@
                                     <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
                                     <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
                                 </div>  
-
                                 <div style="width: 357px;
 
                                      position: absolute;

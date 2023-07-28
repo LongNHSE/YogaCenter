@@ -228,7 +228,7 @@ public class BLogController extends HttpServlet {
         BlogDTO blogDTO = new BlogDTO();
         LocalDate currentDate = LocalDate.now();
         String content = request.getParameter("content");
-        content = content.replace("\n", "<br>");
+//        content = content.replace("\n", "<br>");
         String title = request.getParameter("title");
         HttpSession session = request.getSession();
         String maHocVien = null;
