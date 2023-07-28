@@ -109,6 +109,33 @@ public class CommentDAO {
         }
         return listCmt;
     }
+    public List<CommentDTO> getAllCommentsByBlogId(String bid) {
+        List<CommentDTO> listCmt = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Comment] where [maBlog] = ? ";
+        try {
+            HocVienDAO hocVienDAO = new HocVienDAO();
+            TrainerDAO trainerDAO = new TrainerDAO();
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, bid);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                CommentDTO cmtDTO = new CommentDTO();
+                cmtDTO.setMaComment(rs.getString("maComment"));
+                cmtDTO.setHocVienDTO(hocVienDAO.searchHocVienById(rs.getString("maHV")));
+                cmtDTO.setTrainerDTO(trainerDAO.searchTrainerById(rs.getString("maTrainer")));
+                cmtDTO.setMaLopHoc(rs.getString("maLopHoc"));
+                cmtDTO.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                cmtDTO.setMaBlog(rs.getString("maBlog"));
+                cmtDTO.setNoiDung(rs.getString("noiDung"));
+                cmtDTO.setDate(rs.getDate("Date"));
+                cmtDTO.setStatus(rs.getBoolean("status"));
+                listCmt.add(cmtDTO);
+            }
+        } catch (Exception e) {
+        }
+        return listCmt;
+    }
 
     public boolean insertComment(CommentDTO commentDTO) {
         String sql = "INSERT INTO [dbo].[Comment] "
@@ -138,6 +165,23 @@ public class CommentDAO {
         return false;
     }
 
+    public void deleteComment(String maComment) {
+        String sql = "DELETE FROM [dbo].[Comment] WHERE maComment = ? ";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maComment);
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 maComment FROM [Comment] ORDER BY maComment DESC";
         int index = 0;
@@ -163,6 +207,7 @@ public class CommentDAO {
         // Create an instance of your DAO class
         CommentDAO dao = new CommentDAO();
         System.out.println(dao.lastIDIndex());
+        dao.deleteComment("CM0001");
 
         // Call the getAllComments function
 //        List<CommentDTO> comments = dao.getAllComments();

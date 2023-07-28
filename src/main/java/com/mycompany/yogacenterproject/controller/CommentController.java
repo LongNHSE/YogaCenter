@@ -40,7 +40,18 @@ public class CommentController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            insertComment(request, response);
+            String action = request.getParameter("action");
+            if (action.equals("post")) {
+                insertComment(request, response);
+            } else if (action.equals("postBlog")) {
+                insertBlogComment(request, response);
+            } else if (action.equals("delete")) {
+                delete(request, response);
+            } else if (action.equals("deleteBlog")) {
+                deleteBlog(request, response);
+            } else if (action.equals("deleteBlogAdmin")) {
+                deleteBlogAdmin(request, response);
+            }
         }
     }
 
@@ -84,6 +95,93 @@ public class CommentController extends HttpServlet {
             response.sendRedirect("/YogaCenter/ClassController?returnID=" + maLoaiLopHoc + "&action=showDetails");
         }
 
+    }
+
+    public void insertBlogComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        String id = request.getParameter("returnID");
+        try {
+            CommentDAO commentDAO = new CommentDAO();
+            CommentDTO commentDTO = new CommentDTO();
+            HocVienDTO hocVienDTO = new HocVienDTO();
+            TrainerDTO trainerDTO = new TrainerDTO();
+            LocalDate currentDate = LocalDate.now();
+
+            String comment = request.getParameter("comment");
+
+            if (session.getAttribute("hocVienDTO") != null) {
+                hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+            }
+            if (session.getAttribute("trainerDTO") != null) {
+                trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+
+            }
+            commentDTO.setHocVienDTO(hocVienDTO);
+            commentDTO.setTrainerDTO(trainerDTO);
+            String AUTO_COMMENT_ID = String.format(Constants.MA_COMMENT_FORMAT, (commentDAO.lastIDIndex() + 1));
+
+            //HOCVIEN CONSTRUCTOR
+            String maComment = AUTO_COMMENT_ID;
+            commentDTO.setDate(Date.valueOf(currentDate));
+            commentDTO.setMaComment(maComment);
+            commentDTO.setMaBlog(id);
+            commentDTO.setNoiDung(comment);
+            commentDTO.setStatus(true);
+            commentDAO.insertComment(commentDTO);
+
+            response.sendRedirect("/YogaCenter/BLogController?returnID=" + id + "&action=showDetails");
+//            RequestDispatcher rd = request.getRequestDispatcher();
+//            rd.forward(request, response);
+        } catch (Exception e) {
+            response.sendRedirect("/YogaCenter/BLogController?returnID=" + id + "&action=showDetails");
+        }
+
+    }
+
+    public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String maComment = request.getParameter("maComment");
+
+        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+        try {
+
+            CommentDAO commentDAO = new CommentDAO();
+            commentDAO.deleteComment(maComment);
+
+            response.sendRedirect("/YogaCenter/ClassController?returnID=" + maLoaiLopHoc + "&action=showDetails");
+        } catch (Exception e) {
+            response.sendRedirect("/YogaCenter/ClassController?returnID=" + maLoaiLopHoc + "&action=showDetails");
+        }
+    }
+
+    public void deleteBlog(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String maComment = request.getParameter("maComment");
+
+        String id = request.getParameter("returnID");
+        try {
+
+            CommentDAO commentDAO = new CommentDAO();
+            commentDAO.deleteComment(maComment);
+
+            response.sendRedirect("/YogaCenter/BLogController?returnID=" + id + "&action=showDetails");
+        } catch (Exception e) {
+            response.sendRedirect("/YogaCenter/BLogController?returnID=" + id + "&action=showDetails");
+        }
+    }
+
+    public void deleteBlogAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String maComment = request.getParameter("maComment");
+
+        String id = request.getParameter("returnID");
+        try {
+
+            CommentDAO commentDAO = new CommentDAO();
+            commentDAO.deleteComment(maComment);
+
+            response.sendRedirect("/YogaCenter/BlogAdminController?maBlog=" + id + "&action=Detail");
+        } catch (Exception e) {
+            response.sendRedirect("/YogaCenter/BlogAdminController?maBlog=" + id + "&action=Detail");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

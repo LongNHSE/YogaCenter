@@ -211,7 +211,7 @@
                                 <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
 
                                 <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-
+                                <input type="hidden" name="action" value="post" />
 
 
 
@@ -219,9 +219,23 @@
                         </div>
                     </c:if>
                     <c:forEach var="commentDTO" items="${requestScope.listComment}">
+
                         <div class="comment mt-4 text-justify float-left">
+                            <c:if test="${sessionScope.hocVienDTO.maHV ==commentDTO.hocVienDTO.maHV }">
+                                <form action="<%=url%>/CommentController">
+                                    <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 900px;size: 100px">Delete</button>
+                                    <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                    <input type="hidden" name="action" value="delete" />
+                                </form>
+                            </c:if>
                             <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
-                            <h2>${commentDTO.hocVienDTO.username}</h2>
+                            <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                <h2>${commentDTO.hocVienDTO.username}</h2>
+                            </c:if>
+                            <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                    </c:if>
                             <span>- ${commentDTO.date}</span>
                             <br>
                             <p>${commentDTO.noiDung}</p>
@@ -265,7 +279,7 @@
             }
 
             .comment p,.comment span,.darker p,.darker span{
-              
+
             }
         </style>
 

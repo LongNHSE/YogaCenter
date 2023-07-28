@@ -61,7 +61,7 @@
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
-                                                <input type="text" id="Ho" class="form-control form-control-lg" name="Ho" />
+                                                <input type="text" id="Ho" class="form-control form-control-lg" name="Ho" required="required"/>
                                                 <label class="form-label" for="Ho">Ho</label>
                                             </div>
 
@@ -69,7 +69,7 @@
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
-                                                <input type="text" id="Ten" class="form-control form-control-lg" name="Ten" />
+                                                <input type="text" id="Ten" class="form-control form-control-lg" name="Ten" required="required"/>
                                                 <label class="form-label" for="Ten">Ten</label>
                                             </div>
 

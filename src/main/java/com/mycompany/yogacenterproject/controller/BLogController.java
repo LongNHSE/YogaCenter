@@ -155,7 +155,9 @@ public class BLogController extends HttpServlet {
         BlogImageDAO blogImgDAO = new BlogImageDAO();
         CommentDAO cmtDAO = new CommentDAO();
 //        id = "BL0002";
-
+        CommentDAO commentDAO = new CommentDAO();
+        List<CommentDTO> listComment = commentDAO.getAllCommentsByBlogId(id);
+        request.setAttribute("listComment", listComment);
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
         List<BlogDTO> blogLatest = blogDAO.getLatestPosts();
@@ -298,7 +300,7 @@ public class BLogController extends HttpServlet {
         blogDTO = blogDAO.getBlogByID(maBlog);
         blogDTO.setContent(content);
         blogDTO.setTitle(title);
-      
+
         blogDAO.updateBlog(blogDTO);
 
         viewMyBlog(request, response);
