@@ -34,7 +34,13 @@
                                         <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
                                     </div>
                                     <div class="media-body">
-                                        <label>${blogDetails.maHV}</label>
+                                        <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                            <label>${blogDetails.hocVienDTO.username}</label>
+                                        </c:if>
+                                        <c:if  test="${blogDetails.trainerDTO!=null}">
+                                            <label>${blogDetails.trainerDTO.username}</label>
+                                            
+                                        </c:if>
                                         <span>${blogDetails.date}</span>
                                     </div>
                                 </div>
@@ -150,18 +156,18 @@
         </div>
 
     </body>
-<style>
-            .single-category li{
-                padding: 10px;
-            }
-            .single-category a{
-                text-decoration: none;
-                color: black;
-                
-            }
-            .single-category a:hover{
-                color: #ff0000;
-                
-            }
-        </style>
+    <style>
+        .single-category li{
+            padding: 10px;
+        }
+        .single-category a{
+            text-decoration: none;
+            color: black;
+
+        }
+        .single-category a:hover{
+            color: #ff0000;
+
+        }
+    </style>
 </html>

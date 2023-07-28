@@ -32,6 +32,26 @@ public class BlogDTO {
     private String maCate;
     private Date ngayCapNhat;
     private Date ngayTaoPost;
+    private HocVienDTO hocVienDTO;
+    private TrainerDTO trainerDTO;
+
+    public TrainerDTO getTrainerDTO() {
+        return trainerDTO;
+    }
+
+    public void setTrainerDTO(TrainerDTO trainerDTO) {
+        this.trainerDTO = trainerDTO;
+    }
+    
+
+    public HocVienDTO getHocVienDTO() {
+        return hocVienDTO;
+    }
+
+    public void setHocVienDTO(HocVienDTO hocVienDTO) {
+        this.hocVienDTO = hocVienDTO;
+    }
+    
 
     public BlogDTO() {
     }
