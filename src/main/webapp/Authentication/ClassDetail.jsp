@@ -578,7 +578,7 @@
             .Custom button{
                 position:relative;
                 top:75px;
-                right: 5%
+                right: 5%;
                 
             }
         </style>            
