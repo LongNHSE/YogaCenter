@@ -267,10 +267,10 @@ public class LoginController extends HttpServlet {
 
     public void newPass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         String newPass = request.getParameter("newPass");
         HocVienDAO hocVienDAO = new HocVienDAO();
-        hocVienDAO.changePsw(newPass, email);
+        hocVienDAO.changePsw(newPass, hocVienDTO.getEmail());
         response.sendRedirect("../Public/home.jsp");
     }
 

@@ -4,36 +4,46 @@
  */
 package com.mycompany.yogacenterproject.controller;
 
+import com.mycompany.yogacenterproject.dao.AvatarDAO;
 import com.mycompany.yogacenterproject.dao.HocVienDAO;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
 import com.mycompany.yogacenterproject.dao.LopHocDAO;
+import com.mycompany.yogacenterproject.dto.AvatarDTO;
 import com.mycompany.yogacenterproject.dto.HoaDonDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 4, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class ProfileController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {PrintWriter out = response.getWriter();
+        try {
+            PrintWriter out = response.getWriter();
             // log("chay vao process request");////////////////////
             String action = request.getParameter("action");
             if (action.equals("viewProfile")) {
@@ -50,6 +60,9 @@ public class ProfileController extends HttpServlet {
 //                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
 //                out.print(hocVienDTO.getMaHV());
                 classList(request, response);
+            } else if (action.equals("UpdateAvatar")) {
+                UpdateAvatar(request, response);
+
             }
 
         } catch (Exception e) {
@@ -57,7 +70,6 @@ public class ProfileController extends HttpServlet {
         }
 
     }
-
 
     public void classList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // View profile trainee
@@ -76,7 +88,7 @@ public class ProfileController extends HttpServlet {
     }
 
     public void viewProfile(HttpServletRequest request, HttpServletResponse response, String whereTo) throws ServletException, IOException {        // View profile trainee
-       // log("chay vao view Profile");////////////////////
+        // log("chay vao view Profile");////////////////////
         HttpSession session = request.getSession();
         HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         HocVienDAO hocVienDAO = new HocVienDAO();
@@ -99,6 +111,9 @@ public class ProfileController extends HttpServlet {
         HocVienDAO hocVienDAO = new HocVienDAO();
         HttpSession session = request.getSession();
         String maHV = request.getParameter("maHV");
+        HocVienDTO changeHocVien = (HocVienDTO) session.getAttribute("hocVienDTO");
+        String errorMessage = "";
+        boolean error = true;
         log(maHV);///////
         String username = request.getParameter("username");
         String ho = request.getParameter("ho");
@@ -109,20 +124,33 @@ public class ProfileController extends HttpServlet {
         String date = request.getParameter("dob");
         Date dateTime = Date.valueOf(date);
         LocalDate dob = Instant.ofEpochMilli(dateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-/////////////////////////////            
-        HocVienDTO changeHocVien = (HocVienDTO) session.getAttribute("hocVienDTO");
-        changeHocVien.setDob(dob);
-        changeHocVien.setEmail(changeHocVien.getEmail());
-        changeHocVien.setGender(changeHocVien.getGender());
-        changeHocVien.setHo(ho);
-        changeHocVien.setMaHV(maHV);
-        changeHocVien.setTen(ten);
-        changeHocVien.setPhone(phone);
-        changeHocVien.setUsername(username);
-        session.setAttribute("hocVienDTO", changeHocVien);
-        hocVienDAO.updateHocVien(changeHocVien);
-//        log(changeHocVien.toString());
-        viewProfile(request, response,"profile");
+        if (!changeHocVien.getUsername().equals(username.trim())) {
+            if (hocVienDAO.selectByUserName(username)) {
+                errorMessage += "Username has already taken";
+                error = false;
+            }
+        }
+
+/////////////////////////////   
+        if (error) {
+
+            changeHocVien.setDob(dob);
+            changeHocVien.setEmail(changeHocVien.getEmail());
+            changeHocVien.setGender(changeHocVien.getGender());
+            changeHocVien.setHo(ho);
+            changeHocVien.setMaHV(maHV);
+            changeHocVien.setTen(ten);
+            changeHocVien.setPhone(phone);
+            changeHocVien.setUsername(username);
+            session.setAttribute("hocVienDTO", changeHocVien);
+            hocVienDAO.updateHocVien(changeHocVien);
+            viewProfile(request, response, "profile");
+        } //        log(changeHocVien.toString());
+        else {
+            request.setAttribute("errorMessage", errorMessage);
+            viewProfile(request, response, "updateProfile");
+        }
+        viewProfile(request, response, "profile");
     }
 
     public void viewHocVienTransaction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -138,6 +166,100 @@ public class ProfileController extends HttpServlet {
         session.setAttribute("listHoaDon", listHoaDon);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/TraineePrivilege/transaction.jsp");
         rd.forward(request, response);
+    }
+
+    public void UpdateAvatar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        AvatarDAO avatarDAO = new AvatarDAO();
+        AvatarDTO avatarDTO = new AvatarDTO();
+        String maHV = null;
+        String maTrainer = null;
+        HttpSession session = request.getSession();
+        if (session.getAttribute("hocVienDTO") != null) {
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            maHV = hocVienDTO.getMaHV();
+        }
+        if (session.getAttribute("trainerDTO") != null) {
+            TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+            maTrainer = trainerDTO.getMaTrainer();
+        }
+        try {
+
+            avatarDTO.setMaHV(maHV);
+            avatarDTO.setMaTrainer(maTrainer);
+            String imageThumbArray = request.getParameter("Banner");
+
+            List<byte[]> imageListThumb = new ArrayList<>();
+
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+//        imageListThumb.add(imageData);
+            if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                avatarDTO.setImage(base64String);
+            } else {
+                avatarDAO.UpdateImage(imageData, avatarDTO);
+                avatarDTO.setImage(base64String);
+            }
+            if (session.getAttribute("hocVienDTO") != null) {
+                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+                hocVienDTO.setAvatarDTO(avatarDTO);
+            }
+            if (session.getAttribute("trainerDTO") != null) {
+                TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+                trainerDTO.setAvatarDTO(avatarDTO);
+            }
+        } catch (Exception e) {
+            viewProfile(request, response, "profile");
+        }
+
+        viewProfile(request, response, "profile");
+    }
+
+    public void UpdateAvatarTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        AvatarDAO avatarDAO = new AvatarDAO();
+        AvatarDTO avatarDTO = new AvatarDTO();
+        String maHV = null;
+        String maTrainer = null;
+        HttpSession session = request.getSession();
+        if (session.getAttribute("hocVienDTO") != null) {
+            HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+            maHV = hocVienDTO.getMaHV();
+        }
+        if (session.getAttribute("trainerDTO") != null) {
+            TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+            maTrainer = trainerDTO.getMaTrainer();
+        }
+        try {
+
+            avatarDTO.setMaHV(maHV);
+            avatarDTO.setMaTrainer(maTrainer);
+            String imageThumbArray = request.getParameter("Banner");
+
+            List<byte[]> imageListThumb = new ArrayList<>();
+
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+//        imageListThumb.add(imageData);
+            if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                avatarDTO.setImage(base64String);
+            } else {
+                avatarDAO.UpdateImage(imageData, avatarDTO);
+                avatarDTO.setImage(base64String);
+            }
+            if (session.getAttribute("hocVienDTO") != null) {
+                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+                hocVienDTO.setAvatarDTO(avatarDTO);
+            }
+            if (session.getAttribute("trainerDTO") != null) {
+                TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+                trainerDTO.setAvatarDTO(avatarDTO);
+            }
+        } catch (Exception e) {
+            viewProfile(request, response, "profile");
+        }
+
+        viewProfile(request, response, "profile");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

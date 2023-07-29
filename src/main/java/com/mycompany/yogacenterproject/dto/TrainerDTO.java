@@ -10,23 +10,32 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.Locale;
 
-
 public class TrainerDTO {
-private String maTrainer;    
-private String ho;
-private String ten;
-private LocalDate dob;
-private String phone;    
-private String email;
-private long salary;
-private String username;
-private String psw;
-private int soNgayNghi;
-private Boolean status;
-private String trainerType;
-private String maLoaiTK;
-private String maLopHoc;
-private String gender;
+
+    private String maTrainer;
+    private String ho;
+    private String ten;
+    private LocalDate dob;
+    private String phone;
+    private String email;
+    private long salary;
+    private String username;
+    private String psw;
+    private int soNgayNghi;
+    private Boolean status;
+    private String trainerType;
+    private String maLoaiTK;
+    private String maLopHoc;
+    private String gender;
+    private AvatarDTO avatarDTO;
+
+    public AvatarDTO getAvatarDTO() {
+        return avatarDTO;
+    }
+
+    public void setAvatarDTO(AvatarDTO avatarDTO) {
+        this.avatarDTO = avatarDTO;
+    }
 
     public String getGender() {
         return gender;
@@ -43,6 +52,7 @@ private String gender;
     public void setMaLopHoc(String maLopHoc) {
         this.maLopHoc = maLopHoc;
     }
+
     public TrainerDTO(String maTrainer, String ho, String ten, LocalDate dob, String phone, String email, long salary, String username, String psw, int soNgayNghi, Boolean status, String trainerType, String maLoaiTK) {
         this.maTrainer = maTrainer;
         this.ho = ho;
@@ -80,11 +90,6 @@ private String gender;
         return "TrainerDTO{" + "maTrainer=" + maTrainer + ", ho=" + ho + ", ten=" + ten + ", dob=" + dob + ", phone=" + phone + ", email=" + email + ", salary=" + salary + ", username=" + username + ", psw=" + psw + ", soNgayNghi=" + soNgayNghi + ", status=" + status + ", trainerType=" + trainerType + ", maLoaiTK=" + maLoaiTK + '}';
     }
 
- 
-    
-
-    
-
     public TrainerDTO() {
     }
 
@@ -96,7 +101,6 @@ private String gender;
         this.maTrainer = maTrainer;
     }
 
-   
     public LocalDate getDob() {
         return dob;
     }
@@ -176,7 +180,8 @@ private String gender;
     public void setMaLoaiTK(String maLoaiTK) {
         this.maLoaiTK = maLoaiTK;
     }
-      public String getHocPhiWithDot() {
+
+    public String getHocPhiWithDot() {
         double hocPhi = getSalary();
 
 // Create a DecimalFormatSymbols instance for the default locale
@@ -189,10 +194,5 @@ private String gender;
 
         return decimalFormat.format(hocPhi);
     }
-    
-
-   
-   
-
 
 }
