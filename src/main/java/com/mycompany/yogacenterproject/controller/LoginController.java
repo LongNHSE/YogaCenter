@@ -95,6 +95,7 @@ public class LoginController extends HttpServlet {
         boolean error = true;
         String errorMessageMail = "";
         HocVienDAO hocVienDAO = new HocVienDAO();
+        //Test Email
         if (hocVienDAO.selectByHocVienEmail(email)) {
             errorMessageMail += "Email has already existed";
             error = false;
@@ -132,61 +133,72 @@ public class LoginController extends HttpServlet {
     public void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         HocVienDAO hocVienDAO = new HocVienDAO();
-        String errorMessage = "";
-        String errorMessageDate = "";
-        boolean error = true;
-        //DATE USING SQL.DATE
-        Date dateOfBirth = null;
-
-        //AUTO GENERATE HOCVIEN ID WITH PATTERN
-        String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, (hocVienDAO.lastIDIndex() + 1));
-
-        //HOCVIEN CONSTRUCTOR
-        String maHV = AUTO_HOCVIEN_ID;
-        String username = request.getParameter("username");
-        String psw = request.getParameter("psw");
-        String ho = request.getParameter("Ho");
-        String ten = request.getParameter("Ten");
-
         try {
-            dateOfBirth = Date.valueOf(request.getParameter("dateOfBirth"));
+
+            String errorMessage = "";
+            String errorMessageDate = "";
+            boolean error = true;
+            //DATE USING SQL.DATE
+            Date dateOfBirth = null;
+
+            //AUTO GENERATE HOCVIEN ID WITH PATTERN
+            String AUTO_HOCVIEN_ID = String.format(Constants.MA_HOCVIEN_FORMAT, (hocVienDAO.lastIDIndex() + 1));
+
+            //HOCVIEN CONSTRUCTOR
+            String maHV = AUTO_HOCVIEN_ID;
+            String username = request.getParameter("username");
+            String psw = request.getParameter("psw");
+            String ho = request.getParameter("Ho");
+            String ten = request.getParameter("Ten");
+            //TEST DAte
+            try {
+                dateOfBirth = Date.valueOf(request.getParameter("dateOfBirth"));
+            } catch (Exception e) {
+                errorMessageDate = "invalid Date";
+                error = false;
+            }
+            LocalDate curDate = LocalDate.now();
+            if (dateOfBirth.after(Date.valueOf(curDate))) {
+                errorMessageDate = "invalid Date";
+                error = false;
+            }
+            String phone = request.getParameter("phoneNumber");
+            String email = (String) session.getAttribute("email");
+            String gender = request.getParameter("gender");
+
+            if (hocVienDAO.selectByUserName(username)) {
+                errorMessage += "Username has already taken";
+                error = false;
+            }
+            request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("errorMessageDate", errorMessageDate);
+
+            if (error == true) {
+                HocVienDTO hocVienDTO = new HocVienDTO();
+                hocVienDTO.setUsername(username);
+                hocVienDTO.setTen(ten);
+                hocVienDTO.setPsw(psw);
+                hocVienDTO.setPhone(phone);
+
+                //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
+                hocVienDTO.setMaLoaiTK("HOCVIEN");
+
+                hocVienDTO.setMaHV(maHV);
+                hocVienDTO.setHo(ho);
+                hocVienDTO.setGender(gender);
+                hocVienDTO.setEmail(email);
+
+                ////////SET DATE
+                LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
+                hocVienDTO.setDob(dob);
+                hocVienDAO.addHocVien(hocVienDTO);
+                RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
+                rd.forward(request, response);
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("/Public/signup.jsp");
+                rd.forward(request, response);
+            }
         } catch (Exception e) {
-            errorMessageDate = "invalid Date";
-            error = false;
-        }
-        String phone = request.getParameter("phoneNumber");
-        String email = (String) session.getAttribute("email");
-        String gender = request.getParameter("gender");
-
-        if (hocVienDAO.selectByUserName(username)) {
-            errorMessage += "Username has already taken";
-            error = false;
-        }
-        request.setAttribute("errorMessage", errorMessage);
-        request.setAttribute("errorMessageDate", errorMessageDate);
-
-        if (error == true) {
-            HocVienDTO hocVienDTO = new HocVienDTO();
-            hocVienDTO.setUsername(username);
-            hocVienDTO.setTen(ten);
-            hocVienDTO.setPsw(psw);
-            hocVienDTO.setPhone(phone);
-
-            //VI DAY LA PAGE TAO TAI KHOAN CUA HOC VIEN NEN MALOAITK LUON SET LA HOC VIEN
-            hocVienDTO.setMaLoaiTK("HOCVIEN");
-
-            hocVienDTO.setMaHV(maHV);
-            hocVienDTO.setHo(ho);
-            hocVienDTO.setGender(gender);
-            hocVienDTO.setEmail(email);
-
-            ////////SET DATE
-            LocalDate dob = DateUtils.asLocalDate(dateOfBirth);
-            hocVienDTO.setDob(dob);
-            hocVienDAO.addHocVien(hocVienDTO);
-            RequestDispatcher rd = request.getRequestDispatcher("/Public/signin.jsp");
-            rd.forward(request, response);
-        } else {
             RequestDispatcher rd = request.getRequestDispatcher("/Public/signup.jsp");
             rd.forward(request, response);
         }
@@ -203,6 +215,8 @@ public class LoginController extends HttpServlet {
         TrainerDAO trainerDAO = new TrainerDAO();
         TrainerDTO trainerDTO = trainerDAO.loginTrainer(username, password);
         if (hocVienDTO == null && trainerDTO == null) {
+            String popupMessage = "Invalid information. Please try again.";
+            request.setAttribute("popupMessage", popupMessage);
             request.getRequestDispatcher("/Public/signin.jsp").forward(request, response);
         } else if (hocVienDTO != null && hocVienDTO.getMaLoaiTK().equals("HOCVIEN")) {
             // Trang mặc định sau khi đăng nhập (nếu không có redirectUrl)

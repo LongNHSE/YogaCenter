@@ -32,7 +32,7 @@
                         <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
                         <article class="article">
 
-                         
+
                             <!--                                                 <div class="image-input">
                                                                                      <input class="input-style"  type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">                
                                                                              </div>-->
@@ -76,7 +76,16 @@
 
         </div>     
 
-
+        <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+        <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('contentInput');
+            CKEDITOR.editorConfig = function (config) {
+                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                config.allowedContent = 'span(*)';
+                config.disallowedContent = 'p';
+            };
+        </script>
         <style></style>
     </body>
     <script src="<%=url%>/js/CreateBlogStyle.js"></script>

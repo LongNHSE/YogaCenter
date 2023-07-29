@@ -9,6 +9,7 @@ import com.mycompany.yogacenterproject.util.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -145,6 +146,39 @@ public class BlogImageDAO {
         }
         return images;
     }
+    
+public byte[] getImagesDataByBlogID(String maBlog) {
+    byte[] imageData = null;
+        String sql = "SELECT image FROM blogImg WHERE maBlog = ?";
+    try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, maBlog);
+            rs = ps.executeQuery();
+        // Process the result
+        if (rs.next()) {
+            imageData = rs.getBytes("image");
+        }
+    } catch (SQLException e) {
+        // Handle any potential exceptions
+        e.printStackTrace();
+    } 
+
+    return imageData;
+}
+    public static void main(String[] args) {
+    String maBlog = "B0006"; // Replace with the desired maBlog value
+
+    BlogImageDAO blogImgDAO = new BlogImageDAO();
+    byte[] imageData = blogImgDAO.getImagesDataByBlogID(maBlog);
+
+    if (imageData != null) {
+        // Print or process the image data as needed
+        System.out.println("Image data retrieved successfully.");
+    } else {
+        System.out.println("No image data found for the specified maBlog.");
+    }
+}
 
 //     Test
 }

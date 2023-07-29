@@ -20,13 +20,13 @@
 
     <c:url var="signupLink" value="${request.contextPath}/Authentication/signup"/>
     <body>
-        <section class="vh-100 gradient-custom">
+        <section class="vh-100 gradient-custom register-section">
             <div class="container py-5 h-100">
                 <div class="row justify-content-center align-items-center h-100">
                     <div class="col-12 col-lg-9 col-xl-7">
-                        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                        <div class="card shadow-2-strong card-registration register-form" style="border-radius: 50px;">
                             <div class="card-body p-4 p-md-5">
-                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 form-name">Registration Form</h3>
                                 <form action="<%=url%>/LoginController/signup" method="POST">
                                     <input type="hidden" id="thisField" name="action" value="addUser" placeholder="Enter your OTP send through email" />
                                     <div class="row">
@@ -35,7 +35,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="userName" class="form-control form-control-lg" name="username" required="required"/>
-                                                <label class="form-label" for="userName">User Name</label>
+                                                <label class="form-label" for="userName">Username</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -52,7 +52,7 @@
                                             </div>
                                             <div class="form-outline">
                                                 <input type="password" id="confirmPassword" class="form-control form-control-lg" name="confirmPassword" required="required" onkeyup='check();'/>
-                                                <label class="form-label" for="confirmPassword">Repeat Password</label>
+                                                <label class="form-label" for="confirmPassword">Confirm password</label>
                                                 <span id='message'></span>
                                             </div>
                                         </div>
@@ -61,7 +61,7 @@
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
-                                                <input type="text" id="Ho" class="form-control form-control-lg" name="Ho" />
+                                                <input type="text" id="Ho" class="form-control form-control-lg" name="Ho" required="required"/>
                                                 <label class="form-label" for="Ho">Ho</label>
                                             </div>
 
@@ -69,7 +69,7 @@
                                         <div class="col-md-6 mb-4">
 
                                             <div class="form-outline">
-                                                <input type="text" id="Ten" class="form-control form-control-lg" name="Ten" />
+                                                <input type="text" id="Ten" class="form-control form-control-lg" name="Ten" required="required"/>
                                                 <label class="form-label" for="Ten">Ten</label>
                                             </div>
 
@@ -139,12 +139,9 @@
 
 
                                         <div class="mt-4 pt-2">
-                                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
-                                            
+                                            <!--<input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />-->
+                                            <button class="submit-btn" value="Submit" id="submit" disabled>Submit</button>
                                         </div>
-
-
-
                                 </form>
 
                             </div>

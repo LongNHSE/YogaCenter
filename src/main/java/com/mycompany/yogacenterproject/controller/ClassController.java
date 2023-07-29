@@ -8,6 +8,7 @@ import PayPal.PaymentServices;
 import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -22,6 +23,7 @@ import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.AttendanceDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
@@ -56,6 +58,7 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -159,10 +162,19 @@ public class ClassController extends HttpServlet {
 
     public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String voucher = request.getParameter("voucher");
+
         VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
+        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         if (voucherDAO.checkVoucherName(voucher)) {
+            String loaiLopHoc = request.getParameter("maLoaiLopHoc");
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
+            double currentPrice
+                    = Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
+
+            currentPrice = currentPrice * (100 - 10) / 100;
+            request.setAttribute("currentPrice", currentPrice);
             request.setAttribute("voucherDTO", voucherDTO);
             showDetails(request, response);
         } else {
@@ -546,10 +558,11 @@ public class ClassController extends HttpServlet {
 //                    PaymentServices paymentServices = new PaymentServices();
 //                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
 //                    response.sendRedirect(approvalLink);
-//                    if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
-//                        error = false;
-//                        errorMessage += "You already have registered this class.";
-//                    }
+
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
                 //check availability before registering
                 if (error) {
                     if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
@@ -801,14 +814,16 @@ public class ClassController extends HttpServlet {
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        CommentDAO commentDAO = new CommentDAO();
+        List<CommentDTO> listComment = commentDAO.getAllCommentsByTypeClass(cid);
 
         List<DayAndSlot> listDayAndSlot = new ArrayList<>();
         for (int i = 0; i < listLopHocDTO.size(); i++) {
             DayAndSlot dayAndSlot = new DayAndSlot();
             String currentSlot = listLopHocDTO.get(i).getMaSlot();
             List<String> thu = listLopHocDTO.get(i).getThuList();
-            if (i != 0) {
-                for (int j = 1; j < i; j++) {
+            if (i < 0) {
+                for (int j = 1; j <= i; j++) {
                     if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
                         if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
 //                            System.out.println(currentSlot + thu);
@@ -832,7 +847,10 @@ public class ClassController extends HttpServlet {
             }
 
         }
-        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        
+        Set<DayAndSlot> uniqueDayAndSlots = new TreeSet<>(new DayAndSlot.slotComparator());
+        uniqueDayAndSlots.addAll(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
 
         if (session.getAttribute("hocVienDTO") != null) {
@@ -843,6 +861,7 @@ public class ClassController extends HttpServlet {
             }
         }
         //
+        request.setAttribute("listComment", listComment);
         request.setAttribute("distinctDayAndSlots", distinctDayAndSlots);
         request.setAttribute("cid", cid);
 
@@ -893,13 +912,14 @@ public class ClassController extends HttpServlet {
 
     public void updateClass(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String classID = request.getParameter("maLopHoc");
-
+        TrainerDAO trainerDAO = new TrainerDAO();
         String maRoom = request.getParameter("listPhongHocDTO");
         int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
         String listTrainer = request.getParameter("listTrainer");
 
         LopHocDAO lopHocDAO = new LopHocDAO();
         LopHocDTO lopHocDTO = lopHocDAO.searchClassById(classID);
+        trainerDAO.updateTrainerStatus(trainerDAO.searchTrainerByClassID(classID).getMaTrainer(), true);
         lopHocDTO.setMaRoom(maRoom);
         lopHocDTO.setMaTrainer(listTrainer);
         lopHocDTO.setSoLuongHV(soLuongHV);

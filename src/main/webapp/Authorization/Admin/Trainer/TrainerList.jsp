@@ -140,7 +140,7 @@
             margin-left:250px;
         }
         .Table{
-            width: 85.3%;
+            width: 100%;
 
         }
         table {
@@ -186,8 +186,8 @@
             <div class="Table">
                 <table class="table">
 
-                    <thead>
-                        <tr>
+                    <thead >
+                        <tr class="Test">
 
 
                             <th scope="col">Trainer's ID</th>
@@ -219,7 +219,7 @@
                             <td><%= trainerDTO.getEmail()%> </td>
                             <td><%= trainerDTO.getPhone()%> </td>
                             <td><%= trainerDTO.getDob()%> </td>
-                            <td><%= trainerDTO.getSalary()%> </td>
+                            <td><%= trainerDTO.getHocPhiWithDot()%> </td>
                             <td><%= trainerDTO.getSoNgayNghi()%> </td>
                             <td><%= trainerDTO.getTrainerType()%> </td>
                             <td><%= trainerDTO.getGender()%> </td>

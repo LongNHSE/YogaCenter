@@ -10,7 +10,10 @@
         <title>YogaCenter Admin</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
+
+
         <meta content="" name="description">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link href="<%=url%>/Authorization/Admin/cssAdmin/newCascadeStyleSheet.css" rel="stylesheet" type="text/css"/>
         <script class="u-script" type="text/javascript" src="<%=url%>/js/home2.js" defer=""></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -160,20 +163,41 @@
                 <%@include file="NavComponents.jsp" %>
 
             </div>
-        </div>
-        <script>
-            $('.sub-menu ul').hide();
+            <div>
+                <div>
+                    <canvas id="myChart" style="width:100%;max-width:400px ;margin-left: 300px"></canvas>
 
-            $(document).ready(function () {
-                $('.sub-menu ul#active').show();
-                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
-            $('.sub-menu ul').hide();
-            $(".sub-menu a").click(function () {
-                $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+                </div>
+
+                <div>
+                    <canvas id="revenueChart" style="width:100%;max-width:400px ;margin-left: 50%"></canvas>
+                </div>
+                <div>
+                    <canvas id="receiptChart" style="width:1000px !important;
+                            height:600px !important ;margin-left: 50%"></canvas>
+                </div>
+            </div>
+
+
+
         </script>
+    </div>
+    <script src="<%=url%>/Authorization/Admin/chart ts-chart-script.js" type="text/javascript"></script>
 
-    </body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $('.sub-menu ul').hide();
+
+        $(document).ready(function () {
+            $('.sub-menu ul#active').show();
+            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+        $('.sub-menu ul').hide();
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
+
+</body>
 </html>

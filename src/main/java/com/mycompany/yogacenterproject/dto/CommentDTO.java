@@ -11,63 +11,116 @@ import java.sql.Date;
  * @author devli
  */
 public class CommentDTO {
-    private String commentID;
-    private String commentContent;
-    private BlogDTO blogID;
-    private String author;
-    private Date createDate;
+   private String maComment;
+   private String maHV;
+   private String maTrainer;
+   private String maLopHoc;
+   private String maLoaiLopHoc;
+   private String maBlog;
+   private String noiDung;
+   private Date date;
+   private boolean status;
+   private HocVienDTO hocVienDTO;
+   private TrainerDTO trainerDTO;
+
+    public HocVienDTO getHocVienDTO() {
+        return hocVienDTO;
+    }
+
+    public void setHocVienDTO(HocVienDTO hocVienDTO) {
+        this.hocVienDTO = hocVienDTO;
+    }
+
+    public TrainerDTO getTrainerDTO() {
+        return trainerDTO;
+    }
+
+    public void setTrainerDTO(TrainerDTO trainerDTO) {
+        this.trainerDTO = trainerDTO;
+    }
     
 
     public CommentDTO() {
     }
 
-    public CommentDTO(String commentID, String commentContent, BlogDTO blogID, String author, Date createDate) {
-        this.commentID = commentID;
-        this.commentContent = commentContent;
-        this.blogID = blogID;
-        this.author = author;
-        this.createDate = createDate;
+    public String getMaComment() {
+        return maComment;
     }
 
-    public String getCommentID() {
-        return commentID;
+    public void setMaComment(String maComment) {
+        this.maComment = maComment;
     }
 
-    public void setCommentID(String commentID) {
-        this.commentID = commentID;
+    public String getMaHV() {
+        return maHV;
     }
 
-    public String getCommentContent() {
-        return commentContent;
+    public void setMaHV(String maHV) {
+        this.maHV = maHV;
     }
 
-    public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent;
+    public String getMaTrainer() {
+        return maTrainer;
     }
 
-    public BlogDTO getBlogID() {
-        return blogID;
+    public void setMaTrainer(String maTrainer) {
+        this.maTrainer = maTrainer;
     }
 
-    public void setBlogID(BlogDTO blogID) {
-        this.blogID = blogID;
+    public String getMaLopHoc() {
+        return maLopHoc;
     }
 
-    public String getAuthor() {
-        return author;
+    public void setMaLopHoc(String maLopHoc) {
+        this.maLopHoc = maLopHoc;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public String getMaLoaiLopHoc() {
+        return maLoaiLopHoc;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public void setMaLoaiLopHoc(String maLoaiLopHoc) {
+        this.maLoaiLopHoc = maLoaiLopHoc;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public String getMaBlog() {
+        return maBlog;
     }
+
+    public void setMaBlog(String maBlog) {
+        this.maBlog = maBlog;
+    }
+
+    public String getNoiDung() {
+        return noiDung;
+    }
+
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" + "maComment=" + maComment + ", maHV=" + maHV + ", maTrainer=" + maTrainer + ", maLopHoc=" + maLopHoc + ", maLoaiLopHoc=" + maLoaiLopHoc + ", maBlog=" + maBlog + ", noiDung=" + noiDung + ", date=" + date + ", status=" + status + '}';
+    }
+
+    
 
  
 

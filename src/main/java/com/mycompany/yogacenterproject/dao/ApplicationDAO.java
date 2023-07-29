@@ -39,6 +39,7 @@ public class ApplicationDAO {
         } catch (SQLException e) {
         }
     }
+
     public void updateStatusApprove(String maDon) {
 
         String sql = "UPDATE [dbo].[application] SET [status] = 'Approved' WHERE maDon= ? ";
@@ -54,6 +55,20 @@ public class ApplicationDAO {
         }
     }
 
+    public void updateStatusUnapprove(String maDon) {
+
+        String sql = "UPDATE [dbo].[application] SET [status] = 'Unapproved' WHERE maDon= ? ";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maDon);
+
+            int rowsUpdated = ps.executeUpdate();
+//            System.out.println(rowsUpdated + " rows updated. Status set to false for past dates.");
+        } catch (SQLException e) {
+        }
+    }
 
     public void create(ApplicationDTO application) throws SQLException {
         String sql = "INSERT INTO application (maDon, maHV, maTrainer, maLopHoc, maApplicationType, Date, status,noiDung) "

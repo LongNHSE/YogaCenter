@@ -28,5 +28,6 @@ public class Constants {
     public static final String ABSENT = "ABSENT";
     public static final String ATTENDED = "ATTENDED";
     public static final String VOUCHER_ID_FORMAT = "V%04d";
+    public static final String MA_COMMENT_FORMAT = "CM%04d";
 
 }

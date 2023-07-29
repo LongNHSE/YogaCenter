@@ -339,7 +339,8 @@ public class TrainerDAO {
             stm.setString(1, maTrainer);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                String HoVaTen = rs.getString("HoVaTen");
+                String Ho = rs.getString("Ho");
+                String ten = rs.getString("Ten");
                 Date dob = rs.getDate("dob");
                 String phone = rs.getString("phone");
                 String email = rs.getString("email");
@@ -350,7 +351,8 @@ public class TrainerDAO {
                 boolean status = rs.getBoolean("status");
                 String trainerType = rs.getString("trainerType");
                 String maLoaiTK = rs.getString("maLoaiTK");
-//                return newTrainer;
+                TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, ten, DateUtils.asLocalDate(dob), phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+                return newTrainer;
             }
         } catch (SQLException e) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);

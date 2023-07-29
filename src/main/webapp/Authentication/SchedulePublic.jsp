@@ -37,7 +37,7 @@
         <!-- bootstrap css -->
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <!-- style css -->
-
+      <link href="<%=url%>/css/SchedulePublicStyles.css" rel="stylesheet" type="text/css"/>
         <!-- Responsive-->
 
         <!-- fevicon -->
@@ -66,6 +66,7 @@
         <div class="wrapper">
             <jsp:include page="../Components/headerComponent.jsp" />      
         </div>
+                    <h1 class="schedule-title">Discover the Joy of Yoga with Our Class Schedule</h1>
         <div class="content">
 
         </div>         
@@ -117,7 +118,7 @@
                         <% }
                         %>
                     </select>
-                    <input type="submit" value="Submit">
+                    <input type="submit" value="Select" class="text-center select-btn">
                     <input class="btn btn-outline-danger" type="hidden" value="ViewSchedulePublic" id="submit" name="action"  />
                 </form>
             </div>
@@ -195,9 +196,9 @@
                                 <% if (hasTrainerSchedule) {%>
                                 <% for (LopHocDTO lopHoc : listClassDTO) {%>
                                 <a href="<%=url%>/ClassController?action=showDetails&returnID=<%=lopHoc.getMaLoaiLopHoc()%>">
-                                    <div class="class-code lop-code" data-maLopHoc="<%= lopHoc.getMaLopHoc()%>">
+                                     <div class="class-code lop-code" data-maLopHoc="<%= lopHoc.getMaLopHoc()%>">
 
-                                        <div class="bg-green" style="text-align: center; margin-bottom: 10px; border: solid 0.1px">
+                                        <div class="bg-green class-details" style="text-align: center; margin-bottom: 10px; border: solid 0.1px">
                                             <span class="padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16 xs-font-size13"><%= lopHoc.getLoaiLopHocDTO().getTenLoaiLopHoc()%><br><%= lopHoc.getMaLopHoc()%></span>
                                         </div>
                                     </div>

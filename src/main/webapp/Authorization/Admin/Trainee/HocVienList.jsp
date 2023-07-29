@@ -162,9 +162,7 @@
                             <th scope="col">Last Name</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Day of Birth</th>
-
-
+                            <th scope="col">Day of Birth</th
                             <th scope="col">Email</th>
                             <th scope="col">Phone Number</th>
                             <th scope="col">Gender</th>
@@ -182,9 +180,9 @@
                             <td><%= hocVienDTO.getHo()%> </td>
                             <td><%= hocVienDTO.getTen()%> </td>
                             <td><%= hocVienDTO.getUsername()%> </td>
-                            <td><%= hocVienDTO.getDob()%> </td>
+                            <td style="text-align: right"><%= hocVienDTO.getDob()%> </td>
                             <td><%= hocVienDTO.getEmail()%> </td>
-                            <td><%= hocVienDTO.getPhone()%> </td>
+                            <td style="text-align: right"><%= hocVienDTO.getPhone()%> </td>
                             <td><%= hocVienDTO.getGender()%> </td>
                             <td>
                                 <% for (String maLopHoc : hocVienDTO.getMaLopHoc()) {

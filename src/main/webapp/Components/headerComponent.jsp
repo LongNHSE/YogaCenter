@@ -5,7 +5,6 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-
     String headerUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
 
@@ -17,7 +16,7 @@
     /* CSS for the dropdown menu */
     body{
         /*font-family: 'Bitter', serif !important;*/
-        font-family: 'Montserrat' !important;
+        font-family: 'Calibri' !important;
         box-sizing: border-box;
 
 
@@ -61,7 +60,6 @@
 
     .header-nav{
         background-color: #8b57fc;
-        margin-bottom:20px
     }
     /*    .dropdown {
             position: relative;
@@ -99,7 +97,7 @@
     }
 
     .dropdown-content a:hover {
-        background-color: #436775;
+        background-color: #9F2B68		;
         color:#f1f1f1;
     }
 
@@ -107,7 +105,8 @@
         display: block;
     }
     .header-user{
-        background-color: #87CEEB;
+        background-color: #CBC3E3;
+        border-radius: 50px
     }
     .navbar-nav{
         margin-left: 800px;
@@ -160,7 +159,7 @@
                 </div> 
             </c:if>
             <c:if test = "${sessionScope.trainerDTO != null}">
-                <div class="dropdown header-user " style="margin-top:5px">
+                <div class="dropdown header-user " style="margin-top:5px;   margin-left: 20px;">
 
                     <button  class="btn btn-sm dropdown-toggle btn-user" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>${sessionScope.trainerDTO.username}</span>

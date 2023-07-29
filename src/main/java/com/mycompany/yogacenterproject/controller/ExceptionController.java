@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.Application;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -81,12 +81,14 @@ public class ExceptionController extends HttpServlet {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
                 assignTrainer(request, response);
+            } else if (action.equals("Unapprove")) {
+                unapproveAssignTrainer(request, response);
             }
 
         }
     }
 
-    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    public void requestOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, EmailException {
         HttpSession session = request.getSession();
 
         TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
@@ -115,14 +117,14 @@ public class ExceptionController extends HttpServlet {
             applicationDTO.setMaTrainer(trainerDTO.getMaTrainer());
             applicationDTO.setMaDon(maApp);
             applicationDTO.setStatus("Pending");
-//            applicationDAO.create(applicationDTO);
+            applicationDAO.create(applicationDTO);
             String popupMessage = "The request has been sended successfully. Please check your mail for your response";
             request.setAttribute("popupMessageSuccessful", popupMessage);
+            EmailController.requestOff(trainerDTO, lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()));
             RequestDispatcher rd = request.getRequestDispatcher("/TrainerController?action=classList");
             rd.forward(request, response);
         }
 
-      
     }
 
     public void sendMailClassChange(HttpServletRequest request, HttpServletResponse response, LopHocDTO lopHocDTO, String maLopHocCu) throws EmailException, MalformedURLException {
@@ -252,10 +254,11 @@ public class ExceptionController extends HttpServlet {
         HttpSession session = request.getSession();
         HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         String maLopHoc = request.getParameter("maLopHoc");
+//        System.out.println(maLopHoc);
         LopHocDTO lopHocDTO = new LopHocDTO();
         LopHocDAO lopHocDAO = new LopHocDAO();
         lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-
+//        System.out.println(lopHocDTO);
         String cid = lopHocDTO.getMaLoaiLopHoc();
 
 //          Get class information
@@ -263,17 +266,22 @@ public class ExceptionController extends HttpServlet {
         LoaiLopHocDTO classDetails = dao.getClassCateByID(cid);
 //        LopHocDTO lopHocDTO = new LopHocDTO();
         List<LopHocDTO> listLopHocDTO = lopHocDAO.showClassesByType(cid);
-
+        System.out.println(listLopHocDTO);
         List<DayAndSlot> listDayAndSlot = new ArrayList<>();
         for (int i = 0; i < listLopHocDTO.size(); i++) {
             DayAndSlot dayAndSlot = new DayAndSlot();
             String currentSlot = listLopHocDTO.get(i).getMaSlot();
             List<String> thu = listLopHocDTO.get(i).getThuList();
-            if (i != 0) {
-                for (int j = 1; j < i; j++) {
+             System.out.println("ccc");
+             System.out.println(currentSlot + thu);
+             System.out.println(i);
+            if (i < 0) {
+                 System.out.println(i);
+                for (int j = 1; j <= i; j++) {
+                    System.out.println(listLopHocDTO.get(j).getMaSlot());
                     if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
                         if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
-//                            System.out.println(currentSlot + thu);
+                            System.out.println(currentSlot + thu);
                         }
                     } else {
 
@@ -296,16 +304,20 @@ public class ExceptionController extends HttpServlet {
         }
         Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
-
+//        System.out.println(distinctDayAndSlots);
         lopHocDTO = lopHocDAO.showSlotBy1Class(maLopHoc);
         DayAndSlot dayAndSlota = new DayAndSlot();
         dayAndSlota.setDay(lopHocDTO.getThuList());
         dayAndSlota.setSlot(lopHocDTO.getMaSlot());
-
+        System.out.println("bbb");
+        System.out.println(uniqueDayAndSlots);
+        System.out.println("bbb");
+        System.out.println(distinctDayAndSlots);
         List<DayAndSlot> distinctDayAndSlotsNew = new ArrayList<>();
         for (DayAndSlot x : distinctDayAndSlots) {
             if (x.getSlot().equalsIgnoreCase(dayAndSlota.getSlot()) && compareLists(x.getDay(), dayAndSlota.getDay())) {
-//                System.out.println(x);
+                System.out.println("aaaa");
+                System.out.println(x);
             } else {
                 distinctDayAndSlotsNew.add(x);
             }
@@ -405,9 +417,27 @@ public class ExceptionController extends HttpServlet {
         trainerDAO.updateTrainerStatus(maTrainer, true);
         trainerDAO.updateTrainerStatus(applicationDTO.getMaTrainer(), false);
         EmailController.trainerDTOAssign(trainerDAO.readTrainer(maTrainer), lopHocDAO.searchClassById(maLopHoc));
-
+        EmailController.approveResquestOff(trainerDAO.readTrainer(applicationDTO.getMaTrainer()), lopHocDAO.searchClassById(maLopHoc));
         applicationDAO.updateStatusApprove(maApplication);
         response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
+
+    }
+
+    public void unapproveAssignTrainer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, EmailException {
+        String maLopHoc = request.getParameter("maLopHoc");
+        String maApplication = request.getParameter("maApplication");
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        ApplicationDTO applicationDTO = applicationDAO.search(maApplication);
+        String maTrainer = request.getParameter("listTrainer");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        TrainerDAO trainerDAO = new TrainerDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+
+        EmailController.unapproveResquestOff(trainerDAO.readTrainer(applicationDTO.getMaTrainer()), lopHocDAO.searchClassById(maLopHoc));
+
+        applicationDAO.updateStatusUnapprove(maApplication);
+        response.sendRedirect("Authorization/Admin/Application/ListApplication.jsp");
 
     }
 

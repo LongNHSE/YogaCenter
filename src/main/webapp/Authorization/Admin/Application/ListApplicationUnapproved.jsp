@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */
@@ -200,8 +200,8 @@
                             <td>${application.status} </td>
 
 
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"   "> </td>
-
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"> </td>
+                            <td>  <input class="btn btn-outline-danger" type='submit'value="Unapprove"name="action"   > </td>
 
                             <input type="hidden" name="maLopHoc" value="${application.maLopHoc}" >
                             <input type="hidden" name="maApplication" value="${application.maDon}" >

@@ -183,11 +183,11 @@
                         <tr>
                             <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
                             <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHV()%> </td>
-                            <td><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
-                            <td><%= lopHocDTO.getNgayBatDau()%> </td>
+                            <td style="text-align: right"><%= lopHocDTO.getNgayBatDau()%> </td>
 
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Assign Trainer"name="action" ></td>
                         <input type="hidden" name="maLopHoc" value="<%= lopHocDTO.getMaLopHoc()%>" >

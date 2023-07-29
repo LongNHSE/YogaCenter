@@ -12,7 +12,6 @@
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         %>
 
-        <link href="BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
         <link href="<%=url%>/Blog/BlogCreateStyle.css" rel="stylesheet" type="text/css"/>
         <link href="<%=url%>/css/BlogAddOn.css" rel="stylesheet" type="text/css"  > 
     </head>
@@ -25,10 +24,11 @@
             Please assign information!!!
             <div id="progressBar" class="progress-bar"></div>
         </div>
-
-        <div class="container">
+        <div class="background-image-container">
+        <div class="container ">
+            <h1 class="blog-create-title text-center">Get Creative</h1>
             <div class="row align-items-start">
-                <div class="col-lg-8 m-15px-tb">
+                <div class="col-lg-8 m-15px-tb" style="margin: auto">
                     <form action="<%=url%>/BLogController" method="post" enctype="multipart/form-data">                            
                         <article class="article">
 
@@ -67,13 +67,24 @@
 
                         </article>
                     </form>
-                </div>
+                </div>                  
 
             </div>
 
         </div>     
+</div>
+                         </div>
 
-        <style></style>
+                     </div>     
     </body>
     <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+     <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('contentInput');
+            CKEDITOR.editorConfig = function (config) {
+                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                config.allowedContent = 'span(*)';
+                config.disallowedContent = 'p';
+            };       
+        </script>
 </html>
