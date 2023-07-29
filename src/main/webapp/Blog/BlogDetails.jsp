@@ -13,6 +13,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>       
         <link href="<%=baseUrl%>/BlogDetail.css" rel="stylesheet" type="text/css"/>
@@ -34,7 +35,13 @@
                                         <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
                                     </div>
                                     <div class="media-body">
-                                        <label>${blogDetails.maHV}</label>
+                                        <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                            <label>${blogDetails.hocVienDTO.username}</label>
+                                        </c:if>
+                                        <c:if  test="${blogDetails.trainerDTO!=null}">
+                                            <label>${blogDetails.trainerDTO.username}</label>
+
+                                        </c:if>
                                         <span>${blogDetails.date}</span>
                                     </div>
                                 </div>
@@ -53,46 +60,53 @@
                                     </div>-->
                         </article>
 
-                        <!--                        <section class="content-item" id="comments">
-                                                    <div class="container">   
-                                                        <div class="row">
-                                                            <div class="col-sm-8">   
-                                                                <form>
-                                                                    <h3 class="pull-left">New Comment</h3>
-                                                                    <button type="submit" class="btn btn-normal pull-right">Submit</button>
-                                                                    <fieldset>
-                                                                        <div class="row">
-                                                                            <div class="col-sm-3 col-lg-2 hidden-xs">
-                                                                                <img class="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                                                                            </div>
-                                                                            <div class="form-group col-xs-12 col-sm-9 col-lg-10">
-                                                                                <textarea class="form-control" id="message" placeholder="Your message" required=""></textarea>
-                                                                            </div>
-                                                                        </div>  	
-                                                                    </fieldset>
-                                                                </form>
-                        
-                                                                <h3>Comments</h3>
-                        
-                                                                 Iterate over comments 
-                        <c:forEach var="comment" items="${blogCmt}">
-                            <div class="media">
-                                <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Hello</h4>
-                                    <p>${comment.commentContent}</p>
-                                    <ul class="list-unstyled list-inline media-detail pull-left">
-                                        <li><i class="fa fa-calendar"></i>${comment.createDate}</li>
-                                    </ul>
-                                    <ul class="list-unstyled list-inline media-detail pull-right">
-                                        <li class=""><a href="">Like</a></li>
-                                        <li class=""><a href="">Reply</a></li>
-                                    </ul>
+                        <section class="content-item" id="comments">
+                            <div class="container">   
+                                <div class="row">
+                                    <div class="col-sm-8">   
+
+                                        <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                                            <div class="comment mt-4 text-justify float-left" style="border: none">
+                                                <form action="<%=baseUrl%>/CommentController">
+                                                    <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
+                                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+
+                                                    <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                    <input type="hidden" name="action" value="postBlog" />
+
+
+
+                                                </form>
+                                            </div>
+                                        </c:if>
+
+                                        <h3>Comments</h3>
+                                        <c:forEach var="commentDTO" items="${requestScope.listComment}">
+                                            <div class="comment mt-4 text-justify float-left">
+                                                <c:if test="${sessionScope.hocVienDTO.maHV ==commentDTO.hocVienDTO.maHV }">
+                                                    <form action="<%=baseUrl%>/CommentController">
+                                                        <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 595px;size: 100px">Delete</button>
+                                                        <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                        <input type="hidden" name="action" value="deleteBlog" />
+                                                    </form>
+                                                </c:if>
+                                                <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                                                <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                                    <h2>${commentDTO.hocVienDTO.username}</h2>
+                                                </c:if>
+                                                <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                                    <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                                        </c:if>
+                                                <span>- ${commentDTO.date}</span>
+                                                <br>
+                                                <p>${commentDTO.noiDung}</p>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
                                 </div>
                             </div>
-                        </c:forEach>
-                    </div>
-                    </section>                            -->
+                        </section>                            
 
                     </div>
 
@@ -146,22 +160,58 @@
 
                     </div>
                 </div>
+
             </div>
+
+
+
         </div>
 
     </body>
-<style>
-            .single-category li{
-                padding: 10px;
-            }
-            .single-category a{
-                text-decoration: none;
-                color: black;
-                
-            }
-            .single-category a:hover{
-                color: #ff0000;
-                
-            }
-        </style>
+
+    <style>
+        #comments form {
+            margin-bottom: -29px;
+        }
+        .comments{
+            margin-top: 5%;
+            margin-left: 20px;
+        }
+
+
+
+        .comment{
+            width: 700px;
+            border: 1px solid rgba(16, 46, 46, 1);
+            font-size: 20px;
+            float: left;
+            border-radius: 5px;
+            padding-left: 40px;
+            padding-right: 30px;
+            padding-top: 15px;
+
+        }
+        .comment h2,.comment span,.darker h4,.darker span{
+            display: inline;
+        }
+
+        .comment p,.comment span,.darker p,.darker span{
+
+        }
+    </style>
+
+    <style>
+        .single-category li{
+            padding: 10px;
+        }
+        .single-category a{
+            text-decoration: none;
+            color: black;
+
+        }
+        .single-category a:hover{
+            color: #ff0000;
+
+        }
+    </style>
 </html>

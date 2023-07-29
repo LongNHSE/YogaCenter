@@ -260,6 +260,8 @@ public class BlogDAO {
     }
 
     public BlogDTO getBlogByID(String maBlog) {
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        TrainerDAO trainerDAO = new TrainerDAO();
         BlogDTO blogDTO = new BlogDTO();
         String sql = "select * from [dbo].[blogPost] where [maBlog] = ? ";
         try {
@@ -274,6 +276,8 @@ public class BlogDAO {
                 blogDTO.setContent(rs.getString("noiDung"));
                 blogDTO.setDate(rs.getString("ngayTaoPost"));
                 blogDTO.setMaHV(rs.getString("maHV"));
+                blogDTO.setHocVienDTO(hocVienDAO.searchHocVienById(rs.getString("maHV")));
+                blogDTO.setTrainerDTO(trainerDAO.searchTrainerById(rs.getString("maTrainer")));
                 blogDTO.setStatus(rs.getBoolean("status"));
                 blogDTO.setMaCate(rs.getString("maCate"));
 
@@ -514,9 +518,8 @@ public class BlogDAO {
         BlogDAO dao = new BlogDAO();
         System.out.println(dao.lastIDIndexOfBlog());
         BlogDTO blogDTO = new BlogDTO();
-        blogDTO = dao.getBlogByID("B0003");
-        blogDTO.setContent("Yoga");
-        dao.updateBlog(blogDTO);
+        blogDTO = dao.getBlogByID("B0009");
+        System.out.println(blogDTO);
 //        BlogDTO blogDTO = dao.getBlogByID("B0001");
 //        dao.approveBlog("B0003", "BC0001");
 //        System.out.println();

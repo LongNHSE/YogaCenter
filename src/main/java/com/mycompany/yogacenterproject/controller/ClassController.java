@@ -8,6 +8,7 @@ import PayPal.PaymentServices;
 import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -22,6 +23,7 @@ import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dao.VoucherDAO;
 import com.mycompany.yogacenterproject.dto.AttendanceDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
@@ -160,18 +162,18 @@ public class ClassController extends HttpServlet {
 
     public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String voucher = request.getParameter("voucher");
-       
+
         VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
         LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
         if (voucherDAO.checkVoucherName(voucher)) {
-             String loaiLopHoc = request.getParameter("maLoaiLopHoc");
+            String loaiLopHoc = request.getParameter("maLoaiLopHoc");
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
-            double currentPrice = 
-                    Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
-            
-            currentPrice = currentPrice* (100-10)/100;
+            double currentPrice
+                    = Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
+
+            currentPrice = currentPrice * (100 - 10) / 100;
             request.setAttribute("currentPrice", currentPrice);
             request.setAttribute("voucherDTO", voucherDTO);
             showDetails(request, response);
@@ -812,6 +814,8 @@ public class ClassController extends HttpServlet {
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        CommentDAO commentDAO = new CommentDAO();
+        List<CommentDTO> listComment = commentDAO.getAllCommentsByTypeClass(cid);
 
         List<DayAndSlot> listDayAndSlot = new ArrayList<>();
         for (int i = 0; i < listLopHocDTO.size(); i++) {
@@ -845,8 +849,8 @@ public class ClassController extends HttpServlet {
         }
 //        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
 //        
-         Set<DayAndSlot> uniqueDayAndSlots = new TreeSet<>(new DayAndSlot.slotComparator());
-         uniqueDayAndSlots.addAll(listDayAndSlot);
+        Set<DayAndSlot> uniqueDayAndSlots = new TreeSet<>(new DayAndSlot.slotComparator());
+        uniqueDayAndSlots.addAll(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
 
         if (session.getAttribute("hocVienDTO") != null) {
@@ -857,6 +861,7 @@ public class ClassController extends HttpServlet {
             }
         }
         //
+        request.setAttribute("listComment", listComment);
         request.setAttribute("distinctDayAndSlots", distinctDayAndSlots);
         request.setAttribute("cid", cid);
 

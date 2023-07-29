@@ -38,7 +38,7 @@
                     <div class="col-xs-6 col-md-4">
                         <div class="classCate tumbnail thumbnail-3" style="border: 2px solid #ccc; border-radius: 10px; padding: 10px;margin: 20px 20px;">
                             <c:forEach items="${a.image}" var ="imageData">
-                                <a href="ClassController?returnID=${a.getMaLoaiLopHoc()}">
+                                <a href="ClassController?returnID=${a.getMaLoaiLopHoc()}&action=showDetails">
                                     <c:if test="${not empty imageData.tenAnh and imageData.tenAnh.equalsIgnoreCase('THUMBNAIL')}">
                                         <img src="data:image/jpeg;base64,${imageData.image}" alt="" style="width: 100%; height: 100%;">
                                     </c:if>

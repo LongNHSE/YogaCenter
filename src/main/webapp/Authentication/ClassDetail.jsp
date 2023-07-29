@@ -195,10 +195,93 @@
                 <div class="description">
                     ${descriptionDTO.content}
                 </div>
+
+            </div>
+            <div class="Description product-content product-wrap clearfix product-deatil">
+
+                <div class="col-sm-5 col-md-6 col-12 pb-4">
+                    <h1>Comments</h1>
+
+
+
+                    <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                        <div class="comment mt-4 text-justify float-left" style="border: none">
+                            <form action="<%=url%>/CommentController">
+                                <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
+                                <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+
+                                <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                <input type="hidden" name="action" value="post" />
+
+
+
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:forEach var="commentDTO" items="${requestScope.listComment}">
+
+                        <div class="comment mt-4 text-justify float-left">
+                            <c:if test="${sessionScope.hocVienDTO.maHV ==commentDTO.hocVienDTO.maHV }">
+                                <form action="<%=url%>/CommentController">
+                                    <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 900px;size: 100px">Delete</button>
+                                    <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                    <input type="hidden" name="action" value="delete" />
+                                </form>
+                            </c:if>
+                            <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                            <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                <h2>${commentDTO.hocVienDTO.username}</h2>
+                            </c:if>
+                            <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                    </c:if>
+                            <span>- ${commentDTO.date}</span>
+                            <br>
+                            <p>${commentDTO.noiDung}</p>
+                        </div>
+                    </c:forEach>
+                    <div class="comment mt-4 text-justify">
+                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                        <h4>Jhon Doe</h4>
+                        <span>- 20 October, 2018</span>
+                        <br>
+                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
+                    </div>
+
+                </div>
+
             </div>
 
 
         </div>
+        <style>
+            .comments{
+                margin-top: 5%;
+                margin-left: 20px;
+            }
+
+
+
+            .comment{
+                width: 1000px;
+                border: 1px solid rgba(16, 46, 46, 1);
+                font-size: 20px;
+                float: left;
+                border-radius: 5px;
+                padding-left: 40px;
+                padding-right: 30px;
+                padding-top: 15px;
+
+            }
+            .comment h2,.comment span,.darker h4,.darker span{
+                display: inline;
+            }
+
+            .comment p,.comment span,.darker p,.darker span{
+
+            }
+        </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
 

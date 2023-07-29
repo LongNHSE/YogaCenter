@@ -80,6 +80,10 @@
         <servlet-name>DashBoardController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.DashBoardController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CommentController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.CommentController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
         <url-pattern>/OTPController</url-pattern>
@@ -155,6 +159,10 @@
     <servlet-mapping>
         <servlet-name>DashBoardController</servlet-name>
         <url-pattern>/DashBoardController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommentController</servlet-name>
+        <url-pattern>/CommentController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
