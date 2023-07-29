@@ -63,6 +63,9 @@ public class ProfileController extends HttpServlet {
             } else if (action.equals("UpdateAvatar")) {
                 UpdateAvatar(request, response);
 
+            }else if (action.equals("UpdateAvatarTrainer")) {
+                UpdateAvatarTrainer(request, response);
+
             }
 
         } catch (Exception e) {
@@ -193,20 +196,35 @@ public class ProfileController extends HttpServlet {
             String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
             byte[] imageData = Base64.getDecoder().decode(base64String);
 //        imageListThumb.add(imageData);
-            if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
-                avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
-                avatarDTO.setImage(base64String);
-            } else {
-                avatarDAO.UpdateImage(imageData, avatarDTO);
-                avatarDTO.setImage(base64String);
-            }
+
             if (session.getAttribute("hocVienDTO") != null) {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
                 hocVienDTO.setAvatarDTO(avatarDTO);
+                if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                    avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                    avatarDTO.setImage(base64String);
+                } else {
+                    avatarDAO.UpdateImage(imageData, avatarDTO);
+                    avatarDTO.setImage(base64String);
+                }
             }
             if (session.getAttribute("trainerDTO") != null) {
                 TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
                 trainerDTO.setAvatarDTO(avatarDTO);
+                try {
+
+                    if (avatarDAO.getImageDataByTrainerID(maTrainer).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                        avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                        avatarDTO.setImage(base64String);
+                    } else {
+                        avatarDAO.UpdateImage(imageData, avatarDTO);
+                        avatarDTO.setImage(base64String);
+                    }
+                } catch (Exception e) {
+                    RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/profile.jsp");
+                    rd.forward(request, response);
+                }
+
             }
         } catch (Exception e) {
             viewProfile(request, response, "profile");
@@ -240,26 +258,43 @@ public class ProfileController extends HttpServlet {
             String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
             byte[] imageData = Base64.getDecoder().decode(base64String);
 //        imageListThumb.add(imageData);
-            if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
-                avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
-                avatarDTO.setImage(base64String);
-            } else {
-                avatarDAO.UpdateImage(imageData, avatarDTO);
-                avatarDTO.setImage(base64String);
-            }
+
             if (session.getAttribute("hocVienDTO") != null) {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
                 hocVienDTO.setAvatarDTO(avatarDTO);
+                if (avatarDAO.getImageDataByID(maHV).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                    avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                    avatarDTO.setImage(base64String);
+                } else {
+                    avatarDAO.UpdateImage(imageData, avatarDTO);
+                    avatarDTO.setImage(base64String);
+                }
             }
             if (session.getAttribute("trainerDTO") != null) {
                 TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
                 trainerDTO.setAvatarDTO(avatarDTO);
+                try {
+
+                    if (avatarDAO.getImageDataByTrainerID(maTrainer).getMaAvatar().equals(avatarDAO.getDefault().getMaAvatar())) {
+                        avatarDAO.insertImageDataFromDatabase(imageData, avatarDTO);
+                        avatarDTO.setImage(base64String);
+                    } else {
+                        avatarDAO.UpdateImage(imageData, avatarDTO);
+                        avatarDTO.setImage(base64String);
+                    }
+                } catch (Exception e) {
+                    RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/profile.jsp");
+                    rd.forward(request, response);
+                }
+
             }
         } catch (Exception e) {
-            viewProfile(request, response, "profile");
+            RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/profile.jsp");
+            rd.forward(request, response);
         }
 
-        viewProfile(request, response, "profile");
+        RequestDispatcher rd = request.getRequestDispatcher("/Authorization/TrainerPrivilege/profile.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

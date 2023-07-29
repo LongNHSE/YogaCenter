@@ -94,8 +94,8 @@
                             <div class="card-header">Profile Picture</div>
                             <div class="card-body text-center">
                                 <c:choose>
-                                    <c:when test="${hocVienDTO.avatarDTO.image!=null}">
-                                        <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${hocVienDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+                                    <c:when test="${trainerDTO.avatarDTO.image!=null}">
+                                        <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${trainerDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
                                     </c:when>    
                                     <c:otherwise>
 
@@ -105,10 +105,10 @@
                                 </c:choose>
                                 <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
 
-                                <button class="btn btn-primary" id="uploadButton" type="submit" name="action" value="UpdateAvatar" disabled>Upload new image</button>
+                                <button class="btn btn-primary" id="uploadButton" type="submit" name="action" value="UpdateAvatarTrainer" disabled>Upload new image</button>
                                 <input class="browse-pic" type="file" id="fileInput" name="Banner" accept="image/png, image/gif, image/jpeg" onchange="addThumbnailImage(this)">
                                 <input type="hidden" id="Thumbnails" name="Banner"  >
-                                <input type="hidden" name="action" value="UpdateAvatar" >
+                                <input type="hidden" name="action" value="UpdateAvatarTrainer" >
                             </div>
                         </div>
                     </form>
