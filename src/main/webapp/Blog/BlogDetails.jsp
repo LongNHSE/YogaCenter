@@ -108,12 +108,12 @@
 
                                                 </c:if>
                                                 <c:if test="${commentDTO.hocVienDTO.username!=null}">
-                                                    <h2>${commentDTO.hocVienDTO.username}</h2>
+                                                    <h3>${commentDTO.hocVienDTO.username}</h3>
                                                 </c:if>
                                                 <c:if test="${commentDTO.trainerDTO.username!=null}">
-                                                    <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                                    <h3>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h3>
                                                         </c:if>
-                                                <span>- ${commentDTO.date}</span>
+                                                <span style="color:#B2BEB5 ">- ${commentDTO.date}</span>
                                                 <br>
                                                 <p>${commentDTO.noiDung}</p>
                                             </div>
@@ -206,7 +206,7 @@
             padding-top: 15px;
 
         }
-        .comment h2,.comment span,.darker h4,.darker span{
+        .comment h3,.comment span,.darker h4,.darker span{
             display: inline;
         }
 

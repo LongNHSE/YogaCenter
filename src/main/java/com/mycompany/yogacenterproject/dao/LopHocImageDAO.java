@@ -125,6 +125,28 @@ public class LopHocImageDAO {
 
     }
 
+    public void UpdateImage(byte[] imageList, String ID) {
+        List<String> listAnh = new ArrayList<>();
+        try {
+            // Load the JDBC driver (replace "your-driver-class" with the appropriate driver class for your database)
+
+            // Create a connection to the database (replace "your-database-url", "username", and "password" with your actual connection details)
+            Connection conn = DBUtils.getConnection();
+            String sql = "Update [dbo].[lopHocImg] set [image] = ? where tenAnh='THUMBNAIL' and maLoaiLopHoc=? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setBytes(1, imageList);
+            ps.setString(2, ID);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e);
+
+        }
+    }
+
     public int lastIDIndex() {
         String sql = "SELECT TOP 1 maAnh FROM [dbo].[lopHocImg] ORDER BY maAnh DESC";
         int index = 0;

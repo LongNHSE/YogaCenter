@@ -261,6 +261,27 @@ public class LoaiLopHocDAO {
         }
         return hocPhi;
     }
+     public Long searchHocPhiLopHocWithDouble2(String maLoaiLopHoc) {
+        String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
+        Long hocPhi ;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return hocPhi = rs.getLong("hocPhi");
+
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
 
     // PRINT CLASSES' CATEGORIES
     public List<LopHocIMGDTO> getAllCategories() throws SQLException {
@@ -312,7 +333,8 @@ public class LoaiLopHocDAO {
         return listLoaiLopHoc;
 
     }
-      public List<LoaiLopHocDTO> getAllLoaiLopHoc2() throws SQLException, IOException {
+
+    public List<LoaiLopHocDTO> getAllLoaiLopHoc2() throws SQLException, IOException {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
         String sql = "SELECT * FROM loaiLopHoc ";
@@ -338,7 +360,6 @@ public class LoaiLopHocDAO {
         return listLoaiLopHoc;
 
     }
-    
 
     public List<LoaiLopHocDTO> getAllLoaiLopHocAvailable() throws SQLException, IOException {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
@@ -473,6 +494,9 @@ public class LoaiLopHocDAO {
 //      List<LopHocIMG> listIMG = a.getAllCategories();
 //      for (LopHocIMG o: listIMG){
 //            System.out.println(o.toString());
+        Long currentPrice
+                = (a .searchHocPhiLopHocWithDouble2("TYPE0001"));
+        System.out.println(currentPrice);
 //      }
     }
 }
