@@ -415,7 +415,6 @@ img {
 }
 
 .content-item {
-    padding:30px 0;
     background-color:#FFFFFF;
 }
 
@@ -577,7 +576,7 @@ img {
     max-height: 650px;
     overflow: auto;
 }
-    .panel-body {
+.panel-body {
     padding: 15px;
 }
 textarea.form-control {
@@ -627,4 +626,141 @@ textarea.form-control {
 .media-body, .media-left, .media-right {
     display: table-cell;
     vertical-align: top;
+}
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    width: 600px; /* Adjust the width as per your preference */
+}
+
+.comment img {
+    float: left;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.comment h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.comment span {
+    color: #888;
+}
+
+.comment p {
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+.comment button {
+    float: right;
+    margin-top: -5px;
+}
+.single-category li{
+    padding: 10px;
+}
+.single-category a{
+    text-decoration: none;
+    color: black;
+
+}
+.single-category a:hover{
+    color: #ff0000;
+    .comment {
+        width: 700px;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #3498db; /* Đổi màu đường viền thành màu xanh dương */
+        border-radius: 55px;
+        position: relative;
+        margin-left: 50px;
+        margin-bottom: 20px;
+    }
+
+    .comment-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .comment img {
+        margin-right: 10px;
+    }
+
+    .comment h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .comment span {
+        color: #888;
+        font-size: 14px;
+    }
+
+    .comment p {
+        margin: 0;
+    }
+
+    .comment form {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .comment form button {
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .comment form button:hover {
+        background-color: #cc0000;
+    }
+
+}
+.comment-container{
+    margin-left:60px;
+    
+}
+.delete-btn {
+    background-color: #8b57fc; /* Thay đổi màu background thành #8b57fc */
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;  
+}
+
+/* Các quy tắc CSS khác vẫn giữ nguyên */
+.delete-btn:active {
+    color: white;
+    box-shadow: 0 0.2rem #dfd9d9;
+    transform: translateY(0.2rem);
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: lightcoral;
+    color: white;
+    text-shadow: 0 0.1rem #bcb4b4;
+}
+
+.delete-btn:disabled {
+    cursor: auto;
+    color: grey;
 }
