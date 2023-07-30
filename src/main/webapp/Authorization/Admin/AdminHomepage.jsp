@@ -153,7 +153,26 @@
 
             tr:hover {
                 background-color: #e6e6e6; /* Set background color for hovered rows */
-            }</style>
+            }
+            /* CSS for tooltip */
+    .chartjs-tooltip {
+        opacity: 1;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 6px;
+        border-radius: 3px;
+        pointer-events: none;
+        transition: all 0.1s ease;
+        transform: translate(-50%, -100%);
+        display: none;
+    }
+
+    .chartjs-tooltip.active {
+        display: block;
+    }
+        </style>
+        
 
 
 

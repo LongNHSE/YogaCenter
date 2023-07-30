@@ -109,7 +109,7 @@
         border-radius: 50px
     }
     .navbar-nav{
-        margin-left: 800px;
+        margin-left: 700px;
     }
     .navbar-expand-lg .navbar-nav .nav-link {
         padding-right: 10px;

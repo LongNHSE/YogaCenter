@@ -60,7 +60,7 @@
                                     </div>-->
                         </article>
 
-                        <section class="content-item" id="comments">
+<!--                        <section class="content-item" id="comments">
                             <div class="container">   
                                 <div class="row">
                                     <div class="col-sm-8">   
@@ -106,8 +106,71 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>                            
+                        </section>                            -->
 
+                        <!--SECTION: COMMENT-->
+                        <div class="comment-wrapper">
+                          <div class="panel panel-info">
+                            <div class="panel-heading">Comment panel</div>
+                            <div class="panel-body">
+                                <div class="post-comment">
+<!--                                    <textarea
+                                      class="form-control"
+                                      placeholder="write a comment..."
+                                      rows="3"
+                                    ></textarea>
+                                    <br />
+                                    <button type="button" class="btn btn-info pull-right">
+                                      Post
+                                    </button>
+                                    <div class="clearfix"></div>-->
+                                        <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                                                <form action="<%=baseUrl%>/CommentController">
+<!--                                                    <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
+                                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+
+                                                    <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                    <input type="hidden" name="action" value="postBlog" />-->
+
+                                                    <textarea
+                                                       class="form-control"
+                                                       placeholder="write a comment..."
+                                                       rows="3"
+                                                     ></textarea>
+                                                     <br />
+                                                     <button type="button" class="btn btn-info pull-right">
+                                                       Post
+                                                     </button>
+                                                     <div class="clearfix"></div>
+
+                                                </form>
+                                        </c:if>
+                              </div>
+                              <hr />
+                              <ul class="media-list">
+                                 <c:forEach var="commentDTO" items="${requestScope.listComment}">                                  
+                                <li class="media">
+                                  <a href="#" class="pull-left">
+                                    <img
+                                      src="https://bootdey.com/img/Content/user_1.jpg"
+                                      alt=""
+                                      class="img-circle"
+                                    />
+                                  </a>
+                                  <div class="media-body-custom" style="    marign-left:20px">
+                                    <strong class="text-success">@MartinoMont</strong>
+                                    <p>
+                                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                      Lorem ipsum dolor sit amet,
+                                      <a href="#">#consecteturadipiscing </a>.
+                                    </p>
+                                  </div>
+                                </li>
+                                 </c:forEach>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>                        
                     </div>
 
 
