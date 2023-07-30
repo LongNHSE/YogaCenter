@@ -100,6 +100,7 @@ public class HocVienDAO {
 // Tìm kiếm details của 1 người dựa trên id
     public HocVienDTO searchHocVienById(String maHV) {
         try {
+            AvatarDAO avatarDAO = new AvatarDAO();
             String sql = "SELECT * FROM hocVien where maHV=?";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, maHV);
@@ -122,6 +123,7 @@ public class HocVienDAO {
                 String phone = rs.getString("phone");
                 String gender = rs.getString("gender");
                 HocVienDTO result = new HocVienDTO(maHV, Ho, Ten, dob, username, phone, psw, maLoaiTK, email, gender);
+                result.setAvatarDTO(avatarDAO.getImageDataByID(maHV));
                 return result;
             }
         } catch (SQLException e) {
@@ -195,6 +197,7 @@ public class HocVienDAO {
             int i = 0;
 //            System.out.println("chay vao try");///////
             while (rs.next()) {
+                AvatarDAO avatarDAO = new AvatarDAO();
                 HocVienDTO hocVienDTO = new HocVienDTO();
                 if (i == 0) {
                     List<String> listMaLopHoc = classOfTrainee(rs.getString("maHV"));
@@ -216,9 +219,11 @@ public class HocVienDAO {
                 Date date = rs.getDate("dob");
 //                DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy"); ///FORMAT CHO DATE
                 LocalDate dob = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+
                 //////////////////////////////////////////////////////////////////
                 HocVienDTO loginUser = new HocVienDTO(maHV, ho, ten, dob, user, phone, psw, maLoaiTk, email, gender);
                 loginUser.setMaLoaiTK(maLoaiTk);
+                loginUser.setAvatarDTO(avatarDAO.getImageDataByID(maHV));
                 return loginUser;
             }
 
@@ -362,10 +367,10 @@ public class HocVienDAO {
 //        HocVienDTO hocVienDTO = new HocVienDTO();
 
 //        DateUtils dateUtils = new DateUtils();
-         List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
-  
+        List<HocVienDTO> listHocVienDTO = new ArrayList<HocVienDTO>();
+
         listHocVienDTO = hocVienDAO.readListHocVien();
-        for(HocVienDTO x : listHocVienDTO){
+        for (HocVienDTO x : listHocVienDTO) {
             System.out.println(x);
         }
 //        hocVienDTO = hocVienDAO.login("huyhuy", "12345");
@@ -374,7 +379,6 @@ public class HocVienDAO {
 
 //        hocVienDTO = hocVienDAO.login("Oalskad", "Pugre11111");
 //        System.out.println(hocVienDTO);
-
 //        boolean a = hocVienDAO.selectByHocVienEmail("cawegi5617@farebus.com");
 //        if (a) {
 //            System.out.println("Email exist");

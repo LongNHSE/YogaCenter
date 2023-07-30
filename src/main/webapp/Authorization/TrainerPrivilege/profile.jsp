@@ -12,11 +12,11 @@
 
         <title>Profile Detail</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-      
+
         <!--bootstrap css--> 
-  
+
         <!--Scrollbar Custom CSS--> 
-  
+
 
         <style type="text/css">
             body{
@@ -83,26 +83,36 @@
 
     <body>
         <jsp:include page="${url}/Components/headerComponent.jsp" />             
-   
+
         <div class="container-xl px-4 mt-4">
 
             <hr class="mt-0 mb-4">
             <div class="row">
-                <!--      <div class="col-xl-4">
-                
-                      <div class="card mb-4 mb-xl-0">
-                      <div class="card-header">Profile Picture</div>
-                      <div class="card-body text-center">
-                
-                      <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png" alt>
-                
-                      <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                
-                      <button class="btn btn-primary" type="button">Upload new image</button>
-                      </div>
-                      </div>
-                
-                      </div>-->
+                <div class="col-xl-4">
+                    <form action="<%=url%>/ProfileController" enctype="multipart/form-data" method="POST">
+                        <div class="card mb-4 mb-xl-0">
+                            <div class="card-header">Profile Picture</div>
+                            <div class="card-body text-center">
+                                <c:choose>
+                                    <c:when test="${trainerDTO.avatarDTO.image!=null}">
+                                        <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${trainerDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+                                    </c:when>    
+                                    <c:otherwise>
+
+                                        <img id ="avatar" class="rounded-top" src="https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+
+                                    </c:otherwise>
+                                </c:choose>
+                                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+
+                                <button class="btn btn-primary" id="uploadButton" type="submit" name="action" value="UpdateAvatarTrainer" disabled>Upload new image</button>
+                                <input class="browse-pic" type="file" id="fileInput" name="Banner" accept="image/png, image/gif, image/jpeg" onchange="addThumbnailImage(this)">
+                                <input type="hidden" id="Thumbnails" name="Banner"  >
+                                <input type="hidden" name="action" value="UpdateAvatarTrainer" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="col-xl-8">
 
                     <div class="card mb-4">
@@ -177,28 +187,92 @@
         <script src="<%=url%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script>
-            $('#myCarousel').carousel({
-                interval: false
-            });
+                                    $('#myCarousel').carousel({
+                                        interval: false
+                                    });
 
-            //scroll slides on swipe for touch enabled devices
+                                    //scroll slides on swipe for touch enabled devices
 
-            $("#myCarousel").on("touchstart", function (event) {
+                                    $("#myCarousel").on("touchstart", function (event) {
 
-                var yClick = event.originalEvent.touches[0].pageY;
-                $(this).one("touchmove", function (event) {
+                                        var yClick = event.originalEvent.touches[0].pageY;
+                                        $(this).one("touchmove", function (event) {
 
-                    var yMove = event.originalEvent.touches[0].pageY;
-                    if (Math.floor(yClick - yMove) > 1) {
-                        $(".carousel").carousel('next');
-                    } else if (Math.floor(yClick - yMove) < -1) {
-                        $(".carousel").carousel('prev');
-                    }
-                });
-                $(".carousel").on("touchend", function () {
-                    $(this).off("touchmove");
-                });
-            });
+                                            var yMove = event.originalEvent.touches[0].pageY;
+                                            if (Math.floor(yClick - yMove) > 1) {
+                                                $(".carousel").carousel('next');
+                                            } else if (Math.floor(yClick - yMove) < -1) {
+                                                $(".carousel").carousel('prev');
+                                            }
+                                        });
+                                        $(".carousel").on("touchend", function () {
+                                            $(this).off("touchmove");
+                                        });
+                                    });
+
+                                    function addThumbnailImage(fileInput) {
+                                        var files = fileInput.files;
+
+                                        // Clear the previewThumb container
+                                        var previewThumb = document.getElementById('avatar');
+                                        previewThumb.innerHTML = '';
+
+                                        for (var i = 0; i < files.length; i++) {
+                                            var file = files[i];
+                                            var reader = new FileReader();
+
+                                            // Đọc file ảnh
+                                            reader.onload = (function (file) {
+                                                return function (e) {
+                                                    var imgData = e.target.result;
+
+                                                    var imgElement = document.createElement('img');
+                                                    imgElement.className = 'banner';
+                                                    previewThumb.src = imgData;
+                                                    var deleteButton = document.createElement('button');
+                                                    deleteButton.className = 'deleteButton';
+                                                    deleteButton.textContent = 'Delete';
+                                                    deleteButton.addEventListener('click', function () {
+                                                        var imageContainer = this.parentNode;
+                                                        imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                                                        document.getElementById('fileInput').value = '';
+                                                        document.getElementById('Thumbnail').value = '';
+                                                    });
+                                                    var imageContainer = document.createElement('div');
+                                                    imageContainer.className = 'imageListStyle';
+                                                    imageContainer.appendChild(imgElement);
+                                                    imageContainer.appendChild(deleteButton);
+                                                    previewThumb.appendChild(imageContainer); // Hiển thị ảnh và nút xóa trên giao diện
+                                                    document.getElementById('Thumbnails').value = imgData;
+
+                                                };
+                                            })(file);
+
+                                            reader.readAsDataURL(file);
+                                        }
+                                        const uploadButton = document.getElementById('uploadButton');
+                                        if (fileInput.files && fileInput.files[0]) {
+                                            // Enable the button when a file is selected
+                                            uploadButton.disabled = false;
+
+                                            // You may add additional code here to display the selected image as a thumbnail
+                                            // For example, you could add an <img> element to show a preview of the selected image.
+                                        } else {
+                                            // Disable the button if no file is selected
+                                            uploadButton.disabled = true;
+                                        }
+                                    }
+                                    $(document).ready(function () {
+                                        $('.sub-menu ul#active').show();
+                                        $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                                    });
+
+                                    $('.sub-menu ul').hide();
+
+                                    $(".sub-menu a").click(function () {
+                                        $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                                        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                                    });
         </script>      
     </body>
 </html>

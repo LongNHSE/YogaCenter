@@ -32,7 +32,13 @@
                                 <h2 class="">${blogDetails.title}</h2>
                                 <div class="media">
                                     <div class="avatar">
-                                        <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
+                                        <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                            <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${blogDetails.hocVienDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+                                        </c:if>
+                                        <c:if  test="${blogDetails.trainerDTO!=null}">
+                                            <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${blogDetails.trainerDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+
+                                        </c:if>
                                     </div>
                                     <div class="media-body">
                                         <c:if  test="${blogDetails.hocVienDTO.username!=null}">
@@ -91,7 +97,16 @@
                                                         <input type="hidden" name="action" value="deleteBlog" />
                                                     </form>
                                                 </c:if>
-                                                <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                                                <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                                    <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+
+
+                                                </c:if>
+                                                <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                                    <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+
+
+                                                </c:if>
                                                 <c:if test="${commentDTO.hocVienDTO.username!=null}">
                                                     <h2>${commentDTO.hocVienDTO.username}</h2>
                                                 </c:if>
