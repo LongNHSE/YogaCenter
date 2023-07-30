@@ -125,11 +125,12 @@ public class SemesterDAO {
 
     public static void main(String[] args) {
         SemesterDAO semesterDAO = new SemesterDAO();
+        System.out.println(semesterDAO.getCurrentSemester());
         LocalDate currentDate = LocalDate.now();
 
         Date date = new Date();
         date = DateUtils.asDate(currentDate);
-//        System.out.println(currentDate);
+        System.out.println(currentDate);
 //        System.out.println(date);
         System.out.println(semesterDAO.getAllSemester());
     }

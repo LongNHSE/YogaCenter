@@ -175,6 +175,7 @@
                             <th scope="col">Max No. of Attendees</th>
                             <th scope="col">Current No. of Attendees</th>
                             <th scope="col">Trainer In Charge</th>
+                            <th scope="col">Slots</th>
                             <th scope="col">Room's ID</th>
                             <th scope="col">Slot's ID</th>
                             <th scope="col">Initial Date</th>
@@ -193,6 +194,7 @@
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                             <td><%= lopHocDTO.getMaTrainer()%> </td>
+                            <td><%=lopHocDTO.getSoBuoiDaDay()%>/<%=lopHocDTO.getSoBuoi()%></td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>
                             <td style="text-align: right"><%= lopHocDTO.getNgayBatDau()%> </td>
@@ -253,28 +255,28 @@
             </div>
         </div>
         <script>
-           const navMenu = document.querySelector("nav");
+            const navMenu = document.querySelector("nav");
 
-                // Find the desired element and assign it the "active" id
-                const blogLiElement = navMenu.querySelector("#Class");
-                if (blogLiElement) {
-                    const ulElement = blogLiElement.querySelector("ul");
-                    if (ulElement) {
-                        ulElement.id = "active";
-                    }
+            // Find the desired element and assign it the "active" id
+            const blogLiElement = navMenu.querySelector("#Class");
+            if (blogLiElement) {
+                const ulElement = blogLiElement.querySelector("ul");
+                if (ulElement) {
+                    ulElement.id = "active";
                 }
+            }
 
-                $(document).ready(function () {
-                    $('.sub-menu ul#active').show();
-                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
 
-                $('.sub-menu ul').hide();
+            $('.sub-menu ul').hide();
 
-                $(".sub-menu a").click(function () {
-                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
+            $(".sub-menu a").click(function () {
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
         </script>
     </body>
 </html>

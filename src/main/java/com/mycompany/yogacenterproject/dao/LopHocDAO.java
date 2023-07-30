@@ -167,6 +167,7 @@ public class LopHocDAO {
                 boolean status = rs.getBoolean("status");
 
                 LopHocDTO lopHocDTO = new LopHocDTO();
+               
                 lopHocDTO.setStatus(status);
                 lopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
                 lopHocDTO.setMaLopHoc(maLopHoc);
@@ -174,6 +175,7 @@ public class LopHocDAO {
                 lopHocDTO.setMaSlot(maSlot);
                 lopHocDTO.setMaTrainer(maTrainer);
                 lopHocDTO.setNgayBatDau(ngay);
+                 lopHocDTO.setSoBuoiDaDay(getSoNgayDaDay(lopHocDTO.getMaLopHoc()));
                 lopHocDTO.setSoBuoi(soBuoi);
                 lopHocDTO.setSoLuongHV(soLuongHV);
                 lopHocDTO.setSoLuongHvHienTai(soLuongHvHienTai);
@@ -672,7 +674,7 @@ public class LopHocDAO {
 
         }
     }
-        
+
     //LAY COUNT SO LUONG LOP HOC TORNG LoPHOC INNER JOIN SCHEDULETRAIN
     public int countRecord() {
         int count = 0;
@@ -761,7 +763,7 @@ public class LopHocDAO {
         }
         return maSlot;
     }
-    
+
     //LAY MA SLOT TU CLASS UNASSIGNED 
     public String maSlotClassUnassigned(String maLopHoc) {
         String maSlot = null;
@@ -976,7 +978,7 @@ public class LopHocDAO {
 //        double divisor = 5.0;
 //        double result = Math.ceil(dividend / divisor);
 ////        System.out.println(result);
-      
+
 ////
 //        // Split the selected value to retrieve maSlot and thuList
 //        String selectedMaSlot = "SL001";
@@ -1007,7 +1009,6 @@ public class LopHocDAO {
 //        System.out.println(listLopHocTemp.get(0).getThuList().equals(listLopHocTemp.get(1).getThuList()));
 //        System.out.println(listLopHocTemp.get(0).getThuList());
 //        System.out.println(listLopHocTemp.get(1).getThuList());
-
 //        for (int i = 0; i < listLopHocTemp.size(); i++) {
 //            List<String> currentThuList = listLopHocTemp.get(i).getThuList();
 //            String currentSlot = listLopHocTemp.get(i).getMaSlot();
@@ -1046,7 +1047,6 @@ public class LopHocDAO {
 //                System.out.println(listLopHocTemp.get(i).getThuList());
 //            }
 //        }
-       
 //        List<List<String>> thulist = new ArrayList<>();
 //        for (int i = 0; i < listLopHocTemp.size(); i++) {
 //

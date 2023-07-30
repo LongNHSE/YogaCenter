@@ -153,6 +153,7 @@
     </body>
 
     <script>
+        birthdayDate.max = new Date().toISOString().split("T")[0];
         var check = function () {
             if (document.getElementById('password').value ==
                     document.getElementById('confirmPassword').value) {

@@ -60,7 +60,7 @@
 
                                             <div class="form-outline">
                                                 <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1">
+                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1" required="required">
                                                     <span class="currency">x1.000.000VND</span>
                                                     <label class="form-label" for="hocPhi">Participation Fee</label>
                                                 </div>
@@ -80,15 +80,18 @@
                                         </div>
                                         <div class="form-outline">
                                             <div class="align-self-xl-center">        
-                                                <textarea name="description" id="description" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px"></textarea>
+                                                <textarea  class="input-style" name="description" id="contentInput" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px" placeholder="Start writing here..." required="required"></textarea>
                                             </div>
+
+
+                                        
                                         </div>
                                         <label class="form-label" for="description">Description</label>
 
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
-                                            <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
+                                            <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)" required="required">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
                                             <label class="form-label" for="Thumbnail">Preview Image</label>
                                             <div id="previewThumb" class="previewThumb"></div>
@@ -98,7 +101,7 @@
 
 
                                         <div class="col-md-6 mb-4">
-                                            <input type="file" id="fileInput" name="fileInput"  onchange="addImage(this)">
+                                            <input type="file" id="fileInput" name="fileInput"  onchange="addImage(this)" required="required">
                                             <input type="hidden" id="listImage" name="listImage"> <!-- Hidden input for listImage parameter -->
                                         </div>
 
@@ -119,6 +122,16 @@
 
         </div>
     </body>
+    <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+    <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+    <script>
+                                            CKEDITOR.replace('contentInput');
+                                            CKEDITOR.editorConfig = function (config) {
+                                                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                                                config.allowedContent = 'span(*)';
+                                                config.disallowedContent = 'p';
+                                            };
+    </script>
     <script>
         var images = []; // Mảng chứa danh sách ảnh tải lên
         var imagesValues = [];
