@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     border-bottom: 1px solid #eee;
 }
 .blog-aside .widget-title h3 {
-    font-size: 20px;
+    font-size: 45px;
     font-weight: 700;
     color: #fc5356;
     margin: 0;
@@ -154,6 +154,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .blog-aside .latest-post-aside .lpa-title a {
     color: #20247b;
     font-weight: 600;
+    font-size: 21px;
 }
 .blog-aside .latest-post-aside .lpa-meta a {
     color: #6F8BA4;
@@ -424,13 +425,6 @@ img {
     height:100%;
 }
 
-.content-item h2 {
-    font-weight:700;
-    font-size:35px;
-    line-height:45px;
-    text-transform:uppercase;
-    margin:20px 0;
-}
 
 .content-item h3 {
     font-weight:400;
@@ -639,23 +633,15 @@ textarea.form-control {
 .comment img {
     float: left;
     margin-right: 10px;
+    height: 52px;
     border-radius: 50%;
-}
-
-.comment h2 {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
+    width: 52px;
 }
 
 .comment span {
     color: #888;
 }
 
-.comment p {
-    margin-top: 5px;
-    line-height: 1.5;
-}
 
 .comment button {
     float: right;
@@ -667,6 +653,8 @@ textarea.form-control {
 .single-category a{
     text-decoration: none;
     color: black;
+    font-size: 21px;
+    font-weight: 500;
 
 }
 .single-category a:hover{
@@ -686,6 +674,7 @@ textarea.form-control {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
+        justify-content: space-between;
     }
 
     .comment img {
@@ -732,7 +721,7 @@ textarea.form-control {
 }
 .comment-container{
     margin-left:60px;
-    
+
 }
 .delete-btn {
     background-color: #8b57fc; /* Thay đổi màu background thành #8b57fc */
@@ -744,7 +733,7 @@ textarea.form-control {
     border-radius: 1rem;
     color: lightcoral;
     box-shadow: 0 0.4rem #dfd9d9;
-    cursor: pointer;  
+    cursor: pointer;
 }
 
 /* Các quy tắc CSS khác vẫn giữ nguyên */
@@ -763,4 +752,63 @@ textarea.form-control {
 .delete-btn:disabled {
     cursor: auto;
     color: grey;
+}
+.comment-author{
+    font-size: 23px;
+    font-weight: 500;
+    color: #673147;
+}
+.avatar-and-author {
+    display: flex;
+    align-items: center;
+}
+
+.comment-author {
+    margin-left: 10px;
+}
+
+.comment-date {
+    color: #888; /* Màu chữ xám */
+}
+.comment-content {
+    font-size: 30px;
+    line-height: 1.5;
+    color: #333;
+    margin: 10px 0;
+    margin-left: 20px;
+}
+/* CSS cho lpa-meta */
+.lpa-meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CSS cho phần tử 'name' (tên tác giả) */
+.lpa-meta .name {
+  /* Tùy chỉnh kiểu hiển thị, ví dụ: */
+  font-weight: bold;
+}
+
+/* CSS cho phần tử 'date' (ngày đăng) */
+.lpa-meta .date {
+  /* Tùy chỉnh kiểu hiển thị, ví dụ: */
+  color: #888;
+}
+/* CSS cho tiêu đề "Comments" */
+.comments-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px 0px;
+}
+
+/* CSS cho divider */
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  margin-bottom: 20px;
+}
+.comment-section{
+    
 }

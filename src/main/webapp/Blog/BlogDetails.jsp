@@ -7,6 +7,11 @@
 <%
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setTimeZone value="Asia/Ho_Chi_Minh" />
+<fmt:setLocale value="vi_VN" />
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.mycompany.yogacenterproject.dao.BlogDAO" %>
 
@@ -188,7 +193,9 @@
                         </div>                        -->
 
                         <section class="content-item" id="comments">
-                            <div class="container">   
+                            <div class="container">
+                                    <h2 class="comments-title">Comments</h2>
+                                    <div class="divider"></div>                                
                                 <div class="row">
                                         <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
                                             <div class="comment mt-4 text-justify float-left" style="border: none; width: 100%">
@@ -247,7 +254,7 @@
                                         </c:forEach>
                                         --%>
                                         
-                                        
+                                        <div>
                                     <c:forEach var="commentDTO" items="${requestScope.listComment}">
                                         <div class="comment mt-4 text-justify float-left comment-container">
                                             <div class="comment-header">
@@ -259,9 +266,13 @@
                                                     <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
                                                     <h2 class="comment-author">${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
                                                 </c:if>
-                                                <span>- ${commentDTO.date}</span>
+                                                <!--<span class="comment-date">- ${commentDTO.date}</span>-->
+                                                <span class="comment-date">
+                                                    <fmt:formatDate value="${commentDTO.date}" pattern=" dd/MM/yyyy" />
+                                                </span>
+                                                
                                             </div>
-                                            <p>${commentDTO.noiDung}</p>
+                                            <p class="comment-content">${commentDTO.noiDung}</p>
                                             <c:if test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV}">
                                                 <form action="<%=baseUrl%>/CommentController">
                                                     <button class="btn delete-btn" type="submit">X</button>
@@ -287,7 +298,7 @@
                             </div>
                             <div class="widget-body">
                                 <c:forEach items="${requestScope.blogLatest}" var="blog">
-                                    <div class="latest-post-aside media">
+                                    <div class="latest-post-aside ">
                                         <div class="lpa-left media-body">
                                             <div class="lpa-title">
                                                 <h5><a href="<%= baseUrl%>/BLogController?returnID=${blog.getMaBlog()}&action=showDetails">${blog.getTitle()}</a></h5>
@@ -297,7 +308,7 @@
                                                     ${blog.maHV}
                                                 </a>
                                                 <a class="date" href="#">
-                                                    ${blog.date}
+                                                    ${fn:substring(blog.date, 0, 19)}
                                                 </a>
                                             </div>
                                         </div>
@@ -338,4 +349,5 @@
 
     </body>
 
+    <script src="<%=baseUrl%>/js/blogDetails.js">
 </html>
