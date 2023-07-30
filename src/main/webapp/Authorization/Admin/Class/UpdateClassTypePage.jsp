@@ -80,8 +80,9 @@
                                             </div>
                                         </div>
                                         <div class="form-outline">
+                                           
                                             <div class="align-self-xl-center">        
-                                                <textarea name="description"  id="description" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px">${loaiLopHoc.descriptionDTO.content}</textarea>
+                                                <textarea  class="input-style" name="description" id="contentInput" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px" placeholder="Start writing here..." >${loaiLopHoc.descriptionDTO.content}</textarea>
                                             </div>
                                         </div>
 
@@ -112,10 +113,20 @@
         </div>
         <!-- ...existing code... -->
 
-      
+
         <!-- ...existing code... -->
 
     </body>
+    <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+    <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('contentInput');
+        CKEDITOR.editorConfig = function (config) {
+            // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+            config.allowedContent = 'span(*)';
+            config.disallowedContent = 'p';
+        };
+    </script>
     <script>
 
         const navMenu = document.querySelector("nav");

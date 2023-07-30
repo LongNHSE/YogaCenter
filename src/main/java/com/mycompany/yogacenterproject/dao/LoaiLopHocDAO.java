@@ -312,6 +312,33 @@ public class LoaiLopHocDAO {
         return listLoaiLopHoc;
 
     }
+      public List<LoaiLopHocDTO> getAllLoaiLopHoc2() throws SQLException, IOException {
+        List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        String sql = "SELECT * FROM loaiLopHoc ";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+            String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+
+            double hocPhi = rs.getDouble("hocPhi");
+            List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setImage(lopHocIMGDTO);
+            loaiLopHocDTO.setStatus(rs.getBoolean("status"));
+            loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));
+            listLoaiLopHoc.add(loaiLopHocDTO);
+
+        }
+        return listLoaiLopHoc;
+
+    }
+    
 
     public List<LoaiLopHocDTO> getAllLoaiLopHocAvailable() throws SQLException, IOException {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
