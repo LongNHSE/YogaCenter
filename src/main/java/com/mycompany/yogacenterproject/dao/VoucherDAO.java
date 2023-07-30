@@ -83,24 +83,24 @@ public class VoucherDAO {
         return null;
     }
 
-    public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
-        String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier],[usageLimit],[usageLimitPerUser])\n"
-                + "values (?,?,?,?,?)";
-        Connection conn = DBUtils.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        try {
-            ps.setString(1, voucherDTO.getVoucherID());
-            ps.setString(2, voucherDTO.getVoucherName());
-            ps.setInt(3, voucherDTO.getMultiplier());
-            ps.setInt(4, voucherDTO.getUsageLimit());
-            ps.setInt(5, voucherDTO.getUsageLimitPerUser());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-
-        }
-
-    }
+//    public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
+//        String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier],[usageLimit],[usageLimitPerUser])\n"
+//                + "values (?,?,?,?,?)";
+//        Connection conn = DBUtils.getConnection();
+//        PreparedStatement ps = conn.prepareStatement(sql);
+//
+//        try {
+//            ps.setString(1, voucherDTO.getVoucherID());
+//            ps.setString(2, voucherDTO.getVoucherName());
+//            ps.setInt(3, voucherDTO.getMultiplier());
+//            ps.setInt(4, voucherDTO.getUsageLimit());
+//            ps.setInt(5, voucherDTO.getUsageLimitPerUser());
+//            ps.executeUpdate();
+//        } catch (SQLException e) {
+//
+//        }
+//
+//    }
 
     public double getMultiplierByID(String voucherID) throws SQLException {
         int multiplier = 100;
@@ -263,14 +263,14 @@ public class VoucherDAO {
 //        VoucherDTO voucherDTO = new VoucherDTO("V0004", "test2", 50, 10, 1,2);
 //        int index = voucherDAO.lastIDIndex();
 //        System.out.println(index);
-//        boolean nigger = voucherDAO.getVoucherName("nigger");
-//        System.out.println(nigger);
+        boolean nigger = voucherDAO.checkVoucherName("Yoga");
+        System.out.println(nigger);
 //        voucherDAO.deleteVoucher("V0001");
 //        list = voucherDAO.listVouchers();
 //        for (VoucherDTO x : list) {
 //            System.out.println(x);
 //    }
-        voucherDTO = voucherDAO.searchVoucherByID("V0002");
+        voucherDTO = voucherDAO.searchVoucherByName("Yoga");
         System.out.println(voucherDTO);
 
 //    voucherDAO.addVoucher(voucherDTO);

@@ -41,11 +41,15 @@ import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.mycompany.yogacenterproject.util.DBUtils;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,15 +72,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.apache.commons.mail.EmailException;
 
 /**
  *
  * @author Oalskad
  */
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5 * 5, // 5MB
+        maxFileSize = 1024 * 1024 * 5 * 5, // 50MB
+        maxRequestSize = 1024 * 1024 * 5 * 5) // 50MB
 public class ClassController extends HttpServlet {
 
     /**
@@ -154,10 +159,15 @@ public class ClassController extends HttpServlet {
                 UpdateClassTypePage(request, response);
 
             } else if (action.equals("UpdateClassType")) {
+
                 UpdateLoaiLopHoc(request, response);
 
                 response.sendRedirect("./AdminController?action=listClassType");
             } else if (action.equals("CheckVoucher")) {
+                
+                
+                
+                
                 checkVoucher(request, response);
             }
         } catch (Exception e) {
@@ -176,10 +186,10 @@ public class ClassController extends HttpServlet {
         if (voucherDAO.checkVoucherName(voucher)) {
             String loaiLopHoc = request.getParameter("maLoaiLopHoc");
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
-            double currentPrice
-                    = Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
+            Long currentPrice
+                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(loaiLopHoc);
 
-            currentPrice = currentPrice * (100 - 10) / 100;
+            currentPrice = currentPrice * (100 - voucherDTO.getMultiplier()) / 100;
             request.setAttribute("currentPrice", currentPrice);
             request.setAttribute("voucherDTO", voucherDTO);
             showDetails(request, response);
@@ -197,8 +207,8 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO loaiLopHocDTO = loaiLopHocDAO.searchLoaiLopHoc(maLoaiLopHoc);
         request.setAttribute("loaiLopHocDTO", loaiLopHocDTO);
         LopHocImageDAO imgdao = new LopHocImageDAO();
-        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
-        request.setAttribute("imageListByID", list);
+//        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
+//        request.setAttribute("list", list);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/UpdateClassTypePage.jsp");
         rd.forward(request, response);
     }
@@ -235,12 +245,42 @@ public class ClassController extends HttpServlet {
             descriptionDTO.setMaDescription(maDescription);
             descriptionDTO.setTitle(request.getParameter("title").trim());
             String content = request.getParameter("description").trim();
-        
 
             descriptionDTO.setContent(content.trim());
 
             descriptionDAO.updateDescriptionDTO(descriptionDTO);
             loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
+
+            try {
+                Part filePart = request.getPart("Banner");
+
+//                List<byte[]> imageListThumb = new ArrayList<>();
+//
+//                String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+//                byte[] imageData = Base64.getDecoder().decode(base64String);
+                if (filePart != null && filePart.getSize() > 0) {
+                    // Read the file data from the Part
+                    InputStream fileContent = filePart.getInputStream();
+
+                    // Convert the file data to a byte array
+                    byte[] imageData = fileContent.readAllBytes();
+
+                    // Now you have the byte array containing the uploaded image data
+                    // You can further process or store this data as needed
+                    // Example: Convert the byte array to Base64 string
+                    String base64String = Base64.getEncoder().encodeToString(imageData);
+
+                    // Example: Print the Base64 string to the console
+                    LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+                    lopHocImageDAO.UpdateImage(imageData, maLoaiLopHoc);
+                    // Example: Store the byte array in a session attribute (this is just a demonstration, you can save it to a database or elsewhere)
+                }
+
+            } catch (Exception e) {
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+                rd.forward(request, response);
+            }
+
         } else {
             request.setAttribute("errorMessage", errorMessage);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
@@ -307,7 +347,9 @@ public class ClassController extends HttpServlet {
             lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
 
             String[] imageArray = request.getParameter("listImage").split("\\s+");
+
             List<String> listAnh = new ArrayList<>();
+
             for (String a : imageArray) {
                 String base64String = a.substring(a.indexOf(",") + 1);
                 byte[] imageData = Base64.getDecoder().decode(base64String);
@@ -374,7 +416,6 @@ public class ClassController extends HttpServlet {
                 descriptionDTO.setMaDescription(maDescription);
                 descriptionDTO.setTitle(request.getParameter("title").trim());
                 String content = request.getParameter("description").trim();
-        
 
                 descriptionDTO.setContent(content);
                 request.setCharacterEncoding("UTF-8");

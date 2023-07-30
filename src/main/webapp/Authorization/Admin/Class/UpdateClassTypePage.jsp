@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
                                         <div class="form-outline">
-                                           
+
                                             <div class="align-self-xl-center">        
                                                 <textarea  class="input-style" name="description" id="contentInput" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px" placeholder="Start writing here..." >${loaiLopHoc.descriptionDTO.content}</textarea>
                                             </div>
@@ -89,8 +89,30 @@
                                         <label class="form-label" for="description">Description</label>
 
                                     </div>
+                                    <c:choose>
+                                        <c:when test="${loaiLopHoc.image!=null}">
+                                            <c:forEach items="${loaiLopHoc.image}" var="image">
+                                                <c:if test="${image.tenAnh== 'THUMBNAIL'}">
+                                                    <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${image.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+                                                </c:if>
+                                            </c:forEach>
 
+
+                                        </c:when>    
+                                        <c:otherwise>
+
+                                            <img id ="avatar" class="rounded-top" src="https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+
+                                    <input class="browse-pic" type="file" id="fileInput" name="Banner" accept="image/png, image/gif, image/jpeg" onchange="addThumbnailImage(this)">
+
+
+                                   
                                     <div class="row">
+
 
 
 
@@ -120,12 +142,12 @@
     <script src="<%=url%>/js/CreateBlogStyle.js"></script>
     <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('contentInput');
-        CKEDITOR.editorConfig = function (config) {
-            // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
-            config.allowedContent = 'span(*)';
-            config.disallowedContent = 'p';
-        };
+                                            CKEDITOR.replace('contentInput');
+                                            CKEDITOR.editorConfig = function (config) {
+                                                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                                                config.allowedContent = 'span(*)';
+                                                config.disallowedContent = 'p';
+                                            };
     </script>
     <script>
 
@@ -137,6 +159,60 @@
             const ulElement = blogLiElement.querySelector("ul");
             if (ulElement) {
                 ulElement.id = "active";
+            }
+        }
+              
+
+        function addThumbnailImage(fileInput) {
+            var files = fileInput.files;
+
+            // Clear the previewThumb container
+            var previewThumb = document.getElementById('avatar');
+            previewThumb.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                // Đọc file ảnh
+                reader.onload = (function (file) {
+                    return function (e) {
+                        var imgData = e.target.result;
+
+                        var imgElement = document.createElement('img');
+                        imgElement.className = 'banner';
+                        previewThumb.src = imgData;
+                        var deleteButton = document.createElement('button');
+                        deleteButton.className = 'deleteButton';
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.addEventListener('click', function () {
+                            var imageContainer = this.parentNode;
+                            imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                            document.getElementById('fileInput').value = '';
+                            document.getElementById('Thumbnail').value = '';
+                        });
+                        var imageContainer = document.createElement('div');
+                        imageContainer.className = 'imageListStyle';
+                        imageContainer.appendChild(imgElement);
+                        imageContainer.appendChild(deleteButton);
+                        previewThumb.appendChild(imageContainer); // Hiển thị ảnh và nút xóa trên giao diện
+                        document.getElementById('Thumbnails').value = imgData;
+
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+            const uploadButton = document.getElementById('uploadButton');
+            if (fileInput.files && fileInput.files[0]) {
+                // Enable the button when a file is selected
+                uploadButton.disabled = false;
+
+                // You may add additional code here to display the selected image as a thumbnail
+                // For example, you could add an <img> element to show a preview of the selected image.
+            } else {
+                // Disable the button if no file is selected
+                uploadButton.disabled = true;
             }
         }
 

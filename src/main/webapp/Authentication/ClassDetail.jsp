@@ -105,14 +105,21 @@
                         </h1>
                         <hr class="infor-line"/>
                         <p class="price-container text-right">
-                            <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
-                            ${formattedHocPhi}
+                            <c:if test="${currentPrice==null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
+                                ${formattedHocPhi}
+
+                            </c:if>
+                            <c:if test="${currentPrice!=null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi"  />
+                                <s>${formattedHocPhi}</s>
 
 
                             <c:set var="currentPrice" value="${currentPrice}"/>
-                            <c:if test="${currentPrice!=null}" >
-                                ${currentPrice}
-                            </c:if>
+
+                            <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
+                            ${currentPriceNew}
+                        </c:if>
                         </p>
                         <hr class="infor-line"/>
 

@@ -128,6 +128,12 @@ var TUTORIAL_SAVVY = {
                 title: {
                     display: true,
                     text: "Number of trainees in class type"
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Trainees count'
+                    }
                 }
             }
         });
@@ -151,9 +157,10 @@ var TUTORIAL_SAVVY = {
         new Chart("receiptChart", {
             type: "line",
             data: {
-                
+
                 labels: xValues,
                 datasets: [{
+                        label: 'Number of trainees',
                         fill: false,
                         lineTension: 0,
                         backgroundColor: "rgba(0,0,255,1.0)",
@@ -175,6 +182,12 @@ var TUTORIAL_SAVVY = {
                         ticks: {
                             stepSize: 1 // Set the y-axis step size to 1
                         }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Number of trainees register'
                     }
                 }
             }
@@ -202,6 +215,7 @@ var TUTORIAL_SAVVY = {
             data: {
                 labels: xValues,
                 datasets: [{
+                        label: 'VND',
                         fill: false,
                         lineTension: 0,
                         backgroundColor: "rgba(0,0,255,1.0)",
@@ -223,6 +237,11 @@ var TUTORIAL_SAVVY = {
                         ticks: {
                             stepSize: 1 // Set the y-axis step size to 1
                         }
+                    }
+                }, plugins: {
+                    title: {
+                        display: true,
+                        text: 'Revenue data'
                     }
                 }
             }
