@@ -20,9 +20,9 @@
   ## Preview Screenshot
   <div align="center">
   <img src="1.png" alt="Home 1" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/home-2.png" alt="Home 2" width="45%"></img>
-  <img src="./imgs/sharing.png" alt="Sharing" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/project-details.png" alt="Project Details" width="45%"></img>
-  <img src="./imgs/search.png" alt="Search Page" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-account-list.png" alt="Admin Account List" width="45%"></img>
-  <img src="./imgs/admin-post-list.png" alt="Admin Post List" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-supervisor-list.png" alt="Admin Supervisor List" width="45%"></img> 
-  <img src="./imgs/admin-upcoming.png" alt="Admin Upcoming List" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-word-list.png" alt="Admin Word List" width="45%"></img>
+  <img src="2.png" alt="Sharing" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/project-details.png" alt="Project Details" width="45%"></img>
+  <img src="3.png" alt="Search Page" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-account-list.png" alt="Admin Account List" width="45%"></img>
+  <img src="4.png" alt="Admin Post List" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-supervisor-list.png" alt="Admin Supervisor List" width="45%"></img> 
+  <img src="5.png" alt="Admin Upcoming List" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-word-list.png" alt="Admin Word List" width="45%"></img>
 </div>
   
