@@ -44,6 +44,7 @@
   - Apache Tomcat 8.5.29
   - Visual Studio Code
   - Microsoft SQL Server Management Studio 18
+  - CKEditor4
 
 ## Functional requirements
 **1. Trainee:**
