@@ -71,3 +71,14 @@
 - [x] Create class, class types
 - [x] Managing trainers/trainees
 - [x] Account Management
+
+## Contributors
+**1. Mentors:**
+- Lecturer - Main Mentor: [Nguyen Thi Cam Huong]
+
+**2. Members:**
+- [Tran Huu Dang](https://github.com/ibarakoi) - 	SE173303 - **Leader | Database Designer | Back-end Developer**
+- [Nguyen Huy Long]((https://github.com/Oalskad)) - 	SE173280 - **Database Designer | Back-end Developer**
+- [Nguyen Chi Thanh](https://github.com/Jacces) - 	SE173343 - **Front-end Developer | Back-end Developer**
+- [Nguyen Dinh Trung Kien](https://github.com/devlindinh-2003) - SE173261 - **Front-end Developer | Back-end Developer**
+
