@@ -23,4 +23,51 @@
   <img src="3.png" alt="Sharing" width="45%"></img> &nbsp;&nbsp; <img src="4.png" alt="Project Details" width="45%"></img>
   <img src="5.png" alt="Search Page" width="45%"></img> &nbsp;&nbsp; <img src="6.png" alt="Admin Account List" width="45%"></img>
 </div>
-  
+
+## Technology
+**1. Frontend**
+  - HTML, CSS, JavaScript
+  - Bootstrap 4
+
+**2. Backend**
+  - Java Language
+
+**3. Database**
+  - Microsoft SQL Server - a relational model database server produced by Microsoft
+  - Full-Text Search - SQL Server
+
+**4. Other Technologies**
+- RESTful API
+- MVC2 Model
+
+**5. Tool**
+  - Netbeans 17
+  - Java JDK 17
+  - Apache Tomcat 8.5.29
+  - Visual Studio Code
+  - Microsoft SQL Server Management Studio 18
+
+## Functional requirements
+**1. Trainee:**
+- [x] Login 
+- [x] View class
+- [x] Register class
+- [x] View blog
+- [x] Sort blogs by categories
+- [x] Create a blog
+- [x] Comment in other blogs
+
+**2. Trainer**
+- [x] Login 
+- [x] View assigned class 
+- [x] View blog
+- [x] Sort blogs by categories
+- [x] Create a blog
+- [x] Comment in other blogs
+
+**3. Admin:**
+- [x] Assign class for trainers
+- [x] Approve blog created trainer/trainee
+- [x] Create class, class types
+- [x] Managing trainers/trainees
+- [x] Account Management
