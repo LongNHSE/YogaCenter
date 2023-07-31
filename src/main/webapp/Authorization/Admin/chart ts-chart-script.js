@@ -138,6 +138,7 @@ var TUTORIAL_SAVVY = {
             }
         });
     },
+
     receiptData: function (data) {
 
 

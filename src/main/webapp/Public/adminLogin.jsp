@@ -15,6 +15,7 @@
 
         <!-- link css -->
         <link rel="stylesheet" href="<%=url%>/assets/css/style.css" />
+        <link rel="stylesheet" href="<%=url%>/css/adminSignin.css" />
 
         <!-- link icon -->
         <link
@@ -32,9 +33,7 @@
         <div class="container">
             <div class="box">
                 <div class="form sign_in">
-                    <h3>Sign In</h3>
-                    <span>or use your account</span>
-
+                    <h3>Welcome Adminastrator</h3>
                     <form action="<%=url%>/LoginController/login" id="form_input" method="POST">
 
                         <div class="type">
@@ -49,22 +48,22 @@
                                 />
                         </div>
 
-                        <div class="forgot">
+                        <div class="forgot change-user">
                            <a href="<%=url%>/Public/signin.jsp">Sign in as an User</a>
                         </div>
                         <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit" disabled />
-
                         <button class="btn bkg" type="submit">Sign In</button>
-                        <input type="hidden" id="thisField" name="action" value="adminLogin">
-                        
-                    </form>
-                    
+                        <input type="hidden" id="thisField" name="action" value="adminLogin">             
+                    </form>    
                 </div>
-                    
             </div>
+                        
+                        <div class="overlay"> 
+                            <img src="https://images.pexels.com/photos/13359846/pexels-photo-13359846.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+                                    <p>Welcome back admin</p>
+                        </div>
                     
         </div>
-
         <!-- link script -->
 
     </body>
