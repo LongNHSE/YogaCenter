@@ -80,3 +80,5 @@
 - [Nguyen Chi Thanh](https://github.com/Jacces) - 	SE173343 - **Front-end Developer | Back-end Developer**
 - [Nguyen Dinh Trung Kien](https://github.com/devlindinh-2003) - SE173261 - **Front-end Developer | Back-end Developer**
 
+## License & Copyright
+&copy; 2022 fptu-team-404-not-found Licensed under the [GPL-3.0 LICENSE](https://github.com/fptu-team-404-not-found/publish-graduation-capstone/blob/main/LICENSE).
