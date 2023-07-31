@@ -7,9 +7,7 @@
 - [Preview Screenshot](#preview-screenshot)
 - [Technology](#technology)
 - [Functional requirements](#functional-requirements)
-- [Useful Resources](#useful-resources)
 - [Contributors](#contributors)
-- [References](#references)
 - [License & Copyright](#license--copyright)
 
 ## Description
