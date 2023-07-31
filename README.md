@@ -19,7 +19,7 @@
 
   ## Preview Screenshot
   <div align="center">
-  <img src="Dfile:///D:/YOGA%20CENTER/preview/web/1.webp" alt="Home 1" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/home-2.png" alt="Home 2" width="45%"></img>
+  <img src="1.png" alt="Home 1" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/home-2.png" alt="Home 2" width="45%"></img>
   <img src="./imgs/sharing.png" alt="Sharing" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/project-details.png" alt="Project Details" width="45%"></img>
   <img src="./imgs/search.png" alt="Search Page" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-account-list.png" alt="Admin Account List" width="45%"></img>
   <img src="./imgs/admin-post-list.png" alt="Admin Post List" width="45%"></img> &nbsp;&nbsp; <img src="./imgs/admin-supervisor-list.png" alt="Admin Supervisor List" width="45%"></img> 
