@@ -11,7 +11,7 @@
 - [License & Copyright](#license--copyright)
 
 ## Description
-- This is a website to register yoga classes obline
+- This is a website to register yoga classes online
 - This web works well on desktop, not for mobile.
 - This project started from 22-05-2023 to 23-07-2023
 
