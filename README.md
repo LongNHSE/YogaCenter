@@ -17,7 +17,7 @@
 - This web works well on desktop, not for mobile.
 - This project started from 22-05-2023 to 23-07-2023
 
-  ## Preview Screenshot
+## Preview Screenshot
   <div align="center">
   <img src="1.png" alt="Home 1" width="45%"></img> &nbsp;&nbsp; <img src="2.png" alt="Home 2" width="45%"></img>
   <img src="3.png" alt="Sharing" width="45%"></img> &nbsp;&nbsp; <img src="4.png" alt="Project Details" width="45%"></img>
