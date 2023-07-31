@@ -105,14 +105,21 @@
                         </h1>
                         <hr class="infor-line"/>
                         <p class="price-container text-right">
-                            <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
-                            ${formattedHocPhi}
+                            <c:if test="${currentPrice==null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
+                                ${formattedHocPhi}
+
+                            </c:if>
+                            <c:if test="${currentPrice!=null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi"  />
+                                <s>${formattedHocPhi}</s>
 
 
                             <c:set var="currentPrice" value="${currentPrice}"/>
-                            <c:if test="${currentPrice!=null}" >
-                                ${currentPrice}
-                            </c:if>
+
+                            <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
+                            ${currentPriceNew}
+                        </c:if>
                         </p>
                         <hr class="infor-line"/>
 
@@ -229,11 +236,15 @@
                                     <input type="hidden" name="action" value="delete" />
                                 </form>
                             </c:if>
-                            <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+
                             <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+
                                 <h2>${commentDTO.hocVienDTO.username}</h2>
                             </c:if>
                             <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+
                                 <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
                                     </c:if>
                             <span>- ${commentDTO.date}</span>
@@ -241,13 +252,6 @@
                             <p>${commentDTO.noiDung}</p>
                         </div>
                     </c:forEach>
-                    <div class="comment mt-4 text-justify">
-                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
-                        <h4>Jhon Doe</h4>
-                        <span>- 20 October, 2018</span>
-                        <br>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                    </div>
 
                 </div>
 

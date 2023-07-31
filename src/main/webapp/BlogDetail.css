@@ -87,7 +87,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     border-bottom: 1px solid #eee;
 }
 .blog-aside .widget-title h3 {
-    font-size: 20px;
+    font-size: 45px;
     font-weight: 700;
     color: #fc5356;
     margin: 0;
@@ -154,6 +154,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .blog-aside .latest-post-aside .lpa-title a {
     color: #20247b;
     font-weight: 600;
+    font-size: 21px;
 }
 .blog-aside .latest-post-aside .lpa-meta a {
     color: #6F8BA4;
@@ -415,7 +416,6 @@ img {
 }
 
 .content-item {
-    padding:30px 0;
     background-color:#FFFFFF;
 }
 
@@ -425,13 +425,6 @@ img {
     height:100%;
 }
 
-.content-item h2 {
-    font-weight:700;
-    font-size:35px;
-    line-height:45px;
-    text-transform:uppercase;
-    margin:20px 0;
-}
 
 .content-item h3 {
     font-weight:400;
@@ -550,4 +543,272 @@ img {
     font-size: 20px;
     line-height: 22.5px;
     text-align: left;
+}
+.panel-info {
+    border-color: #bce8f1;
+}
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel-info>.panel-heading {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.comment-wrapper .panel-body {
+    max-height: 650px;
+    overflow: auto;
+}
+.panel-body {
+    padding: 15px;
+}
+textarea.form-control {
+    height: auto;
+}
+
+element.style {
+}
+textarea.form-control {
+    height: auto;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.media-list {
+    padding-left: 0;
+    list-style: none;
+}
+.comment-wrapper .media-list .media {
+    border-bottom: 1px dashed #efefef;
+    margin-bottom: 25px;
+}
+.comment-wrapper .media-list .media img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid #e5e7e8;
+}
+.media-body {
+    width: 10000px;
+}
+.media-body, .media-left, .media-right {
+    display: table-cell;
+    vertical-align: top;
+}
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    width: 600px; /* Adjust the width as per your preference */
+}
+
+.comment img {
+    float: left;
+    margin-right: 10px;
+    height: 52px;
+    border-radius: 50%;
+    width: 52px;
+}
+
+.comment span {
+    color: #888;
+}
+
+
+.comment button {
+    float: right;
+    margin-top: -5px;
+}
+.single-category li{
+    padding: 10px;
+}
+.single-category a{
+    text-decoration: none;
+    color: black;
+    font-size: 21px;
+    font-weight: 500;
+
+}
+.single-category a:hover{
+    color: #ff0000;
+    .comment {
+        width: 700px;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #3498db; /* Đổi màu đường viền thành màu xanh dương */
+        border-radius: 55px;
+        position: relative;
+        margin-left: 50px;
+        margin-bottom: 20px;
+    }
+
+    .comment-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        justify-content: space-between;
+    }
+
+    .comment img {
+        margin-right: 10px;
+    }
+
+    .comment h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .comment span {
+        color: #888;
+        font-size: 14px;
+    }
+
+    .comment p {
+        margin: 0;
+    }
+
+    .comment form {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .comment form button {
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .comment form button:hover {
+        background-color: #cc0000;
+    }
+
+}
+.comment-container{
+    margin-left:60px;
+
+}
+.delete-btn {
+    background-color: #8b57fc; /* Thay đổi màu background thành #8b57fc */
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
+}
+
+/* Các quy tắc CSS khác vẫn giữ nguyên */
+.delete-btn:active {
+    color: white;
+    box-shadow: 0 0.2rem #dfd9d9;
+    transform: translateY(0.2rem);
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: lightcoral;
+    color: white;
+    text-shadow: 0 0.1rem #bcb4b4;
+}
+
+.delete-btn:disabled {
+    cursor: auto;
+    color: grey;
+}
+.comment-author{
+    font-size: 23px;
+    font-weight: 500;
+    color: #673147;
+}
+.avatar-and-author {
+    display: flex;
+    align-items: center;
+}
+
+.comment-author {
+    margin-left: 10px;
+}
+
+.comment-date {
+    color: #888; /* Màu chữ xám */
+}
+.comment-content {
+    font-size: 30px;
+    line-height: 1.5;
+    color: #333;
+    margin: 10px 0;
+    margin-left: 20px;
+}
+/* CSS cho lpa-meta */
+.lpa-meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CSS cho phần tử 'name' (tên tác giả) */
+.lpa-meta .name {
+  /* Tùy chỉnh kiểu hiển thị, ví dụ: */
+  font-weight: bold;
+}
+
+/* CSS cho phần tử 'date' (ngày đăng) */
+.lpa-meta .date {
+  /* Tùy chỉnh kiểu hiển thị, ví dụ: */
+  color: #888;
+}
+/* CSS cho tiêu đề "Comments" */
+.comments-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px 0px;
+}
+
+/* CSS cho divider */
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  margin-bottom: 20px;
+}
+.comment-section{
+    
 }

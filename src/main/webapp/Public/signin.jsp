@@ -11,11 +11,8 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" />
-
         <!-- link css -->
         <link rel="stylesheet" href="<%=url%>/assets/css/style.css" />
-
         <!-- link icon -->
         <link
             rel="stylesheet"
@@ -83,10 +80,6 @@
                 <div class="page page_signIn ">
                     <h3>Sign up</h3>
                     <p>Create an account to Join the Community!</p>
-
-
-
-
                     <a href="<%=url%>/Public/signup_1.jsp"><button class="btn bkg  btn-signup">Sign Up</button></a>
 
 

@@ -25,137 +25,6 @@
 
     <body>
 
-        <style>
-            .container{
-                position: relative;
-                left: 1000px;
-            }
-            .center {
-                text-align: center;
-            }
-
-            .pagination {
-                display: inline-block;
-            }
-
-            .pagination a {
-                color: black;
-                float: left;
-                padding: 8px 16px;
-                text-decoration: none;
-                transition: background-color .3s;
-                border: 1px solid #ddd;
-                margin: 0 4px;
-            }
-
-            .pagination a.active {
-                background-color: #4CAF50;
-                color: white;
-                border: 1px solid #4CAF50;
-            }
-
-            .pagination a:hover:not(.active) {
-                background-color: #ddd;
-            }
-            nav {
-                position: relative;
-                height: 100%;
-                width: 250px;
-
-            }
-            body{
-                height: 100%;
-            }
-            nav ul {
-                position: relative;
-                height: 100%;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-            nav ul li {
-                /* Sub Menu */
-            }
-            nav ul li a {
-                display: block;
-                padding: 10px 15px;
-                color: #fff;
-                text-decoration: none;
-                -webkit-transition: 0.2s linear;
-                -moz-transition: 0.2s linear;
-                -ms-transition: 0.2s linear;
-                -o-transition: 0.2s linear;
-                transition: 0.2s linear;
-            }
-            nav ul li a:hover {
-                background: #1d4f71;
-                color: #fff;
-            }
-            nav ul li a .fa {
-                width: 16px;
-                text-align: center;
-                margin-right: 5px;
-                float:right;
-            }
-            nav ul ul {
-                background: rgba(0, 0, 0, 0.2);
-            }
-            nav ul li ul li a {
-
-                border-left: 4px solid transparent;
-                padding: 10px 20px;
-            }
-            nav ul li ul li a:hover {
-
-                border-left: 4px solid #3498db;
-            }
-            .Controller{
-                display: flex;
-                position: relative;
-            }
-
-            #active-element{
-                background: #1d4f71;
-                color: #fff;
-
-            }
-            .wrapper{
-                position:fixed;
-                height: 100%;
-                color: #fff;
-            }
-            .Controller .content{
-                margin-left:250px;
-            }
-            .Table{
-
-
-            }
-            table {
-                margin-left: 250px;
-                width: 100%; /* Set the width of the table */
-                border-collapse: collapse; /* Collapse the borders of table cells */
-            }
-
-            th, td {
-                font-size: 20px;
-                padding: 10px; /* Add padding to table cells */
-                text-align: left; /* Align text to the left in table cells */
-                border: 1px solid #ccc; /* Add borders to table cells */
-            }
-
-            .Test th {
-                background-color: #97EA5D; /* Set background color for table headers */
-            }
-            tr:nth-child(even) {
-                background-color: #f9f9f9; /* Set background color for even rows */
-            }
-
-            tr:hover {
-                background-color: #e6e6e6; /* Set background color for hovered rows */
-            }</style>
-
-
 
         <div class="Controller">
             <div class="wrapper">
@@ -163,41 +32,73 @@
                 <%@include file="NavComponents.jsp" %>
 
             </div>
-            <div>
-                <div>
-                    <canvas id="myChart" style="width:100%;max-width:400px ;margin-left: 300px"></canvas>
 
-                </div>
+            <div class="container">
+                <div class="row">
 
-                <div>
-                    <canvas id="revenueChart" style="width:100%;max-width:400px ;margin-left: 50%"></canvas>
+
+                    <div class="col">  <canvas class ="miniChart"id="myChart"></canvas></div>
+
+                    <div class="col">    <canvas class ="miniChart" id="revenueChart" ></canvas></div>
                 </div>
-                <div>
-                    <canvas id="receiptChart" style="width:1000px !important;
-                            height:600px !important ;margin-left: 50%"></canvas>
+                <div class="row">
+                    <div class="col-12">  <canvas id="receiptChart" style="width:1000px !important;
+                                                  height:600px !important"></canvas></div>
+
                 </div>
             </div>
 
 
 
+        </div>
+        <style>
+            .col{
+                border: 1px solid;
+                margin: 2px
+            }
+            #myChart{
+                width: 400px !important;
+                height: auto !important;
+                align-content: center !important;
+                align-self: center !important;
+
+                margin: auto;
+                width: 50%;
+                padding: 10px;
+            }
+            #receiptChart{
+                width: 400px !important;
+                height: auto !important;
+                align-content: center !important;
+                align-self: center !important;
+
+                margin: auto;
+                width: 50%;
+                padding: 10px;
+            }
+            .container{
+                display: inline-block;
+                position: inherit;
+                left: 242px;
+                margin: 0px;
+            }
+        </style>
+        <script src="<%=url%>/Authorization/Admin/chart ts-chart-script.js" type="text/javascript"></script>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>
+            $('.sub-menu ul').hide();
+
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
+            $('.sub-menu ul').hide();
+            $(".sub-menu a").click(function () {
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
         </script>
-    </div>
-    <script src="<%=url%>/Authorization/Admin/chart ts-chart-script.js" type="text/javascript"></script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-        $('.sub-menu ul').hide();
-
-        $(document).ready(function () {
-            $('.sub-menu ul#active').show();
-            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });
-        $('.sub-menu ul').hide();
-        $(".sub-menu a").click(function () {
-            $(this).parent(".sub-menu").children("ul").slideToggle("100");
-            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });
-    </script>
-
-</body>
+    </body>
 </html>

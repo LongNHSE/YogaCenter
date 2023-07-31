@@ -21,6 +21,16 @@ public class HocVienDTO {
     private String maLoaiTK;
     private String email;
     private String gender;
+    private AvatarDTO avatarDTO;
+
+    public AvatarDTO getAvatarDTO() {
+        return avatarDTO;
+    }
+
+    public void setAvatarDTO(AvatarDTO avatarDTO) {
+        this.avatarDTO = avatarDTO;
+    }
+    
 
     public List<String> getMaLopHoc() {
         if (maLopHoc != null) {

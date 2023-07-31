@@ -25,6 +25,7 @@ public class TrainerDAO {
     public TrainerDTO loginTrainer(String username, String psw) {
         List<TrainerDTO> listTrainer = new ArrayList<>();
         try {
+            AvatarDAO avatarDAO = new AvatarDAO();
             String sql = "SELECT * FROM Trainer where username = ? and psw= ?";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             stm.setString(1, username);
@@ -44,7 +45,7 @@ public class TrainerDAO {
                 boolean status = rs.getBoolean("status");
                 String trainerType = rs.getString("trainerType");
                 String maLoaiTK = rs.getString("maLoaiTK");
-
+                trainerDTO.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 trainerDTO.setMaTrainer(maTrainer);
                 trainerDTO.setDob(DateUtils.asLocalDate(dob));
                 trainerDTO.setHo(Ho);
@@ -95,7 +96,7 @@ public class TrainerDAO {
         return 0;
     }
 
-    public int getSoNgayNghi1Lop(String maTrainer,String maLopHoc) {
+    public int getSoNgayNghi1Lop(String maTrainer, String maLopHoc) {
 
         try {
             String sql = "SELECT COUNT(*) as [soNgayNghi]\n"
@@ -153,6 +154,7 @@ public class TrainerDAO {
     public List<TrainerDTO> readListTrainer() {
         List<TrainerDTO> listTrainer = new ArrayList<>();
         try {
+            AvatarDAO avatarDAO = new AvatarDAO();
             String sql = "SELECT * FROM Trainer";
             PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -173,7 +175,7 @@ public class TrainerDAO {
                 String maLoaiTK = rs.getString("maLoaiTK");
                 TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, Ten, dobDate, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
 //                TrainerDTO newTrainer = new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
-//                
+                newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 listTrainer.add(newTrainer);
             }
             return listTrainer;
@@ -207,7 +209,8 @@ public class TrainerDAO {
                 String maLoaiTK = rs.getString("maLoaiTK");
                 TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, Ten, dobDate, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
 //                TrainerDTO newTrainer = new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
-//                
+                AvatarDAO avatarDAO = new AvatarDAO();
+                newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 return newTrainer;
             }
 
@@ -249,6 +252,8 @@ public class TrainerDAO {
                 TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, Ten, dobDate, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
 //                TrainerDTO newTrainer = new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
                 newTrainer.setGender(gender);
+                    AvatarDAO avatarDAO = new AvatarDAO();
+                newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 listTrainer.add(newTrainer);
             }
             return listTrainer;
@@ -294,7 +299,8 @@ public class TrainerDAO {
                 trainerDTO.setTrainerType(trainerType);
                 trainerDTO.setUsername(username);
                 trainerDTO.setMaLoaiTK(maLoaiTK);
-
+                AvatarDAO avatarDAO = new AvatarDAO();
+                trainerDTO.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 listTrainer.add(trainerDTO);
             }
             return listTrainer;
@@ -323,6 +329,8 @@ public class TrainerDAO {
                 trainerDTO.setMaTrainer(maTrainer);
                 trainerDTO.setHo(Ho);
                 trainerDTO.setTen(Ten);
+                AvatarDAO avatarDAO = new AvatarDAO();
+                trainerDTO.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 return trainerDTO;
             }
         } catch (SQLException e) {
@@ -352,6 +360,8 @@ public class TrainerDAO {
                 String trainerType = rs.getString("trainerType");
                 String maLoaiTK = rs.getString("maLoaiTK");
                 TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, ten, DateUtils.asLocalDate(dob), phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+                AvatarDAO avatarDAO = new AvatarDAO();
+                newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 return newTrainer;
             }
         } catch (SQLException e) {
@@ -578,7 +588,7 @@ public class TrainerDAO {
 //        LopHocDAO lopHocDAO = new LopHocDAO();
 //
         TrainerDAO trainerDAO = new TrainerDAO();
-        System.out.println(trainerDAO.getSoNgayNghi1Lop("TR0003","LOP0016"));
+        System.out.println(trainerDAO.getSoNgayNghi1Lop("TR0003", "LOP0016"));
 //        System.out.println(trainerDAO.searchTrainerByClassID("LOP0001"));
 //        List<TrainerDTO> listTrainer = new ArrayList();
 //        trainerDAO.updateTrainerStatus("TR0004", false);

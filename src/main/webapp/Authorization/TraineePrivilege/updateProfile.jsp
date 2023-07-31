@@ -244,16 +244,16 @@
                       </div>
                 
                       </div>-->
-                
-                
-<!--                <div class="previewThumb col-xl-12">
-                    <div id="previewThumb" class="previewThumb">
-                    </div>
-                    <div class="Controller">
-                        <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
-                        <input type="hidden" id="Thumbnails" name="Banner"  >
-                    </div>    
-                </div>    -->
+
+
+                <!--                <div class="previewThumb col-xl-12">
+                                    <div id="previewThumb" class="previewThumb">
+                                    </div>
+                                    <div class="Controller">
+                                        <input class="browse-pic" type="file" id="fileInput" name="Banner" onchange="addThumbnailImage(this)">
+                                        <input type="hidden" id="Thumbnails" name="Banner"  >
+                                    </div>    
+                                </div>    -->
                 <div class="col-xl-8">
 
                     <div class="card mb-4">
@@ -261,21 +261,26 @@
                         <div class="card-body">
                             <form method="POST" action="<%=url%>/ProfileController">
                                 <input class="form-control" id="setMaHV" name="maHV" type="text" value="${hocVienDTO.maHV}" hidden="" readonly>
+                                
                                 <div class="mb-3">
                                     <label class="small mb-1" for="inputUsername" >Username</label>
-                                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}">
+                                    <input class="form-control" id="inputUsername" name="username" type="text" placeholder="" value="${hocVienDTO.username}" required="required">
+                                    <div style="color: red; font-weight: BOLD">
+                                        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                                        <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
+                                    </div>
                                 </div>
 
                                 <div class="row gx-3 mb-3">
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputFirstName">Last Name</label>
-                                        <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}">
+                                        <input class="form-control" id="inputFirstName" type="text" name="ho" placeholder="" value="${hocVienDTO.ho}" required="required">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputLastName">First name</label>
-                                        <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}">
+                                        <input class="form-control" id="inputLastName" name="ten" type="text" placeholder="Enter your last name" value="${hocVienDTO.ten}" required="required">
                                     </div>
                                 </div>
 
@@ -295,12 +300,12 @@
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputPhone">Phone number</label>
-                                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}">
+                                        <input class="form-control" id="inputPhone" name="phone" type="tel" placeholder="" value="${hocVienDTO.phone}" required="required">
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                        <input class="form-control" id="inputBirthday" name="dob" type="text" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}">
+                                        <input class="form-control" id="inputBirthday" name="dob" type="date" name="birthday" placeholder="Enter your birthday" value="${hocVienDTO.dob}" required="required">
                                     </div>
                                 </div>
 
@@ -328,28 +333,30 @@
         <script src="<%=url%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script>
-                            $('#myCarousel').carousel({
-                                interval: false
-                            });
 
-                            //scroll slides on swipe for touch enabled devices
+            inputBirthday.max = new Date().toISOString().split("T")[0];
+            $('#myCarousel').carousel({
+                interval: false
+            });
 
-                            $("#myCarousel").on("touchstart", function (event) {
+            //scroll slides on swipe for touch enabled devices
 
-                                var yClick = event.originalEvent.touches[0].pageY;
-                                $(this).one("touchmove", function (event) {
+            $("#myCarousel").on("touchstart", function (event) {
 
-                                    var yMove = event.originalEvent.touches[0].pageY;
-                                    if (Math.floor(yClick - yMove) > 1) {
-                                        $(".carousel").carousel('next');
-                                    } else if (Math.floor(yClick - yMove) < -1) {
-                                        $(".carousel").carousel('prev');
-                                    }
-                                });
-                                $(".carousel").on("touchend", function () {
-                                    $(this).off("touchmove");
-                                });
-                            });
+                var yClick = event.originalEvent.touches[0].pageY;
+                $(this).one("touchmove", function (event) {
+
+                    var yMove = event.originalEvent.touches[0].pageY;
+                    if (Math.floor(yClick - yMove) > 1) {
+                        $(".carousel").carousel('next');
+                    } else if (Math.floor(yClick - yMove) < -1) {
+                        $(".carousel").carousel('prev');
+                    }
+                });
+                $(".carousel").on("touchend", function () {
+                    $(this).off("touchmove");
+                });
+            });
         </script>      
     </body>
 </html>

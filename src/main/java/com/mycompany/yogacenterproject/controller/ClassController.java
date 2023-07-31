@@ -41,11 +41,15 @@ import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.mycompany.yogacenterproject.util.DBUtils;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,15 +72,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.apache.commons.mail.EmailException;
 
 /**
  *
  * @author Oalskad
  */
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5 * 5, // 5MB
+        maxFileSize = 1024 * 1024 * 5 * 5, // 50MB
+        maxRequestSize = 1024 * 1024 * 5 * 5) // 50MB
 public class ClassController extends HttpServlet {
 
     /**
@@ -120,10 +125,16 @@ public class ClassController extends HttpServlet {
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
             } else if (action.equals("CreateClassType")) {
-                createLoaiLopHoc(request, response);
-                insertImg(request, response);
-                insertThumbImg(request, response);
-                response.sendRedirect("./AdminController?action=listClassType");
+                try {
+
+                    createLoaiLopHoc(request, response);
+                    insertImg(request, response);
+                    insertThumbImg(request, response);
+                    response.sendRedirect("./AdminController?action=listClassType");
+                } catch (Exception e) {
+                    RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+                    rd.forward(request, response);
+                }
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
             } else if (action.equals("Update")) {
@@ -148,10 +159,15 @@ public class ClassController extends HttpServlet {
                 UpdateClassTypePage(request, response);
 
             } else if (action.equals("UpdateClassType")) {
+
                 UpdateLoaiLopHoc(request, response);
 
                 response.sendRedirect("./AdminController?action=listClassType");
             } else if (action.equals("CheckVoucher")) {
+                
+                
+                
+                
                 checkVoucher(request, response);
             }
         } catch (Exception e) {
@@ -170,10 +186,10 @@ public class ClassController extends HttpServlet {
         if (voucherDAO.checkVoucherName(voucher)) {
             String loaiLopHoc = request.getParameter("maLoaiLopHoc");
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
-            double currentPrice
-                    = Double.parseDouble(loaiLopHocDAO.searchHocPhiLopHoc(loaiLopHoc));
+            Long currentPrice
+                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(loaiLopHoc);
 
-            currentPrice = currentPrice * (100 - 10) / 100;
+            currentPrice = currentPrice * (100 - voucherDTO.getMultiplier()) / 100;
             request.setAttribute("currentPrice", currentPrice);
             request.setAttribute("voucherDTO", voucherDTO);
             showDetails(request, response);
@@ -191,8 +207,8 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO loaiLopHocDTO = loaiLopHocDAO.searchLoaiLopHoc(maLoaiLopHoc);
         request.setAttribute("loaiLopHocDTO", loaiLopHocDTO);
         LopHocImageDAO imgdao = new LopHocImageDAO();
-        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
-        request.setAttribute("imageListByID", list);
+//        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
+//        request.setAttribute("list", list);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/UpdateClassTypePage.jsp");
         rd.forward(request, response);
     }
@@ -229,12 +245,42 @@ public class ClassController extends HttpServlet {
             descriptionDTO.setMaDescription(maDescription);
             descriptionDTO.setTitle(request.getParameter("title").trim());
             String content = request.getParameter("description").trim();
-            content = content.replace("\n", "<br>");
 
-            descriptionDTO.setContent(content);
+            descriptionDTO.setContent(content.trim());
 
             descriptionDAO.updateDescriptionDTO(descriptionDTO);
             loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
+
+            try {
+                Part filePart = request.getPart("Banner");
+
+//                List<byte[]> imageListThumb = new ArrayList<>();
+//
+//                String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+//                byte[] imageData = Base64.getDecoder().decode(base64String);
+                if (filePart != null && filePart.getSize() > 0) {
+                    // Read the file data from the Part
+                    InputStream fileContent = filePart.getInputStream();
+
+                    // Convert the file data to a byte array
+                    byte[] imageData = fileContent.readAllBytes();
+
+                    // Now you have the byte array containing the uploaded image data
+                    // You can further process or store this data as needed
+                    // Example: Convert the byte array to Base64 string
+                    String base64String = Base64.getEncoder().encodeToString(imageData);
+
+                    // Example: Print the Base64 string to the console
+                    LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+                    lopHocImageDAO.UpdateImage(imageData, maLoaiLopHoc);
+                    // Example: Store the byte array in a session attribute (this is just a demonstration, you can save it to a database or elsewhere)
+                }
+
+            } catch (Exception e) {
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+                rd.forward(request, response);
+            }
+
         } else {
             request.setAttribute("errorMessage", errorMessage);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
@@ -254,55 +300,67 @@ public class ClassController extends HttpServlet {
     }
 
     //ADD Image danh cho Create Class Type
-    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        try {
 
-        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        List<byte[]> imageList = new ArrayList<>();
-        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
-        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+            LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+            List<byte[]> imageList = new ArrayList<>();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
 
-        //HOCVIEN CONSTRUCTOR
-        String maAnh = AUTO_IMG_ID;
-        lopHocImageDTO.setMaAnh(maAnh);
-        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
-        lopHocImageDTO.setTenAnh("THUMBNAIL");
+            //HOCVIEN CONSTRUCTOR
+            String maAnh = AUTO_IMG_ID;
+            lopHocImageDTO.setMaAnh(maAnh);
+            lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+            lopHocImageDTO.setTenAnh("THUMBNAIL");
 
-        String imageThumbArray = request.getParameter("Thumbnails");
-        List<String> listAnhThumb = new ArrayList<>();
-        List<byte[]> imageListThumb = new ArrayList<>();
+            String imageThumbArray = request.getParameter("Thumbnails");
+            List<String> listAnhThumb = new ArrayList<>();
+            List<byte[]> imageListThumb = new ArrayList<>();
 
-        String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
-        byte[] imageData = Base64.getDecoder().decode(base64String);
-        imageListThumb.add(imageData);
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageListThumb.add(imageData);
 
-        lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+            lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+        } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+            rd.forward(request, response);
+        }
     }
 
-    private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        List<byte[]> imageList = new ArrayList<>();
-        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
-        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+    private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        try {
 
-        //HOCVIEN CONSTRUCTOR
-        String maAnh = AUTO_IMG_ID;
-        lopHocImageDTO.setMaAnh(maAnh);
-        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+            LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+            List<byte[]> imageList = new ArrayList<>();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
 
-        String[] imageArray = request.getParameter("listImage").split("\\s+");
-        List<String> listAnh = new ArrayList<>();
-        for (String a : imageArray) {
-            String base64String = a.substring(a.indexOf(",") + 1);
-            byte[] imageData = Base64.getDecoder().decode(base64String);
-            imageList.add(imageData);
-            listAnh.add(a);
+            //HOCVIEN CONSTRUCTOR
+            String maAnh = AUTO_IMG_ID;
+            lopHocImageDTO.setMaAnh(maAnh);
+            lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+
+            String[] imageArray = request.getParameter("listImage").split("\\s+");
+
+            List<String> listAnh = new ArrayList<>();
+
+            for (String a : imageArray) {
+                String base64String = a.substring(a.indexOf(",") + 1);
+                byte[] imageData = Base64.getDecoder().decode(base64String);
+                imageList.add(imageData);
+                listAnh.add(a);
+            }
+            lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
+        } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+            rd.forward(request, response);
         }
-        lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
-
     }
 
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
@@ -333,42 +391,47 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
         DescriptionDAO descriptionDAO = new DescriptionDAO();
         DescriptionDTO descriptionDTO = new DescriptionDTO();
+        try {
 
-        String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
-        String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
-        String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (descriptionDAO.lastIDIndex() + 1));
-        String maDescription = AUTO_DESCRIPTION_ID;
-        String errorMessage = "";
-        boolean check = true;
+            String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
+            String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
+            String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (descriptionDAO.lastIDIndex() + 1));
+            String maDescription = AUTO_DESCRIPTION_ID;
+            String errorMessage = "";
+            boolean check = true;
 
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
 
-        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
-            errorMessage += "Ten loai lop hoc da ton tai";
-            check = false;
-        }
-        double hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
+            if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
+                errorMessage += "Ten loai lop hoc da ton tai";
+                check = false;
+            }
+            double hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
 
-        if (check == true) {
-            loaiLopHocDTO.setHocPhi(hocPhi);
-            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
-            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-            loaiLopHocDTO.setMaDescription(maDescription);
-            descriptionDTO.setMaDescription(maDescription);
-            descriptionDTO.setTitle(request.getParameter("title").trim());
-            String content = request.getParameter("description").trim();
-            content = content.replace("\n", "<br>");
+            if (check == true) {
+                loaiLopHocDTO.setHocPhi(hocPhi);
+                loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+                loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+                loaiLopHocDTO.setMaDescription(maDescription);
+                descriptionDTO.setMaDescription(maDescription);
+                descriptionDTO.setTitle(request.getParameter("title").trim());
+                String content = request.getParameter("description").trim();
 
-            descriptionDTO.setContent(content);
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            descriptionDAO.createDescriptionDTO(descriptionDTO);
-            loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
-        } else {
-            request.setAttribute("errorMessage", errorMessage);
+                descriptionDTO.setContent(content);
+                request.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                descriptionDAO.createDescriptionDTO(descriptionDTO);
+                loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
+            } else {
+                request.setAttribute("errorMessage", errorMessage);
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
+                rd.forward(request, response);
+
+            }
+        } catch (Exception e) {
+
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
             rd.forward(request, response);
-
         }
     }
 

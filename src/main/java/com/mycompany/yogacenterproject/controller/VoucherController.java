@@ -71,7 +71,7 @@ public class VoucherController extends HttpServlet {
                 voucherDTO.setUsageLimit(usageLimit);
                 voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
                 error = false;
-                voucherDAO.addVoucher(voucherDTO);
+//                voucherDAO.addVoucher(voucherDTO);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
                 rd.forward(request, response);
             } else {
