@@ -430,7 +430,7 @@ body{
 }
 
 .box select {
-    background-color: rgb(218, 112, 214);
+    background-color:#8b57fc;
     color: #ffff;
     padding: 12px;
     padding-top: 20px;
@@ -580,7 +580,7 @@ body{
 .Custom button{
     position:relative;
     top: 85px;
-    left: 60px;
+    left: 83px;
     padding: 12px 90px;
 }
 input[type="text"]::placeholder {
@@ -639,9 +639,6 @@ input[type="text"]::placeholder {
                 font-size: 15px;
             }
 
-            .active, .collapsible:hover {
-                background-color: #da70d6
-            }
 
             .collapsible:after {
                 content: '\002B';
