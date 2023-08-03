@@ -132,7 +132,7 @@
                                         <select name="maSlot" required>
                                             <option  value=""> Please choose Slot</option>
                                             <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
-                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
+                                                <option style="text-align:left" name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
                                                     ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
                                                 </option>  
                                             </c:forEach>
@@ -161,7 +161,7 @@
                                         width: 357px;
                                         position: absolute;
                                         margin-top: 171px;
-                                        color: white;
+                                        color:red;
                                         left: 100px;
                                         font-weight: BOLD;
                                         text-align: center;
@@ -265,10 +265,10 @@
 
                     <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
                         <div class="comment mt-4 text-justify float-left " style="border: none">
-                            <form action="<%=url%>/CommentController">
-                                <div class="d-flex flex-row align-items-start"><textarea style="resize:none; padding:30px 0px;" class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
+                            <form action="<%=url%>/CommentController" style="position:relative">
+                                <div class="d-flex flex-row align-items-start"><textarea style="resize:none; padding-bottom: 100px"class="form-control ml-1 shadow-none textarea" name="comment" id="commentTextArea"></textarea></div>
                                 <div class="mt-2 text-right btn-section">
-                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none cancel-btn" type="button">Cancel</button>
+                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none cancel-btn" type="button" onclick="clearTextarea()">Cancel</button>
                                     <button class="btn btn-primary btn-sm shadow-none submit-btn" type="submit">Post comment</button>                                
                                 </div>
 
@@ -284,7 +284,7 @@
                         <div class="comment mt-4 text-justify float-left comment-content">
                             <c:choose>
                                 <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV != null}">
-                                    <form action="<%=url%>/CommentController">
+                                    <form action="<%=url%>/CommentController" style="position:relative;">
                                         <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
@@ -293,10 +293,12 @@
                                 </c:when>
                                 <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
                                     <form action="<%=url%>/CommentController">
-                                        <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-                                        <input type="hidden" name="action" value="delete" />
+
+                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                        <input type="hidden" name="action" value="deleteBlog" />
+                                          <button class="btn delete-btn" type="submit">X</button>
+
                                     </form>
                                 </c:when>
                                 <c:otherwise>
@@ -500,6 +502,12 @@
 .cancel-btn:active {
   scale: 1;
 }
+.delete-btn {
+    position: absolute;
+    right: 0;
+    bottom: -33px;
+    margin-top: 10px;
+}
         </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
@@ -530,10 +538,17 @@
                 modal.style.display = 'block';
             }
 
-            function closeModal() {
-                var modal = document.getElementById('trainerModal');
-                modal.style.display = 'none';
-            }
+
+                function closeModal() {
+                  var modal = document.getElementById('trainerModal');
+                  modal.style.display = 'none';
+                }
+                
+                function clearTextarea() {
+                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+                  }
+
+
 
         </script>
     </body>
