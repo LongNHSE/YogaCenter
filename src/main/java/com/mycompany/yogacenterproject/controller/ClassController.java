@@ -119,6 +119,10 @@ public class ClassController extends HttpServlet {
 //                out.print(maLopHoc);
 //                out.print(maTrainer);
                 assignTrainer(request, response);
+                  String maLopHoc = request.getParameter("maLopHoc");
+                String maTrainer = request.getParameter("listTrainer");
+                out.print(maLopHoc);
+                out.print(maTrainer);
             } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/ClassSchedule.jsp");

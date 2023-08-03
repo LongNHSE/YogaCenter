@@ -220,12 +220,13 @@ public class LopHocDAO {
                 foundClass.setSoBuoiDaDay(getSoNgayDaDay(foundClass.getMaLopHoc()));
                 foundClass.setNgayKetThuc(getLastDay(foundClass.getMaLopHoc()));
                 foundClass.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(foundClass.getMaLoaiLopHoc()));
-                foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(foundClass.getMaLopHoc()));
-                foundClass.setTrainerDTO(trainerDAO.searchTrainerById(foundClass.getTrainerDTO().getMaTrainer()));
+                foundClass.setMaLopHoc(maLopHoc);
+                foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(maLopHoc));
+              
                 foundClass.setSoLuongHV(soLuongHV);
                 foundClass.setSoLuongHvHienTai(soLuongHvHienTai);
                 foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
-                foundClass.setMaLopHoc(maLopHoc);
+                
                 foundClass.setMaRoom(maRoom);
                 foundClass.setSoBuoi(soBuoi);
                 foundClass.setNgayBatDau(ngay);
@@ -1009,8 +1010,9 @@ public class LopHocDAO {
     public static void main(String[] args) throws SQLException {
 
         LopHocDAO a = new LopHocDAO();
-        List<LopHocDTO> listLopHocDTO = a.getListClassOfTrainee("HV0001");
-        System.out.println(a.getListClassOfTrainer("TR0001"));
+        System.out.println(a.searchClassById("LOP0025").getSlotDTO().getMaSlot());
+//        List<LopHocDTO> listLopHocDTO = a.getListClassOfTrainee("HV0001");
+//        System.out.println(a.getListClassOfTrainer("TR0001"));
 //        System.out.println(a.getSoNgayDaDay("LOP0003"));
 //        for (LopHocDTO c : listLopHocDTO) {
 //            System.out.println(c.getMaLopHoc());

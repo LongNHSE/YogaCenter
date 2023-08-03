@@ -74,6 +74,23 @@ public class ExceptionController extends HttpServlet {
             if (action.equals("Change Class")) {
                 changeClassPage(request, response);
             } else if (action.equals("ChangeClassAction")) {
+
+//                HttpSession session = request.getSession();
+//
+//                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+//                LopHocDTO lopHocDTO = new LopHocDTO();
+//                LopHocDAO lopHocDAO = new LopHocDAO();
+//
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+//
+//                if (!checkTraineeSchedule(request, response, lopHocDTO.getSlotDTO().getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV()) ) {
+//                    out.println("false");
+//                }
+//                out.print(checkTraineeSchedule(request, response, lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV()));
+//                out.print(lopHocDTO.getMaSlot());
+//                out.print(lopHocDTO.getThuList());
+//                out.print(hocVienDTO.getMaHV());
                 changeClass(request, response);
             } else if (action.equals("Reserve")) {
                 reserve(request, response);
@@ -111,7 +128,7 @@ public class ExceptionController extends HttpServlet {
         TrainerDAO trainerDAO = new TrainerDAO();
         TrainerDTO trainerDTO = applicationDTO.getTrainerDTO();
 //        String maTrainerNew = request.getParameter("maTrainer");
-         String maTrainerNew = request.getParameter("listTrainer");
+        String maTrainerNew = request.getParameter("listTrainer");
         String pattern = "Date: (\\d{4}-\\d{2}-\\d{2}) Slot: (\\w+)";
         Pattern regexPattern = Pattern.compile(pattern);
 
@@ -126,8 +143,8 @@ public class ExceptionController extends HttpServlet {
             Date ngayHoc = Date.valueOf(date);
 
             scheduleDAO.updateTrainerDayOff(applicationDTO.getMaLopHoc(), maTrainerNew, ngayHoc, slot);
-            EmailController.trainerDTOAssignDayOff(trainerDAO.readTrainer(maTrainerNew), lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()),ngayHoc, slot);
-            EmailController.approveResquestDayOff(trainerDTO,lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()) , ngayHoc, slot);
+            EmailController.trainerDTOAssignDayOff(trainerDAO.readTrainer(maTrainerNew), lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()), ngayHoc, slot);
+            EmailController.approveResquestDayOff(trainerDTO, lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()), ngayHoc, slot);
             applicationDAO.updateStatusApprove(maApplication);
             response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
         } else {
@@ -273,13 +290,13 @@ public class ExceptionController extends HttpServlet {
                 String maLopHoc = request.getParameter("maLopHoc");
                 lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
 // Split the cleaned value into individual elements
-                //                String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+//                                String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
                 ScheduleDAO scheduleDAO = new ScheduleDAO();
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
                     errorMessage += "Classes are fully reserved.";
                 }
-                if (!checkTraineeSchedule(request, response, lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV())) {
+                if (checkTraineeSchedule(request, response, lopHocDTO.getSlotDTO().getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV()) == false) {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
@@ -320,7 +337,7 @@ public class ExceptionController extends HttpServlet {
                     rd.forward(request, response);
 
                 } else {
-                    request.setAttribute("error", errorMessage);
+                    request.setAttribute("popupMessage", errorMessage);
                     changeClassPage(request, response);
                 }
             } else {
@@ -427,7 +444,7 @@ public class ExceptionController extends HttpServlet {
         listClass = lopHocDAO.searchClassByTypeID(cid);
         List<LopHocDTO> listClass2 = new ArrayList<>();
         for (LopHocDTO x : listClass) {
-            if ((x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() >= -1 && x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() <= 1) && !x.getMaLopHoc().equals(lopHocDTO.getMaLopHoc()) && x.getSoBuoi()==lopHocDTO.getSoBuoi()) {
+            if ((x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() >= -1 && x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() <= 1) && !x.getMaLopHoc().equals(lopHocDTO.getMaLopHoc()) && x.getSoBuoi() == lopHocDTO.getSoBuoi()) {
                 listClass2.add(x);
             }
         }
@@ -454,7 +471,7 @@ public class ExceptionController extends HttpServlet {
 
         lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
 
-        if (lopHocDAO.getSoNgayDaDay(maLopHoc) > lopHocDTO.getSoBuoiDaDay()/2) {
+        if (lopHocDTO.getSoBuoiDaDay() >= 2) {
             String popupMessage = maLopHoc;
             request.setAttribute("popupMessage", popupMessage);
             request.getRequestDispatcher("/ProfileController?action=classList").forward(request, response);

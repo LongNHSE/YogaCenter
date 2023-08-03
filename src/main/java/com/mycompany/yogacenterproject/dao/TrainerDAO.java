@@ -331,6 +331,7 @@ public class TrainerDAO {
                 trainerDTO.setTen(Ten);
                 AvatarDAO avatarDAO = new AvatarDAO();
                 trainerDTO.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
+                trainerDTO = searchTrainerById(maTrainer);
                 return trainerDTO;
             }
         } catch (SQLException e) {
@@ -601,10 +602,10 @@ public class TrainerDAO {
     public static void main(String[] args) {
 //        TrainerDAO trainerDAO = new TrainerDAO();
 //        System.out.println(trainerDAO.readListTrainer().get(0).getSalary());
-        TrainerDTO newTrainer = new TrainerDTO();
-        newTrainer.setMaTrainer("TR001");
-        newTrainer.setHo("John");
-        newTrainer.setTen("Doe");
+//        TrainerDTO newTrainer = new TrainerDTO();
+//        newTrainer.setMaTrainer("TR001");
+//        newTrainer.setHo("John");
+//        newTrainer.setTen("Doe");
 
 ////        newTrainer.setDob("1990-01-01");
 //        newTrainer.setPhone("123456789");
@@ -621,7 +622,8 @@ public class TrainerDAO {
 //        LopHocDAO lopHocDAO = new LopHocDAO();
 //
         TrainerDAO trainerDAO = new TrainerDAO();
-        System.out.println(trainerDAO.getSoNgayNghi1Lop("TR0003", "LOP0016"));
+        System.out.println(trainerDAO.searchTrainerByClassID("LOP0023"));
+//        System.out.println(trainerDAO.getSoNgayNghi1Lop("TR0003", "LOP0016"))
 //        System.out.println(trainerDAO.searchTrainerByClassID("LOP0001"));
 //        List<TrainerDTO> listTrainer = new ArrayList();
 //        trainerDAO.updateTrainerStatus("TR0004", false);

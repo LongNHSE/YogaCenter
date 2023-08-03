@@ -55,6 +55,14 @@
             <!--navbar : Start-->
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
+        <% String popupMessage = (String) request.getAttribute("popupMessage");
+              %>
+        <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+            <strong>!</strong>  ${popupMessage} 
+        </div>
+
+        <% }%>
         <div class="Detail-con">
 
             <div>

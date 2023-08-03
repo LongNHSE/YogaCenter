@@ -158,14 +158,14 @@
                                     <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
                                 </div>  
                                 <div style="
-                                        width: 357px;
-                                        position: absolute;
-                                        margin-top: 171px;
-                                        color:red;
-                                        left: 100px;
-                                        font-weight: BOLD;
-                                        text-align: center;
-                                        padding: 5px 12px;
+                                     width: 357px;
+                                     position: absolute;
+                                     margin-top: 171px;
+                                     color:red;
+                                     left: 100px;
+                                     font-weight: BOLD;
+                                     text-align: center;
+                                     padding: 5px 12px;
                                      ">
 
                                     <% String errorMessage = (String) request.getAttribute("error");%>
@@ -293,11 +293,14 @@
                                 </c:when>
                                 <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
                                     <form action="<%=url%>/CommentController">
+                                        <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
 
-                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
-                                        <input type="hidden" name="action" value="deleteBlog" />
-                                          <button class="btn delete-btn" type="submit">X</button>
+                                    
+                                        <input type="hidden" name="action" value="delete" />
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+
+
 
                                     </form>
                                 </c:when>
@@ -313,11 +316,11 @@
                                 <c:if test="${commentDTO.trainerDTO.username != null}">
                                     <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
                                     <h3 class="author-name">${commentDTO.trainerDTO.ten}</h3><span style="color: #953553; font-size: 16px;; font-weight: 600;margin-bottom: 10px; margin-left: 10px; ">(Trainer)</span>
-                                </c:if>
+                                    </c:if>
                             </div>
                             <br>
                             <div class="comment-detail">
-                            <p>${commentDTO.noiDung}</p>
+                                <p>${commentDTO.noiDung}</p>
                             </div>
                         </div>
                     </c:forEach>
@@ -374,140 +377,140 @@
             .close:hover {
                 color: black;
             }
-.comment-content {
-    position: relative;
-    border-radius: 50px;
-    border: 2px solid #000;
-}
+            .comment-content {
+                position: relative;
+                border-radius: 50px;
+                border: 2px solid #000;
+            }
 
-.comment-info {
-    display: flex;
-    align-items: center;
-}
+            .comment-info {
+                display: flex;
+                align-items: center;
+            }
 
-.comment-info img {
-    margin-right: 10px;
-}
+            .comment-info img {
+                margin-right: 10px;
+            }
 
-.comment-date {
-    color: gray;
-}
+            .comment-date {
+                color: gray;
+            }
 
-.delete-btn {
-    background-color: #8b57fc;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 1rem;
-    color: lightcoral;
-    box-shadow: 0 0.4rem #dfd9d9;
-    cursor: pointer;
-}
+            .delete-btn {
+                background-color: #8b57fc;
+                border: none;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border-radius: 1rem;
+                color: lightcoral;
+                box-shadow: 0 0.4rem #dfd9d9;
+                cursor: pointer;
+            }
 
-.delete-btn:hover {
-    background-color: lightcoral;
-    color: white;
-}
+            .delete-btn:hover {
+                background-color: lightcoral;
+                color: white;
+            }
 
-.delete-btn:focus {
-    outline: none;
-}
+            .delete-btn:focus {
+                outline: none;
+            }
 
-.comment-content p {
-    margin-top: 10px;
-}
-.comment-date{
-    margin-left: 50px;
-    font-size: 15px;
-    color: #b1b1b1b1;
-}
-.author-name{
-        font-size: 24px;
-    text-align: left;
-    font-weight: 600;
-}
- .submit-btn{
-    cursor: pointer;
-    position: relative;
-    font-size: 18px;
-    color: rgb(106, 90, 249);
-    border: 2px solid rgb(106, 90, 249);
-    border-radius: 34px;
-    background-color: transparent;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-    overflow: hidden;
-}
-.submit-btn::before{
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 50px;
-    height: 50px;
-    border-radius: inherit;
-    scale: 0;
-    z-index: -1;
-    background-color: rgb(106, 90, 249);
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-}
-.submit-btn:hover::before {
-      scale: 3;
-}
-.submit-btn:hover {
-    color: #ffff;
-    scale: 1.1;
-    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
-}
-.submit-btn:active {
-  scale: 1;
-}
-.btn-section{
-    display: flex;
-    justify-content: space-between
-}
-.cancel-btn{
-        cursor: pointer;
-    position: relative;
-    font-size: 18px;
-    color:rgb(114, 47, 55);
-    border: 2px solid rgb(114, 47, 55);
-    border-radius: 34px;
-    background-color: transparent;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-    overflow: hidden;
-}
-.cancel-btn::before{
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 50px;
-    height: 50px;
-    border-radius: inherit;
-    scale: 0;
-    z-index: -1;
-    background-color: rgb(114, 47, 55);
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-}
-.cancel-btn:hover::before {
-      scale: 3;
-}
-.cancel-btn:hover {
-    color: #ffff;
-    scale: 1.1;
-    box-shadow: 0 0px 20px rgba(114, 47, 55,0.4);
-}
-.cancel-btn:active {
-  scale: 1;
-}
-.delete-btn {
-    position: absolute;
-    right: 0;
-    bottom: -33px;
-    margin-top: 10px;
-}
+            .comment-content p {
+                margin-top: 10px;
+            }
+            .comment-date{
+                margin-left: 50px;
+                font-size: 15px;
+                color: #b1b1b1b1;
+            }
+            .author-name{
+                font-size: 24px;
+                text-align: left;
+                font-weight: 600;
+            }
+            .submit-btn{
+                cursor: pointer;
+                position: relative;
+                font-size: 18px;
+                color: rgb(106, 90, 249);
+                border: 2px solid rgb(106, 90, 249);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+                overflow: hidden;
+            }
+            .submit-btn::before{
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                border-radius: inherit;
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(106, 90, 249);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
+            .submit-btn:hover::before {
+                scale: 3;
+            }
+            .submit-btn:hover {
+                color: #ffff;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+            }
+            .submit-btn:active {
+                scale: 1;
+            }
+            .btn-section{
+                display: flex;
+                justify-content: space-between
+            }
+            .cancel-btn{
+                cursor: pointer;
+                position: relative;
+                font-size: 18px;
+                color:rgb(114, 47, 55);
+                border: 2px solid rgb(114, 47, 55);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+                overflow: hidden;
+            }
+            .cancel-btn::before{
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                border-radius: inherit;
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(114, 47, 55);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
+            .cancel-btn:hover::before {
+                scale: 3;
+            }
+            .cancel-btn:hover {
+                color: #ffff;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(114, 47, 55,0.4);
+            }
+            .cancel-btn:active {
+                scale: 1;
+            }
+            .delete-btn {
+                position: absolute;
+                right: 0;
+                bottom: -33px;
+                margin-top: 10px;
+            }
         </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
@@ -539,14 +542,14 @@
             }
 
 
-                function closeModal() {
-                  var modal = document.getElementById('trainerModal');
-                  modal.style.display = 'none';
-                }
-                
-                function clearTextarea() {
-                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
-                  }
+            function closeModal() {
+                var modal = document.getElementById('trainerModal');
+                modal.style.display = 'none';
+            }
+
+            function clearTextarea() {
+                document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+            }
 
 
 
