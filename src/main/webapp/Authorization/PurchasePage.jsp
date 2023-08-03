@@ -25,7 +25,14 @@
     </head>
     <body>
         <jsp:include page="../Components/headerComponent.jsp" />       
+        <% String popupMessage = (String) request.getAttribute("popupMessage");
+            String popupMessageSuccessful = (String) request.getAttribute("popupMessageSuccessful"); %>
+        <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+            <strong>!</strong>  ${popupMessage} 
+        </div>
 
+        <% }%>
 
         <section class="vh-100 gradient-custom register-section">
             <div class="container py-5 h-100" >
@@ -80,24 +87,24 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-4 d-flex align-items-center">
+
                                         <c:set var="voucher" value="${voucherDTO}"/>
                                         <div class="form-outline datepicker w-100">
 
                                             <c:if test="${currentPrice==null}" >
-                                                <input type="text" class="form-control form-control-lg" id="Fee" name="Fee" required="required" value="${lopHocDTO.loaiLopHocDTO.getHocPhiWithDot() } VND" readonly/>
+                                                <input type="text" class="form-control form-control-lg" id="Fee" name="FeeFormat" required="required" value="${requestScope.feeFormat } VND" readonly/>
 
                                                 <label for="Fee" class="form-label">Fee</label>
                                             </c:if>
                                             <c:if test="${currentPrice!=null}" >
-                                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi"  />
-                                                <s>${formattedHocPhi}</s>
+
 
 
                                                 <c:set var="currentPrice" value="${currentPrice}"/>
                                                 <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
-                                                <p type="text" class="form-control form-control-lg" id="Fee" name="Fee" required="required" readonly><s>${lopHocDTO.loaiLopHocDTO.getHocPhiWithDot()}</s> VND - <b>Discount ${voucher.multiplier}%</b> </p> 
+                                                <p type="text" class="form-control form-control-lg" id="Fee" name="FeeFormat" required="required" readonly><s>${requestScope.feeFormat }</s> VND - <b>Discount ${voucher.multiplier}%</b> </p> 
 
-                                                <input type="text" class="form-control form-control-lg" id="Fee" name="Fee" required="required" value="${currentPrice} VND" readonly/>
+                                                <input type="text" class="form-control form-control-lg" id="Fee" name="FeeFormat" required="required" value="${currentPrice} VND" readonly/>
                                                 <label for="Fee" class="form-label">   
                                                     Fee</label>
 
@@ -107,6 +114,7 @@
                                     </div>
                                     <form action="<%=url%>/ClassController" method="POST">   
                                         <div class="col-md-6 mb-4">
+                                            <input type="hidden" class="form-control form-control-lg" id="Fee" name="Fee" required="required" value="${requestScope.fee }" readonly/>
 
 
                                             <c:if test="${voucher!=null}" >
@@ -151,6 +159,53 @@
         </section>
 
 
+        <style>
+            /* CSS cho modal */
+            /* Modal */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
 
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 60%;
+                position: relative; /* Thêm thuộc tính này để làm nút Close tương đối với Modal Content */
+            }
+
+            /* Close button */
+            .close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 1.5rem;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .close:hover {
+                color: black;
+            }
+
+        </style>
     </body>
 </html>

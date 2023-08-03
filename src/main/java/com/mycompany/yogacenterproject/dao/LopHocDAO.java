@@ -784,7 +784,7 @@ public class LopHocDAO {
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 LopHocDTO lopHocDTO = searchClassById(maLopHoc);
-                if (compareLists(thuList, showThu(maLopHoc)) && lopHocDTO.getSoBuoiDaDay()<=2) {
+                if (compareLists(thuList, showThu(maLopHoc)) && lopHocDTO.getSoBuoiDaDay()<= lopHocDTO.getSoBuoi()/2) {
                     return maLopHoc;
                 }
             }

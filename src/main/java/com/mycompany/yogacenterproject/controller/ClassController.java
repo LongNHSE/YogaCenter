@@ -209,35 +209,55 @@ public class ClassController extends HttpServlet {
 
     public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String voucher = request.getParameter("voucher");
-
+        HttpSession session = request.getSession();
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
         VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
         LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
         LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        ApplicationDAO applicationDAO = new ApplicationDAO();
         LopHocDAO lopHocDAO = new LopHocDAO();
         String maLopHoc = request.getParameter("maLopHoc");
         LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
         request.setAttribute("lopHocDTO", lopHocDTO);
+        String feee = request.getParameter("Fee");
+        Double feeValue = Double.parseDouble(feee);
         if (voucherDAO.checkVoucherName(voucher)) {
-
+//            if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+//                
+//            }
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
             double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
             lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
 
-            double currentPrice2 = Double.parseDouble(request.getParameter("CurrentFee"));
+            double currentPrice2 = Double.parseDouble(request.getParameter("Fee"));
             Long currentPrice = (long) currentPrice2;
 //                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(lopHocDTO.getMaLoaiLopHoc()) * lopHocDTO.getSoBuoi();
 
+//            String feee = request.getParameter("fee");
             currentPrice = currentPrice * (100 - voucherDTO.getMultiplier()) / 100;
             String currentPriceFormat = getHocPhiWithDot(currentPrice);
             request.setAttribute("currentPrice", currentPriceFormat);
+
             request.setAttribute("voucherDTO", voucherDTO);
+            if (lopHocDTO.getSoBuoiDaDay() > 0) {
+                String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                request.setAttribute("popupMessage", popupMessage);
+            }
+            request.setAttribute("feeFormat", getHocPhiWithDot(feeValue));
+            request.setAttribute("fee", feee);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
             rd.forward(request, response);
         } else {
+            if (lopHocDTO.getSoBuoiDaDay() > 0) {
+                String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                request.setAttribute("popupMessage", popupMessage);
+            }
             String voucherMessage = "Voucher is not exist";
             request.setAttribute("voucherMessage", voucherMessage);
+            request.setAttribute("feeFormat", getHocPhiWithDot(feeValue));
+            request.setAttribute("fee", feee);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
             rd.forward(request, response);
@@ -776,6 +796,7 @@ public class ClassController extends HttpServlet {
                 List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
                 String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
+//                lopHocDTO.getSoBuoiDaDay() > lopHocDTO.getSoBuoi() / 2
                 if (maLopHoc == null) {
                     error = false;
                     errorMessage += " All class have already started. You can't register.";
@@ -805,10 +826,16 @@ public class ClassController extends HttpServlet {
                 if (error) {
 
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                    if (lopHocDTO.getSoBuoiDaDay() >= 0) {
+                        String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                        request.setAttribute("popupMessage", popupMessage);
+                    }
                     if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
-                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
                         lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
                         request.setAttribute("lopHocDTO", lopHocDTO);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
                         RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
                         rd.forward(request, response);
@@ -833,6 +860,8 @@ public class ClassController extends HttpServlet {
                         lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
                         double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
                         lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
                         request.setAttribute("lopHocDTO", lopHocDTO);
                         RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
@@ -902,7 +931,7 @@ public class ClassController extends HttpServlet {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
-                if (lopHocDTO.getSoBuoiDaDay() > 2) {
+                if (lopHocDTO.getSoBuoiDaDay() > lopHocDTO.getSoBuoi() / 2) {
                     error = false;
                     errorMessage += " This class has already started. You can't register.";
                 }
@@ -914,9 +943,15 @@ public class ClassController extends HttpServlet {
                 //check availability before registering
                 if (error) {
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                    if (lopHocDTO.getSoBuoiDaDay() >= 0) {
+                        String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                        request.setAttribute("popupMessage", popupMessage);
+                    }
                     if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
-                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
                         lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
                         request.setAttribute("lopHocDTO", lopHocDTO);
                         RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
@@ -942,6 +977,8 @@ public class ClassController extends HttpServlet {
                         lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
                         double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
                         lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
                         request.setAttribute("lopHocDTO", lopHocDTO);
                         RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
@@ -962,6 +999,20 @@ public class ClassController extends HttpServlet {
         } catch (Exception e) {
 
         }
+    }
+
+    public static String getHocPhiWithDot(double fee) {
+        double hocPhi = fee;
+
+// Create a DecimalFormatSymbols instance for the default locale
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator('.');
+
+// Create a DecimalFormat instance with the desired pattern and symbols
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        decimalFormat.setDecimalSeparatorAlwaysShown(false);
+
+        return decimalFormat.format(hocPhi);
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 

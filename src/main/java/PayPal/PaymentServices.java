@@ -84,7 +84,7 @@ public class PaymentServices {
         String voucherName;
         double tax = 0;
         double shipping = 0;
-        double productPrice = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi() / 21000;;
+        double productPrice = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * (lopHocDTO.getSoBuoi()-lopHocDTO.getSoBuoiDaDay()) / 21000;;
 
         double discountMultiplier;
         if (voucherDTO != null) {
