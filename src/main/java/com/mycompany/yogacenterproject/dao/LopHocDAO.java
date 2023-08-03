@@ -219,6 +219,7 @@ public class LopHocDAO {
                 foundClass.setNgayKetThuc(getLastDay(foundClass.getMaLopHoc()));
                 foundClass.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(foundClass.getMaLoaiLopHoc()));
                 foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(foundClass.getMaLopHoc()));
+                foundClass.setTrainerDTO(trainerDAO.searchTrainerById(foundClass.getTrainerDTO().getMaTrainer()));
                 foundClass.setSoLuongHV(soLuongHV);
                 foundClass.setSoLuongHvHienTai(soLuongHvHienTai);
                 foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
