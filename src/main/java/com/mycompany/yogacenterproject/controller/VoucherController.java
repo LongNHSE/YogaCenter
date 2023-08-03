@@ -64,14 +64,14 @@ public class VoucherController extends HttpServlet {
         boolean error = true;
 
         if (voucherDAO.checkVoucherName(voucherName) != true) {
-            if (multiplier < 100) {                                                                                   // correct statement, the discount is 20 for 20% off the total
+            if (multiplier < 100) {                                                                  // correct statement, the discount is 20 for 20% off the total
                 voucherDTO.setVoucherID(AUTO_VOUCHER_ID);
                 voucherDTO.setVoucherName(voucherName);
                 voucherDTO.setMultiplier(multiplier);
                 voucherDTO.setUsageLimit(usageLimit);
                 voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
                 error = false;
-//                voucherDAO.addVoucher(voucherDTO);
+                voucherDAO.addVoucher(voucherDTO);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
                 rd.forward(request, response);
             } else {
