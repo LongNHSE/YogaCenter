@@ -187,12 +187,12 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6 mb-4">
+<!--                                        <div class="col-md-6 mb-4">
                                             <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
                                             <label class="form-label" for="Thumbnail">Profile Picture</label>
                                             <div id="previewThumb" class="previewThumb"></div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="mb-1">
 

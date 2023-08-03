@@ -61,7 +61,7 @@
                                             <div class="form-outline">
                                                 <div class="input-container">
                                                     <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1" required="required">
-                                                    <span class="currency">x1.000.000VND</span>
+                                                    <span class="currency">x100.000VND</span>
                                                     <label class="form-label" for="hocPhi">Participation Fee</label>
                                                 </div>
                                             </div>

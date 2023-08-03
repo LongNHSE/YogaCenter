@@ -167,7 +167,7 @@ public class LopHocDAO {
                 boolean status = rs.getBoolean("status");
 
                 LopHocDTO lopHocDTO = new LopHocDTO();
-               
+
                 lopHocDTO.setStatus(status);
                 lopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
                 lopHocDTO.setMaLopHoc(maLopHoc);
@@ -175,7 +175,7 @@ public class LopHocDAO {
                 lopHocDTO.setMaSlot(maSlot);
                 lopHocDTO.setMaTrainer(maTrainer);
                 lopHocDTO.setNgayBatDau(ngay);
-                 lopHocDTO.setSoBuoiDaDay(getSoNgayDaDay(lopHocDTO.getMaLopHoc()));
+                lopHocDTO.setSoBuoiDaDay(getSoNgayDaDay(lopHocDTO.getMaLopHoc()));
                 lopHocDTO.setSoBuoi(soBuoi);
                 lopHocDTO.setSoLuongHV(soLuongHV);
                 lopHocDTO.setSoLuongHvHienTai(soLuongHvHienTai);
@@ -200,11 +200,12 @@ public class LopHocDAO {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+                TrainerDAO trainerDAO = new TrainerDAO();
                 int soLuongHV = rs.getInt("soLuongHV");
                 int soBuoi = rs.getInt("soBuoi");
-                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
-                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
 
+                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
+                String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
                 String maRoom = rs.getString("maRoom");
                 boolean status = rs.getBoolean("status");
                 Date ngay = rs.getDate("ngay");
@@ -217,6 +218,7 @@ public class LopHocDAO {
                 foundClass.setSoBuoiDaDay(getSoNgayDaDay(foundClass.getMaLopHoc()));
                 foundClass.setNgayKetThuc(getLastDay(foundClass.getMaLopHoc()));
                 foundClass.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(foundClass.getMaLoaiLopHoc()));
+                foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(foundClass.getMaLopHoc()));
                 foundClass.setSoLuongHV(soLuongHV);
                 foundClass.setSoLuongHvHienTai(soLuongHvHienTai);
                 foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
@@ -237,6 +239,55 @@ public class LopHocDAO {
         return null;
     }
 
+    public List<LopHocDTO> searchClassByTypeID(String maLoaiLopHoc) {
+        try {
+            List<LopHocDTO> lissClass = new ArrayList<>();
+            String sql = "SELECT * FROM lopHoc where maLoaiLopHoc=? and status='true'";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maLoaiLopHoc);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+                TrainerDAO trainerDAO = new TrainerDAO();
+                int soLuongHV = rs.getInt("soLuongHV");
+                int soBuoi = rs.getInt("soBuoi");
+
+                int soLuongHvHienTai = rs.getInt("soLuongHvHienTai");
+                String maLopHoc = rs.getString("maLopHoc");
+                String maRoom = rs.getString("maRoom");
+                boolean status = rs.getBoolean("status");
+                Date ngay = rs.getDate("ngay");
+                LopHocDTO foundClass = new LopHocDTO();
+                foundClass.setMaLopHoc(rs.getString("maLopHoc"));
+                foundClass.setMaLoaiLopHoc(rs.getString("maLoaiLopHoc"));
+                foundClass.setNgayBatDau(rs.getDate("ngay"));
+                foundClass.setSoBuoi(rs.getInt("soBuoi"));
+                foundClass.setSoBuoiDaDay(rs.getInt("soBuoi"));
+                foundClass.setSoBuoiDaDay(getSoNgayDaDay(foundClass.getMaLopHoc()));
+                foundClass.setNgayKetThuc(getLastDay(foundClass.getMaLopHoc()));
+                foundClass.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(foundClass.getMaLoaiLopHoc()));
+                foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(foundClass.getMaLopHoc()));
+                foundClass.setSoLuongHV(soLuongHV);
+                foundClass.setSoLuongHvHienTai(soLuongHvHienTai);
+                foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
+                foundClass.setMaLopHoc(maLopHoc);
+                foundClass.setMaRoom(maRoom);
+                foundClass.setSoBuoi(soBuoi);
+                foundClass.setNgayBatDau(ngay);
+                foundClass.setStatus(status);
+                foundClass.setThuList(showThu(maLopHoc));
+                SlotDAO slotDAO = new SlotDAO();
+                foundClass.setSlotDTO(slotDAO.searchByMaSlot(slotDAO.getMaSlot(maLopHoc)));
+                lissClass.add(foundClass);
+
+            }
+            return lissClass;
+        } catch (SQLException e) {
+            Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+
 //////Insert a class
     public void addClass(LopHocDTO newClass) {
         try {
@@ -251,7 +302,7 @@ public class LopHocDAO {
             stm.setString(5, newClass.getMaRoom());
             stm.setDate(6, newClass.getNgayBatDau());
             stm.setInt(7, 0);
-            stm.setBoolean(8, true);
+            stm.setBoolean(8, false);
             stm.executeUpdate();
         } catch (SQLException e) {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -732,7 +783,7 @@ public class LopHocDAO {
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 LopHocDTO lopHocDTO = searchClassById(maLopHoc);
-                if (compareLists(thuList, showThu(maLopHoc))) {
+                if (compareLists(thuList, showThu(maLopHoc)) && lopHocDTO.getSoBuoiDaDay()<=2) {
                     return maLopHoc;
                 }
             }

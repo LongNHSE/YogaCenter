@@ -192,7 +192,7 @@
                                 <% }%>
                             </td>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action" ></td>
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
+                        
                         <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >
                         </tr>
                     </form>

@@ -35,7 +35,7 @@
         <script src="<%=JsUrl%>/js/custom.js"></script>
         <!-- javascript -->
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
         <script src="<%=JsUrl%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -115,11 +115,11 @@
                                 <s>${formattedHocPhi}</s>
 
 
-                            <c:set var="currentPrice" value="${currentPrice}"/>
+                                <c:set var="currentPrice" value="${currentPrice}"/>
 
-                            <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
-                            ${currentPriceNew}
-                        </c:if>
+                                <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
+                                ${currentPriceNew}
+                            </c:if>
                         </p>
                         <hr class="infor-line"/>
 
@@ -138,30 +138,19 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                    <c:set var="voucher" value="${voucherDTO}"/>
-                                    <c:if test="${voucher!=null}" >
-                                        <div>
-                                            <input type="hidden" name="voucherID" value="${voucher.voucherID}" />
-
-                                        </div>
-                                    </c:if>
-                                    <div class="voucher-check">
-                                        <input type="text" name="voucher" value="${voucher.voucherName}" placeholder="Your voucher..."/>
-                                        <button class="button" type="submit" name="action" value="CheckVoucher">
-                                            Check
-                                        </button>
-                                    </div>
 
 
 
                                     <div class="Custom">
-                                        <button class="button" type="submit" name="action" value="Register">
-                                            Register now!
-                                        </button>
+
+
 
                                         <% String cid = (String) request.getAttribute("cid");%>
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                         <input type="hidden" name="returnID" value="<%=cid%>" />
+                                        <button class="button2" type="submit" name="action" value="Register" >
+                                            Register now!
+                                        </button>
                                     </div>                
                                 </div>
                                 <div class="voucher-note">
@@ -190,11 +179,64 @@
                     </div>
                 </div>
                 <c:set var="descriptionDTO" value="${descriptionDTO}" />
-                <div id="alertMessage" class="alert-message">
+
+            </div>
+
+            <div class="ClassList product-content product-wrap clearfix product-deatil">
+                <button class="collapsible">List Class</button>
+                <div class="content">
+
+
+                    <table class="table" >
+
+                        <thead>
+                            <tr class="Test" style="text-align: center">
+
+
+                                <th scope="col">Class' ID</th>
+
+
+                                <th scope="col"> Attendees</th>
+                                <th scope="col">Trainer In Charge</th>
+                                <th scope="col">Slots</th>
+                                <th scope="col">Room</th>
+                                <th scope="col">Slot</th>
+                                <th scope="col">Days</th>
+                                <th scope="col">Initial Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <c:forEach items="${listClass}" var="listClass">
+                            <form action="<%=url%>/ClassController" method="Post">
+                                <tr style="text-align: center">
+
+                                    <th scope="row">${listClass.maLopHoc}</th>
+
+                                    <td >${listClass.soLuongHvHienTai}/${listClass.soLuongHV} </td>
+
+                                    <td><a href="#">${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>
+                                    <td>${listClass.soBuoiDaDay}/${listClass.soBuoi}</td>
+                                    <td>${listClass.maRoom} </td>
+                                    <td>${listClass.slotDTO.timeStart}-${listClass.slotDTO.timeEnd} </td>
+                                    <td>${listClass.printDays()} </td>
+                                    <td >${listClass.ngayBatDau} </td>
+                                    <td ><button class="buttonClass" type="submit" name="action" value="RegisterWithClassID">
+                                            Register now!
+                                        </button> </td>
+                                </tr>
+                                <input type="hidden" name="returnID" value="<%=cid%>" />
+                                <input type="hidden" name="maLopHoc" value="${listClass.maLopHoc}" />
+
+                            </form>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+
 
                 </div>
             </div>
-
             <div class="Description product-content product-wrap clearfix product-deatil">
                 <div class="title">
                     <h1> 📖  ${descriptionDTO.title}</h1>
@@ -228,14 +270,31 @@
                     <c:forEach var="commentDTO" items="${requestScope.listComment}">
 
                         <div class="comment mt-4 text-justify float-left">
-                            <c:if test="${sessionScope.hocVienDTO.maHV ==commentDTO.hocVienDTO.maHV }">
-                                <form action="<%=url%>/CommentController">
-                                    <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 900px;size: 100px">Delete</button>
-                                    <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-                                    <input type="hidden" name="action" value="delete" />
-                                </form>
-                            </c:if>
+
+                            <c:choose>
+
+                                <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV!=null  }">
+                                    <form action="<%=url%>/CommentController">
+
+                                        <button class="btn delete-btn" type="submit">X</button>
+                                        <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                        <input type="hidden" name="action" value="deleteBlog" />
+                                    </form>
+                                </c:when>
+
+                                <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer &&sessionScope.trainerDTO.maTrainer!=null}">
+                                    <form action="<%=url%>/CommentController">
+                                        <button class="btn delete-btn" type="submit">X</button>
+                                        <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                        <input type="hidden" name="action" value="deleteBlog" />
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+
+                                </c:otherwise>
+                            </c:choose>
 
                             <c:if test="${commentDTO.hocVienDTO.username!=null}">
                                 <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
@@ -260,6 +319,41 @@
 
         </div>
         <style>
+            .collapsible {
+                background-color: #777;
+                color: white;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 15px;
+            }
+
+            .active, .collapsible:hover {
+                background-color: #555;
+            }
+
+            .collapsible:after {
+                content: '\002B';
+                color: white;
+                font-weight: bold;
+                float: right;
+                margin-left: 5px;
+            }
+
+            .active:after {
+                content: "\2212";
+            }
+
+            .content {
+
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+
+            }
             .comments{
                 margin-top: 5%;
                 margin-left: 20px;
@@ -291,37 +385,23 @@
 
 
 
-        <!--        <script>
-                    // Get the voucher code input element
-                    const voucherCodeInput = document.getElementById('voucherCodeInput');
-        
-        // Add event listener to the voucher code input
-                    voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
-        
-                    function handleVoucherCodeChange() {
-                        const voucherCode = voucherCodeInput.value;
-        
-                        // Make an AJAX request to the server
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('GET', '/check-voucher?code=' + voucherCode);
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === XMLHttpRequest.DONE) {
-                                if (xhr.status === 200) {
-                                    // Parse the response JSON
-                                    const response = JSON.parse(xhr.responseText);
-        
-                                    // Update the prices on the page
-                                    document.getElementById('originalPrice').textContent = 'Original Price: $100';
-                                    document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
-                                } else {
-                                    console.error('Error: ' + xhr.status);
-                                }
-                            }
-                        };
-                        xhr.send();
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
                     }
-        
-                </script>-->
+                });
+            }
+
+        </script>
 
     </body>
 

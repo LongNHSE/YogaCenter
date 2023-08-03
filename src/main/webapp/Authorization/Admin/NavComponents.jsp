@@ -19,13 +19,7 @@
                 <li><a href='<%=url%>/AdminController?action=ViewSchedule'>View Schedule</a></li>
                 <li><a href='<%=url%>/Authorization/Admin/Class/CreateClassTypePage.jsp'>Create Class Type</a></li>
             </ul>
-        <li id="Voucher" class='sub-menu'><a href='#message'>Voucher<div class='fa fa-caret-down right'></div></a>
-            <ul >
-                <li><a href="<%=url%>/VoucherController?action=listVouchers">List Voucher</a></li>
-                <li><a href='<%=url%>/Admin/Trainer/AddTrainer.jsp'>Add Voucher</a></li>
-                
-            </ul>
-        </li>
+      
         <li id="Trainee" class='sub-menu'><a href='#message'>Trainee<div class='fa fa-caret-down right'></div></a>
             <ul >
                 <li><a href="<%=url%>/AdminController?action=listHocVien">List Trainee</a></li>
