@@ -285,20 +285,22 @@
                             <c:choose>
                                 <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV != null}">
                                     <form action="<%=url%>/CommentController" style="position:relative;">
-                                        <button class="btn delete-btn" type="submit">X</button>
+                                        <button  style="color:white;"class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                         <input type="hidden" name="action" value="delete" />
                                     </form>
                                 </c:when>
                                 <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
-                                    <form action="<%=url%>/CommentController">
+
+                                    <form action="<%=url%>/CommentController" style="position:relative;">
                                         <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
 
-                                    
+
                                         <input type="hidden" name="action" value="delete" />
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+
 
 
 

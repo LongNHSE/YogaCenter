@@ -37,3 +37,7 @@
         const vietnameseTime = convertToVietnameseTime(originalDate);
         commentDate.textContent = `- ${vietnameseTime}`; // Cập nhật lại ngày/giờ thành giờ Việt Nam
     });
+    
+                    function clearTextarea() {
+                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+                  }
