@@ -41,11 +41,11 @@ public class VoucherController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
             String action = request.getParameter("action");
-            
             if (action.equals("listVouchers")) {
                 viewAllVouchers(request, response);
+            }else if (action.equals("addVoucher")) {
+                addVoucher(request, response);
             }
         }
     }
@@ -78,7 +78,7 @@ public class VoucherController extends HttpServlet {
                 errorMessage = "Invalid discount";
             }
             request.setAttribute("errorMessage", errorMessage);
-            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/ListVouchers.jsp");
             rd.forward(request, response);
         }
     }

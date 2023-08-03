@@ -60,6 +60,7 @@ public class VoucherDAO {
         }
         return null;
     }
+
     public VoucherDTO searchVoucherByName(String voucherName) throws SQLException {
         VoucherDTO voucherDTO = new VoucherDTO();
         String sql = "select * from [dbo].[Voucher]\n"
@@ -82,6 +83,7 @@ public class VoucherDAO {
         }
         return null;
     }
+
 
     public void addVoucher(VoucherDTO voucherDTO) throws SQLException {
         String sql = "insert into [dbo].[Voucher]([voucherID],[voucherName],[multiplier],[usageLimit],[usageLimitPerUser])\n"
@@ -263,15 +265,15 @@ public class VoucherDAO {
 //        VoucherDTO voucherDTO = new VoucherDTO("V0004", "test2", 50, 10, 1,2);
 //        int index = voucherDAO.lastIDIndex();
 //        System.out.println(index);
-        boolean nigger = voucherDAO.checkVoucherName("Yoga");
-        System.out.println(nigger);
+//        boolean voucher = voucherDAO.checkVoucherName("Yoga");
+//        System.out.println(voucher);
 //        voucherDAO.deleteVoucher("V0001");
-//        list = voucherDAO.listVouchers();
-//        for (VoucherDTO x : list) {
-//            System.out.println(x);
-//    }
-        voucherDTO = voucherDAO.searchVoucherByName("Yoga");
-        System.out.println(voucherDTO);
+        list = voucherDAO.listVouchers();
+        for (VoucherDTO x : list) {
+            System.out.println(x);
+        }
+//        voucherDTO = voucherDAO.searchVoucherByName("Yoga");
+//        System.out.println(voucherDTO);
 
 //    voucherDAO.addVoucher(voucherDTO);
 //voucherDAO.deleteVoucher("V0003");
