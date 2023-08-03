@@ -164,7 +164,6 @@
                                         color: white;
                                         left: 100px;
                                         font-weight: BOLD;
-                                        background: red;
                                         text-align: center;
                                         padding: 5px 12px;
                                      ">
