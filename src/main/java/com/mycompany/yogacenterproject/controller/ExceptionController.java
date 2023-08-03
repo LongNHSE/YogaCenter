@@ -110,7 +110,8 @@ public class ExceptionController extends HttpServlet {
         ScheduleDAO scheduleDAO = new ScheduleDAO();
         TrainerDAO trainerDAO = new TrainerDAO();
         TrainerDTO trainerDTO = applicationDTO.getTrainerDTO();
-        String maTrainerNew = request.getParameter("maTrainer");
+//        String maTrainerNew = request.getParameter("maTrainer");
+         String maTrainerNew = request.getParameter("listTrainer");
         String pattern = "Date: (\\d{4}-\\d{2}-\\d{2}) Slot: (\\w+)";
         Pattern regexPattern = Pattern.compile(pattern);
 
@@ -161,6 +162,7 @@ public class ExceptionController extends HttpServlet {
                 listTrainerDTO.add(x);
             }
             request.setAttribute("listTrainer", listTrainerDTO);
+            request.setAttribute("maApplication", maApplication);
 
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/AssignTrainerDayOff.jsp");
             rd.forward(request, response);
