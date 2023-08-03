@@ -152,6 +152,7 @@ public class LopHocDAO {
             stm.setInt(1, pageID);
             stm.setInt(2, total);
             ResultSet rs = stm.executeQuery();
+            TrainerDAO trainerDAO= new TrainerDAO();
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 int soLuongHV = rs.getInt("soLuongHV");
@@ -179,6 +180,7 @@ public class LopHocDAO {
                 lopHocDTO.setSoBuoi(soBuoi);
                 lopHocDTO.setSoLuongHV(soLuongHV);
                 lopHocDTO.setSoLuongHvHienTai(soLuongHvHienTai);
+                lopHocDTO.setTrainerDTO(trainerDAO.searchTrainerById(maTrainer));
 
 //                LopHocDTO displayClass = new LopHocDTO(maLopHoc, soLuongHV, soBuoi, maTrainer, maLoaiLopHoc, maSlot, maRoom, ngay);
 //                displayClass.setSoLuongHvHienTai(rs.getInt("soLuongHvHienTai"));

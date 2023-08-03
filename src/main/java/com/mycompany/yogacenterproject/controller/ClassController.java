@@ -1002,17 +1002,22 @@ public class ClassController extends HttpServlet {
     }
 
     public static String getHocPhiWithDot(double fee) {
-        double hocPhi = fee;
+        if(fee>0)  {
+            double hocPhi = fee;
 
 // Create a DecimalFormatSymbols instance for the default locale
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
-        symbols.setGroupingSeparator('.');
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+            symbols.setGroupingSeparator('.');
 
 // Create a DecimalFormat instance with the desired pattern and symbols
-        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
-        decimalFormat.setDecimalSeparatorAlwaysShown(false);
+            DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+            decimalFormat.setDecimalSeparatorAlwaysShown(false);
 
-        return decimalFormat.format(hocPhi);
+            return decimalFormat.format(hocPhi);
+        }
+        else{
+            return "0";
+        }
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
 
@@ -1031,8 +1036,8 @@ public class ClassController extends HttpServlet {
             AttendanceDAO attendanceDAO = new AttendanceDAO();
 
             String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
-
-            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+            LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", "")) * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
 
             String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
             String maHoaDon = AUTO_HOADON_ID;

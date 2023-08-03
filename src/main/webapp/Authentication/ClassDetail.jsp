@@ -216,11 +216,11 @@
                                     <td >${listClass.soLuongHvHienTai}/${listClass.soLuongHV} </td>
 
                                     <!--<td><a href="#"  >${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>-->
-                                <td>
-                                  <a href="#" onclick="openModal('${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}')">
-                                    ${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}
-                                  </a>
-                                </td>
+                                    <td>
+                                        <a href="#" onclick="openModal('${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}')">
+                                            ${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}
+                                        </a>
+                                    </td>
 
 
                                     <td>${listClass.soBuoiDaDay}/${listClass.soBuoi}</td>
@@ -257,7 +257,7 @@
 
                 <div class="col-sm-5 col-md-6 col-12 pb-4" >
                     <div class="header-section" >
-                    <h1 class="comment-header">Comments</h1>
+                        <h1 class="comment-header">Comments</h1>
                     </div>
 
 
@@ -286,8 +286,8 @@
 
                                         <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
-                                        <input type="hidden" name="action" value="deleteBlog" />
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                        <input type="hidden" name="action" value="delete" />
                                     </form>
                                 </c:when>
 
@@ -295,8 +295,8 @@
                                     <form action="<%=url%>/CommentController">
                                         <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
-                                        <input type="hidden" name="action" value="deleteBlog" />
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                        <input type="hidden" name="action" value="delete" />
                                     </form>
                                 </c:when>
                                 <c:otherwise>
@@ -328,49 +328,49 @@
         </div>
         <style>
             /* CSS cho modal */
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
+            /* Modal */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%;
-  position: relative; /* Thêm thuộc tính này để làm nút Close tương đối với Modal Content */
-}
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 60%;
+                position: relative; /* Thêm thuộc tính này để làm nút Close tương đối với Modal Content */
+            }
 
-/* Close button */
-.close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 1.5rem;
-  padding: 5px 10px;
-  cursor: pointer;
-}
+            /* Close button */
+            .close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 1.5rem;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
 
             .close {
-              color: #aaa;
-              float: right;
-              font-size: 28px;
-              font-weight: bold;
-              cursor: pointer;
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
             }
 
             .close:hover {
-              color: black;
+                color: black;
             }
 
         </style>
@@ -395,31 +395,31 @@
                 });
             }
 
-                // JavaScript cho modal
-                function openModal(trainerInfo) {
-                  var modal = document.getElementById('trainerModal');
-                  var trainerInfoParagraph = document.getElementById('trainerInfo');
-                  trainerInfoParagraph.textContent = trainerInfo;
-                  modal.style.display = 'block';
-                }
+            // JavaScript cho modal
+            function openModal(trainerInfo) {
+                var modal = document.getElementById('trainerModal');
+                var trainerInfoParagraph = document.getElementById('trainerInfo');
+                trainerInfoParagraph.textContent = trainerInfo;
+                modal.style.display = 'block';
+            }
 
-                function closeModal() {
-                  var modal = document.getElementById('trainerModal');
-                  modal.style.display = 'none';
-                }
+            function closeModal() {
+                var modal = document.getElementById('trainerModal');
+                modal.style.display = 'none';
+            }
 
         </script>
     </body>
-<!-- Modal -->
-<div id="trainerModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2>Trainer Information</h2>
-    <p id="trainerInfo">Trainer information will be displayed here</p>
-  </div>
-</div>
-<!-- Modal Overlay -->
-<div class="modal-overlay" onclick="closeModal()"></div>
+    <!-- Modal -->
+    <div id="trainerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Trainer Information</h2>
+            <p id="trainerInfo">Trainer information will be displayed here</p>
+        </div>
+    </div>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" onclick="closeModal()"></div>
 
 
 </html>
