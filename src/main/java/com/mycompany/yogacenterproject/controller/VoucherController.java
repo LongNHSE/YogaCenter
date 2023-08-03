@@ -41,11 +41,15 @@ public class VoucherController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
             String action = request.getParameter("action");
-            
             if (action.equals("listVouchers")) {
                 viewAllVouchers(request, response);
+            } else if (action.equals("addVoucher")) {
+                addVoucher(request, response);
+            } else if (action.equals("deleteVoucher")) {
+                deleteVoucher(request, response);
+            } else if (action.equals("updateVoucher")) {
+
             }
         }
     }
@@ -64,27 +68,43 @@ public class VoucherController extends HttpServlet {
         boolean error = true;
 
         if (voucherDAO.checkVoucherName(voucherName) != true) {
-            if (multiplier < 100) {                                                                                   // correct statement, the discount is 20 for 20% off the total
+            if (multiplier < 100) {                                                                  // correct statement, the discount is 20 for 20% off the total
                 voucherDTO.setVoucherID(AUTO_VOUCHER_ID);
                 voucherDTO.setVoucherName(voucherName);
                 voucherDTO.setMultiplier(multiplier);
                 voucherDTO.setUsageLimit(usageLimit);
                 voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
                 error = false;
-//                voucherDAO.addVoucher(voucherDTO);
+                voucherDAO.addVoucher(voucherDTO);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
                 rd.forward(request, response);
             } else {
                 errorMessage = "Invalid discount";
             }
             request.setAttribute("errorMessage", errorMessage);
-            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/AdminHomepage.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/ListVouchers.jsp");
             rd.forward(request, response);
         }
     }
 
-    public void editVoucher(HttpServletRequest request, HttpServletResponse response) {
+    public void editVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
+        String voucherID = request.getParameter("voucherID");
+        String voucherName = request.getParameter("voucherName");
+        int multiplier = Integer.parseInt(request.getParameter("multiplier"));
+        int usageLimit = Integer.parseInt(request.getParameter("usageLimit"));
+        int usageLimitPerUser = Integer.parseInt(request.getParameter("usageLimitPerUser"));
+        
+        voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+        voucherDTO.setVoucherName(voucherName);
+        voucherDTO.setMultiplier(multiplier);
+        voucherDTO.setUsageLimit(usageLimit);
+        voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
+        voucherDAO.updateVoucher(voucherDTO);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("/VoucherController?action=listVouchers");
+        rd.forward(request, response);
     }
 
     public void deleteVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {

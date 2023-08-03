@@ -149,7 +149,7 @@
         <div class="Controller">
 
             <div class="wrapper">
-                 <%@include file="../NavComponents.jsp" %>
+                <%@include file="../NavComponents.jsp" %>
             </div>
 
             <div class="Table">
@@ -157,66 +157,52 @@
 
                     <thead>
                         <tr class="Test">
-                            <th scope="col">Ma Hoa Don</th>
-                            <th scope="col">Ma Hoc Vien</th>
-                            <th scope="col">Ma Lop Hoc</th>
-                            <th scope="col">So Tien</th>
-                            <th scope="col">Ngay Thanh Toan</th>
+                            <th scope="col">No.</th>
+                            <th scope="col">Class' ID</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Creation Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% if (listHoaDon != null) {
-                                for (HoaDonDTO hoaDonDTO : listHoaDon) {
-                        %>
-                    <form action="<%=url%>/AdminController">
-                        <tr>
-                            <th scope="row"><%= hoaDonDTO.getMahoaDon()%></th>
-                            <td><%= hoaDonDTO.getMaHV()%> </td>
-                            <td><%= hoaDonDTO.getMaLopHoc()%> </td>
-                            <td><%= hoaDonDTO.getGiaTien()%> </td>
-                            <td><%= hoaDonDTO.getNgayThanhToan()%> </td>
-                        </tr>
-                    </form>
-                    <% }
-                    } else {%>
-                    <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
 
-                    </tbody>
-                    <% }%>
+                    <form action="<%=url%>/AdminController">
+                        <c:forEach var="row" items="${sessionScope.listHoaDon}" varStatus="counter">
+                            <tr>
+                                <th style="text-align:right">${counter.count}</th>
+                                <td style="text-align:left">${row.maLopHoc}</td>
+                                <td class="price-container" style="text-align:right">
+                            <fmt:formatNumber value="${row.giaTien}" pattern="#,##0 VNĐ" var="formattedGiaTien" />
+                            ${formattedGiaTien}</td>
+                            <td style="text-align:right">${row.ngayThanhToan}</td>
+                            </tr>
+                        </c:forEach>
+                    </form>
+
                 </table>
             </div>
-            <script>   const navMenu = document.querySelector("nav");
+        </div>
+        <script>   const navMenu = document.querySelector("nav");
 
-                // Find the desired element and assign it the "active" id
-                const blogLiElement = navMenu.querySelector("#Trainee");
-                if (blogLiElement) {
-                    const ulElement = blogLiElement.querySelector("ul");
-                    if (ulElement) {
-                        ulElement.id = "active";
-                    }
+            // Find the desired element and assign it the "active" id
+            const blogLiElement = navMenu.querySelector("#Trainee");
+            if (blogLiElement) {
+                const ulElement = blogLiElement.querySelector("ul");
+                if (ulElement) {
+                    ulElement.id = "active";
                 }
+            }
 
-                $(document).ready(function () {
-                    $('.sub-menu ul#active').show();
-                    $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });
+            $(document).ready(function () {
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });
 
-                $('.sub-menu ul').hide();
+            $('.sub-menu ul').hide();
 
-                $(".sub-menu a").click(function () {
-                    $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                    $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-                });</script>
+            $(".sub-menu a").click(function () {
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+            });</script>
 
     </body>
 </html>

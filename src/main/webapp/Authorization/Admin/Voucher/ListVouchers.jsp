@@ -6,6 +6,7 @@
 
 
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.mycompany.yogacenterproject.dto.VoucherDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.TrainerDTO"%>
@@ -170,51 +171,47 @@
         tr:hover {
             background-color: #e6e6e6; /* Set background color for hovered rows */
         }</style>
-        <%
-            List<VoucherDTO> listVouchers = (List<VoucherDTO>) request.getAttribute("listVouchers");
 
-        %>
 
     <body>
-
-        <h1>nigger</h1>
+        <div class="wrapper">
+            <%@include file="../NavComponents.jsp" %>
+        </div>
 
         <div class="Table">
             <table class="table">
 
                 <thead>
                     <tr>
-                        <th scope="col">Voucher ID</th>
+                        <th scope="col">No</th>
                         <th scope="col">Voucher Name</th>
                         <th scope="col">Discount Value</th>
                         <th scope="col">Global Usage Limit</th>
                         <th scope="col">Individual Usage Limit</th>
                         <th scope="col">Total Used</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (listVouchers != null) {
-                            for (VoucherDTO list : listVouchers) {
-                    %>
+
                 <form action="<%=url%>/VoucherController">
-                    <tr>
-                        <th scope="row"><%= list.getVoucherID()%></th>
-                        <td><%= list.getVoucherName()%> </td>
-                        <td><%= list.getMultiplier()%> </td>
-                        <td><%= list.getUsageLimit()%> </td>
-                        <td><%= list.getUsageLimitPerUser()%> </td>
-                        <td><%= list.getTotalUsage()%> </td>
-
-
-
-                        <%}
-                            }%>
-
-                    </tr>
+                    <c:forEach var="row" items="${requestScope.listVouchers}" varStatus="counter">
+                        <tr>
+                            <th >${counter.count}</th>
+                            <td>${row.voucherName} </td>
+                            <td>${row.multiplier} </td>
+                            <td>${row.usageLimit} </td>
+                            <td>${row.usageLimitPerUser} </td>
+                            <td>${row.totalUsage} </td>
+                            <td>
+                                <input class="btn btn-outline-danger" type='submit' value="deleteVoucher" name="action" style="margin-left: 30%" />
+                                <input type="hidden" name="voucherID" value="${row.voucherID}" >
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </form>
-
-
                 </tbody>
+
 
             </table>
         </div>
