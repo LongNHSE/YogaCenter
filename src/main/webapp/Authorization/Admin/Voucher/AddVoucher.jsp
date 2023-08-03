@@ -88,7 +88,30 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    const navMenu = document.querySelector("nav");
 
+                    // Find the desired element and assign it the "active" id
+                    const blogLiElement = navMenu.querySelector("#Voucher");
+                    if (blogLiElement) {
+                        const ulElement = blogLiElement.querySelector("ul");
+                        if (ulElement) {
+                            ulElement.id = "active";
+                        }
+                    }
+
+                    $(document).ready(function () {
+                        $('.sub-menu ul#active').show();
+                        $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                    });
+
+                    $('.sub-menu ul').hide();
+
+                    $(".sub-menu a").click(function () {
+                        $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                        $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                    });
+                </script>
         </div>
     </form>
 </div>
