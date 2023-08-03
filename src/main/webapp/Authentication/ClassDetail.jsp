@@ -106,19 +106,19 @@
                         <hr class="infor-line"/>
                         <p class="price-container text-right">
                             <c:if test="${currentPrice==null}" >
-                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
-                                ${formattedHocPhi}
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VND" var="formattedHocPhi" />
+                                ${formattedHocPhi} / 1 Slot
 
                             </c:if>
                             <c:if test="${currentPrice!=null}" >
-                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi"  />
-                                <s>${formattedHocPhi}</s>
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VND" var="formattedHocPhi"  />
+                                <s> ${formattedHocPhi} / 1 Slot</s>
 
 
                                 <c:set var="currentPrice" value="${currentPrice}"/>
 
                                 <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
-                                ${currentPriceNew}
+                                ${currentPriceNew} / 1 Slot
                             </c:if>
                         </p>
                         <hr class="infor-line"/>

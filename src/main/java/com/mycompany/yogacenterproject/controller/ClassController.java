@@ -753,14 +753,9 @@ public class ClassController extends HttpServlet {
                 String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
                 if (maLopHoc == null) {
                     error = false;
-                    errorMessage += " This class has already started. You can't register.";
-                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                    double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
-                    lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
-                    request.setAttribute("lopHocDTO", lopHocDTO);
-                    RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
-
-                    rd.forward(request, response);
+                    errorMessage += " All class have already started. You can't register.";
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
                 }
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
@@ -855,7 +850,7 @@ public class ClassController extends HttpServlet {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
-                if (lopHocDTO.getSoBuoiDaDay() >= 2) {
+                if (lopHocDTO.getSoBuoiDaDay() > 2) {
                     error = false;
                     errorMessage += " This class has already started. You can't register.";
                 }

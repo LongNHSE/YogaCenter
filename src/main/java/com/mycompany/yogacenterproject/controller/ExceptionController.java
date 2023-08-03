@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -83,7 +85,87 @@ public class ExceptionController extends HttpServlet {
                 assignTrainer(request, response);
             } else if (action.equals("Unapprove")) {
                 unapproveAssignTrainer(request, response);
+            } else if (action.equals("Request day off")) {
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                Date date = Date.valueOf(request.getParameter("ngayHoc"));
+//                String slot = request.getParameter("maSlot");
+//                out.print(maLopHoc);
+//                out.print(date);
+//                out.print(slot);
+                requestDayOff(request, response);
+            } else if (action.equals("Approve day off and Change trainer")) {
+                approveDayOffPage(request, response);
+            } else if (action.equals("AssignTrainerDayOff")) {
+                approveDayOff(request, response);
             }
+
+        }
+    }
+
+    public void approveDayOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, EmailException {
+        String maApplication = request.getParameter("maApplication");
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        ApplicationDTO applicationDTO = applicationDAO.search(maApplication);
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = applicationDTO.getTrainerDTO();
+        String maTrainerNew = request.getParameter("maTrainer");
+        String pattern = "Date: (\\d{4}-\\d{2}-\\d{2}) Slot: (\\w+)";
+        Pattern regexPattern = Pattern.compile(pattern);
+
+        // Create a Matcher object
+        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+//                Matcher matcher = pattern.matcher();
+
+//                requestDayOff(request, response);
+        if (matcher.find()) {
+            String date = matcher.group(1); // Capture group 1 contains the date
+            String slot = matcher.group(2);
+            Date ngayHoc = Date.valueOf(date);
+
+            scheduleDAO.updateTrainerDayOff(applicationDTO.getMaLopHoc(), maTrainerNew, ngayHoc, slot);
+            EmailController.trainerDTOAssignDayOff(trainerDAO.readTrainer(maTrainerNew), lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()),ngayHoc, slot);
+            EmailController.approveResquestDayOff(trainerDTO,lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()) , ngayHoc, slot);
+            applicationDAO.updateStatusApprove(maApplication);
+            response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
+        } else {
+
+        }
+
+//        scheduleDAO.deleteScheduleTrainerOff(maLopHoc, applicationDTO.getMaTrainer());
+    }
+
+    public void approveDayOffPage(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String maApplication = request.getParameter("maApplication");
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        ApplicationDTO applicationDTO = applicationDAO.search(maApplication);
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        TrainerDAO trainerDAO = new TrainerDAO();
+        TrainerDTO trainerDTO = applicationDTO.getTrainerDTO();
+        String pattern = "Date: (\\d{4}-\\d{2}-\\d{2}) Slot: (\\w+)";
+        Pattern regexPattern = Pattern.compile(pattern);
+
+        // Create a Matcher object
+        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+//                Matcher matcher = pattern.matcher();
+
+//                requestDayOff(request, response);
+        if (matcher.find()) {
+            String date = matcher.group(1); // Capture group 1 contains the date
+            String slot = matcher.group(2);
+            Date ngayHoc = Date.valueOf(date);
+            List<TrainerDTO> listTrainerDTO = scheduleDAO.listTrainerDTO(trainerDTO, slot, ngayHoc);
+            List<TrainerDTO> listTrainerDTOAvailable = trainerDAO.readListTrainerByTypeAndStatus(trainerDTO.getTrainerType());
+            for (TrainerDTO x : listTrainerDTOAvailable) {
+                listTrainerDTO.add(x);
+            }
+            request.setAttribute("listTrainer", listTrainerDTO);
+
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/AssignTrainerDayOff.jsp");
+            rd.forward(request, response);
+
+        } else {
 
         }
     }
@@ -127,6 +209,40 @@ public class ExceptionController extends HttpServlet {
 
     }
 
+    public void requestDayOff(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException, EmailException {
+        HttpSession session = request.getSession();
+
+        TrainerDTO trainerDTO = (TrainerDTO) session.getAttribute("trainerDTO");
+
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        String maLopHoc = request.getParameter("maLopHoc");
+        Date date = Date.valueOf(request.getParameter("ngayHoc"));
+        String slot = request.getParameter("maSlot");
+        LopHocDAO lopHocDAO = new LopHocDAO();
+
+        LocalDate currentDate = LocalDate.now();
+        String AUTO_APPLICATION_ID = String.format(Constants.MA_APPLICATION_FORMAT, (applicationDAO.lastIDIndexOfBlog() + 1));
+
+        //HOCVIEN CONSTRUCTOR
+        String maApp = AUTO_APPLICATION_ID;
+        ApplicationDTO applicationDTO = new ApplicationDTO();
+
+        applicationDTO.setMaLopHoc(maLopHoc);
+        applicationDTO.setNoiDung("Date: " + date + " Slot: " + slot);
+        applicationDTO.setMaApplicationType("TYPE0005");
+        applicationDTO.setDate(Date.valueOf(currentDate));
+        applicationDTO.setMaTrainer(trainerDTO.getMaTrainer());
+        applicationDTO.setMaDon(maApp);
+        applicationDTO.setStatus("Pending");
+        applicationDAO.create(applicationDTO);
+        String popupMessage = "The request has been sended successfully. Please check your mail for your response";
+        request.setAttribute("popupMessageSuccessful", popupMessage);
+//            EmailController.requestOff(trainerDTO, lopHocDAO.searchClassById(applicationDTO.getMaLopHoc()));
+        RequestDispatcher rd = request.getRequestDispatcher("/TrainerController?action=classList");
+        rd.forward(request, response);
+
+    }
+
     public void sendMailClassChange(HttpServletRequest request, HttpServletResponse response, LopHocDTO lopHocDTO, String maLopHocCu) throws EmailException, MalformedURLException {
         HttpSession session = request.getSession();
         if (session.getAttribute("hocVienDTO") != null) {
@@ -152,33 +268,16 @@ public class ExceptionController extends HttpServlet {
                 ApplicationDTO applicationDTO = new ApplicationDTO();
                 String errorMessage = "";
                 String maLopHocCu = request.getParameter("maLopHocCu");
-//
-                String selectedValue = request.getParameter("maSlot");
-
-                // Split the selected value to retrieve maSlot and thuList
-                String[] parts = selectedValue.split("\\|");
-                String selectedMaSlot = parts[0];
-                String selectedThuList = parts[1];
-
-                // Remove the square brackets and spaces from the string
-                String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "").toUpperCase();
-
+                String maLopHoc = request.getParameter("maLopHoc");
+                lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
 // Split the cleaned value into individual elements
-                String[] elements = cleanedValue.split(",");
-
-// Convert the array to a List<String>
-                String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
-                String maSlot = selectedMaSlot;
-                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
-
-                String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
-
+                //                String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
                 ScheduleDAO scheduleDAO = new ScheduleDAO();
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
                     errorMessage += "Classes are fully reserved.";
                 }
-                if (!checkTraineeSchedule(request, response, maSlot, thuList, hocVienDTO.getMaHV())) {
+                if (!checkTraineeSchedule(request, response, lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV())) {
                     error = false;
                     errorMessage += "You already have a class scheduled for this time slot.";
                 }
@@ -267,64 +366,73 @@ public class ExceptionController extends HttpServlet {
 //        LopHocDTO lopHocDTO = new LopHocDTO();
         List<LopHocDTO> listLopHocDTO = lopHocDAO.showClassesByType(cid);
         System.out.println(listLopHocDTO);
-        List<DayAndSlot> listDayAndSlot = new ArrayList<>();
-        for (int i = 0; i < listLopHocDTO.size(); i++) {
-            DayAndSlot dayAndSlot = new DayAndSlot();
-            String currentSlot = listLopHocDTO.get(i).getMaSlot();
-            List<String> thu = listLopHocDTO.get(i).getThuList();
-             System.out.println("ccc");
-             System.out.println(currentSlot + thu);
-             System.out.println(i);
-            if (i < 0) {
-                 System.out.println(i);
-                for (int j = 1; j <= i; j++) {
-                    System.out.println(listLopHocDTO.get(j).getMaSlot());
-                    if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
-                        if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
-                            System.out.println(currentSlot + thu);
-                        }
-                    } else {
-
-                        dayAndSlot.setSlot(currentSlot);
-                        dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
-                        dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
-                        dayAndSlot.setDay(thu);
-                        listDayAndSlot.add(dayAndSlot);
-                    }
-                }
-            } else {
-
-                dayAndSlot.setSlot(currentSlot);
-                dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
-                dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
-                dayAndSlot.setDay(thu);
-                listDayAndSlot.add(dayAndSlot);
-            }
-
-        }
-        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
-        List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
+//        List<DayAndSlot> listDayAndSlot = new ArrayList<>();
+//        for (int i = 0; i < listLopHocDTO.size(); i++) {
+//            DayAndSlot dayAndSlot = new DayAndSlot();
+//            String currentSlot = listLopHocDTO.get(i).getMaSlot();
+//            List<String> thu = listLopHocDTO.get(i).getThuList();
+//             System.out.println("ccc");
+//             System.out.println(currentSlot + thu);
+//             System.out.println(i);
+//            if (i < 0) {
+//                 System.out.println(i);
+//                for (int j = 1; j <= i; j++) {
+//                    System.out.println(listLopHocDTO.get(j).getMaSlot());
+//                    if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
+//                        if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
+//                            System.out.println(currentSlot + thu);
+//                        }
+//                    } else {
+//
+//                        dayAndSlot.setSlot(currentSlot);
+//                        dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
+//                        dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
+//                        dayAndSlot.setDay(thu);
+//                        listDayAndSlot.add(dayAndSlot);
+//                    }
+//                }
+//            } else {
+//
+//                dayAndSlot.setSlot(currentSlot);
+//                dayAndSlot.setTimeStart(listLopHocDTO.get(i).getTimeStart());
+//                dayAndSlot.setTimeEnd(listLopHocDTO.get(i).getTimeEnd());
+//                dayAndSlot.setDay(thu);
+//                listDayAndSlot.add(dayAndSlot);
+//            }
+//
+//        }
+//        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
+////        System.out.println(distinctDayAndSlots);
+//        lopHocDTO = lopHocDAO.showSlotBy1Class(maLopHoc);
+//        DayAndSlot dayAndSlota = new DayAndSlot();
+//        dayAndSlota.setDay(lopHocDTO.getThuList());
+//        dayAndSlota.setSlot(lopHocDTO.getMaSlot());
+//        System.out.println("bbb");
+//        System.out.println(uniqueDayAndSlots);
+//        System.out.println("bbb");
 //        System.out.println(distinctDayAndSlots);
-        lopHocDTO = lopHocDAO.showSlotBy1Class(maLopHoc);
-        DayAndSlot dayAndSlota = new DayAndSlot();
-        dayAndSlota.setDay(lopHocDTO.getThuList());
-        dayAndSlota.setSlot(lopHocDTO.getMaSlot());
-        System.out.println("bbb");
-        System.out.println(uniqueDayAndSlots);
-        System.out.println("bbb");
-        System.out.println(distinctDayAndSlots);
-        List<DayAndSlot> distinctDayAndSlotsNew = new ArrayList<>();
-        for (DayAndSlot x : distinctDayAndSlots) {
-            if (x.getSlot().equalsIgnoreCase(dayAndSlota.getSlot()) && compareLists(x.getDay(), dayAndSlota.getDay())) {
-                System.out.println("aaaa");
-                System.out.println(x);
-            } else {
-                distinctDayAndSlotsNew.add(x);
+//        List<DayAndSlot> distinctDayAndSlotsNew = new ArrayList<>();
+//        for (DayAndSlot x : distinctDayAndSlots) {
+//            if (x.getSlot().equalsIgnoreCase(dayAndSlota.getSlot()) && compareLists(x.getDay(), dayAndSlota.getDay())) {
+//                System.out.println("aaaa");
+//                System.out.println(x);
+//            } else {
+//                distinctDayAndSlotsNew.add(x);
+//            }
+//        }
+        List<LopHocDTO> listClass = new ArrayList<>();
+        listClass = lopHocDAO.searchClassByTypeID(cid);
+        List<LopHocDTO> listClass2 = new ArrayList<>();
+        for (LopHocDTO x : listClass) {
+            if ((x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() >= -1 && x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() <= 1) && !x.getMaLopHoc().equals(lopHocDTO.getMaLopHoc())) {
+                listClass2.add(x);
             }
         }
-        LopHocDTO lopHocDTO2 = lopHocDAO.searchClassById(maLopHoc);
-        request.setAttribute("lopHocDTO", lopHocDTO2);
-        request.setAttribute("distinctDayAndSlots", distinctDayAndSlotsNew);
+//        LopHocDTO lopHocDTO2 = lopHocDAO.searchClassById(maLopHoc);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        request.setAttribute("listClass", listClass2);
+//        request.setAttribute("distinctDayAndSlots", distinctDayAndSlotsNew);
         request.setAttribute("cid", cid);
 
         RequestDispatcher rd = request.getRequestDispatcher("/Authorization/ChangeClass.jsp");

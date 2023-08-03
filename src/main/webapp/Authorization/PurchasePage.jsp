@@ -60,7 +60,8 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
-                                            <input type="text" id="Slot" class="form-control form-control-lg" name="Slot" required="required" value="${lopHocDTO.slotDTO.timeStart}-${lopHocDTO.slotDTO.timeEnd}" readonly/>
+                                            <input type="text" id="Time" class="form-control form-control-lg" name="Time" required="required" value="${lopHocDTO.slotDTO.timeStart}-${lopHocDTO.slotDTO.timeEnd}" readonly/>
+                                            <input type="text" id="Slot" class="form-control form-control-lg" name="Slot" required="required" value="${lopHocDTO.soBuoi}" readonly/>
                                             <label class="form-label" for="Slot">Slot</label>
                                         </div>
 

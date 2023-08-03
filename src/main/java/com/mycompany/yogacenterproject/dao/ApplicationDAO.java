@@ -110,6 +110,10 @@ public class ApplicationDAO {
                 application.setDate(rs.getDate("Date"));
                 application.setStatus(rs.getString("status"));
                 application.setNoiDung(rs.getString("noiDung"));
+                HocVienDAO hocVienDAO = new HocVienDAO();
+                TrainerDAO trainerDAO = new TrainerDAO();
+                application.setHocVienDTO(hocVienDAO.searchHocVienById(application.getMaHV()));
+                application.setTrainerDTO(trainerDAO.searchTrainerById(application.getMaTrainer()));
             }
 
             rs.close();
@@ -186,6 +190,7 @@ public class ApplicationDAO {
     }
 
     private ApplicationDTO createApplicationFromResultSet(ResultSet resultSet) throws SQLException {
+
         String maDon = resultSet.getString("maDon");
         String maHV = resultSet.getString("maHV");
         String maTrainer = resultSet.getString("maTrainer");
@@ -197,6 +202,10 @@ public class ApplicationDAO {
         ApplicationDTO applicationDTO = new ApplicationDTO(maDon, maHV, maTrainer, maLopHoc, maApplicationType, date, status);
         applicationDTO.setApplicationType(resultSet.getString("tenApplication"));
         applicationDTO.setNoiDung(resultSet.getString("noiDung"));
+        HocVienDAO hocVienDAO = new HocVienDAO();
+        TrainerDAO trainerDAO = new TrainerDAO();
+        applicationDTO.setHocVienDTO(hocVienDAO.searchHocVienById(maHV));
+        applicationDTO.setTrainerDTO(trainerDAO.searchTrainerById(maTrainer));
         return applicationDTO;
 
     }

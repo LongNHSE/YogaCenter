@@ -286,7 +286,7 @@ public class LopHocDAO {
             Logger.getLogger(LopHocDAO.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
-    }
+    }   
 
 //////Insert a class
     public void addClass(LopHocDTO newClass) {
