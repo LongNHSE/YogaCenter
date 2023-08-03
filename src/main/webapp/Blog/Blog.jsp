@@ -94,6 +94,7 @@
 
                 </div>
         </section>
-                <jsp:include page="../Components/footerComponent.jsp" />
+
     </body>
+                    <jsp:include page="../Components/footerComponent.jsp" />
 </html>

@@ -244,6 +244,7 @@ body{
     font-weight: bold;
     color: #333;
     text-align: right;
+    white-space: nowrap;
 }
 
 .product-deatil .price-container small {
@@ -578,7 +579,9 @@ body{
 }
 .Custom button{
     position:relative;
-    top: 60px;
+    top: 85px;
+    left: 60px;
+    padding: 12px 90px;
 }
 input[type="text"]::placeholder {
     color: #ffffff; /* Màu của placeholder */
@@ -624,4 +627,66 @@ input[type="text"]::placeholder {
 .button2:active {
     scale: 1;
 }
+            .collapsible {
+                background-color: #8b57fc;
+                color: white;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 15px;
+            }
 
+            .active, .collapsible:hover {
+                background-color: #da70d6
+            }
+
+            .collapsible:after {
+                content: '\002B';
+                color: white;
+                font-weight: bold;
+                float: right;
+                margin-left: 5px;
+            }
+
+            .active:after {
+                content: "\2212";
+            }
+
+            .content {
+
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+
+            }
+            .comments{
+                margin-top: 5%;
+                margin-left: 20px;
+            }
+
+
+
+            .comment{
+                width: 1000px;
+                border: 1px solid rgba(16, 46, 46, 1);
+                font-size: 20px;
+                float: left;
+                border-radius: 5px;
+                padding-left: 40px;
+                padding-right: 30px;
+                padding-top: 15px;
+
+            }
+            .comment h2,.comment span,.darker h4,.darker span{
+                display: inline;
+            }
+
+            .comment p,.comment span,.darker p,.darker span{
+
+            }
+            .comment-header{
+                color: rgb(191, 64, 191);
+            }

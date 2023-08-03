@@ -193,16 +193,16 @@
                             <tr class="Test" style="text-align: center">
 
 
-                                <th scope="col">Class' ID</th>
+                                <!--<th scope="col">Class' ID</th>-->
 
 
                                 <th scope="col"> Attendees</th>
-                                <th scope="col">Trainer In Charge</th>
+                                <th scope="col">Trainer</th>
                                 <th scope="col">Slots</th>
                                 <th scope="col">Room</th>
                                 <th scope="col">Slot</th>
                                 <th scope="col">Days</th>
-                                <th scope="col">Initial Date</th>
+                                <th scope="col">Create Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -211,11 +211,18 @@
                             <form action="<%=url%>/ClassController" method="Post">
                                 <tr style="text-align: center">
 
-                                    <th scope="row">${listClass.maLopHoc}</th>
+                                    <!--<th scope="row">${listClass.maLopHoc}</th>-->
 
                                     <td >${listClass.soLuongHvHienTai}/${listClass.soLuongHV} </td>
 
-                                    <td><a href="#">${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>
+                                    <!--<td><a href="#"  >${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>-->
+                                <td>
+                                  <a href="#" onclick="openModal('${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}')">
+                                    ${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}
+                                  </a>
+                                </td>
+
+
                                     <td>${listClass.soBuoiDaDay}/${listClass.soBuoi}</td>
                                     <td>${listClass.maRoom} </td>
                                     <td>${listClass.slotDTO.timeStart}-${listClass.slotDTO.timeEnd} </td>
@@ -248,9 +255,10 @@
             </div>
             <div class="Description product-content product-wrap clearfix product-deatil">
 
-                <div class="col-sm-5 col-md-6 col-12 pb-4">
-                    <h1>Comments</h1>
-
+                <div class="col-sm-5 col-md-6 col-12 pb-4" >
+                    <div class="header-section" >
+                    <h1 class="comment-header">Comments</h1>
+                    </div>
 
 
                     <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
@@ -319,66 +327,52 @@
 
         </div>
         <style>
-            .collapsible {
-                background-color: #777;
-                color: white;
-                cursor: pointer;
-                padding: 18px;
-                width: 100%;
-                border: none;
-                text-align: left;
-                outline: none;
-                font-size: 15px;
+            /* CSS cho modal */
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  position: relative; /* Thêm thuộc tính này để làm nút Close tương đối với Modal Content */
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+            .close {
+              color: #aaa;
+              float: right;
+              font-size: 28px;
+              font-weight: bold;
+              cursor: pointer;
             }
 
-            .active, .collapsible:hover {
-                background-color: #555;
+            .close:hover {
+              color: black;
             }
 
-            .collapsible:after {
-                content: '\002B';
-                color: white;
-                font-weight: bold;
-                float: right;
-                margin-left: 5px;
-            }
-
-            .active:after {
-                content: "\2212";
-            }
-
-            .content {
-
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.2s ease-out;
-
-            }
-            .comments{
-                margin-top: 5%;
-                margin-left: 20px;
-            }
-
-
-
-            .comment{
-                width: 1000px;
-                border: 1px solid rgba(16, 46, 46, 1);
-                font-size: 20px;
-                float: left;
-                border-radius: 5px;
-                padding-left: 40px;
-                padding-right: 30px;
-                padding-top: 15px;
-
-            }
-            .comment h2,.comment span,.darker h4,.darker span{
-                display: inline;
-            }
-
-            .comment p,.comment span,.darker p,.darker span{
-
-            }
         </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
@@ -401,8 +395,31 @@
                 });
             }
 
-        </script>
+                // JavaScript cho modal
+                function openModal(trainerInfo) {
+                  var modal = document.getElementById('trainerModal');
+                  var trainerInfoParagraph = document.getElementById('trainerInfo');
+                  trainerInfoParagraph.textContent = trainerInfo;
+                  modal.style.display = 'block';
+                }
 
+                function closeModal() {
+                  var modal = document.getElementById('trainerModal');
+                  modal.style.display = 'none';
+                }
+
+        </script>
     </body>
+<!-- Modal -->
+<div id="trainerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Trainer Information</h2>
+    <p id="trainerInfo">Trainer information will be displayed here</p>
+  </div>
+</div>
+<!-- Modal Overlay -->
+<div class="modal-overlay" onclick="closeModal()"></div>
+
 
 </html>
