@@ -46,6 +46,8 @@ public class VoucherController extends HttpServlet {
                 viewAllVouchers(request, response);
             }else if (action.equals("addVoucher")) {
                 addVoucher(request, response);
+            }else if(action.equals("deleteVoucher")){
+                deleteVoucher(request, response);
             }
         }
     }

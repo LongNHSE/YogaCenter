@@ -189,10 +189,11 @@
                         <th scope="col">Global Usage Limit</th>
                         <th scope="col">Individual Usage Limit</th>
                         <th scope="col">Total Used</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                   
+
                 <form action="<%=url%>/VoucherController">
                     <c:forEach var="row" items="${requestScope.listVouchers}" varStatus="counter">
                         <tr>
@@ -202,13 +203,15 @@
                             <td>${row.usageLimit} </td>
                             <td>${row.usageLimitPerUser} </td>
                             <td>${row.totalUsage} </td>
-
+                            <td>
+                                <input class="btn btn-outline-danger" type='submit' value="deleteVoucher" name="action" style="margin-left: 30%" />
+                                <input type="hidden" name="voucherID" value="${row.voucherID}" >
+                            </td>
                         </tr>
-                        </c:forEach>
+                    </c:forEach>
                 </form>
-
-
                 </tbody>
+
 
             </table>
         </div>

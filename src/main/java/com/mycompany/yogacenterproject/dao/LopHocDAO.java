@@ -219,6 +219,7 @@ public class LopHocDAO {
                 foundClass.setNgayKetThuc(getLastDay(foundClass.getMaLopHoc()));
                 foundClass.setLoaiLopHocDTO(loaiLopHocDAO.getClassCateByID(foundClass.getMaLoaiLopHoc()));
                 foundClass.setTrainerDTO(trainerDAO.searchTrainerByClassID(foundClass.getMaLopHoc()));
+                foundClass.setTrainerDTO(trainerDAO.searchTrainerById(foundClass.getTrainerDTO().getMaTrainer()));
                 foundClass.setSoLuongHV(soLuongHV);
                 foundClass.setSoLuongHvHienTai(soLuongHvHienTai);
                 foundClass.setMaLoaiLopHoc(maLoaiLopHoc);
@@ -783,7 +784,7 @@ public class LopHocDAO {
             while (rs.next()) {
                 String maLopHoc = rs.getString("maLopHoc");
                 LopHocDTO lopHocDTO = searchClassById(maLopHoc);
-                if (compareLists(thuList, showThu(maLopHoc)) && lopHocDTO.getSoBuoiDaDay()<=2) {
+                if (compareLists(thuList, showThu(maLopHoc)) && lopHocDTO.getSoBuoiDaDay()<= lopHocDTO.getSoBuoi()/2) {
                     return maLopHoc;
                 }
             }

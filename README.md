@@ -1,4 +1,5 @@
 # YogaCenter
+<<<<<<< HEAD
 :wave: Welcome to our Software Development Project (SWP391) :wave:
 
 ## Table of Contents
@@ -83,3 +84,7 @@
 
 ## License & Copyright
 &copy; 2022 fptu-team-404-not-found Licensed under the [GPL-3.0 LICENSE](https://github.com/fptu-team-404-not-found/publish-graduation-capstone/blob/main/LICENSE).
+=======
+
+:wave: Welcome to our Software Development Project (SWP391) :wave:
+>>>>>>> 5622d69ae0006fd3625acd6c237dbca07a13dc68
