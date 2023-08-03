@@ -390,7 +390,7 @@ public class EmailController {
                 + "      <a href=\"\" style=\"font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600\">YogaCenter</a>"
                 + "    </div>"
                 + "    <p style=\"font-size:1.1em\">Hi,</p>"
-                + "    <p>You have just reserved class " + lopHocDTO.getMaLopHoc() + "</p>" + "<p>. Your next register of  " + lopHocDTO.getLoaiLopHocDTO().getTenLoaiLopHoc() + " will be free.</p>"
+                + "    <p>You have just reserved class " + lopHocDTO.getMaLopHoc() + "</p>" + "<p>. Your next register of  " + lopHocDTO.getLoaiLopHocDTO().getTenLoaiLopHoc() + " will be discounted.</p>"
                 + "    <h2 style=\"background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;\">" + "</h2>"
                 + "    <p style=\"font-size:0.9em;\">Regards,<br />YogaCenter</p>"
                 + "    <a href=\"http://localhost:8080/YogaCenter/Public/home.jsp \"><p style=\"font-size:0.9em;\">Visit our Website for more information</p></a>"

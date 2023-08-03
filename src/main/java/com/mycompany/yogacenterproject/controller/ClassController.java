@@ -22,6 +22,7 @@ import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dao.VoucherDAO;
+import com.mycompany.yogacenterproject.dto.ApplicationDTO;
 import com.mycompany.yogacenterproject.dto.AttendanceDTO;
 import com.mycompany.yogacenterproject.dto.CommentDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
@@ -68,6 +69,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -192,7 +195,10 @@ public class ClassController extends HttpServlet {
 
                 response.sendRedirect("./AdminController?action=listClassType");
             } else if (action.equals("CheckVoucher")) {
-
+//                String currentPrice =request.getParameter("CurrentFee");
+//                double currentPrice = Double.parseDouble(request.getParameter("CurrentFee"));
+//                Long a = (long) currentPrice;
+//                out.print(a);
                 checkVoucher(request, response);
             }
         } catch (Exception e) {
@@ -217,8 +223,10 @@ public class ClassController extends HttpServlet {
             voucherDTO = voucherDAO.searchVoucherByName(voucher);
             double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
             lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
-            Long currentPrice
-                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(lopHocDTO.getMaLoaiLopHoc()) * lopHocDTO.getSoBuoi();
+
+            double currentPrice2 = Double.parseDouble(request.getParameter("CurrentFee"));
+            Long currentPrice = (long) currentPrice2;
+//                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(lopHocDTO.getMaLoaiLopHoc()) * lopHocDTO.getSoBuoi();
 
             currentPrice = currentPrice * (100 - voucherDTO.getMultiplier()) / 100;
             String currentPriceFormat = getHocPhiWithDot(currentPrice);
@@ -642,18 +650,6 @@ public class ClassController extends HttpServlet {
                         verifiedVoucherID = voucherID;
                     }
                 }
-
-                // Split the selected value to retrieve maSlot and thuList
-//                String[] parts = selectedValue.split("\\|");
-//                String selectedMaSlot = parts[0];
-//                String selectedThuList = parts[1];
-                // Remove the square brackets and spaces from the string
-//                String cleanedValue = selectedThuList.replaceAll("[\\[\\]\\s]", "");
-// Split the cleaned value into individual elements
-//                String[] elements = cleanedValue.split(",");
-// Convert the array to a List<String>
-//                String maSlot = selectedMaSlot;
-//                List<String> thuList = new ArrayList<>(Arrays.asList(elements));
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
                     errorMessage += "Classes are fully reserved.";
@@ -681,8 +677,37 @@ public class ClassController extends HttpServlet {
                         String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
                         response.sendRedirect(approvalLink);
                     } else {
-                        applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
-                        assignClassAfterPayment(request, response, maLopHoc);
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        if (fee > 0) {
+                            lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee / lopHocDTO.getSoBuoi());
+                            PaymentServices paymentServices = new PaymentServices();
+                            String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+                            applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+                            response.sendRedirect(approvalLink);
+                        } else {
+                            applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+                            assignClassAfterPayment(request, response, maLopHoc);
+                        }
                     }
                 } else {
                     request.setAttribute("error", errorMessage);
@@ -778,14 +803,41 @@ public class ClassController extends HttpServlet {
                 }
                 //check availability before registering
                 if (error) {
+
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                    double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
-                    lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
-                    request.setAttribute("lopHocDTO", lopHocDTO);
-                    RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+                    if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
-                    rd.forward(request, response);
+                        rd.forward(request, response);
+                    } else {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
 
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
+                    }
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
@@ -862,13 +914,39 @@ public class ClassController extends HttpServlet {
                 //check availability before registering
                 if (error) {
                     lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                    double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
-                    lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
-                    request.setAttribute("lopHocDTO", lopHocDTO);
-                    RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+                    if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
 
-                    rd.forward(request, response);
+                        rd.forward(request, response);
+                    } else {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
 
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
+                    }
                 } else {
                     request.setAttribute("error", errorMessage);
                     showDetails(request, response);
@@ -1155,7 +1233,7 @@ public class ClassController extends HttpServlet {
         if (session.getAttribute("hocVienDTO") != null) {
             HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
             if (applicationDAO.getApplicationFromTrainee(cid, hocVienDTO.getMaHV()) != null) {
-                String popupMessage = "You dont have to purchase this course because you rerserved it";
+                String popupMessage = "You have discount for this course because you rerserved it";
                 request.setAttribute("popupMessage", popupMessage);
             }
         }

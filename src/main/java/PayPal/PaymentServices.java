@@ -84,8 +84,8 @@ public class PaymentServices {
         String voucherName;
         double tax = 0;
         double shipping = 0;
-        double productPrice = loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())*lopHocDTO.getSoBuoi() / 21000;
+        double productPrice = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi() / 21000;;
+
         double discountMultiplier;
         if (voucherDTO != null) {
             discountMultiplier = voucherDAO.getMultiplierByID(voucherID) / 100;
@@ -142,7 +142,7 @@ public class PaymentServices {
             discountItem.setQuantity("1");
             items.add(discountItem);
         }
-        
+
         itemList.setItems(items);
         transaction.setItemList(itemList);
 
@@ -155,7 +155,7 @@ public class PaymentServices {
     private RedirectUrls getRedirectURL(LopHocDTO lopHocDTO, String voucherID) {
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLoaiLopHoc() + "&action=showDetails");
-        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() +"&voucherID="+voucherID+ "&action=SuccessfulPayment");
+        redirectUrls.setReturnUrl("http://localhost:8080/YogaCenter/ClassController?returnID=" + lopHocDTO.getMaLopHoc() + "&voucherID=" + voucherID + "&action=SuccessfulPayment");
 
         return redirectUrls;
     }

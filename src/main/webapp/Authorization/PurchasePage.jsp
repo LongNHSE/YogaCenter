@@ -85,6 +85,7 @@
 
                                             <c:if test="${currentPrice==null}" >
                                                 <input type="text" class="form-control form-control-lg" id="Fee" name="Fee" required="required" value="${lopHocDTO.loaiLopHocDTO.getHocPhiWithDot() } VND" readonly/>
+
                                                 <label for="Fee" class="form-label">Fee</label>
                                             </c:if>
                                             <c:if test="${currentPrice!=null}" >
@@ -119,6 +120,7 @@
                                                 <button class="button2" type="submit" name="action" value="CheckVoucher" style="margin-top: 5px">
                                                     Check
                                                 </button>
+                                                <input type="hidden" name="CurrentFee"value="${lopHocDTO.loaiLopHocDTO.hocPhi }" readonly/>
                                                 <input type="hidden" name="maLopHoc" value="${lopHocDTO.maLopHoc}" />
                                             </div>
 
