@@ -427,7 +427,7 @@ public class ExceptionController extends HttpServlet {
         listClass = lopHocDAO.searchClassByTypeID(cid);
         List<LopHocDTO> listClass2 = new ArrayList<>();
         for (LopHocDTO x : listClass) {
-            if ((x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() >= -1 && x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() <= 1) && !x.getMaLopHoc().equals(lopHocDTO.getMaLopHoc())) {
+            if ((x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() >= -1 && x.getSoBuoiDaDay() - lopHocDTO.getSoBuoiDaDay() <= 1) && !x.getMaLopHoc().equals(lopHocDTO.getMaLopHoc()) && x.getSoBuoi()==lopHocDTO.getSoBuoi()) {
                 listClass2.add(x);
             }
         }

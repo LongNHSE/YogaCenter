@@ -193,7 +193,7 @@
                             <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
-                            <td><%= lopHocDTO.getMaTrainer()%> </td>
+                            <td><%= lopHocDTO.getTrainerDTO().getHo()%> <%= lopHocDTO.getTrainerDTO().getTen()%> </td>
                             <td><%=lopHocDTO.getSoBuoiDaDay()%>/<%=lopHocDTO.getSoBuoi()%></td>
                             <td><%= lopHocDTO.getMaRoom()%> </td>
                             <td><%= lopHocDTO.getMaSlot()%> </td>

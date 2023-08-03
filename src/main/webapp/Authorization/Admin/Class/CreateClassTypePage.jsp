@@ -84,14 +84,14 @@
                                             </div>
 
 
-                                        
+
                                         </div>
                                         <label class="form-label" for="description">Description</label>
 
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
-                                            <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)" required="required">
+                                            <input type="file" id="Thumbnail" name="Thumbnail"  onchange="addThumbnailImage(this)" required="required">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
                                             <label class="form-label" for="Thumbnail">Preview Image</label>
                                             <div id="previewThumb" class="previewThumb"></div>
@@ -125,12 +125,12 @@
     <script src="<%=url%>/js/CreateBlogStyle.js"></script>
     <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
     <script>
-                                            CKEDITOR.replace('contentInput');
-                                            CKEDITOR.editorConfig = function (config) {
-                                                // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
-                                                config.allowedContent = 'span(*)';
-                                                config.disallowedContent = 'p';
-                                            };
+                                                CKEDITOR.replace('contentInput');
+                                                CKEDITOR.editorConfig = function (config) {
+                                                    // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                                                    config.allowedContent = 'span(*)';
+                                                    config.disallowedContent = 'p';
+                                                };
     </script>
     <script>
         var images = []; // Mảng chứa danh sách ảnh tải lên
@@ -150,7 +150,7 @@
                         imgElement.className = 'imageStyle';
                         imgElement.src = imgData;
                         var deleteButton = document.createElement('button');
-                        deleteButton.className = 'deleteButton';
+                        deleteButton.className = 'deleteButton1';
                         deleteButton.textContent = 'Xóa';
                         deleteButton.addEventListener('click', function () {
                             var imageIndex = images.indexOf(imgData);
@@ -203,6 +203,7 @@
                         deleteButton.addEventListener('click', function () {
                             var imageContainer = this.parentNode;
                             imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                            document.getElementById('Thumbnail').value = '';
                             document.getElementById('Thumbnails').value = '';
                         });
                         var imageContainer = document.createElement('div');
