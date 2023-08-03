@@ -167,8 +167,17 @@
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>" >
                             <span class="bg-green padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=tenLopHoc%></span>
                             <div class="margin-10px-top font-size14"><%=maLopHoc%></div>
-                        </a>
 
+
+                        </a>
+                        <form action="<%=url%>/ExceptionController" method="POST">
+                            <input type="submit" name="action" value="Request day off" style=" border-radius: 25px;
+                                   background: #73AD21;
+                                   padding: 5px;" />
+                            <input type="hidden" name="maLopHoc" value="<%= maLopHoc%>">
+                            <input type="hidden" name="ngayHoc" value="<%=ngayHoc%>">
+                            <input type="hidden" name="maSlot" value="<%=maSlot%>">
+                        </form>
                         <% } else {%>
                         <a href="<%=url%>/ClassController?action=ClassDetailTrainer&maLopHoc=<%= maLopHoc%>&ngayHoc=<%=ngayHoc%>&maSlot=<%=maSlot%>">
                             <span class="bg-danger padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=tenLopHoc%></span>

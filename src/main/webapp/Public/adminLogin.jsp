@@ -33,7 +33,7 @@
         <div class="container">
             <div class="box">
                 <div class="form sign_in">
-                    <h3>Welcome Adminastrator</h3>
+                    <h3>Welcome Admin</h3>
                     <form action="<%=url%>/LoginController/login" id="form_input" method="POST">
 
                         <div class="type">

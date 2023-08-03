@@ -85,7 +85,7 @@ public class PaymentServices {
         double tax = 0;
         double shipping = 0;
         double productPrice = loaiLopHocDAO
-                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc()) / 21000;
+                .searchHocPhiLopHocWithDouble(lopHocDTO.getMaLoaiLopHoc())*lopHocDTO.getSoBuoi() / 21000;
         double discountMultiplier;
         if (voucherDTO != null) {
             discountMultiplier = voucherDAO.getMultiplierByID(voucherID) / 100;

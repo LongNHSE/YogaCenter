@@ -252,7 +252,7 @@ public class TrainerDAO {
                 TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, Ten, dobDate, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
 //                TrainerDTO newTrainer = new TrainerDTO(maTrainer, HoVaTen, dob, phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
                 newTrainer.setGender(gender);
-                    AvatarDAO avatarDAO = new AvatarDAO();
+                AvatarDAO avatarDAO = new AvatarDAO();
                 newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 listTrainer.add(newTrainer);
             }
@@ -364,6 +364,39 @@ public class TrainerDAO {
                 newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
                 return newTrainer;
             }
+        } catch (SQLException e) {
+            Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+
+    public List<TrainerDTO> searchTrainerByStatusandClassType(boolean status, String maLoaiLopHoc) {
+        try {
+            List<TrainerDTO> listTrainerDTO = new ArrayList<>();
+            String sql = "SELECT * FROM Trainer where status=? and trainerType =? ";
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setBoolean(1, status);
+            stm.setString(2, maLoaiLopHoc);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String Ho = rs.getString("Ho");
+                String ten = rs.getString("Ten");
+                Date dob = rs.getDate("dob");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                long salary = rs.getLong("salary");
+                String username = rs.getString("username");
+                String psw = rs.getString("psw");
+                int soNgayNghi = rs.getInt("soNgayNghi");
+                String maTrainer = rs.getString("maTrainer");
+                String trainerType = rs.getString("trainerType");
+                String maLoaiTK = rs.getString("maLoaiTK");
+                TrainerDTO newTrainer = new TrainerDTO(maTrainer, Ho, ten, DateUtils.asLocalDate(dob), phone, email, salary, username, psw, soNgayNghi, status, trainerType, maLoaiTK);
+                AvatarDAO avatarDAO = new AvatarDAO();
+                newTrainer.setAvatarDTO(avatarDAO.getImageDataByTrainerID(maTrainer));
+                listTrainerDTO.add(newTrainer);
+            }
+            return listTrainerDTO;
         } catch (SQLException e) {
             Logger.getLogger(HocVienDAO.class.getName()).log(Level.SEVERE, null, e);
         }

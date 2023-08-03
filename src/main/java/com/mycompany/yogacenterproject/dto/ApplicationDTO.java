@@ -15,11 +15,29 @@ public class ApplicationDTO {
     private String maDon;
     private String maHV;
     private String maTrainer;
+    private TrainerDTO trainerDTO;
+    private HocVienDTO hocVienDTO;
     private String maLopHoc;
     private String maApplicationType;
     private String noiDung;
     private Date date;
     private String status;
+
+    public TrainerDTO getTrainerDTO() {
+        return trainerDTO;
+    }
+
+    public void setTrainerDTO(TrainerDTO trainerDTO) {
+        this.trainerDTO = trainerDTO;
+    }
+
+    public HocVienDTO getHocVienDTO() {
+        return hocVienDTO;
+    }
+
+    public void setHocVienDTO(HocVienDTO hocVienDTO) {
+        this.hocVienDTO = hocVienDTO;
+    }
 
     public String getApplicationType() {
         return ApplicationType;

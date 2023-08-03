@@ -175,8 +175,8 @@
 
                             <th scope="col">ID Application</th>
                             <th scope="col">ID Class</th>
-                            <th scope="col">ID Trainee</th>
-                            <th scope="col">ID Trainer</th>
+                            <th scope="col">Trainee</th>
+                            <th scope="col">Trainer</th>
                             <th scope="col">Application Type</th>
                             <th scope="col">Content</th>
                             <th scope="col">Date</th>
@@ -192,15 +192,22 @@
 
                             <th scope="row">${application.maDon}</th>
                             <td>${application.maLopHoc} </td>
-                            <td>${application.maHV} </td>
-                            <td>${application.maTrainer} </td>
+                            <td>${application.hocVienDTO.ho} ${application.hocVienDTO.ten} </td>
+                            <td>${application.trainerDTO.ho} ${application.trainerDTO.ten} </td>
                             <td>${application.applicationType}</td>
                             <td>${application.noiDung} </td>
                             <td>${application.date} </td>
                             <td>${application.status} </td>
-
-
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"> </td>
+                            <c:choose>
+                                <c:when test="${application.applicationType.equals('Request Off')}">
+                                    <td>  <input class="btn btn-outline-danger" type='submit'value="Approve and Change trainer"name="action"> </td>
+                                </c:when>
+                                <c:when test="${application.applicationType.equals('Request Day Off')}">
+                                     <td>  <input class="btn btn-outline-danger" type='submit'value="Approve day off and Change trainer"name="action"> </td>
+                                </c:when>
+                              
+                            </c:choose>
+                           
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Unapprove"name="action"   > </td>
 
                             <input type="hidden" name="maLopHoc" value="${application.maLopHoc}" >

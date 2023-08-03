@@ -9,6 +9,7 @@ import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import com.mycompany.yogacenterproject.util.DateUtils;
 import java.sql.Connection;
@@ -366,6 +367,21 @@ public class ScheduleDAO {
             e.printStackTrace();
         }
     }
+    public void updateTrainerDayOff(String maLopHoc, String maTrainer,Date ngayHoc, String maSlot) {
+        try {
+            String sql = "UPDATE [dbo].[ScheduleTrainer] SET maTrainer = ? where maLopHoc= ? and ngayHoc= ? and maSlot=?";
+
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maTrainer);
+            stm.setString(2, maLopHoc);
+            stm.setDate(3, (java.sql.Date) ngayHoc);
+            stm.setString(4, maSlot);
+            int rowsUpdated = stm.executeUpdate();
+            System.out.println(rowsUpdated + " rows updated. Status set to false for past dates.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<DateAndDay> listDateAndDay(String[] thu, Date initDate, int slot) {
         DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter(Locale.ENGLISH);
@@ -509,6 +525,36 @@ public class ScheduleDAO {
         } catch (SQLException e) {
         }
         return true;
+    }
+
+    public List<TrainerDTO> listTrainerDTO(TrainerDTO trainerDTO, String maSlot, Date ngayHoc) {
+        
+        List<TrainerDTO> listTrainerDTO = new ArrayList<>();
+        TrainerDAO trainerDAO = new TrainerDAO();
+        
+        String sql = "    Select Trainer.maTrainer\n"
+                + "         from Trainer FULL OUTER join ScheduleTrainer on ScheduleTrainer.maTrainer = Trainer.maTrainer\n"
+                + "        where trainerType =? \n"
+                + "        and ScheduleTrainer.maSlot !=  ? \n"
+                + "        and ScheduleTrainer.ngayHoc !=\n"
+                + "        ? \n"
+                + "group by Trainer.maTrainer";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, trainerDTO.getTrainerType());
+            ps.setString(2, maSlot);
+            ps.setDate(3, (java.sql.Date) ngayHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                listTrainerDTO.add(trainerDAO.searchTrainerById(rs.getString("maTrainer")));
+            }
+            return listTrainerDTO;
+        } catch (SQLException e) {
+        }
+        return null;
+
     }
 
     //Check expired schedule

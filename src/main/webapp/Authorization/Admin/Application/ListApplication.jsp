@@ -160,7 +160,7 @@
                 background-color: #e6e6e6; /* Set background color for hovered rows */
             }</style>
 
-      
+
         <div class="Controller">
             <div class="wrapper">
 
@@ -192,13 +192,13 @@
 
                             <th scope="row">${application.maDon}</th>
                             <td>${application.maLopHoc} </td>
-                            <td>${application.maHV} </td>
-                            <td>${application.maTrainer} </td>
+                            <td>${application.hocVienDTO.ho} ${application.hocVienDTO.ten} </td>
+                            <td>${application.trainerDTO.ho} ${application.trainerDTO.ten} </td>
                             <td style="text-align: center">${application.applicationType}</td>
                             <td>${application.noiDung} </td>
                             <td style="text-align: right">${application.date} </td>
                             <c:choose>
-                                <c:when test="${application.status != Unapproved}">
+                                <c:when test="${application.status != 'Unapproved'}">
                                     <td style="background-color: #3FFF00; text-align: center">${application.status}</td>
                                 </c:when>
                                 <c:otherwise>
@@ -207,7 +207,7 @@
                             </c:choose>
 
 
-                            
+
 
 
                             <input type="hidden" name="maApplication" value="${application.maDon}" >
@@ -226,7 +226,7 @@
         </div>
 
         <script>
-          
+
 
             document.getElementsByClassName("cate").required = true;
             const navMenu = document.querySelector("nav");
