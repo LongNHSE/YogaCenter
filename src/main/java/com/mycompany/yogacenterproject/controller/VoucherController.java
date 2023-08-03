@@ -44,10 +44,12 @@ public class VoucherController extends HttpServlet {
             String action = request.getParameter("action");
             if (action.equals("listVouchers")) {
                 viewAllVouchers(request, response);
-            }else if (action.equals("addVoucher")) {
+            } else if (action.equals("addVoucher")) {
                 addVoucher(request, response);
-            }else if(action.equals("deleteVoucher")){
+            } else if (action.equals("deleteVoucher")) {
                 deleteVoucher(request, response);
+            } else if (action.equals("updateVoucher")) {
+
             }
         }
     }
@@ -85,8 +87,24 @@ public class VoucherController extends HttpServlet {
         }
     }
 
-    public void editVoucher(HttpServletRequest request, HttpServletResponse response) {
+    public void editVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        VoucherDTO voucherDTO = new VoucherDTO();
         VoucherDAO voucherDAO = new VoucherDAO();
+        String voucherID = request.getParameter("voucherID");
+        String voucherName = request.getParameter("voucherName");
+        int multiplier = Integer.parseInt(request.getParameter("multiplier"));
+        int usageLimit = Integer.parseInt(request.getParameter("usageLimit"));
+        int usageLimitPerUser = Integer.parseInt(request.getParameter("usageLimitPerUser"));
+        
+        voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+        voucherDTO.setVoucherName(voucherName);
+        voucherDTO.setMultiplier(multiplier);
+        voucherDTO.setUsageLimit(usageLimit);
+        voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
+        voucherDAO.updateVoucher(voucherDTO);
+        
+        RequestDispatcher rd = request.getRequestDispatcher("/VoucherController?action=listVouchers");
+        rd.forward(request, response);
     }
 
     public void deleteVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
