@@ -132,7 +132,7 @@
                                         <select name="maSlot" required>
                                             <option  value=""> Please choose Slot</option>
                                             <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
-                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
+                                                <option style="text-align:left" name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
                                                     ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
                                                 </option>  
                                             </c:forEach>
@@ -157,13 +157,15 @@
                                     <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
                                     <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
                                 </div>  
-                                <div style="width: 357px;
-
-                                     position: absolute;
-                                     margin-top: 171px;
-                                     right: 293px;
-                                     color: red;
-                                     font-weight: BOLD;
+                                <div style="
+                                        width: 357px;
+                                        position: absolute;
+                                        margin-top: 171px;
+                                        color:red;
+                                        left: 100px;
+                                        font-weight: BOLD;
+                                        text-align: center;
+                                        padding: 5px 12px;
                                      ">
 
                                     <% String errorMessage = (String) request.getAttribute("error");%>
@@ -262,10 +264,13 @@
 
 
                     <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
-                        <div class="comment mt-4 text-justify float-left" style="border: none">
-                            <form action="<%=url%>/CommentController">
-                                <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
-                                <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+                        <div class="comment mt-4 text-justify float-left " style="border: none">
+                            <form action="<%=url%>/CommentController" style="position:relative">
+                                <div class="d-flex flex-row align-items-start"><textarea style="resize:none; padding-bottom: 100px"class="form-control ml-1 shadow-none textarea" name="comment" id="commentTextArea"></textarea></div>
+                                <div class="mt-2 text-right btn-section">
+                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none cancel-btn" type="button" onclick="clearTextarea()">Cancel</button>
+                                    <button class="btn btn-primary btn-sm shadow-none submit-btn" type="submit">Post comment</button>                                
+                                </div>
 
                                 <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                 <input type="hidden" name="action" value="post" />
@@ -276,47 +281,44 @@
                         </div>
                     </c:if>
                     <c:forEach var="commentDTO" items="${requestScope.listComment}">
-
-                        <div class="comment mt-4 text-justify float-left">
-
+                        <div class="comment mt-4 text-justify float-left comment-content">
                             <c:choose>
-
-                                <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV!=null  }">
-                                    <form action="<%=url%>/CommentController">
-
+                                <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV != null}">
+                                    <form action="<%=url%>/CommentController" style="position:relative;">
                                         <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                         <input type="hidden" name="action" value="delete" />
                                     </form>
                                 </c:when>
-
-                                <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer &&sessionScope.trainerDTO.maTrainer!=null}">
+                                <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
                                     <form action="<%=url%>/CommentController">
-                                        <button class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
-                                        <input type="hidden" name="action" value="delete" />
+
+                                        <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                        <input type="hidden" name="action" value="deleteBlog" />
+                                          <button class="btn delete-btn" type="submit">X</button>
+
                                     </form>
                                 </c:when>
                                 <c:otherwise>
-
                                 </c:otherwise>
                             </c:choose>
 
-                            <c:if test="${commentDTO.hocVienDTO.username!=null}">
-                                <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
-
-                                <h2>${commentDTO.hocVienDTO.username}</h2>
-                            </c:if>
-                            <c:if test="${commentDTO.trainerDTO.username!=null}">
-                                <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
-
-                                <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
-                                    </c:if>
-                            <span>- ${commentDTO.date}</span>
+                            <div class="comment-info">
+                                <c:if test="${commentDTO.hocVienDTO.username != null}">
+                                    <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                    <h3 class="author-name">${commentDTO.hocVienDTO.username}</h3>
+                                </c:if>
+                                <c:if test="${commentDTO.trainerDTO.username != null}">
+                                    <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                    <h3 class="author-name">${commentDTO.trainerDTO.ten}</h3><span style="color: #953553; font-size: 16px;; font-weight: 600;margin-bottom: 10px; margin-left: 10px; ">(Trainer)</span>
+                                </c:if>
+                            </div>
                             <br>
+                            <div class="comment-detail">
                             <p>${commentDTO.noiDung}</p>
+                            </div>
                         </div>
                     </c:forEach>
 
@@ -372,7 +374,140 @@
             .close:hover {
                 color: black;
             }
+.comment-content {
+    position: relative;
+    border-radius: 50px;
+    border: 2px solid #000;
+}
 
+.comment-info {
+    display: flex;
+    align-items: center;
+}
+
+.comment-info img {
+    margin-right: 10px;
+}
+
+.comment-date {
+    color: gray;
+}
+
+.delete-btn {
+    background-color: #8b57fc;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: lightcoral;
+    color: white;
+}
+
+.delete-btn:focus {
+    outline: none;
+}
+
+.comment-content p {
+    margin-top: 10px;
+}
+.comment-date{
+    margin-left: 50px;
+    font-size: 15px;
+    color: #b1b1b1b1;
+}
+.author-name{
+        font-size: 24px;
+    text-align: left;
+    font-weight: 600;
+}
+ .submit-btn{
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    color: rgb(106, 90, 249);
+    border: 2px solid rgb(106, 90, 249);
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+}
+.submit-btn::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: rgb(106, 90, 249);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+.submit-btn:hover::before {
+      scale: 3;
+}
+.submit-btn:hover {
+    color: #ffff;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+}
+.submit-btn:active {
+  scale: 1;
+}
+.btn-section{
+    display: flex;
+    justify-content: space-between
+}
+.cancel-btn{
+        cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    color:rgb(114, 47, 55);
+    border: 2px solid rgb(114, 47, 55);
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+}
+.cancel-btn::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: rgb(114, 47, 55);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+.cancel-btn:hover::before {
+      scale: 3;
+}
+.cancel-btn:hover {
+    color: #ffff;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(114, 47, 55,0.4);
+}
+.cancel-btn:active {
+  scale: 1;
+}
+.delete-btn {
+    position: absolute;
+    right: 0;
+    bottom: -33px;
+    margin-top: 10px;
+}
         </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
@@ -403,10 +538,17 @@
                 modal.style.display = 'block';
             }
 
-            function closeModal() {
-                var modal = document.getElementById('trainerModal');
-                modal.style.display = 'none';
-            }
+
+                function closeModal() {
+                  var modal = document.getElementById('trainerModal');
+                  modal.style.display = 'none';
+                }
+                
+                function clearTextarea() {
+                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+                  }
+
+
 
         </script>
     </body>
