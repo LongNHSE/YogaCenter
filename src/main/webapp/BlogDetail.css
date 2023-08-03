@@ -753,18 +753,15 @@ textarea.form-control {
     cursor: auto;
     color: grey;
 }
-.comment-author{
-    font-size: 23px;
-    font-weight: 500;
-    color: #673147;
-}
 .avatar-and-author {
     display: flex;
     align-items: center;
 }
 
 .comment-author {
-    margin-left: 10px;
+    font-size: 24px;
+    text-align: left;
+    font-weight: 600;
 }
 
 .comment-date {
@@ -798,7 +795,7 @@ textarea.form-control {
 .comments-title {
   font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: rgb(191, 64, 191);
   padding: 10px 0px;
 }
 
@@ -807,8 +804,116 @@ textarea.form-control {
   height: 1px;
   width: 100%;
   background-color: #ccc;
-  margin-bottom: 20px;
 }
 .comment-section{
     
+}
+.btn-section {
+    display: flex;
+    justify-content: space-between;
+}
+.submit-btn{
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    color: rgb(106, 90, 249);
+    border: 2px solid rgb(106, 90, 249);
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+        padding: 8px 20px;
+}
+.submit-btn::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: rgb(106, 90, 249);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+.submit-btn:hover::before {
+      scale: 3;
+}
+.submit-btn:hover {
+    color: #ffff;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+}
+.submit-btn:active {
+  scale: 1;
+}
+.btn-section{
+    display: flex;
+    justify-content: space-between;
+    margin-top:20px
+}
+.cancel-btn{
+        cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    color:rgb(114, 47, 55);
+    border: 2px solid rgb(114, 47, 55);
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+        padding: 8px 13px;
+}
+.cancel-btn::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: rgb(114, 47, 55);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+.cancel-btn:hover::before {
+      scale: 3;
+}
+.cancel-btn:hover {
+    color: #ffff;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(114, 47, 55,0.4);
+}
+.cancel-btn:active {
+  scale: 1;
+}
+.delete-btn {
+    position: absolute;
+    right: 0;
+    bottom: -33px;
+    margin-top: 10px;
+}
+.comment-container{
+        position: relative;
+    border-radius: 50px;
+    border: 2px solid #000;
+}
+.delete-btn{
+        position: absolute;
+    right: 28px;
+    bottom: 0;
+    top: 0;
+    margin-top: 10px;
+        background-color: #8b57fc;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
 }

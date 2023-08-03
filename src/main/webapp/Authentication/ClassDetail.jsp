@@ -285,7 +285,7 @@
                             <c:choose>
                                 <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV != null}">
                                     <form action="<%=url%>/CommentController" style="position:relative;">
-                                        <button class="btn delete-btn" type="submit">X</button>
+                                        <button  style="color:white;"class="btn delete-btn" type="submit">X</button>
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
                                         <input type="hidden" name="action" value="deleteBlog" />
@@ -296,7 +296,7 @@
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
                                         <input type="hidden" name="action" value="deleteBlog" />
-                                          <button class="btn delete-btn" type="submit">X</button>
+                                          <button  style="color:white;" class="btn delete-btn" type="submit">X</button>
                                     </form>
                                 </c:when>
                                 <c:otherwise>

@@ -72,16 +72,14 @@
                                     <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
                                         <div class="comment mt-4 text-justify float-left" style="border: none; width: 100%">
                                             <form action="<%=baseUrl%>/CommentController">
-                                                <!--                                                    <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
-                                                                                                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
-                                                
-                                                                                                    <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
-                                                                                                    <input type="hidden" name="action" value="postBlog" />-->
 
-                                                <textarea class="form-control" rows="2" placeholder="What are you thinking?"  name="comment"></textarea>
+                                                <textarea id="commentTextArea" class="form-control" rows="2" placeholder="What are you thinking?"  name="comment" style="resize:none"></textarea>
                                                 <div class="mar-top clearfix">
-                                                    <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i> Share</button>
-                                                    <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                    <div class=" btn-section"> 
+                                                       <button class="cancel-btn" type="button" onclick="clearTextarea()">Cancel</button>
+                                                     <button class= "submit-btn" type="submit"> Share</button>          
+                                                    </div>
+                                                   <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
                                                     <input type="hidden" name="action" value="postBlog" />                                                      
                                                 </div>
 
@@ -91,40 +89,6 @@
                                             </form>
                                         </div>
                                     </c:if>
-
-
-                                    <%--<c:forEach var="commentDTO" items="${requestScope.listComment}">
-                                        <div class="comment mt-4 text-justify float-left">
-                                            <c:if test="${sessionScope.hocVienDTO.maHV ==commentDTO.hocVienDTO.maHV }">
-                                                <form action="<%=baseUrl%>/CommentController">
-                                                    <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 595px;size: 100px">X</button>
-                                                    <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
-                                                    <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
-                                                    <input type="hidden" name="action" value="deleteBlog" />
-                                                </form>
-                                            </c:if>
-                                            <c:if test="${commentDTO.hocVienDTO.username!=null}">
-                                                <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
-
-
-                                                </c:if>
-                                                <c:if test="${commentDTO.trainerDTO.username!=null}">
-                                                    <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
-
-
-                                                </c:if>
-                                                <c:if test="${commentDTO.hocVienDTO.username!=null}">
-                                                    <h2>${commentDTO.hocVienDTO.username}</h2>
-                                                </c:if>
-                                                <c:if test="${commentDTO.trainerDTO.username!=null}">
-                                                    <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
-                                                        </c:if>
-                                                <span>- ${commentDTO.date}</span>
-                                                <br>
-                                                <p>${commentDTO.noiDung}</p>
-                                            </div>
-                                        </c:forEach>
-                                    --%>
 
                                     <div>
                                         <c:forEach var="commentDTO" items="${requestScope.listComment}">
@@ -136,12 +100,8 @@
                                                     </c:if>
                                                     <c:if test="${commentDTO.trainerDTO.username != null}">
                                                         <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
-                                                        <h2 class="comment-author">${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                                        <h2 class="comment-author">${commentDTO.trainerDTO.ten}</h2><p style="color: #953553; font-size: 16px;; font-weight: 600;margin-bottom: 10px; margin-left: 10px; ">(Trainer)</p>
                                                             </c:if>
-                                                            <!--<span class="comment-date">- ${commentDTO.date}</span>-->
-                                                    <span class="comment-date">
-                                                        <fmt:formatDate value="${commentDTO.date}" pattern=" dd/MM/yyyy" />
-                                                    </span>
 
                                                 </div>
                                                 <p class="comment-content">${commentDTO.noiDung}</p>
@@ -238,6 +198,11 @@
         </div>
 
     </body>
-
+    <script>
+                                function clearTextarea() {
+                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+                  }
+    </script>
     <script src="<%=baseUrl%>/js/blogDetails.js">
+
         </html>
