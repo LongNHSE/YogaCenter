@@ -292,7 +292,7 @@
                                     </form>
                                 </c:when>
                                 <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
-                                    <form action="<%=url%>/CommentController">
+                                    <form action="<%=url%>/CommentController " style="position:relative;">
                                         <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
                                         <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
                                         <input type="hidden" name="action" value="deleteBlog" />
