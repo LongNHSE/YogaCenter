@@ -4,7 +4,7 @@
     Author     : Oalskad
 --%>
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
-
+<%@page import="com.mycompany.yogacenterproject.dao.LoaiLopHocDAO"%>
 <%@page import="java.util.List"%>
 
 <%
@@ -190,7 +190,13 @@
                     <form action="<%=url%>/ClassController" method="POST">
                         <tr>
                             <th scope="row"><%= lopHocDTO.getMaLopHoc()%></th>
-                            <td><%= lopHocDTO.getMaLoaiLopHoc()%> </td>
+                                <%
+                                    String maLoaiLopHoc = lopHocDTO.getMaLoaiLopHoc();
+                                    LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+                                    String tenLoaiLopHoc = loaiLopHocDAO.searchTenLoaiLopHoc(maLoaiLopHoc);
+                                %>
+
+                                <td><%= tenLoaiLopHoc %></td>
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHV()%> </td>
                             <td style="text-align: right"><%= lopHocDTO.getSoLuongHvHienTai()%> </td>
                             <td><%= lopHocDTO.getMaTrainer()%> </td>

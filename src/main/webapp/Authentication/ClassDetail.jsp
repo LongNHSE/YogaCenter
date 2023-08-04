@@ -11,6 +11,8 @@
 <%@page import="com.mycompany.yogacenterproject.dto.LopHocDTO"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
@@ -184,6 +186,18 @@
 
             </div>
 
+
+            <div class="Description product-content product-wrap clearfix product-deatil">
+                <div class="title">
+                    <h1> 📖  ${descriptionDTO.title}</h1>
+                </div>
+                <div class="description">
+                    ${descriptionDTO.content}
+                </div>
+
+            </div>
+                
+                
             <div class="ClassList product-content product-wrap clearfix product-deatil">
                 <button class="collapsible">List Class</button>
                 <div class="content">
@@ -245,16 +259,7 @@
 
 
                 </div>
-            </div>
-            <div class="Description product-content product-wrap clearfix product-deatil">
-                <div class="title">
-                    <h1> 📖  ${descriptionDTO.title}</h1>
-                </div>
-                <div class="description">
-                    ${descriptionDTO.content}
-                </div>
-
-            </div>
+            </div>                
             <div class="Description product-content product-wrap clearfix product-deatil">
 
                 <div class="col-sm-5 col-md-6 col-12 pb-4" >
