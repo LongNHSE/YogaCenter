@@ -133,7 +133,7 @@
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/home.jsp">Home</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/Public/about.jsp">About</a>
-            <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Classes</a>
+            <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=classes">Courses</a>
             <a class="nav-item nav-link" href="<%= headerUrl%>/ClassController?action=ViewSchedulePublic">Schedule</a>
 
             <a class="nav-item nav-link" href="<%=headerUrl%>/BLogController?action=showBlogs"">Blog</a>

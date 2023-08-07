@@ -80,10 +80,11 @@ public class VoucherController extends HttpServlet {
                 rd.forward(request, response);
             } else {
                 errorMessage = "Invalid discount";
+                request.setAttribute("errorMessage", errorMessage);
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Voucher/AddVoucher.jsp");
+                rd.forward(request, response);
             }
-            request.setAttribute("errorMessage", errorMessage);
-            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/ListVouchers.jsp");
-            rd.forward(request, response);
+
         }
     }
 
@@ -95,14 +96,14 @@ public class VoucherController extends HttpServlet {
         int multiplier = Integer.parseInt(request.getParameter("multiplier"));
         int usageLimit = Integer.parseInt(request.getParameter("usageLimit"));
         int usageLimitPerUser = Integer.parseInt(request.getParameter("usageLimitPerUser"));
-        
+
         voucherDTO = voucherDAO.searchVoucherByID(voucherID);
         voucherDTO.setVoucherName(voucherName);
         voucherDTO.setMultiplier(multiplier);
         voucherDTO.setUsageLimit(usageLimit);
         voucherDTO.setUsageLimitPerUser(usageLimitPerUser);
         voucherDAO.updateVoucher(voucherDTO);
-        
+
         RequestDispatcher rd = request.getRequestDispatcher("/VoucherController?action=listVouchers");
         rd.forward(request, response);
     }

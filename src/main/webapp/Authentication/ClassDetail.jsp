@@ -219,9 +219,7 @@
 
                                     <!--<td><a href="#"  >${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>-->
                                     <td>
-                                        <a href="#" onclick="openModal('${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}')">
                                             ${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}
-                                        </a>
                                     </td>
 
 
