@@ -191,13 +191,10 @@
                         <tr class="Test">
 
 
-                            <th  scope="col">Ma Hoc Vien</th>
-                            <th scope="col">Ho</th>
-                            <th scope="col">Ten</th>
+                            <th  scope="col">Attendee's ID</th>
+                            <th scope="col">Name</th>
 
                             <th scope="col">Day of birth</th>
-
-
 
                             <th scope="col">Gender</th>
 
@@ -211,8 +208,7 @@
                     <form action="<%=url%>/AdminController" method="POST">
                         <tr>
                             <th scope="row"><%= hocVienDTO.getMaHV()%></th>
-                            <td><%= hocVienDTO.getHo()%> </td>
-                            <td><%= hocVienDTO.getTen()%> </td>
+                            <td><%= hocVienDTO.getHo()%> <%= hocVienDTO.getTen()%> </td>
 
                             <td><%= hocVienDTO.getDob()%> </td>
 

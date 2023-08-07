@@ -158,17 +158,15 @@
                         <tr class="Test">
 
 
-                            <th  scope="col">Ma Hoc Vien</th>
-                            <th scope="col">Ho</th>
-                            <th scope="col">Ten</th>
+                            <th  scope="col">Trainee's ID</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">First Name</th>
                             <th scope="col">Username</th>
-                            <th scope="col">Day of birth</th>
-
-
+                            <th scope="col">Day of Birth</th
                             <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
+                            <th scope="col">Phone Number</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Ma Lop Hoc</th>
+                            <th scope="col">Currently Registered Class(es)</th>
 
                         </tr>
                     </thead>
@@ -182,9 +180,9 @@
                             <td><%= hocVienDTO.getHo()%> </td>
                             <td><%= hocVienDTO.getTen()%> </td>
                             <td><%= hocVienDTO.getUsername()%> </td>
-                            <td><%= hocVienDTO.getDob()%> </td>
+                            <td style="text-align: right"><%= hocVienDTO.getDob()%> </td>
                             <td><%= hocVienDTO.getEmail()%> </td>
-                            <td><%= hocVienDTO.getPhone()%> </td>
+                            <td style="text-align: right"><%= hocVienDTO.getPhone()%> </td>
                             <td><%= hocVienDTO.getGender()%> </td>
                             <td>
                                 <% for (String maLopHoc : hocVienDTO.getMaLopHoc()) {
@@ -194,7 +192,7 @@
                                 <% }%>
                             </td>
                             <td>  <input class="btn btn-outline-danger" type='submit'value="View Receipt"name="action" ></td>
-                            <td>  <input class="btn btn-outline-danger" type='submit'value="Delete"name="action"  ></td>
+                        
                         <input type="hidden" name="maHV" value="<%= hocVienDTO.getMaHV()%>" >
                         </tr>
                     </form>

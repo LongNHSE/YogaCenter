@@ -47,7 +47,7 @@
                                             <div class="form-outline">
 
                                                 <input type="text" id="LoaiLopHoc" class="form-control form-control-lg" name="tenLoaiLopHoc" required="required"/>
-                                                <label class="form-label" for="LoaiLopHoc">Name of Class Type</label>
+                                                <label class="form-label" for="LoaiLopHoc">Class' Type</label>
                                                 <div style="color: red; font-weight: BOLD">
                                                     <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -60,9 +60,9 @@
 
                                             <div class="form-outline">
                                                 <div class="input-container">
-                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1">
-                                                    <span class="currency">x1.000.000VND</span>
-                                                    <label class="form-label" for="hocPhi">Fee</label>
+                                                    <input type="number" id="hocPhi" name="hocPhi"  min="0" step="0.1" required="required">
+                                                    <span class="currency">x100.000VND</span>
+                                                    <label class="form-label" for="hocPhi">Participation Fee</label>
                                                 </div>
                                             </div>
 
@@ -80,17 +80,20 @@
                                         </div>
                                         <div class="form-outline">
                                             <div class="align-self-xl-center">        
-                                                <textarea name="description" id="description" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px"></textarea>
+                                                <textarea  class="input-style" name="description" id="contentInput" style="font-family:sans-serif;font-size:0.5cm; width: 600px ; height: 100px" placeholder="Start writing here..." required="required"></textarea>
                                             </div>
+
+
+
                                         </div>
                                         <label class="form-label" for="description">Description</label>
 
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
-                                            <input type="file" id="fileInput" name="Thumbnail"  onchange="addThumbnailImage(this)">
+                                            <input type="file" id="Thumbnail" name="Thumbnail"  onchange="addThumbnailImage(this)" required="required">
                                             <input type="hidden" id="Thumbnails" name="Thumbnails"  >
-                                            <label class="form-label" for="Thumbnail">Thumbnail</label>
+                                            <label class="form-label" for="Thumbnail">Preview Image</label>
                                             <div id="previewThumb" class="previewThumb"></div>
                                         </div>
                                     </div>
@@ -98,7 +101,7 @@
 
 
                                         <div class="col-md-6 mb-4">
-                                            <input type="file" id="fileInput" name="fileInput"  onchange="addImage(this)">
+                                            <input type="file" id="fileInput" name="fileInput"  onchange="addImage(this)" required="required">
                                             <input type="hidden" id="listImage" name="listImage"> <!-- Hidden input for listImage parameter -->
                                         </div>
 
@@ -119,6 +122,16 @@
 
         </div>
     </body>
+    <script src="<%=url%>/js/CreateBlogStyle.js"></script>
+    <script type="text/javascript" src="<%=url%>/libraries/ckeditor/ckeditor.js"></script>
+    <script>
+                                                CKEDITOR.replace('contentInput');
+                                                CKEDITOR.editorConfig = function (config) {
+                                                    // Cấu hình ACF để cho phép thẻ <span> và không cho phép thẻ <p>
+                                                    config.allowedContent = 'span(*)';
+                                                    config.disallowedContent = 'p';
+                                                };
+    </script>
     <script>
         var images = []; // Mảng chứa danh sách ảnh tải lên
         var imagesValues = [];
@@ -137,7 +150,7 @@
                         imgElement.className = 'imageStyle';
                         imgElement.src = imgData;
                         var deleteButton = document.createElement('button');
-                        deleteButton.className = 'deleteButton';
+                        deleteButton.className = 'deleteButton1';
                         deleteButton.textContent = 'Xóa';
                         deleteButton.addEventListener('click', function () {
                             var imageIndex = images.indexOf(imgData);
@@ -190,6 +203,7 @@
                         deleteButton.addEventListener('click', function () {
                             var imageContainer = this.parentNode;
                             imageContainer.parentNode.removeChild(imageContainer); // Xóa cả container chứa ảnh và nút xóa khỏi giao diện
+                            document.getElementById('Thumbnail').value = '';
                             document.getElementById('Thumbnails').value = '';
                         });
                         var imageContainer = document.createElement('div');

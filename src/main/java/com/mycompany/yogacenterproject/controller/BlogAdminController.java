@@ -6,9 +6,11 @@ package com.mycompany.yogacenterproject.controller;
 
 import com.mycompany.yogacenterproject.dao.BlogDAO;
 import com.mycompany.yogacenterproject.dao.BlogImageDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 import com.mycompany.yogacenterproject.dto.BLogCateDTO;
 import com.mycompany.yogacenterproject.dto.BlogDTO;
 import com.mycompany.yogacenterproject.dto.BlogImgDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 import com.mycompany.yogacenterproject.dto.HocVienDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.Constants;
@@ -64,7 +66,7 @@ public class BlogAdminController extends HttpServlet {
                 approveBlog(request, response);
             } else if (action.equals("Detail")) {
                 showDetail(request, response);
-            }else if (action.equals("ViewListBlogApprove")) {
+            } else if (action.equals("ViewListBlogApprove")) {
                 listBlogApprove(request, response);
             }
         }
@@ -175,15 +177,25 @@ public class BlogAdminController extends HttpServlet {
     private void deleteBlog(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BlogDAO blogDAO = new BlogDAO();
         String maBlog = request.getParameter("maBlog");
+        BlogDTO blogDTO = blogDAO.getBlogByID(maBlog);
         blogDAO.Delete(maBlog);
-        listBlogUnapprove(request, response);
+        if (blogDTO.isStatus()) {
+            listBlogApprove(request, response);
+        } else {
+            listBlogUnapprove(request, response);
+        }
     }
 
     private void showDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("maBlog");
         BlogDAO blogDAO = new BlogDAO();
         BlogImageDAO blogImgDAO = new BlogImageDAO();
+        CommentDAO cmtDAO = new CommentDAO();
 //        id = "BL0002";
+        CommentDAO commentDAO = new CommentDAO();
+//        id = "BL0002";  
+        List<CommentDTO> listComment = commentDAO.getAllCommentsByBlogId(id);
+        request.setAttribute("listComment", listComment);
 //          Get Blog Details
         BlogDTO blogDetails = blogDAO.getBlogByID(id);
 

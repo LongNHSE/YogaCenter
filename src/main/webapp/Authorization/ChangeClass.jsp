@@ -43,449 +43,10 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <!--CSS-->
+        <link href="<%=url%>/css/ClassDetailStyle.css" rel="stylesheet" type="text/css"  > 
 
         <style type="text/css">
-            body{
-                background:#eee;
-                font-family: "Arial Unicode MS", Arial, sans-serif;
-            }
 
-
-            .product-content {
-                border: 1px solid #dfe5e9;
-                margin-bottom: 20px;
-                margin-top: 12px;
-                background: #fff
-            }
-
-            .product-content .carousel-control.left {
-                margin-left: 0
-            }
-
-            .product-content .product-image {
-                background-color: #fff;
-                display: block;
-                min-height: 238px;
-                overflow: hidden;
-                position: relative
-            }
-
-            .product-content .product-deatil {
-                border-bottom: 1px solid #dfe5e9;
-                padding-bottom: 17px;
-                padding-left: 16px;
-                padding-top: 16px;
-                position: relative;
-                background: #fff
-            }
-
-            .product-content .product-deatil h5 a {
-                color: #2f383d;
-                font-size: 15px;
-                line-height: 19px;
-                text-decoration: none;
-                padding-left: 0;
-                margin-left: 0
-            }
-
-            .product-content .product-deatil h5 a span {
-                color: #9aa7af;
-                display: block;
-                font-size: 13px
-            }
-
-            .product-content .product-deatil span.tag1 {
-                border-radius: 50%;
-                color: #fff;
-                font-size: 15px;
-                height: 50px;
-                padding: 13px 0;
-                position: absolute;
-                right: 10px;
-                text-align: center;
-                top: 10px;
-                width: 50px
-            }
-
-            .product-content .product-deatil span.sale {
-                background-color: #21c2f8
-            }
-
-            .product-content .product-deatil span.discount {
-                background-color: #71e134
-            }
-
-            .product-content .product-deatil span.hot {
-                background-color: #fa9442
-            }
-
-            .product-content .description {
-                font-size: 12.5px;
-                line-height: 20px;
-                padding: 10px 14px 16px 19px;
-                background: #fff
-            }
-
-            .product-content .product-info {
-                padding: 11px 19px 10px 20px
-            }
-
-            .product-content .product-info a.add-to-cart {
-                color: #2f383d;
-                font-size: 13px;
-                padding-left: 16px
-            }
-
-            .product-content name.a {
-                padding: 5px 10px;
-                margin-left: 16px
-            }
-
-            .product-info.smart-form .btn {
-                padding: 6px 12px;
-                margin-left: 12px;
-                margin-top: -10px
-            }
-
-            .product-entry .product-deatil {
-                border-bottom: 1px solid #dfe5e9;
-                padding-bottom: 17px;
-                padding-left: 16px;
-                padding-top: 16px;
-                position: relative
-            }
-
-            .product-entry .product-deatil h5 a {
-                color: #2f383d;
-                font-size: 15px;
-                line-height: 19px;
-                text-decoration: none
-            }
-
-            .product-entry .product-deatil h5 a span {
-                color: #9aa7af;
-                display: block;
-                font-size: 13px
-            }
-
-            .load-more-btn {
-                background-color: #21c2f8;
-                border-bottom: 2px solid #037ca5;
-                border-radius: 2px;
-                border-top: 2px solid #0cf;
-                margin-top: 20px;
-                padding: 9px 0;
-                width: 100%
-            }
-
-            .product-block .product-deatil p.price-container span,
-            .product-content .product-deatil p.price-container span,
-            .product-entry .product-deatil p.price-container span,
-            .shipping table tbody tr td p.price-container span,
-            .shopping-items table tbody tr td p.price-container span {
-                color: #21c2f8;
-                font-family: Lato, sans-serif;
-                font-size: 24px;
-                line-height: 20px
-            }
-
-            .product-info.smart-form .rating label {
-                margin-top: 0
-            }
-
-            .product-wrap .product-image span.tag2 {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                padding: 10px 0;
-                color: #fff;
-                font-size: 11px;
-                text-align: center
-            }
-
-            .product-wrap .product-image span.sale {
-                background-color: #57889c
-            }
-
-            .product-wrap .product-image span.hot {
-                background-color: #a90329
-            }
-
-            .shop-btn {
-                position: relative
-            }
-
-            .shop-btn>span {
-                background: #a90329;
-                display: inline-block;
-                font-size: 10px;
-                box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
-                font-weight: 700;
-                border-radius: 50%;
-                padding: 2px 4px 3px!important;
-                text-align: center;
-                line-height: normal;
-                width: 19px;
-                top: -7px;
-                left: -7px
-            }
-
-            .description-tabs {
-                padding: 30px 0 5px!important
-            }
-
-            .description-tabs .tab-content {
-                padding: 10px 0
-            }
-
-            .product-deatil {
-                padding: 30px 30px 50px
-            }
-
-            .product-deatil hr+.description-tabs {
-                padding: 0 0 5px!important
-            }
-
-            .product-deatil .carousel-control.left,
-            .product-deatil .carousel-control.right {
-                background: none!important
-            }
-
-            .product-deatil .glyphicon {
-                color: #3276b1
-            }
-
-            .product-deatil .product-image {
-                border-right: none!important
-            }
-
-            .product-deatil .name {
-                margin-top: 0;
-                margin-bottom: 0
-            }
-
-            .product-deatil .name small {
-                display: block
-            }
-
-            .product-deatil .name a {
-                margin-left: 0
-            }
-
-            .product-deatil .price-container {
-                font-size: 24px;
-                margin: 0;
-                font-weight: 300
-            }
-
-            .product-deatil .price-container small {
-                font-size: 12px
-            }
-
-            .product-deatil .fa-2x {
-                font-size: 16px!important
-            }
-
-            .product-deatil .fa-2x>h5 {
-                font-size: 12px;
-                margin: 0
-            }
-
-            .product-deatil .fa-2x+a,
-            .product-deatil .fa-2x+a+a {
-                font-size: 13px
-            }
-
-            .profile-message ul {
-                list-style: none ;
-            }
-
-            .product-deatil .certified {
-                margin-top: 10px
-            }
-
-            .product-deatil .certified ul {
-                padding-left: 0
-            }
-
-            .product-deatil .certified ul li:not(first-child) {
-                margin-left: -3px
-            }
-
-            .product-deatil .certified ul li {
-                display: inline-block;
-                background-color: #f9f9f9;
-                border: 1px solid #ccc;
-                padding: 13px 19px
-            }
-
-            .product-deatil .certified ul li:first-child {
-                border-right: none
-            }
-
-            .product-deatil .certified ul li a {
-                text-align: left;
-                font-size: 12px;
-                color: #6d7a83;
-                line-height: 16px;
-                text-decoration: none
-            }
-
-            .product-deatil .certified ul li a span {
-                display: block;
-                color: #21c2f8;
-                font-size: 13px;
-                font-weight: 700;
-                text-align: center
-            }
-
-            .product-deatil .message-text {
-                width: calc(100% - 70px)
-            }
-
-            @media only screen and (min-width:1024px) {
-                .product-content div[class*=col-md-4] {
-                    padding-right: 0
-                }
-                .product-content div[class*=col-md-8] {
-                    padding: 0 13px 0 0
-                }
-                .product-wrap div[class*=col-md-5] {
-                    padding-right: 0
-                }
-                .product-wrap div[class*=col-md-7] {
-                    padding: 0 13px 0 0
-                }
-                .product-content .product-image {
-                    border-right: 1px solid #dfe5e9
-                }
-                .product-content .product-info {
-                    position: relative
-                }
-            }
-
-            .message img.online {
-                width:40px;
-                height:40px;
-            }
-            .button {
-                cursor: pointer;
-                position: relative;
-                padding: 10px 24px;
-                font-size: 18px;
-                color: rgb(193, 163, 98);
-                border: 2px solid rgb(193, 163, 98);
-                border-radius: 34px;
-                background-color: transparent;
-                font-weight: 600;
-                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-                overflow: hidden;
-            }
-
-            .button::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                margin: auto;
-                width: 50px;
-                height: 50px;
-                border-radius: inherit;
-                scale: 0;
-                z-index: -1;
-                background-color: rgb(193, 163, 98);
-                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-            }
-
-            .button:hover::before {
-                scale: 3.5;
-            }
-
-            .button:hover {
-                color: #212121;
-                scale: 1.1;
-                box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
-            }
-
-            .button:active {
-                scale: 1;
-            }
-
-
-            .box {
-                position: absolute;
-                top: 27px ;
-                right: -265px;
-                transform: translate(-50%, -50%);
-            }
-
-            .box select {
-                background-color: rgb(193, 163, 98);
-                color: white;
-                padding: 12px;
-                padding-top: 20px;
-                width: 350px;
-                border: none;
-                font-size: 20px;
-                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-                outline: none;
-                -moz-appearance: none;
-                -webkit-appearance: none;
-                appearance: none;
-
-            }
-
-            .box::before {
-                content: "\f13a";
-                font-family: FontAwesome;
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 20%;
-                height: 100%;
-                text-align: center;
-                font-size: 28px;
-                line-height: 75px;
-                color: rgba(255, 255, 255, 0.5);
-                background-color: rgba(255, 255, 255, 0.1);
-                pointer-events: none;
-            }
-
-            .box:hover::before {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-
-            .box select option {
-                padding: 30px;
-            }
-            .box select option p {
-                color: greenyellow;
-                font-size: 16px
-            }
-
-            .title{
-                width: 500px;
-                height: auto;
-            }
-            .title h1 {
-                border-bottom: 5px solid #554c86
-            }
-            .Description .description{
-                font-size: 25px;
-                display: block;
-                text-align: center;
-                margin: 20px;
-                line-height: 30px;
-            }
-            .Custom{
-
-
-                margin-left: 98px;
-
-            }
         </style>            
     </head>
 
@@ -494,6 +55,14 @@
             <!--navbar : Start-->
         <jsp:include page="../Components/headerComponent.jsp" />       
         <!--navbar: End-->
+        <% String popupMessage = (String) request.getAttribute("popupMessage");
+              %>
+        <% if (popupMessage != null) {%> <div id="myAlert" class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display = 'none';">&times;</span> 
+            <strong>!</strong>  ${popupMessage} 
+        </div>
+
+        <% }%>
         <div class="Detail-con">
 
             <div>
@@ -519,57 +88,71 @@
 
             <div class="product-content product-wrap clearfix product-deatil">
                 <div class="row">
-                    <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
-                        <h1 class="name">
-                            ${requestScope.details.getTenLoaiLopHoc()}
-                        </h1>
-                        <form action="<%=url%>/ExceptionController" method="POST">
 
-                            <div class="row">
+                    <h1 class="name">
+                        ${requestScope.details.getTenLoaiLopHoc()}
+                    </h1>
 
-                                <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
 
-                                    <div class="box">
-                                        <select name="maSlot" required>
-                                            <option  value=""> Please choose Slot</option>
-                                            <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
-                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
-                                                    ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
-                                                </option>  
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div style="    width: 259px;
-                                         position: absolute;
-                                         margin-top: 10px;
-                                         right: 247px;
-                                         color: red;
-                                         font-weight: BOLD;">
+                    <div class="row">
 
-                                        <% String errorMessage = (String) request.getAttribute("error");%>
-                                        <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
 
-                                    </div>
-                                </div>
 
-                                <div class="Custom">
-                                    <button class="button" type="submit" name="action" value="ChangeClassAction">
-                                        Change
-                                    </button>
-                                    <% String cid = (String) request.getAttribute("cid");%>
-                                    <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                        <table class="table" >
+
+                            <thead>
+                                <tr class="Test" style="text-align: center">
+
+
+                                    <th scope="col">Class' ID</th>
+
+
+                                    <th scope="col"> Attendees</th>
+                                    <th scope="col">Trainer In Charge</th>
+                                    <th scope="col">Slots</th>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Slot</th>
+                                    <th scope="col">Days</th>
+                                    <th scope="col">Initial Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <c:forEach items="${listClass}" var="listClass">
+                                <form action="<%=url%>/ExceptionController" method="POST">
+                                    <tr style="text-align: center">
+
+                                        <th scope="row">${listClass.maLopHoc}</th>
+
+                                        <td >${listClass.soLuongHvHienTai}/${listClass.soLuongHV} </td>
+
+                                        <td><a href="#">${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>
+                                        <td>${listClass.soBuoiDaDay}/${listClass.soBuoi}</td>
+                                        <td>${listClass.maRoom} </td>
+                                        <td>${listClass.slotDTO.timeStart}-${listClass.slotDTO.timeEnd} </td>
+                                        <td>${listClass.printDays()} </td>
+                                        <td >${listClass.ngayBatDau} </td>
+                                        <td ><button class="buttonClass" type="submit" name="action" value="ChangeClassAction">
+                                                Change class
+                                            </button> </td>
+                                    </tr>
+
+                                    <input type="hidden" name="maLopHoc" value="${listClass.maLopHoc}" />
                                     <input type="hidden" name="maLopHocCu" value="${lopHocDTO.maLopHoc}" />
-                                    <input type="hidden" name="maLopHoc" value="${lopHocDTO.maLopHoc}" />
-                                    <input type="hidden" name="returnID" value="<%=cid%>" />
+
+                                </form>
+                            </c:forEach>
+                            </tbody>
+                        </table>
 
 
-                                </div>
 
-                            </div>
-                        </form>
 
                     </div>
+
+
                 </div>
+
             </div>
         </div>
 

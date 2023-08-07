@@ -8,6 +8,7 @@ import PayPal.PaymentServices;
 import com.mycompany.yogacenterproject.dao.ApplicationDAO;
 
 import com.mycompany.yogacenterproject.dao.AttendanceDAO;
+import com.mycompany.yogacenterproject.dao.CommentDAO;
 import com.mycompany.yogacenterproject.dao.DescriptionDAO;
 import com.mycompany.yogacenterproject.dao.EmailController;
 import com.mycompany.yogacenterproject.dao.HoaDonDAO;
@@ -21,7 +22,9 @@ import com.mycompany.yogacenterproject.dao.SemesterDAO;
 import com.mycompany.yogacenterproject.dao.SlotDAO;
 import com.mycompany.yogacenterproject.dao.TrainerDAO;
 import com.mycompany.yogacenterproject.dao.VoucherDAO;
+import com.mycompany.yogacenterproject.dto.ApplicationDTO;
 import com.mycompany.yogacenterproject.dto.AttendanceDTO;
+import com.mycompany.yogacenterproject.dto.CommentDTO;
 import com.mycompany.yogacenterproject.dto.DateStartAndDateEnd;
 import com.mycompany.yogacenterproject.dto.DayAndSlot;
 import com.mycompany.yogacenterproject.dto.DescriptionDTO;
@@ -32,8 +35,6 @@ import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.dto.PhongHocDTO;
-import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
-import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
 import com.mycompany.yogacenterproject.dto.SemesterDTO;
 
@@ -41,13 +42,19 @@ import com.mycompany.yogacenterproject.dto.SlotDTO;
 import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.dto.VoucherDTO;
 import com.mycompany.yogacenterproject.util.Constants;
+import com.mycompany.yogacenterproject.util.DBUtils;
 import com.paypal.base.rest.PayPalRESTException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -57,9 +64,13 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -67,15 +78,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import org.apache.commons.mail.EmailException;
 
 /**
  *
  * @author Oalskad
  */
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10, // 10MB
-        maxRequestSize = 1024 * 1024 * 50) // 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5 * 5, // 5MB
+        maxFileSize = 1024 * 1024 * 5 * 5, // 50MB
+        maxRequestSize = 1024 * 1024 * 5 * 5) // 50MB
 public class ClassController extends HttpServlet {
 
     /**
@@ -97,7 +109,8 @@ public class ClassController extends HttpServlet {
                 thongTinLopHocPage(request, response);
             } else if (action.equals("CreateClass")) {
                 createLopHoc(request, response);
-                response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
+
+                response.sendRedirect("Authorization/Admin/AdminHomepage.jsp");
             } else if (action.equals("Assign Trainer")) {
                 thongTinAssignPage(request, response);
             } else if (action.equals("AssignTrainer")) {
@@ -106,27 +119,57 @@ public class ClassController extends HttpServlet {
 //                out.print(maLopHoc);
 //                out.print(maTrainer);
                 assignTrainer(request, response);
+                  String maLopHoc = request.getParameter("maLopHoc");
+                String maTrainer = request.getParameter("listTrainer");
+                out.print(maLopHoc);
+                out.print(maTrainer);
             } else if (action.equals("CheckEmptyRoom")) {
                 checkPhongTrong(request, response);
                 RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/ClassSchedule.jsp");
                 rd.forward(request, response);
             } else if (action.equals("classes")) {
                 showClass(request, response);
-            } else if (action.equals("SuccessfulPayment")) {
-                assignClassAfterPayment(request, response);
             } else if (action.equals("Register")) {
+                CheckRegister(request, response);
+//                response.sendRedirect("Authorization/PurchasePage.jsp");
+//                payment(request, response);
+            } else if (action.equals("payment")) {
+//                LopHocDAO lopHocDAO = new LopHocDAO();
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                LopHocDTO LopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+//                out.print(LopHocDTO);
+//                out.print(maLopHoc);
+//                CheckRegister(request, response);
+//                response.sendRedirect("Authorization/PurchasePage.jsp");
                 payment(request, response);
+            } else if (action.equals("RegisterWithClassID")) {
+                LopHocDAO lopHocDAO = new LopHocDAO();
+                LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+                AttendanceDAO attendanceDAO = new AttendanceDAO();
+                ApplicationDAO applicationDAO = new ApplicationDAO();
+                String maLopHoc = request.getParameter("maLopHoc");
+                LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                out.print(lopHocDTO.getSoBuoiDaDay());
+                CheckRegisterWithClassID(request, response);
+//                String maLopHoc = request.getParameter("maLopHoc");
+//                out.print(maLopHoc);
+//                response.sendRedirect("Authorization/PurchasePage.jsp");
+//                payment(request, response);
             } else if (action.equals("SuccessfulPayment")) {
                 assignClassAfterPayment(request, response);
             } else if (action.equals("showDetails")) {
                 showDetails(request, response);
             } else if (action.equals("CreateClassType")) {
-                createLoaiLopHoc(request, response);
-                insertImg(request, response);
-                insertThumbImg(request, response);
-                response.sendRedirect("./AdminController?action=listClassType");
-//                response.sendRedirect("Authorization/Admin/Class/ListClassType.jsp");
+                try {
 
+                    createLoaiLopHoc(request, response);
+                    insertImg(request, response);
+                    insertThumbImg(request, response);
+                    response.sendRedirect("./AdminController?action=listClassType");
+                } catch (Exception e) {
+                    RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+                    rd.forward(request, response);
+                }
             } else if (action.equals("Class Detail")) {
                 classDetail(request, response);
             } else if (action.equals("Update")) {
@@ -151,14 +194,93 @@ public class ClassController extends HttpServlet {
                 UpdateClassTypePage(request, response);
 
             } else if (action.equals("UpdateClassType")) {
+
                 UpdateLoaiLopHoc(request, response);
 
                 response.sendRedirect("./AdminController?action=listClassType");
+            } else if (action.equals("CheckVoucher")) {
+//                String currentPrice =request.getParameter("CurrentFee");
+//                double currentPrice = Double.parseDouble(request.getParameter("CurrentFee"));
+//                Long a = (long) currentPrice;
+//                out.print(a);
+                checkVoucher(request, response);
             }
         } catch (Exception e) {
 
         }
 
+    }
+
+    public void checkVoucher(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String voucher = request.getParameter("voucher");
+        HttpSession session = request.getSession();
+        HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+        VoucherDTO voucherDTO = new VoucherDTO();
+        VoucherDAO voucherDAO = new VoucherDAO();
+        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+        ApplicationDAO applicationDAO = new ApplicationDAO();
+        LopHocDAO lopHocDAO = new LopHocDAO();
+        String maLopHoc = request.getParameter("maLopHoc");
+        LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+        request.setAttribute("lopHocDTO", lopHocDTO);
+        String feee = request.getParameter("Fee");
+        Double feeValue = Double.parseDouble(feee);
+        if (voucherDAO.checkVoucherName(voucher)) {
+//            if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+//                
+//            }
+            voucherDTO = voucherDAO.searchVoucherByName(voucher);
+            double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi();
+            lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+
+            double currentPrice2 = Double.parseDouble(request.getParameter("Fee"));
+            Long currentPrice = (long) currentPrice2;
+//                    = loaiLopHocDAO.searchHocPhiLopHocWithDouble2(lopHocDTO.getMaLoaiLopHoc()) * lopHocDTO.getSoBuoi();
+
+//            String feee = request.getParameter("fee");
+            currentPrice = currentPrice * (100 - voucherDTO.getMultiplier()) / 100;
+            String currentPriceFormat = getHocPhiWithDot(currentPrice);
+            request.setAttribute("currentPrice", currentPriceFormat);
+
+            request.setAttribute("voucherDTO", voucherDTO);
+            if (lopHocDTO.getSoBuoiDaDay() > 0) {
+                String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                request.setAttribute("popupMessage", popupMessage);
+            }
+            request.setAttribute("feeFormat", getHocPhiWithDot(feeValue));
+            request.setAttribute("fee", feee);
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+            rd.forward(request, response);
+        } else {
+            if (lopHocDTO.getSoBuoiDaDay() > 0) {
+                String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                request.setAttribute("popupMessage", popupMessage);
+            }
+            String voucherMessage = "Voucher is not exist";
+            request.setAttribute("voucherMessage", voucherMessage);
+            request.setAttribute("feeFormat", getHocPhiWithDot(feeValue));
+            request.setAttribute("fee", feee);
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+            rd.forward(request, response);
+        }
+
+    }
+
+    public static String getHocPhiWithDot(Long input) {
+        double hocPhi = input;
+
+// Create a DecimalFormatSymbols instance for the default locale
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator('.');
+
+// Create a DecimalFormat instance with the desired pattern and symbols
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        decimalFormat.setDecimalSeparatorAlwaysShown(false);
+
+        return decimalFormat.format(hocPhi);
     }
 
     private void UpdateClassTypePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, SQLException, IOException {
@@ -167,8 +289,8 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO loaiLopHocDTO = loaiLopHocDAO.searchLoaiLopHoc(maLoaiLopHoc);
         request.setAttribute("loaiLopHocDTO", loaiLopHocDTO);
         LopHocImageDAO imgdao = new LopHocImageDAO();
-        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
-        request.setAttribute("imageListByID", list);
+//        List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID("TYPE0001");
+//        request.setAttribute("list", list);
         RequestDispatcher rd = request.getRequestDispatcher("./Authorization/Admin/Class/UpdateClassTypePage.jsp");
         rd.forward(request, response);
     }
@@ -205,12 +327,42 @@ public class ClassController extends HttpServlet {
             descriptionDTO.setMaDescription(maDescription);
             descriptionDTO.setTitle(request.getParameter("title").trim());
             String content = request.getParameter("description").trim();
-            content = content.replace("\n", "<br>");
 
-            descriptionDTO.setContent(content);
+            descriptionDTO.setContent(content.trim());
 
             descriptionDAO.updateDescriptionDTO(descriptionDTO);
             loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
+
+            try {
+                Part filePart = request.getPart("Banner");
+
+//                List<byte[]> imageListThumb = new ArrayList<>();
+//
+//                String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+//                byte[] imageData = Base64.getDecoder().decode(base64String);
+                if (filePart != null && filePart.getSize() > 0) {
+                    // Read the file data from the Part
+                    InputStream fileContent = filePart.getInputStream();
+
+                    // Convert the file data to a byte array
+                    byte[] imageData = fileContent.readAllBytes();
+
+                    // Now you have the byte array containing the uploaded image data
+                    // You can further process or store this data as needed
+                    // Example: Convert the byte array to Base64 string
+                    String base64String = Base64.getEncoder().encodeToString(imageData);
+
+                    // Example: Print the Base64 string to the console
+                    LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+                    lopHocImageDAO.UpdateImage(imageData, maLoaiLopHoc);
+                    // Example: Store the byte array in a session attribute (this is just a demonstration, you can save it to a database or elsewhere)
+                }
+
+            } catch (Exception e) {
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+                rd.forward(request, response);
+            }
+
         } else {
             request.setAttribute("errorMessage", errorMessage);
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
@@ -230,55 +382,67 @@ public class ClassController extends HttpServlet {
     }
 
     //ADD Image danh cho Create Class Type
-    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    private void insertThumbImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        try {
 
-        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        List<byte[]> imageList = new ArrayList<>();
-        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
-        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+            LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+            List<byte[]> imageList = new ArrayList<>();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
 
-        //HOCVIEN CONSTRUCTOR
-        String maAnh = AUTO_IMG_ID;
-        lopHocImageDTO.setMaAnh(maAnh);
-        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
-        lopHocImageDTO.setTenAnh("THUMBNAIL");
+            //HOCVIEN CONSTRUCTOR
+            String maAnh = AUTO_IMG_ID;
+            lopHocImageDTO.setMaAnh(maAnh);
+            lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+            lopHocImageDTO.setTenAnh("THUMBNAIL");
 
-        String imageThumbArray = request.getParameter("Thumbnails");
-        List<String> listAnhThumb = new ArrayList<>();
-        List<byte[]> imageListThumb = new ArrayList<>();
+            String imageThumbArray = request.getParameter("Thumbnails");
+            List<String> listAnhThumb = new ArrayList<>();
+            List<byte[]> imageListThumb = new ArrayList<>();
 
-        String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
-        byte[] imageData = Base64.getDecoder().decode(base64String);
-        imageListThumb.add(imageData);
+            String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+            byte[] imageData = Base64.getDecoder().decode(base64String);
+            imageListThumb.add(imageData);
 
-        lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+            lopHocImageDAO.insertImageDataFromDatabase(imageListThumb, lopHocImageDTO);
+        } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+            rd.forward(request, response);
+        }
     }
 
-    private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-        List<byte[]> imageList = new ArrayList<>();
-        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
-        String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
+    private void insertImg(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        try {
 
-        //HOCVIEN CONSTRUCTOR
-        String maAnh = AUTO_IMG_ID;
-        lopHocImageDTO.setMaAnh(maAnh);
-        lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+            LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+            List<byte[]> imageList = new ArrayList<>();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            LopHocIMGDTO lopHocImageDTO = new LopHocIMGDTO();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String AUTO_IMG_ID = String.format(Constants.MA_IMG_FORMAT, (lopHocImageDAO.lastIDIndex() + 1));
 
-        String[] imageArray = request.getParameter("listImage").split("\\s+");
-        List<String> listAnh = new ArrayList<>();
-        for (String a : imageArray) {
-            String base64String = a.substring(a.indexOf(",") + 1);
-            byte[] imageData = Base64.getDecoder().decode(base64String);
-            imageList.add(imageData);
-            listAnh.add(a);
+            //HOCVIEN CONSTRUCTOR
+            String maAnh = AUTO_IMG_ID;
+            lopHocImageDTO.setMaAnh(maAnh);
+            lopHocImageDTO.setMaLoaiLopHoc(loaiLopHocDAO.searchIdLoaiLopHoc(tenLoaiLopHoc));
+
+            String[] imageArray = request.getParameter("listImage").split("\\s+");
+
+            List<String> listAnh = new ArrayList<>();
+
+            for (String a : imageArray) {
+                String base64String = a.substring(a.indexOf(",") + 1);
+                byte[] imageData = Base64.getDecoder().decode(base64String);
+                imageList.add(imageData);
+                listAnh.add(a);
+            }
+            lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
+        } catch (Exception e) {
+            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+            rd.forward(request, response);
         }
-        lopHocImageDAO.insertImageDataFromDatabase(imageList, lopHocImageDTO);
-
     }
 
     //GUI CAC LIST VA THONG TIN CAN THIET DE TAO LOP
@@ -309,42 +473,47 @@ public class ClassController extends HttpServlet {
         LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
         DescriptionDAO descriptionDAO = new DescriptionDAO();
         DescriptionDTO descriptionDTO = new DescriptionDTO();
+        try {
 
-        String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
-        String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
-        String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (descriptionDAO.lastIDIndex() + 1));
-        String maDescription = AUTO_DESCRIPTION_ID;
-        String errorMessage = "";
-        boolean check = true;
+            String AUTO_MALOAILOPHOC_ID = String.format(Constants.MA_LOAILOPHOC_FORMAT, (loaiLopHocDAO.lastIDIndex() + 1));
+            String maLoaiLopHoc = AUTO_MALOAILOPHOC_ID;
+            String AUTO_DESCRIPTION_ID = String.format(Constants.MA_DESCRIPTION_FORMAT, (descriptionDAO.lastIDIndex() + 1));
+            String maDescription = AUTO_DESCRIPTION_ID;
+            String errorMessage = "";
+            boolean check = true;
 
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+            String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
 
-        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
-            errorMessage += "Ten loai lop hoc da ton tai";
-            check = false;
-        }
-        double hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
+            if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
+                errorMessage += "Ten loai lop hoc da ton tai";
+                check = false;
+            }
+            double hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 100000;
 
-        if (check == true) {
-            loaiLopHocDTO.setHocPhi(hocPhi);
-            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
-            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-            loaiLopHocDTO.setMaDescription(maDescription);
-            descriptionDTO.setMaDescription(maDescription);
-            descriptionDTO.setTitle(request.getParameter("title").trim());
-            String content = request.getParameter("description").trim();
-            content = content.replace("\n", "<br>");
+            if (check == true) {
+                loaiLopHocDTO.setHocPhi(hocPhi);
+                loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+                loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+                loaiLopHocDTO.setMaDescription(maDescription);
+                descriptionDTO.setMaDescription(maDescription);
+                descriptionDTO.setTitle(request.getParameter("title").trim());
+                String content = request.getParameter("description").trim();
 
-            descriptionDTO.setContent(content);
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            descriptionDAO.createDescriptionDTO(descriptionDTO);
-            loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
-        } else {
-            request.setAttribute("errorMessage", errorMessage);
+                descriptionDTO.setContent(content);
+                request.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                descriptionDAO.createDescriptionDTO(descriptionDTO);
+                loaiLopHocDAO.createLoaiLopHoc(loaiLopHocDTO);
+            } else {
+                request.setAttribute("errorMessage", errorMessage);
+                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
+                rd.forward(request, response);
+
+            }
+        } catch (Exception e) {
+
             RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/CreateClassTypePage.jsp");
             rd.forward(request, response);
-
         }
     }
 
@@ -452,8 +621,9 @@ public class ClassController extends HttpServlet {
         scheduleDAO.createScheduleTrainer(maTrainer, lopHocDAO.searchClassById(maLopHoc));
         scheduleDAO.deleteScheduleTemp(maLopHoc);
         trainerDAO.updateTrainerStatus(maTrainer, true);
+        lopHocDAO.updateClassStatus(maLopHoc, true);
         EmailController.trainerDTOAssign(trainerDAO.readTrainer(maTrainer), lopHocDAO.searchClassById(maLopHoc));
-        response.sendRedirect("Authorization/Admin/Class/ClassController.jsp");
+        response.sendRedirect("Authorization/Admin/AdminHomepage.jsp");
 
     }
 
@@ -471,6 +641,116 @@ public class ClassController extends HttpServlet {
     //TRA TIEN BANG MAU PAY WITH BLOOD IT IS RETRIBUTION
     public void payment(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, EmailException {
         try {
+            LopHocDAO lopHocDAO = new LopHocDAO();
+            String maLopHoc = request.getParameter("maLopHoc");
+            LopHocDTO LopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+            boolean error = true;
+            HttpSession session = request.getSession();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
+            ApplicationDAO applicationDAO = new ApplicationDAO();
+            if (session.getAttribute("hocVienDTO") != null) {
+                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+                LopHocDTO lopHocDTO = new LopHocDTO();
+
+                HoaDonDAO hoaDonDAO = new HoaDonDAO();
+                VoucherDAO voucherDAO = new VoucherDAO();
+                VoucherDTO voucherDTO = new VoucherDTO();
+
+                String errorMessage = "";
+                String voucherID = null;
+//                String selectedValue = request.getParameter("maSlot");
+                if (request.getParameter("voucherID") != null) {
+                    voucherID = request.getParameter("voucherID");
+                }
+
+                voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+                String verifiedVoucherID = "";
+                if (voucherDTO == null) {
+                    verifiedVoucherID = "None";
+                } else if (voucherDTO.getTotalUsage() < voucherDTO.getUsageLimit()) {
+                    if (voucherDAO.getUsageCountForIndividual(voucherID, hocVienDTO.getMaHV())
+                            < voucherDTO.getUsageLimitPerUser()) {
+                        verifiedVoucherID = voucherID;
+                    }
+                }
+                if (!checkAvailability(request, response, maLopHoc)) {
+                    error = false;
+                    errorMessage += "Classes are fully reserved.";
+                }
+                if (!checkTraineeSchedule(request, response, LopHocDTO.getMaSlot(), LopHocDTO.getThuList(), hocVienDTO.getMaHV())) {
+                    error = false;
+                    errorMessage += "You already have a class scheduled for this time slot.";
+                }
+                //this below starts the call for the payment link after finishing checking for all outlying exceptions
+//                if (error) {
+//                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+//                    PaymentServices paymentServices = new PaymentServices();
+//                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+//                    response.sendRedirect(approvalLink);
+
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), LopHocDTO.getMaLoaiLopHoc())) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
+                //check availability before registering
+                if (error) {
+                    if (applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        PaymentServices paymentServices = new PaymentServices();
+                        String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+                        response.sendRedirect(approvalLink);
+                    } else {
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        if (fee > 0) {
+                            lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee / lopHocDTO.getSoBuoi());
+                            PaymentServices paymentServices = new PaymentServices();
+                            String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
+                            applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+                            response.sendRedirect(approvalLink);
+                        } else {
+                            applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(LopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+                            assignClassAfterPayment(request, response, maLopHoc);
+                        }
+                    }
+                } else {
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
+                }
+            } else {
+
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + LopHocDTO.getMaLoaiLopHoc();
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
+
+                rd.forward(request, response);
+            }
+        } catch (PayPalRESTException | IOException | SQLException | ServletException e) {
+        }
+    }
+
+    public void CheckRegister(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, EmailException {
+        try {
             String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
             boolean error = true;
             HttpSession session = request.getSession();
@@ -481,14 +761,17 @@ public class ClassController extends HttpServlet {
                 HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
                 LopHocDTO lopHocDTO = new LopHocDTO();
                 LopHocDAO lopHocDAO = new LopHocDAO();
+//                lopHocDTO = lopHocDAO.searchClassById(maLoaiLopHoc);
                 HoaDonDAO hoaDonDAO = new HoaDonDAO();
                 VoucherDAO voucherDAO = new VoucherDAO();
                 VoucherDTO voucherDTO = new VoucherDTO();
 
                 String errorMessage = "";
-
+                String voucherID = null;
                 String selectedValue = request.getParameter("maSlot");
-                String voucherID = request.getParameter("voucherID");
+                if (request.getParameter("voucher") != null) {
+                    voucherID = request.getParameter("voucherID");
+                }
 
                 voucherDTO = voucherDAO.searchVoucherByID(voucherID);
                 String verifiedVoucherID = "";
@@ -517,49 +800,227 @@ public class ClassController extends HttpServlet {
                 List<String> thuList = new ArrayList<>(Arrays.asList(elements));
 
                 String maLopHoc = lopHocDAO.searchForPayment(maSlot, maLoaiLopHoc, thuList);
-
+//                lopHocDTO.getSoBuoiDaDay() > lopHocDTO.getSoBuoi() / 2
+                if (maLopHoc == null) {
+                    error = false;
+                    errorMessage += " All class have already started. You can't register.";
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
+                }
                 if (!checkAvailability(request, response, maLopHoc)) {
                     error = false;
-                    errorMessage += "Classes are fully reserved.";
+                    errorMessage += " Classes are fully reserved.";
                 }
                 if (!checkTraineeSchedule(request, response, maSlot, thuList, hocVienDTO.getMaHV())) {
                     error = false;
-                    errorMessage += "You already have a class scheduled for this time slot.";
+                    errorMessage += " You already have a class scheduled for this time slot.";
                 }
+
                 //this below starts the call for the payment link after finishing checking for all outlying exceptions
 //                if (error) {
 //                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
 //                    PaymentServices paymentServices = new PaymentServices();
 //                    String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
 //                    response.sendRedirect(approvalLink);
-//                    if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
-//                        error = false;
-//                        errorMessage += "You already have registered this class.";
-//                    }
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), maLoaiLopHoc)) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
                 //check availability before registering
                 if (error) {
-                    if (applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()) == null) {
-                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
-                        PaymentServices paymentServices = new PaymentServices();
-                        String approvalLink = paymentServices.createPayment(lopHocDTO, hocVienDTO, verifiedVoucherID);
-                        response.sendRedirect(approvalLink);
-                    } else {
-                        applicationDAO.updateStatus(applicationDAO.getApplicationFromTrainee(maLoaiLopHoc, hocVienDTO.getMaHV()));
-                        assignClassAfterPayment(request, response, maLopHoc);
+
+                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                    if (lopHocDTO.getSoBuoiDaDay() >= 0) {
+                        String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                        request.setAttribute("popupMessage", popupMessage);
                     }
-                }else {
-                        request.setAttribute("error", errorMessage);
-                        showDetails(request, response);
+                    if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
+                    } else {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
                     }
                 } else {
-
-                    String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
-                    session.setAttribute("redirectUrl", url);
-                    RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
-
-                    rd.forward(request, response);
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
                 }
-        } catch (PayPalRESTException | IOException | SQLException | ServletException e) {
+            } else {
+
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + maLoaiLopHoc;
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
+
+                rd.forward(request, response);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    //IF trainee choose class to register
+    public void CheckRegisterWithClassID(HttpServletRequest request, HttpServletResponse response) throws NumberFormatException, EmailException {
+        try {
+            LopHocDAO lopHocDAO = new LopHocDAO();
+            LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+            AttendanceDAO attendanceDAO = new AttendanceDAO();
+            ApplicationDAO applicationDAO = new ApplicationDAO();
+            String maLopHoc = request.getParameter("maLopHoc");
+            LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+            boolean error = true;
+            HttpSession session = request.getSession();
+
+            if (session.getAttribute("hocVienDTO") != null) {
+                HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
+
+                HoaDonDAO hoaDonDAO = new HoaDonDAO();
+                VoucherDAO voucherDAO = new VoucherDAO();
+                VoucherDTO voucherDTO = new VoucherDTO();
+
+                String errorMessage = "";
+                String voucherID = null;
+
+                if (request.getParameter("voucher") != null) {
+                    voucherID = request.getParameter("voucherID");
+                }
+
+                voucherDTO = voucherDAO.searchVoucherByID(voucherID);
+                String verifiedVoucherID = "";
+                if (voucherDTO == null) {
+                    verifiedVoucherID = "None";
+                } else if (voucherDTO.getTotalUsage() < voucherDTO.getUsageLimit()) {
+                    if (voucherDAO.getUsageCountForIndividual(voucherID, hocVienDTO.getMaHV())
+                            < voucherDTO.getUsageLimitPerUser()) {
+                        verifiedVoucherID = voucherID;
+                    }
+                }
+
+                // Split the selected value to retrieve maSlot and thuList
+                // Remove the square brackets and spaces from the string
+                if (!checkAvailability(request, response, maLopHoc)) {
+                    error = false;
+                    errorMessage += "Classes are fully reserved.";
+                }
+                if (!checkTraineeSchedule(request, response, lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), hocVienDTO.getMaHV())) {
+                    error = false;
+                    errorMessage += "You already have a class scheduled for this time slot.";
+                }
+                if (lopHocDTO.getSoBuoiDaDay() > lopHocDTO.getSoBuoi() / 2) {
+                    error = false;
+                    errorMessage += " This class has already started. You can't register.";
+                }
+
+                if (!checkTraineeClass(request, response, hocVienDTO.getMaHV(), lopHocDTO.getMaLoaiLopHoc())) {
+                    error = false;
+                    errorMessage += "You already have registered this class.";
+                }
+                //check availability before registering
+                if (error) {
+                    lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                    if (lopHocDTO.getSoBuoiDaDay() >= 0) {
+                        String popupMessage = "This class have already started. " + lopHocDTO.getSoBuoiDaDay() + "/" + lopHocDTO.getSoBuoi() + ", the price is based on leftover days.";
+                        request.setAttribute("popupMessage", popupMessage);
+                    }
+                    if (applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()) == null) {
+                        double fee = lopHocDTO.getLoaiLopHocDTO().getHocPhi() * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
+                    } else {
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        ApplicationDTO applicationDTO = applicationDAO.search(applicationDAO.getApplicationFromTrainee(lopHocDTO.getMaLoaiLopHoc(), hocVienDTO.getMaHV()));
+
+                        String pattern = "LOP\\d+";
+
+                        // Compile the pattern
+                        Pattern regexPattern = Pattern.compile(pattern);
+
+                        // Match the pattern against the input string
+                        Matcher matcher = regexPattern.matcher(applicationDTO.getNoiDung());
+                        LopHocDTO lopHocReserve = null;
+                        // Find and print all matches
+                        if (matcher.find()) {
+                            String extracted = matcher.group(); // Get the matched substring
+                            lopHocReserve = lopHocDAO.searchClassById(extracted);
+                        }
+
+                        lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+                        double fee = (lopHocDTO.getLoaiLopHocDTO().getHocPhi() * lopHocDTO.getSoBuoi()) - (lopHocReserve.getSoBuoi() * lopHocReserve.getLoaiLopHocDTO().getHocPhi());
+                        lopHocDTO.getLoaiLopHocDTO().setHocPhi(fee);
+                        request.setAttribute("feeFormat", getHocPhiWithDot(fee));
+                        request.setAttribute("fee", fee);
+                        request.setAttribute("lopHocDTO", lopHocDTO);
+                        RequestDispatcher rd = request.getRequestDispatcher("Authorization/PurchasePage.jsp");
+
+                        rd.forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("error", errorMessage);
+                    showDetails(request, response);
+                }
+            } else {
+
+                String url = "/YogaCenter/ClassController?action=showDetails&returnID=" + lopHocDTO.getMaLoaiLopHoc();
+                session.setAttribute("redirectUrl", url);
+                RequestDispatcher rd = request.getRequestDispatcher("./Public/signin.jsp");
+
+                rd.forward(request, response);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static String getHocPhiWithDot(double fee) {
+        if(fee>0)  {
+            double hocPhi = fee;
+
+// Create a DecimalFormatSymbols instance for the default locale
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+            symbols.setGroupingSeparator('.');
+
+// Create a DecimalFormat instance with the desired pattern and symbols
+            DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+            decimalFormat.setDecimalSeparatorAlwaysShown(false);
+
+            return decimalFormat.format(hocPhi);
+        }
+        else{
+            return "0";
         }
     }
     //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT        //CHECK IF THE TRAINEE ALREADY HAS CLASS IN THAT SLOT
@@ -579,8 +1040,8 @@ public class ClassController extends HttpServlet {
             AttendanceDAO attendanceDAO = new AttendanceDAO();
 
             String maLoaiLopHoc = lopHocDAO.IDLoaiLopHoc(maLopHoc);
-
-            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", ""));
+            LopHocDTO lopHocDTO = lopHocDAO.searchClassById(maLopHoc);
+            long hocPhi = Long.parseLong(loaiLopHocDAO.searchHocPhiLopHoc(maLoaiLopHoc).replaceAll("\\.", "")) * (lopHocDTO.getSoBuoi() - lopHocDTO.getSoBuoiDaDay());
 
             String AUTO_HOADON_ID = String.format(Constants.MA_HOADON_FORMAT, (hoaDonDAO.lastIDIndex()) + 1);
             String maHoaDon = AUTO_HOADON_ID;
@@ -659,7 +1120,7 @@ public class ClassController extends HttpServlet {
                 voucherDAO.increaseTotalUsageCount(voucherID);
             }
             scheduleDAO.createScheduleHV(hocVienDTO.getMaHV(), maLopHoc);
-            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV(),maLopHoc));
+            attendanceDAO.createAttendance(scheduleDAO.readScheduleHvDTO(hocVienDTO.getMaHV(), maLopHoc));
             sendMailClassRegister(request, response, lopHocDAO.getClassOfTrainee(maLopHoc));
             String popupMessage = maLopHoc;
             request.setAttribute("popupMessage", popupMessage);
@@ -787,14 +1248,19 @@ public class ClassController extends HttpServlet {
         LopHocImageDAO imgdao = new LopHocImageDAO();
         List<LopHocIMGDTO> list = imgdao.getImageBasedOnTypeID(cid);
         request.setAttribute("imageListByID", list);
+        CommentDAO commentDAO = new CommentDAO();
+        List<CommentDTO> listComment = commentDAO.getAllCommentsByTypeClass(cid);
+
+        List<LopHocDTO> listClass = new ArrayList<>();
+        listClass = lopHocDAO.searchClassByTypeID(cid);
 
         List<DayAndSlot> listDayAndSlot = new ArrayList<>();
         for (int i = 0; i < listLopHocDTO.size(); i++) {
             DayAndSlot dayAndSlot = new DayAndSlot();
             String currentSlot = listLopHocDTO.get(i).getMaSlot();
             List<String> thu = listLopHocDTO.get(i).getThuList();
-            if (i != 0) {
-                for (int j = 1; j < i; j++) {
+            if (i < 0) {
+                for (int j = 1; j <= i; j++) {
                     if (currentSlot.equals(listLopHocDTO.get(j).getMaSlot())) {
                         if (LopHocDAO.compareLists(listLopHocDTO.get(i).getThuList(), listLopHocDTO.get(j).getThuList())) {
 //                            System.out.println(currentSlot + thu);
@@ -818,17 +1284,22 @@ public class ClassController extends HttpServlet {
             }
 
         }
-        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        Set<DayAndSlot> uniqueDayAndSlots = new HashSet<>(listDayAndSlot);
+//        
+        Set<DayAndSlot> uniqueDayAndSlots = new TreeSet<>(new DayAndSlot.slotComparator());
+        uniqueDayAndSlots.addAll(listDayAndSlot);
         List<DayAndSlot> distinctDayAndSlots = new ArrayList<>(uniqueDayAndSlots);
 
         if (session.getAttribute("hocVienDTO") != null) {
             HocVienDTO hocVienDTO = (HocVienDTO) session.getAttribute("hocVienDTO");
             if (applicationDAO.getApplicationFromTrainee(cid, hocVienDTO.getMaHV()) != null) {
-                String popupMessage = "You dont have to purchase this course because you rerserved it";
+                String popupMessage = "You have discount for this course because you rerserved it";
                 request.setAttribute("popupMessage", popupMessage);
             }
         }
         //
+        request.setAttribute("listClass", listClass);
+        request.setAttribute("listComment", listComment);
         request.setAttribute("distinctDayAndSlots", distinctDayAndSlots);
         request.setAttribute("cid", cid);
 
@@ -879,13 +1350,14 @@ public class ClassController extends HttpServlet {
 
     public void updateClass(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String classID = request.getParameter("maLopHoc");
-
+        TrainerDAO trainerDAO = new TrainerDAO();
         String maRoom = request.getParameter("listPhongHocDTO");
         int soLuongHV = Integer.parseInt(request.getParameter("soLuongHV"));
         String listTrainer = request.getParameter("listTrainer");
 
         LopHocDAO lopHocDAO = new LopHocDAO();
         LopHocDTO lopHocDTO = lopHocDAO.searchClassById(classID);
+        trainerDAO.updateTrainerStatus(trainerDAO.searchTrainerByClassID(classID).getMaTrainer(), true);
         lopHocDTO.setMaRoom(maRoom);
         lopHocDTO.setMaTrainer(listTrainer);
         lopHocDTO.setSoLuongHV(soLuongHV);

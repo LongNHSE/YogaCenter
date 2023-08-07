@@ -9,6 +9,7 @@ import com.mycompany.yogacenterproject.dto.LopHocDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleHvDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTempDTO;
 import com.mycompany.yogacenterproject.dto.ScheduleTrainerDTO;
+import com.mycompany.yogacenterproject.dto.TrainerDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
 import com.mycompany.yogacenterproject.util.DateUtils;
 import java.sql.Connection;
@@ -29,6 +30,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -367,6 +370,22 @@ public class ScheduleDAO {
         }
     }
 
+    public void updateTrainerDayOff(String maLopHoc, String maTrainer, Date ngayHoc, String maSlot) {
+        try {
+            String sql = "UPDATE [dbo].[ScheduleTrainer] SET maTrainer = ? where maLopHoc= ? and ngayHoc= ? and maSlot=?";
+
+            PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+            stm.setString(1, maTrainer);
+            stm.setString(2, maLopHoc);
+            stm.setDate(3, (java.sql.Date) ngayHoc);
+            stm.setString(4, maSlot);
+            int rowsUpdated = stm.executeUpdate();
+            System.out.println(rowsUpdated + " rows updated. Status set to false for past dates.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<DateAndDay> listDateAndDay(String[] thu, Date initDate, int slot) {
         DateTimeFormatter df = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter(Locale.ENGLISH);
 
@@ -511,6 +530,36 @@ public class ScheduleDAO {
         return true;
     }
 
+    public List<TrainerDTO> listTrainerDTO(TrainerDTO trainerDTO, String maSlot, Date ngayHoc) {
+
+        List<TrainerDTO> listTrainerDTO = new ArrayList<>();
+        TrainerDAO trainerDAO = new TrainerDAO();
+
+        String sql = "    Select Trainer.maTrainer\n"
+                + "         from Trainer FULL OUTER join ScheduleTrainer on ScheduleTrainer.maTrainer = Trainer.maTrainer\n"
+                + "        where trainerType =? \n"
+                + "        and ScheduleTrainer.maSlot !=  ? \n"
+                + "        and ScheduleTrainer.ngayHoc !=\n"
+                + "        ? \n"
+                + "group by Trainer.maTrainer";
+
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, trainerDTO.getTrainerType());
+            ps.setString(2, maSlot);
+            ps.setDate(3, (java.sql.Date) ngayHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                listTrainerDTO.add(trainerDAO.searchTrainerById(rs.getString("maTrainer")));
+            }
+            return listTrainerDTO;
+        } catch (SQLException e) {
+        }
+        return null;
+
+    }
+
     //Check expired schedule
     public void checkSchedule() {
         LocalDate currentDate = LocalDate.now();
@@ -546,10 +595,23 @@ public class ScheduleDAO {
         return oldestDate;
     }
 
+    public static boolean checkTraineeSchedule( String maSlot, List<String> thuList, String maHocVien) {
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
+        return scheduleDAO.checkTraineeSchedule(maSlot, maHocVien, thuList);
+    }
+
     public static void main(String[] args) throws SQLException, ParseException {
 
         ScheduleDAO schedule = new ScheduleDAO();
-        schedule.updateTrainerOff("LOP0009", "TR0003");
+//        schedule.updateTrainerOff("LOP0009", "TR0003");
+
+        LopHocDAO a = new LopHocDAO();
+//        System.out.println(.getThuList());
+        LopHocDTO lopHocDTO = a.searchClassById("LOP0025");
+        System.out.println(schedule.checkTraineeSchedule("SL001", "HV0001", lopHocDTO.getThuList()));
+        if (!checkTraineeSchedule(lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), "HV0001")) {
+            System.out.println(checkTraineeSchedule(lopHocDTO.getMaSlot(), lopHocDTO.getThuList(), "HV0001"));
+        }
 //        List<ScheduleTempDTO> listScheduleHv = schedule.readScheduleTemp();
 //        List<ScheduleTrainerDTO> listScheduleTrainer = schedule.readScheduleTrainer();
 //        LopHocDAO lopHocDAO = new LopHocDAO();
@@ -562,7 +624,7 @@ public class ScheduleDAO {
 //        LocalDate currentDate = LocalDate.now();
 //        System.out.println(java.sql.Date.valueOf(currentDate));
 //        schedule.checkSchedule();
-        String selectedThuList = "[ MONDAY, WEDNESDAY]";
+//        String selectedThuList = "[ MONDAY, WEDNESDAY]";
 //        schedule.checkTraineeSchedule("SL002", "HV0001", selectedThuList);
 //
 //        // Remove the square brackets and spaces from the string

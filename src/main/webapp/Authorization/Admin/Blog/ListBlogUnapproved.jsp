@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */
@@ -175,12 +175,13 @@
                         <tr class="Test">
 
 
-                            <th scope="col">ID Blog</th>
-                            <th scope="col">ID Trainee</th>
-                            <th scope="col">ID Trainer</th>
+                            <th scope="col">Blog's ID</th>
+                            <th scope="col">Trainee's ID</th>
+                            <th scope="col">Trainer's ID</th>
                             <th scope="col">Title</th>
                             <th scope="col">Date</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Category</th>
 
                         </tr>
                     </thead>
@@ -194,11 +195,18 @@
                             <td>${blog.maHV} </td>
                             <td>${blog.maTrainer} </td>
                             <td>${blog.title} </td>
-                            <td>${blog.date} </td>
-                            <td>${blog.status} </td>
-                            <td>
+                            <td style="text-align: right">${blog.date} </td>
+                            <c:choose>
+                                <c:when test="${blog.status == true}">
+                                    <td style="background-color: #3FFF00; text-align: center">Approved</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="background-color: red; text-align: center">Unapproved</td>
+                                </c:otherwise>
+                            </c:choose>
+                            <td style="text-align: center">
                                 <select name="cate" required class="cate">
-                                    <option value="">Please choose Category</option>
+                                    <option style="text-align: center" value="">Please choose Category</option>
                                     <c:forEach var="listCate" items="${requestScope.listCate}" >
                                         <option value="${listCate.maCate}">${listCate.tenCate}</option>
                                     </c:forEach>
@@ -227,39 +235,39 @@
 
         <script>
             function removeSelectRequired(button) {
-            var selectElements = document.querySelectorAll(".cate");
-            for (var i = 0; i < selectElements.length; i++) {
-            selectElements[i].required = false;
-            }
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = false;
+                }
             }
 
-            document.addEventListener("DOMContentLoaded", function() {
-            var selectElements = document.querySelectorAll(".cate");
-            for (var i = 0; i < selectElements.length; i++) {
-            selectElements[i].required = true;
-            }
+            document.addEventListener("DOMContentLoaded", function () {
+                var selectElements = document.querySelectorAll(".cate");
+                for (var i = 0; i < selectElements.length; i++) {
+                    selectElements[i].required = true;
+                }
             });
-           
+
 
             document.getElementsByClassName("cate").required = true;
             const navMenu = document.querySelector("nav");
             // Find the desired element and assign it the "active" id
             const blogLiElement = navMenu.querySelector("#Blog");
             if (blogLiElement) {
-            const ulElement = blogLiElement.querySelector("ul");
-            if (ulElement) {
-            ulElement.id = "active";
-            }
+                const ulElement = blogLiElement.querySelector("ul");
+                if (ulElement) {
+                    ulElement.id = "active";
+                }
             }
 
             $(document).ready(function () {
-            $('.sub-menu ul#active').show();
-            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+                $('.sub-menu ul#active').show();
+                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
             });
             $('.sub-menu ul').hide();
             $(".sub-menu a").click(function () {
-            $(this).parent(".sub-menu").children("ul").slideToggle("100");
-            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+                $(this).parent(".sub-menu").children("ul").slideToggle("100");
+                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
             });
         </script>
     </body>

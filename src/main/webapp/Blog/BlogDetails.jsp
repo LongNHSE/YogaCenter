@@ -7,12 +7,18 @@
 <%
     String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setTimeZone value="Asia/Ho_Chi_Minh" />
+<fmt:setLocale value="vi_VN" />
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.mycompany.yogacenterproject.dao.BlogDAO" %>
 
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>       
         <link href="<%=baseUrl%>/BlogDetail.css" rel="stylesheet" type="text/css"/>
@@ -28,128 +34,175 @@
                                 <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
                             </div>
                             <div class="article-title">
-                                <h6><a href="#">Lifestyle</a></h6>
-                                <h2 class="header-ken">${blogDetails.title}</h2>
+                                <h2 class="">${blogDetails.title}</h2>
                                 <div class="media">
                                     <div class="avatar">
-                                        <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
+                                        <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                            <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${blogDetails.hocVienDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+                                        </c:if>
+                                        <c:if  test="${blogDetails.trainerDTO!=null}">
+                                            <img id ="avatar" class="rounded-top" src="data:image/jpeg;base64,${blogDetails.trainerDTO.avatarDTO.image}" style="width: 100%; height: 200px; object-fit: cover; object-position: center;" alt="...">
+
+                                        </c:if>
                                     </div>
                                     <div class="media-body">
-                                        <label>${blogDetails.maHV}</label>
+                                        <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                            <label>${blogDetails.hocVienDTO.username}</label>
+                                        </c:if>
+                                        <c:if  test="${blogDetails.trainerDTO!=null}">
+                                            <label>${blogDetails.trainerDTO.username}</label>
+
+                                        </c:if>
                                         <span>${blogDetails.date}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="article-content">
-                                <p style="color:#545554; font-size: 20px">${blogDetails.content}</p>
+                                <span style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</span>
                             </div>
-                            <!--        <div class="nav tag-cloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">Travel</a>
-                                    <a href="#">Web Design</a>
-                                    <a href="#">Marketing</a>
-                                    <a href="#">Research</a>
-                                    <a href="#">Managment</a>
-                                    </div>-->
+
                         </article>
 
+
                         <section class="content-item" id="comments">
-                            <div class="container">   
+                            <div class="container">
+                                <h2 class="comments-title">Comments</h2>
+                                <div class="divider"></div>                                
                                 <div class="row">
-                                    <div class="col-sm-8">   
-                                        <form>
-                                            <h3 class="pull-left">New Comment</h3>
-                                            <button type="submit" class="btn btn-normal pull-right">Submit</button>
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="col-sm-3 col-lg-2 hidden-xs">
-                                                        <img class="img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
-                                                    </div>
-                                                    <div class="form-group col-xs-12 col-sm-9 col-lg-10">
-                                                        <textarea class="form-control" id="message" placeholder="Your message" required=""></textarea>
-                                                    </div>
-                                                </div>  	
-                                            </fieldset>
-                                        </form>
+                                    <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                                        <div class="comment mt-4 text-justify float-left" style="border: none; width: 100%">
+                                            <form action="<%=baseUrl%>/CommentController">
 
-                                        <h3>Comments</h3>
-
-                                        <!-- Iterate over comments -->
-                                        <c:forEach var="comment" items="${blogCmt}">
-                                            <div class="media">
-                                                <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-                                                <div class="media-body">
-                                                    <h4 class="media-heading">Hello</h4>
-                                                    <p>${comment.commentContent}</p>
-                                                    <ul class="list-unstyled list-inline media-detail pull-left">
-                                                        <li><i class="fa fa-calendar"></i>${comment.createDate}</li>
-                                                    </ul>
-                                                    <ul class="list-unstyled list-inline media-detail pull-right">
-                                                        <li class=""><a href="">Like</a></li>
-                                                        <li class=""><a href="">Reply</a></li>
-                                                    </ul>
+                                                <textarea id="commentTextArea" class="form-control" rows="2" placeholder="What are you thinking?"  name="comment" style="resize:none"></textarea>
+                                                <div class="mar-top clearfix">
+                                                    <div class=" btn-section"> 
+                                                       <button class="cancel-btn" type="button" onclick="clearTextarea()">Cancel</button>
+                                                     <button class= "submit-btn" type="submit"> Share</button>          
+                                                    </div>
+                                                   <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                    <input type="hidden" name="action" value="postBlog" />                                                      
                                                 </div>
+
+
+
+
+                                            </form>
+                                        </div>
+                                    </c:if>
+
+                                    <div>
+                                        <c:forEach var="commentDTO" items="${requestScope.listComment}">
+                                            <div class="comment mt-4 text-justify float-left comment-container">
+                                                <div class="comment-header">
+                                                    <c:if test="${commentDTO.hocVienDTO.username != null}">
+                                                        <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                                        <h2 class="comment-author">${commentDTO.hocVienDTO.username}</h2>
+                                                    </c:if>
+                                                    <c:if test="${commentDTO.trainerDTO.username != null}">
+                                                        <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                                        <h2 class="comment-author">${commentDTO.trainerDTO.ten}</h2><p style="color: #953553; font-size: 16px;; font-weight: 600;margin-bottom: 10px; margin-left: 10px; ">(Trainer)</p>
+                                                            </c:if>
+
+                                                </div>
+                                                <p class="comment-content">${commentDTO.noiDung}</p>
+                                                
+
+                                                <c:choose>
+
+                                                    <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV!=null  }">
+                                                        <form action="<%=baseUrl%>/CommentController">
+
+                                                            <button class="btn delete-btn" type="submit">X</button>
+                                                            <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                                            <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                            <input type="hidden" name="action" value="deleteBlog" />
+                                                        </form>
+                                                    </c:when>
+
+                                                    <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer &&sessionScope.trainerDTO.maTrainer!=null}">
+                                                        <form action="<%=baseUrl%>/CommentController">
+                                                            <button class="btn delete-btn" type="submit">X</button>
+                                                            <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                                            <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                                            <input type="hidden" name="action" value="deleteBlog" />
+                                                        </form>
+                                                    </c:when>
+                                                    <c:otherwise>
+
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                         </c:forEach>
-                                    </div>
-                                    </section>                            
 
+                                    </div>
                                 </div>
+                        </section>     
+
+                    </div>
 
 
-                                <div class="col-lg-4 m-15px-tb blog-aside">
-                                    <div class="widget widget-latest-post">
-                                        <div class="widget-title">
-                                            <h3>Latest Post</h3>
-                                        </div>
-                                        <div class="widget-body">
-                                            <c:forEach items="${requestScope.blogLatest}" var="blog">
-                                                <div class="latest-post-aside media">
-                                                    <div class="lpa-left media-body">
-                                                        <div class="lpa-title">
-                                                            <h5><a href="#">${blog.getTitle()}</a></h5>
-                                                        </div>
-                                                        <div class="lpa-meta">
-                                                            <a class="name" href="#">
-                                                                ${blog.maHV}
-                                                            </a>
-                                                            <a class="date" href="#">
-                                                                ${blog.date}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="lpa-right">
-                                                        <a href="#">
-
-                                                            <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>            
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="widget widget-tags">
-                                        <div class="widget-title">
-                                            <h3>Category</h3>
-                                        </div>
-                                        <div class="single category">
-                                            <ul class="list-unstyled">
-                                                <c:forEach items="${blogCate}" var="cate" varStatus="status">                                     
-                                                    <li><a href="<%= baseUrl%>/BLogController?returnID=${cate.maCate}&action=showBlogCategory" " title="">${cate.tenCate} 
-                                                        </c:forEach>                               
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                </div>
+                    <div class="col-lg-4 m-15px-tb blog-aside">
+                        <div class="widget widget-latest-post">
+                            <div class="widget-title">
+                                <h3>Latest Post</h3>
                             </div>
+                            <div class="widget-body">
+                                <c:forEach items="${requestScope.blogLatest}" var="blog">
+                                    <div class="latest-post-aside ">
+                                        <div class="lpa-left media-body">
+                                            <div class="lpa-title">
+                                                <h5><a href="<%= baseUrl%>/BLogController?returnID=${blog.getMaBlog()}&action=showDetails">${blog.getTitle()}</a></h5>
+                                            </div>
+                                            <div class="lpa-meta">
+                                                <a class="name" href="#">
+                                                    ${blog.maHV}
+                                                </a>
+                                                <a class="date" href="#">
+                                                    ${fn:substring(blog.date, 0, 19)}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="lpa-right">
+                                            <a href="#">
+
+                                                <img src="data:image/jpeg;base64,${BlogImageDAO.getImageByBlogID(blog.getMaBlog())}" title alt>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </c:forEach>            
+
+                            </div>
+                        </div>
+
+
+                        <div class="widget widget-tags">
+                            <div class="widget-title">
+                                <h3>Category</h3>
+                            </div>  
+                            <div class="single-category">
+                                <ul class="list-unstyled">
+                                    <c:forEach items="${blogCate}" var="cate" varStatus="status">                                     
+                                        <li><a href="<%=baseUrl%>/BLogController?returnID=${cate.maCate}&action=showBlogCategory" " title="">${cate.tenCate} 
+                                            </c:forEach>                               
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                </body>
+            </div>
 
-                </html>
+
+
+        </div>
+
+    </body>
+    <script>
+                                function clearTextarea() {
+                    document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+                  }
+    </script>
+    <script src="<%=baseUrl%>/js/blogDetails.js">
+
+        </html>

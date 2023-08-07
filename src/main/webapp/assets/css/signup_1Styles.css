@@ -1,0 +1,52 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 27, 2023, 2:01:58 PM
+    Author     : devli
+*/
+
+.card-body{
+    margin:auto;
+}
+.form-name{
+     font-size: 24px;
+    color: #ff4167;
+    font-weight: bold;
+    text-align: center;    
+}
+.email-input{
+    width: 100%;
+}
+.form-img {
+    width:100%;
+}
+.term-section{
+    margin-top:20px;
+}
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
+.form-check-input {
+    margin-right: 10px;
+}
+
+.term-checkbox{
+  /* Tăng kích thước của checkbox lên gấp đôi */
+  transform: scale(0.7);
+  /* Tuỳ chỉnh kích thước của checkbox */
+  width: 20px;
+  height: 20px;
+  /* Tuỳ chỉnh vị trí của checkbox */
+  margin-right: 5px;
+  vertical-align: middle;    
+  background-color:pink
+}
+.btn-submit{
+    width:100%;
+    border-radius: 100px;
+    border: 1px solid #000;
+}

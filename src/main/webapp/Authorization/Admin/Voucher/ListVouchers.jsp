@@ -6,6 +6,7 @@
 
 
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.mycompany.yogacenterproject.dto.VoucherDTO"%>
 <%@page import="com.mycompany.yogacenterproject.dto.TrainerDTO"%>
@@ -170,97 +171,69 @@
         tr:hover {
             background-color: #e6e6e6; /* Set background color for hovered rows */
         }</style>
-        <%
-            List<VoucherDTO> listVouchers = (List<VoucherDTO>) request.getAttribute("listVouchers");
-            int count = (int) request.getAttribute("count");
-            int pageCount = (int) request.getAttribute("pageCount");
-        %>
+
 
     <body>
-        
-            <h1>nigger</h1>
+        <div class="wrapper">
+            <%@include file="../NavComponents.jsp" %>
+        </div>
 
-            <div class="Table">
-                <table class="table">
+        <div class="Table">
+            <table class="table">
 
-                    <thead>
-                        <tr>
-                            <th scope="col">Voucher ID</th>
-                            <th scope="col">Voucher Name</th>
-                            <th scope="col">Discount Value</th>
-                            <th scope="col">Global Usage Limit</th>
-                            <th scope="col">Individual Usage Limit</th>
-                            <th scope="col">Total Used</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if (listVouchers != null) {
-                                for (VoucherDTO list : listVouchers) {
-                        %>
-                    <form action="<%=url%>/VoucherController">
-                        <tr>
-                            <th scope="row"><%= list.getVoucherID()%></th>
-                            <td><%= list.getVoucherName()%> </td>
-                            <td><%= list.getMultiplier()%> </td>
-                            <td><%= list.getUsageLimit()%> </td>
-                            <td><%= list.getUsageLimitPerUser()%> </td>
-                            <td><%= list.getTotalUsage()%> </td>
-
-
-
-                            
-
-                        </tr>
-                    </form>
-                    
+                <thead>
                     <tr>
-                        <th scope="row"></th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <th scope="col">No</th>
+                        <th scope="col">Voucher Name</th>
+                        <th scope="col">Discount Value</th>
+                        <th scope="col">Global Usage Limit</th>
+                        <th scope="col">Individual Usage Limit</th>
+                        <th scope="col">Total Used</th>
+                        <th scope="col">Action</th>
                     </tr>
+                </thead>
+                <tbody>
 
-                    </tbody>
-                    
-                </table>
-            </div>
+                <form action="<%=url%>/VoucherController">
+                    <c:forEach var="row" items="${requestScope.listVouchers}" varStatus="counter">
+                        <tr>
+                            <th >${counter.count}</th>
+                            <td>${row.voucherName} </td>
+                            <td>${row.multiplier} </td>
+                            <td>${row.usageLimit} </td>
+                            <td>${row.usageLimitPerUser} </td>
+                            <td>${row.totalUsage} </td>
+                            <td>
+                                <input class="btn btn-outline-danger" type='submit' value="deleteVoucher" name="action" style="margin-left: 30%" />
+                                <input type="hidden" name="voucherID" value="${row.voucherID}" >
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </form>
+                </tbody>
 
+
+            </table>
         </div>
 
-        <div class="center">
-            <div class="pagination">
-
-                <div class="pagination">
-                    <a href="#">&laquo;</a>
+    </div>
 
 
 
 
-                    
-                    <a href="#">&raquo;</a>
-                </div>
-            </div>
-        </div>
+    <script>
+        $(document).ready(function () {
+            $('.sub-menu ul#active').show();
+            $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
 
+        $('.sub-menu ul').hide();
 
-        <script>
-            $(document).ready(function () {
-                $('.sub-menu ul#active').show();
-                $('li#active').find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
 
-            $('.sub-menu ul').hide();
-
-            $(".sub-menu a").click(function () {
-                $(this).parent(".sub-menu").children("ul").slideToggle("100");
-                $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-            });
-        </script>
-
-    </body>
+</body>
 </html>

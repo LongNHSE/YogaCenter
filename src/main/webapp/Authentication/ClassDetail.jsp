@@ -35,7 +35,7 @@
         <script src="<%=JsUrl%>/js/custom.js"></script>
         <!-- javascript -->
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
         <script src="<%=JsUrl%>/js/owl.carousel.js"></script>
         <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -43,510 +43,8 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <!--CSS-->
-
+        <link href="<%=url%>/css/ClassDetailStyle.css" rel="stylesheet" type="text/css"  > 
         <style type="text/css">
-            body{
-                background:#eee;
-                font-family: "Arial Unicode MS", Arial, sans-serif;
-            }
-
-
-            .product-content {
-                border: 1px solid #dfe5e9;
-                margin-bottom: 20px;
-                margin-top: 12px;
-                background: #fff
-            }
-
-            .product-content .carousel-control.left {
-                margin-left: 0
-            }
-
-            .product-content .product-image {
-                background-color: #fff;
-                display: block;
-                min-height: 238px;
-                overflow: hidden;
-                position: relative
-            }
-
-            .product-content .product-deatil {
-                border-bottom: 1px solid #dfe5e9;
-                padding-bottom: 17px;
-                padding-left: 16px;
-                padding-top: 16px;
-                position: relative;
-                background: #fff
-            }
-
-            .product-content .product-deatil h5 a {
-                color: #2f383d;
-                font-size: 15px;
-                line-height: 19px;
-                text-decoration: none;
-                padding-left: 0;
-                margin-left: 0
-            }
-
-            .product-content .product-deatil h5 a span {
-                color: #9aa7af;
-                display: block;
-                font-size: 13px
-            }
-
-            .product-content .product-deatil span.tag1 {
-                border-radius: 50%;
-                color: #fff;
-                font-size: 15px;
-                height: 50px;
-                padding: 13px 0;
-                position: absolute;
-                right: 10px;
-                text-align: center;
-                top: 10px;
-                width: 50px
-            }
-
-            .product-content .product-deatil span.sale {
-                background-color: #21c2f8
-            }
-
-            .product-content .product-deatil span.discount {
-                background-color: #71e134
-            }
-
-            .product-content .product-deatil span.hot {
-                background-color: #fa9442
-            }
-
-            .product-content .description {
-                font-size: 12.5px;
-                line-height: 20px;
-                padding: 10px 14px 16px 19px;
-                background: #fff
-            }
-
-            .product-content .product-info {
-                padding: 11px 19px 10px 20px
-            }
-
-            .product-content .product-info a.add-to-cart {
-                color: #2f383d;
-                font-size: 13px;
-                padding-left: 16px
-            }
-
-            .product-content name.a {
-                padding: 5px 10px;
-                margin-left: 16px
-            }
-
-            .product-info.smart-form .btn {
-                padding: 6px 12px;
-                margin-left: 12px;
-                margin-top: -10px
-            }
-
-            .product-entry .product-deatil {
-                border-bottom: 1px solid #dfe5e9;
-                padding-bottom: 17px;
-                padding-left: 16px;
-                padding-top: 16px;
-                position: relative
-            }
-
-            .product-entry .product-deatil h5 a {
-                color: #2f383d;
-                font-size: 15px;
-                line-height: 19px;
-                text-decoration: none
-            }
-
-            .product-entry .product-deatil h5 a span {
-                color: #9aa7af;
-                display: block;
-                font-size: 13px
-            }
-
-            .load-more-btn {
-                background-color: #21c2f8;
-                border-bottom: 2px solid #037ca5;
-                border-radius: 2px;
-                border-top: 2px solid #0cf;
-                margin-top: 20px;
-                padding: 9px 0;
-                width: 100%
-            }
-
-            .product-block .product-deatil p.price-container span,
-            .product-content .product-deatil p.price-container span,
-            .product-entry .product-deatil p.price-container span,
-            .shipping table tbody tr td p.price-container span,
-            .shopping-items table tbody tr td p.price-container span {
-                color: #21c2f8;
-                font-family: Lato, sans-serif;
-                font-size: 24px;
-                line-height: 20px
-            }
-
-            .product-info.smart-form .rating label {
-                margin-top: 0
-            }
-
-            .product-wrap .product-image span.tag2 {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                padding: 10px 0;
-                color: #fff;
-                font-size: 11px;
-                text-align: center
-            }
-
-            .product-wrap .product-image span.sale {
-                background-color: #57889c
-            }
-
-            .product-wrap .product-image span.hot {
-                background-color: #a90329
-            }
-
-            .shop-btn {
-                position: relative
-            }
-
-            .shop-btn>span {
-                background: #a90329;
-                display: inline-block;
-                font-size: 10px;
-                box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
-                font-weight: 700;
-                border-radius: 50%;
-                padding: 2px 4px 3px!important;
-                text-align: center;
-                line-height: normal;
-                width: 19px;
-                top: -7px;
-                left: -7px
-            }
-
-            .description-tabs {
-                padding: 30px 0 5px!important
-            }
-
-            .description-tabs .tab-content {
-                padding: 10px 0
-            }
-
-            .product-deatil {
-                padding: 30px 30px 50px
-            }
-
-            .product-deatil hr+.description-tabs {
-                padding: 0 0 5px!important
-            }
-
-            .product-deatil .carousel-control.left,
-            .product-deatil .carousel-control.right {
-                background: none!important
-            }
-
-            .product-deatil .glyphicon {
-                color: #3276b1
-            }
-
-            .product-deatil .product-image {
-                border-right: none!important
-            }
-
-            .product-deatil .name {
-                font-size: 24px;
-                font-weight: bold;
-                color: #555;
-                margin-bottom: 10px;
-                margin-top: 0;
-            }
-
-            .product-deatil .name small {
-                display: block
-            }
-
-            .product-deatil .name a {
-                margin-left: 0
-            }
-
-            .product-deatil .price-container {
-                font-size: 20px;
-                font-weight: bold;
-                color: #333;
-                text-align: right;
-            }
-
-            .product-deatil .price-container small {
-                font-size: 12px
-            }
-
-            .product-deatil .fa-2x {
-                font-size: 16px!important
-            }
-
-            .product-deatil .fa-2x>h5 {
-                font-size: 12px;
-                margin: 0
-            }
-
-            .product-deatil .fa-2x+a,
-            .product-deatil .fa-2x+a+a {
-                font-size: 13px
-            }
-
-            .profile-message ul {
-                list-style: none ;
-            }
-
-            .product-deatil .certified {
-                margin-top: 10px
-            }
-
-            .product-deatil .certified ul {
-                padding-left: 0
-            }
-
-            .product-deatil .certified ul li:not(first-child) {
-                margin-left: -3px
-            }
-
-            .product-deatil .certified ul li {
-                display: inline-block;
-                background-color: #f9f9f9;
-                border: 1px solid #ccc;
-                padding: 13px 19px
-            }
-
-            .product-deatil .certified ul li:first-child {
-                border-right: none
-            }
-
-            .product-deatil .certified ul li a {
-                text-align: left;
-                font-size: 12px;
-                color: #6d7a83;
-                line-height: 16px;
-                text-decoration: none
-            }
-
-            .product-deatil .certified ul li a span {
-                display: block;
-                color: #21c2f8;
-                font-size: 13px;
-                font-weight: 700;
-                text-align: center
-            }
-
-            .product-deatil .message-text {
-                width: calc(100% - 70px)
-            }
-
-            @media only screen and (min-width:1024px) {
-                .product-content div[class*=col-md-4] {
-                    padding-right: 0
-                }
-                .product-content div[class*=col-md-8] {
-                    padding: 0 13px 0 0
-                }
-                .product-wrap div[class*=col-md-5] {
-                    padding-right: 0
-                }
-                .product-wrap div[class*=col-md-7] {
-                    padding: 0 13px 0 0
-                }
-                .product-content .product-image {
-                    border-right: 1px solid #dfe5e9
-                }
-                .product-content .product-info {
-                    position: relative
-                }
-            }
-
-            .message img.online {
-                width:40px;
-                height:40px;
-            }
-            .button {
-                cursor: pointer;
-                position: relative;
-                padding: 10px 24px;
-                font-size: 18px;
-                color: #770737;
-                border: 2px solid rgb(103, 49, 71);
-                border-radius: 34px;
-                background-color: transparent;
-                font-weight: 600;
-                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-                overflow: hidden;
-            }
-
-            .button::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                margin: auto;
-                width: 50px;
-                height: 50px;
-                border-radius: inherit;
-                scale: 0;
-                z-index: -1;
-                background-color: rgb(218, 112, 214);
-                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-            }
-
-            .button:hover::before {
-                scale: 3.5;
-            }
-
-            .button:hover {
-                color: #ffff;
-                scale: 1.1;
-                box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
-            }
-
-            .button:active {
-                scale: 1;
-            }
-
-
-            .box {
-                display:flex;
-                align-items: center;
-                position: absolute;
-                top: 27px ;
-                right: -265px;
-                transform: translate(-50%, -50%);
-            }
-
-            .box select {
-                background-color: rgb(218, 112, 214);
-                color: #ffff;
-                padding: 12px;
-                padding-top: 20px;
-                width: 350px;
-                margin-right: 5px;
-                border: none;
-                font-size: 20px;
-                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-                outline: none;
-                -moz-appearance: none;
-                -webkit-appearance: none;
-                appearance: none;
-
-            }
-
-            .box::before {
-                content: "\f13a";
-                font-family: FontAwesome;
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: 20%;
-                height: 100%;
-                text-align: center;
-                font-size: 28px;
-                line-height: 75px;
-                color: rgba(255, 255, 255, 0.5);
-                background-color: rgba(255, 255, 255, 0.1);
-                pointer-events: none;
-            }
-
-            .box:hover::before {
-                color: rgba(255, 255, 255, 0.6);
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-
-            .box select option {
-                padding: 30px;
-            }
-            .box select option p {
-                color: greenyellow;
-                font-size: 16px
-            }
-
-            .title{
-                width: 100%;
-                height: auto;
-            }
-            .title h1 {
-                color:rgb(191, 64, 191);
-                border-bottom: 5px solid #554c86
-            }
-            .Description .description{
-                color: #5a5a5a;
-                font-size: 25px;
-                text-align: left;
-                line-height: 40px;
-            }
-            .Custom{
-                margin-left: 98px;
-            }
-
-            .alert {
-                padding: 20px;
-                background-color: #ffff4d;
-                color: black;
-            }
-
-            .closebtn {
-                margin-left: 15px;
-                color: black;
-                font-weight: bold;
-                float: right;
-                font-size: 22px;
-                line-height: 20px;
-                cursor: pointer;
-                transition: 0.3s;
-            }
-
-            .closebtn:hover {
-                color: black;
-            }
-            .price-container{
-                position: relative;
-                padding: 20px;
-                padding-left: 60%
-            }
-            .name{
-                padding 20px;
-                padding-left: 0%;
-            }
-            .row{
-                padding 20px;
-            }
-            .box select{
-                padding :20px;
-                position: relative;
-                left: 100px;
-                border-radius: 20px;
-                text-align: center;
-            }
-            .button{
-                margin: 100px;
-                margin-left: 59%;
-
-            }
-
-            .class-information{
-                margin-left: 40px;
-            }
-            .class-information h1{
-                text-align: center;
-
-            }
-            .infor-line{
-
-                border-top: 2px solid #554c86;
-            }
 
         </style>            
     </head>
@@ -601,20 +99,27 @@
 
 
 
-
-
-
-
-
-
                     <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12 class-information">
                         <h1 class="name">
                             ${requestScope.details.getTenLoaiLopHoc()}
                         </h1>
                         <hr class="infor-line"/>
                         <p class="price-container text-right">
-                            <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VNĐ" var="formattedHocPhi" />
-                            ${formattedHocPhi}
+                            <c:if test="${currentPrice==null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VND" var="formattedHocPhi" />
+                                ${formattedHocPhi} / 1 Slot
+
+                            </c:if>
+                            <c:if test="${currentPrice!=null}" >
+                                <fmt:formatNumber value="${requestScope.details.getHocPhi()}" pattern="#,##0 VND" var="formattedHocPhi"  />
+                                <s> ${formattedHocPhi} / 1 Slot</s>
+
+
+                                <c:set var="currentPrice" value="${currentPrice}"/>
+
+                                <fmt:formatNumber value="${currentPrice}" pattern="#,##0 VNĐ" var="currentPriceNew" />
+                                ${currentPriceNew} / 1 Slot
+                            </c:if>
                         </p>
                         <hr class="infor-line"/>
 
@@ -627,33 +132,41 @@
                                         <select name="maSlot" required>
                                             <option  value=""> Please choose Slot</option>
                                             <c:forEach items="${requestScope.distinctDayAndSlots}" var="DayAndSlot" >
-                                                <option name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
+                                                <option style="text-align:left" name="maSlot" value="${DayAndSlot.getSlot()}|${DayAndSlot.getDay()}">
                                                     ${DayAndSlot.getSlot()} : ${DayAndSlot.timeStart}-${DayAndSlot.timeEnd}, ${DayAndSlot.day}
                                                 </option>  
                                             </c:forEach>
                                         </select>
-
                                     </div>
-
 
 
 
                                     <div class="Custom">
-                                        <button class="button" type="submit" name="action" value="Register">
-                                            Register now!
-                                        </button>
+
+
+
                                         <% String cid = (String) request.getAttribute("cid");%>
                                         <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
                                         <input type="hidden" name="returnID" value="<%=cid%>" />
-                                    </div>
-
+                                        <button class="button2" type="submit" name="action" value="Register" >
+                                            Register now!
+                                        </button>
+                                    </div>                
                                 </div>
-                                <div style="width: 357px;
+                                <div class="voucher-note">
+                                    <% String voucherMessage = (String) request.getAttribute("voucherMessage"); %>
+                                    <% if (voucherMessage != null) {%>⚠ <%= voucherMessage%> <% }%>
+                                </div>  
+                                <div style="
+                                     width: 357px;
                                      position: absolute;
-                                     margin-top: 10px;
-                                     right: 223px;
-                                     color: red;
-                                     font-weight: BOLD;">
+                                     margin-top: 171px;
+                                     color:red;
+                                     left: 100px;
+                                     font-weight: BOLD;
+                                     text-align: center;
+                                     padding: 5px 12px;
+                                     ">
 
                                     <% String errorMessage = (String) request.getAttribute("error");%>
                                     <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
@@ -662,24 +175,75 @@
 
 
                             </div>
-                            <div style="width: 357px;
-                                 position: absolute;
-                                 margin-top: 10px;
-                                 right: 172px;
-                                 color: red;
-                                 font-weight: BOLD;">
 
-                                <% errorMessage = (String) request.getAttribute("error");%>
-                                <% if (errorMessage != null) {%> <%= errorMessage%> <% }%>
-
-                            </div>
                         </form>
 
                     </div>
                 </div>
                 <c:set var="descriptionDTO" value="${descriptionDTO}" />
+
             </div>
 
+            <div class="ClassList product-content product-wrap clearfix product-deatil">
+                <button class="collapsible">List Class</button>
+                <div class="content">
+
+
+                    <table class="table" >
+
+                        <thead>
+                            <tr class="Test" style="text-align: center">
+
+
+                                <!--<th scope="col">Class' ID</th>-->
+
+
+                                <th scope="col"> Attendees</th>
+                                <th scope="col">Trainer</th>
+                                <th scope="col">Slots</th>
+                                <th scope="col">Room</th>
+                                <th scope="col">Slot</th>
+                                <th scope="col">Days</th>
+                                <th scope="col">Create Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <c:forEach items="${listClass}" var="listClass">
+                            <form action="<%=url%>/ClassController" method="Post">
+                                <tr style="text-align: center">
+
+                                    <!--<th scope="row">${listClass.maLopHoc}</th>-->
+
+                                    <td >${listClass.soLuongHvHienTai}/${listClass.soLuongHV} </td>
+
+                                    <!--<td><a href="#"  >${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}</a>  </td>-->
+                                    <td>
+                                            ${listClass.trainerDTO.ho} ${listClass.trainerDTO.ten}
+                                    </td>
+
+
+                                    <td>${listClass.soBuoiDaDay}/${listClass.soBuoi}</td>
+                                    <td>${listClass.maRoom} </td>
+                                    <td>${listClass.slotDTO.timeStart}-${listClass.slotDTO.timeEnd} </td>
+                                    <td>${listClass.printDays()} </td>
+                                    <td >${listClass.ngayBatDau} </td>
+                                    <td ><button class="buttonClass" type="submit" name="action" value="RegisterWithClassID">
+                                            Register now!
+                                        </button> </td>
+                                </tr>
+                                <input type="hidden" name="returnID" value="<%=cid%>" />
+                                <input type="hidden" name="maLopHoc" value="${listClass.maLopHoc}" />
+
+                            </form>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
             <div class="Description product-content product-wrap clearfix product-deatil">
                 <div class="title">
                     <h1> 📖  ${descriptionDTO.title}</h1>
@@ -687,48 +251,320 @@
                 <div class="description">
                     ${descriptionDTO.content}
                 </div>
+
+            </div>
+            <div class="Description product-content product-wrap clearfix product-deatil">
+
+                <div class="col-sm-5 col-md-6 col-12 pb-4" >
+                    <div class="header-section" >
+                        <h1 class="comment-header">Comments</h1>
+                    </div>
+
+
+                    <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                        <div class="comment mt-4 text-justify float-left " style="border: none">
+                            <form action="<%=url%>/CommentController" style="position:relative">
+                                <div class="d-flex flex-row align-items-start"><textarea style="resize:none; padding-bottom: 100px"class="form-control ml-1 shadow-none textarea" name="comment" id="commentTextArea"></textarea></div>
+                                <div class="mt-2 text-right btn-section">
+                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none cancel-btn" type="button" onclick="clearTextarea()">Cancel</button>
+                                    <button class="btn btn-primary btn-sm shadow-none submit-btn" type="submit">Post comment</button>                                
+                                </div>
+
+                                <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                <input type="hidden" name="action" value="post" />
+
+
+
+                            </form>
+                        </div>
+                    </c:if>
+                    <c:forEach var="commentDTO" items="${requestScope.listComment}">
+                        <div class="comment mt-4 text-justify float-left comment-content">
+                            <c:choose>
+                                <c:when test="${sessionScope.hocVienDTO.maHV == commentDTO.hocVienDTO.maHV && sessionScope.hocVienDTO.maHV != null}">
+                                    <form action="<%=url%>/CommentController" style="position:relative;">
+                                        <button  style="color:white;"class="btn delete-btn" type="submit">X</button>
+                                        <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+                                        <input type="hidden" name="action" value="delete" />
+                                    </form>
+                                </c:when>
+                                <c:when test="${sessionScope.trainerDTO.maTrainer == commentDTO.trainerDTO.maTrainer && sessionScope.trainerDTO.maTrainer != null}">
+
+                                    <form action="<%=url%>/CommentController" style="position:relative;">
+                                        <button class="btn delete-btn" type="submit">X</button>
+                                        <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+
+
+                                        <input type="hidden" name="action" value="delete" />
+                                        <input type="hidden" name="maLoaiLopHoc" value="<%=cid%>" />
+
+
+
+
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <div class="comment-info">
+                                <c:if test="${commentDTO.hocVienDTO.username != null}">
+                                    <img src="data:image/jpeg;base64,${commentDTO.hocVienDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                    <h3 class="author-name">${commentDTO.hocVienDTO.username}</h3>
+                                </c:if>
+                                <c:if test="${commentDTO.trainerDTO.username != null}">
+                                    <img src="data:image/jpeg;base64,${commentDTO.trainerDTO.avatarDTO.image}" alt="" class="rounded-circle" width="40" height="40">
+                                    <h3 class="author-name">${commentDTO.trainerDTO.ten}</h3><span style="color: #953553; font-size: 16px;; font-weight: 600;margin-bottom: 10px; margin-left: 10px; ">(Trainer)</span>
+                                    </c:if>
+                            </div>
+                            <br>
+                            <div class="comment-detail">
+                                <p>${commentDTO.noiDung}</p>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </div>
+
             </div>
 
 
-
         </div>
+        <style>
+            /* CSS cho modal */
+            /* Modal */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 60%;
+                position: relative; /* Thêm thuộc tính này để làm nút Close tương đối với Modal Content */
+            }
+
+            /* Close button */
+            .close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                font-size: 1.5rem;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .close:hover {
+                color: black;
+            }
+            .comment-content {
+                position: relative;
+                border-radius: 50px;
+                border: 2px solid #000;
+            }
+
+            .comment-info {
+                display: flex;
+                align-items: center;
+            }
+
+            .comment-info img {
+                margin-right: 10px;
+            }
+
+            .comment-date {
+                color: gray;
+            }
+
+            .delete-btn {
+                background-color: #8b57fc;
+                border: none;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border-radius: 1rem;
+                color: lightcoral;
+                box-shadow: 0 0.4rem #dfd9d9;
+                cursor: pointer;
+            }
+
+            .delete-btn:hover {
+                background-color: lightcoral;
+                color: white;
+            }
+
+            .delete-btn:focus {
+                outline: none;
+            }
+
+            .comment-content p {
+                margin-top: 10px;
+            }
+            .comment-date{
+                margin-left: 50px;
+                font-size: 15px;
+                color: #b1b1b1b1;
+            }
+            .author-name{
+                font-size: 24px;
+                text-align: left;
+                font-weight: 600;
+            }
+            .submit-btn{
+                cursor: pointer;
+                position: relative;
+                font-size: 18px;
+                color: rgb(106, 90, 249);
+                border: 2px solid rgb(106, 90, 249);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+                overflow: hidden;
+            }
+            .submit-btn::before{
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                border-radius: inherit;
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(106, 90, 249);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
+            .submit-btn:hover::before {
+                scale: 3;
+            }
+            .submit-btn:hover {
+                color: #ffff;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+            }
+            .submit-btn:active {
+                scale: 1;
+            }
+            .btn-section{
+                display: flex;
+                justify-content: space-between
+            }
+            .cancel-btn{
+                cursor: pointer;
+                position: relative;
+                font-size: 18px;
+                color:rgb(114, 47, 55);
+                border: 2px solid rgb(114, 47, 55);
+                border-radius: 34px;
+                background-color: transparent;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+                overflow: hidden;
+            }
+            .cancel-btn::before{
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 50px;
+                height: 50px;
+                border-radius: inherit;
+                scale: 0;
+                z-index: -1;
+                background-color: rgb(114, 47, 55);
+                transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            }
+            .cancel-btn:hover::before {
+                scale: 3;
+            }
+            .cancel-btn:hover {
+                color: #ffff;
+                scale: 1.1;
+                box-shadow: 0 0px 20px rgba(114, 47, 55,0.4);
+            }
+            .cancel-btn:active {
+                scale: 1;
+            }
+            .delete-btn {
+                position: absolute;
+                right: 0;
+                bottom: -33px;
+                margin-top: 10px;
+            }
+        </style>
 
         <jsp:include page="../Components/footerComponent.jsp" />   
 
 
 
-        <!--        <script>
-                    // Get the voucher code input element
-                    const voucherCodeInput = document.getElementById('voucherCodeInput');
-        
-        // Add event listener to the voucher code input
-                    voucherCodeInput.addEventListener('input', handleVoucherCodeChange);
-        
-                    function handleVoucherCodeChange() {
-                        const voucherCode = voucherCodeInput.value;
-        
-                        // Make an AJAX request to the server
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('GET', '/check-voucher?code=' + voucherCode);
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === XMLHttpRequest.DONE) {
-                                if (xhr.status === 200) {
-                                    // Parse the response JSON
-                                    const response = JSON.parse(xhr.responseText);
-        
-                                    // Update the prices on the page
-                                    document.getElementById('originalPrice').textContent = 'Original Price: $100';
-                                    document.getElementById('discountedPrice').textContent = 'Discounted Price: $' + response.discountedPrice;
-                                } else {
-                                    console.error('Error: ' + xhr.status);
-                                }
-                            }
-                        };
-                        xhr.send();
-                    }
-        
-                </script>-->
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
 
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            }
+
+            // JavaScript cho modal
+            function openModal(trainerInfo) {
+                var modal = document.getElementById('trainerModal');
+                var trainerInfoParagraph = document.getElementById('trainerInfo');
+                trainerInfoParagraph.textContent = trainerInfo;
+                modal.style.display = 'block';
+            }
+
+
+            function closeModal() {
+                var modal = document.getElementById('trainerModal');
+                modal.style.display = 'none';
+            }
+
+            function clearTextarea() {
+                document.getElementById("commentTextArea").value = ""; // Gán giá trị rỗng cho textarea
+            }
+
+
+
+        </script>
     </body>
+    <!-- Modal -->
+    <div id="trainerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Trainer Information</h2>
+            <p id="trainerInfo">Trainer information will be displayed here</p>
+        </div>
+    </div>
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" onclick="closeModal()"></div>
+
 
 </html>

@@ -19,7 +19,6 @@
                           imgElement.className = 'img-thumbnail';
                           imgElement.src = imgData;
                           imgElement.onload = function () {
-
                           };
 
                           var deleteButton = document.createElement('button');
@@ -60,29 +59,29 @@
               contentTextarea.value = '';
             });
 
-
-            document.getElementById('submitButton').addEventListener('click', function(event) {
-                var fileInput = document.getElementById('fileInput');
-                var titleInput = document.getElementById('titleInput');
-                var contentInput = document.getElementById('contentInput');
-                var alertMessage = document.getElementById('alertMessage');
-                var progressBar = document.getElementById('progressBar');
-                var headerNav = document.querySelector('.header-nav');
-                if (!fileInput.value || !titleInput.value || !contentInput.value) {
-                    headerNav.style.marginBottom = '0'; // Xóa margin-bottom của header-nav                    
-                    event.preventDefault(); // Ngăn chặn việc submit nếu thông tin không đủ
-                    alertMessage.style.display = 'block'; // Hiển thị thanh alert
-
-                    // Tự động ẩn thanh alert sau 3 giây
-                    setTimeout(function() {
-                        alertMessage.style.display = 'none';
-                    }, 3000);
-
-                    // Chạy thanh thời gian trong 3 giây
-                    progressBar.style.width = '100%';
-                    setTimeout(function() {
-                        progressBar.style.width = '0%';
-                    }, 3000);
-                }
-            });
+//
+//            document.getElementById('submitButton').addEventListener('click', function(event) {
+//                var fileInput = document.getElementById('fileInput');
+//                var titleInput = document.getElementById('titleInput');
+//                var contentInput = document.getElementById('contentInput');
+//                var alertMessage = document.getElementById('alertMessage');
+//                var progressBar = document.getElementById('progressBar');
+//                var headerNav = document.querySelector('.header-nav');
+//                if (!fileInput.value || !titleInput.value || !contentInput.value) {
+//                    headerNav.style.marginBottom = '0'; // Xóa margin-bottom của header-nav                    
+//                    event.preventDefault(); // Ngăn chặn việc submit nếu thông tin không đủ
+//                    alertMessage.style.display = 'block'; // Hiển thị thanh alert
+//
+//                    // Tự động ẩn thanh alert sau 3 giây
+//                    setTimeout(function() {
+//                        alertMessage.style.display = 'none';
+//                    }, 3000);
+//
+//                    // Chạy thanh thời gian trong 3 giây
+//                    progressBar.style.width = '100%';
+//                    setTimeout(function() {
+//                        progressBar.style.width = '0%';
+//                    }, 3000);
+//                }
+//            });
 

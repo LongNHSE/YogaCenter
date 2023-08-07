@@ -65,12 +65,24 @@
         <servlet-class>com.mycompany.yogacenterproject.controller.BlogAdminController</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>VoucherController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.VoucherController</servlet-class>
-
+    </servlet>
+    <servlet>
         <servlet-name>ExceptionController</servlet-name>
         <servlet-class>com.mycompany.yogacenterproject.controller.ExceptionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet1</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.NewServlet1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DashBoardController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.DashBoardController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CommentController</servlet-name>
+        <servlet-class>com.mycompany.yogacenterproject.controller.CommentController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>OTPController</servlet-name>
@@ -133,12 +145,24 @@
         <url-pattern>/BlogAdminController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>VoucherController</servlet-name>
         <url-pattern>/VoucherController</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ExceptionController</servlet-name>
         <url-pattern>/ExceptionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet1</servlet-name>
+        <url-pattern>/NewServlet1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashBoardController</servlet-name>
+        <url-pattern>/DashBoardController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommentController</servlet-name>
+        <url-pattern>/CommentController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -156,4 +180,5 @@
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+   
 </web-app>

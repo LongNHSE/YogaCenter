@@ -172,7 +172,7 @@
                                 <input class="weekday" type="hidden"  name="slot" id="weekday"
                                        data-slot="<%=slot%>" value="<%=slot%>" 
                                        /> 
-                                <td class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></th>
+                                <td style="align-content:  center" class="align-middle"> SLOT <%=i%> <br><%=slotDTO.getTimeStart()%> - <%=slotDTO.getTimeEnd()%></td>
                                     <% for (int day = 0; day < 7; day++) {
                                             String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
@@ -183,29 +183,27 @@
                                             int soPhongTrong = phongHocDAO.soPhongTrong(slotDTO.getMaSlot(), weekdays[day]);
                                             String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
                                             if (soPhongTrong == 0) {
-                                                message += "Hien Khong Co Phong Trong";
+                                                message += "No Available Rooms Found!";
                                                 phongTrong = false;
                                             } else {
-                                                message += "Hien Dang Co " + soPhongTrong + " Phong Trong";
+                                                message += "There Are Currently " + soPhongTrong + " Empty Rooms";
                                                 phongTrong = true;
                                             }
 
                                     %>
-
-
-
+                                    
+                                    
                                 <td>
-
                                     <% if (!phongTrong) {%>
-                                    <div style="align: center; background-color: yellow; ">
-                                        <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13"><%=message%></span>
+                                    <div style="text-align: center; background-color: yellow; ">
+                                        <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="display: inline-block; text-align: center;"><%=message%></span>
                                     </div>
 
                                     <% } else {%>
 
                                     <div onchange="checkSlot()">
-                                        <div style="align: center; background-color: greenyellow; ">
-                                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="text-align: center;"><%=message%></span>
+                                        <div style="text-align: center; background-color: greenyellow; ">
+                                            <span class=" padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-black font-size16  xs-font-size13" style="display: inline-block; text-align: center;"><%=message%></span>
                                         </div>
                                         <input class="weekday" type="checkbox" name="weekday" id="weekday"
                                                data-slot="<%=slot%>" data-day="<%=dayOfWeek%>" value="<%=dayOfWeek%>"
@@ -229,8 +227,10 @@
                                 </tbody>
 
                             </table>
-                            <input class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
-                            <input class="btn btn-outline-danger" type="hidden" value="CreateClassPage" id="submit" name="action"  />
+                            <div style = "text-align:center; margin-bottom: 20px ">
+                                <input  class="btn btn-outline-danger" type="submit" value="Submit" id="submit"  />
+                                <input class="btn btn-outline-danger" type="hidden" value="CreateClassPage" id="submit" name="action"  />
+                            </div>
                         </form>    
                     </div>
 
@@ -309,7 +309,8 @@
         $(".sub-menu a").click(function () {
             $(this).parent(".sub-menu").children("ul").slideToggle("100");
             $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
-        });s
+        });
+        s
         function handleCheckboxChange() {
             if (this.checked) {
                 checkedCount++;

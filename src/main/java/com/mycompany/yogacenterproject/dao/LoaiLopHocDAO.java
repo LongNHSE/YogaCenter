@@ -4,6 +4,7 @@
  */
 package com.mycompany.yogacenterproject.dao;
 
+import com.google.gson.Gson;
 import com.mycompany.yogacenterproject.dto.LoaiLopHocDTO;
 import com.mycompany.yogacenterproject.dto.LopHocIMGDTO;
 import com.mycompany.yogacenterproject.util.DBUtils;
@@ -15,8 +16,11 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  *
@@ -257,6 +261,27 @@ public class LoaiLopHocDAO {
         }
         return hocPhi;
     }
+     public Long searchHocPhiLopHocWithDouble2(String maLoaiLopHoc) {
+        String sql = "SELECT hocPhi FROM [dbo].[loaiLopHoc] where maLoaiLopHoc = ?";
+        Long hocPhi ;
+        try {
+            Connection conn = DBUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, maLoaiLopHoc);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+
+                return hocPhi = rs.getLong("hocPhi");
+
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
 
     // PRINT CLASSES' CATEGORIES
     public List<LopHocIMGDTO> getAllCategories() throws SQLException {
@@ -286,6 +311,33 @@ public class LoaiLopHocDAO {
         List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
         LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
         String sql = "SELECT * FROM loaiLopHoc where status='true'";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+            String maLoaiLopHoc = rs.getString("maLoaiLopHoc");
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+
+            double hocPhi = rs.getDouble("hocPhi");
+            List<LopHocIMGDTO> lopHocIMGDTO = lopHocImageDAO.getImageBasedOnTypeID(maLoaiLopHoc);
+            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+
+            loaiLopHocDTO.setHocPhi(hocPhi);
+            loaiLopHocDTO.setImage(lopHocIMGDTO);
+            loaiLopHocDTO.setStatus(rs.getBoolean("status"));
+            loaiLopHocDTO.setMaDescription(rs.getString("maDescription"));
+            listLoaiLopHoc.add(loaiLopHocDTO);
+
+        }
+        return listLoaiLopHoc;
+
+    }
+
+    public List<LoaiLopHocDTO> getAllLoaiLopHoc2() throws SQLException, IOException {
+        List<LoaiLopHocDTO> listLoaiLopHoc = new ArrayList<>();
+        LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+        String sql = "SELECT * FROM loaiLopHoc ";
         PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
@@ -385,10 +437,38 @@ public class LoaiLopHocDAO {
 
     }
 
+    ///RETURN MAP OF tenLoaiLopHoc and numberOfTrainees who register it
+    public HashMap<String, Integer> countTrainee() throws SQLException {
+        HashMap<String, Integer> counTrainee = new HashMap<>();
+
+        String sql = "SELECT loaiLopHoc.maLoaiLopHoc,loaiLopHoc.tenLoaiLopHoc, sum(lopHoc.soLuongHvHienTai) as 'numberOfTrainee'  from  lopHoc FULL OUTER JOIN loaiLopHoc on loaiLopHoc.maLoaiLopHoc = lopHoc.maLoaiLopHoc\n"
+                + "group by lophoc.maLoaiLopHoc, loaiLopHoc.maLoaiLopHoc,loaiLopHoc.tenLoaiLopHoc "
+                + "order by loaiLopHoc.maLoaiLopHoc";
+        PreparedStatement stm = DBUtils.getConnection().prepareStatement(sql);
+
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            String tenLoaiLopHoc = rs.getString("tenLoaiLopHoc");
+            int numberOfTrainees = rs.getInt("numberOfTrainee");
+            counTrainee.put(tenLoaiLopHoc, numberOfTrainees);
+
+        }
+        return counTrainee;
+    }
+
     public static void main(String[] args) throws SQLException, IOException {
         LoaiLopHocDAO a = new LoaiLopHocDAO();
         List<LoaiLopHocDTO> listCate = new ArrayList<>();
-        System.out.println(a.searchLoaiLopHoc("TYPE0001"));
+
+        HashMap<String, Integer> counTrainee = new HashMap();
+        System.out.println("asdsd");
+        counTrainee = a.countTrainee();
+        System.out.println(counTrainee);
+        Gson gson = new Gson();
+
+        String jsonString = gson.toJson(counTrainee);
+        System.out.println(jsonString);
+//        System.out.println(a.searchLoaiLopHoc("TYPE0001"));
 //        System.out.println(a.searchStatusLoaiLopHoc("TYPE0001"));
 //        a.changeStatus("TYPE0001", !a.searchStatusLoaiLopHoc("TYPE0001"));
 //        LopHocDTO lopHocDTO = new LopHocDTO();
@@ -406,7 +486,6 @@ public class LoaiLopHocDAO {
 //        }
 //          LoaiLopHocDTO DTO = a.getClassCateByID("TYPE0004");
 //          System.out.println(DTO.toString());
-
 ////        System.out.println(a.readLoaiLopHoc());
 //        System.out.println(a.searchHocPhiLopHoc("TYPE0001"));
 //        long b = 1200000;
@@ -415,6 +494,9 @@ public class LoaiLopHocDAO {
 //      List<LopHocIMG> listIMG = a.getAllCategories();
 //      for (LopHocIMG o: listIMG){
 //            System.out.println(o.toString());
+        Long currentPrice
+                = (a .searchHocPhiLopHocWithDouble2("TYPE0001"));
+        System.out.println(currentPrice);
 //      }
     }
 }

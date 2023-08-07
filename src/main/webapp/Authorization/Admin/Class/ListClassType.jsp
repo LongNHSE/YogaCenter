@@ -143,7 +143,7 @@
             }
 
             th, td {
-                font-size: 20px;
+                font-size: 15.5px;
                 padding: 10px; /* Add padding to table cells */
                 text-align: left; /* Align text to the left in table cells */
                 border: 1px solid #ccc; /* Add borders to table cells */
@@ -175,11 +175,11 @@
                         <tr class="Test">
 
 
-                            <th scope="col">ID Class Type</th>
-                            <th scope="col">Name Class Type</th>
-                            <th scope="col">Value</th>
-                            <th scope="col">ID Description</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Class' Type ID</th>
+                            <th scope="col">Class' Type Name</th>
+                            <th scope="col">Base Price</th>
+                            <th scope="col">Description ID</th>
+                            <th scope="col">Availability</th>
 
 
                         </tr>
@@ -192,10 +192,16 @@
 
                             <th scope="row">${Cate.maLoaiLopHoc}</th>
                             <td>${Cate.tenLoaiLopHoc} </td>
-                            <td>${Cate.getHocPhiWithDot()} </td>
+                            <td style="text-align: right">${Cate.getHocPhiWithDot()} </td>
                             <td>${Cate.maDescription} </td>
-                            <td>${Cate.status}</td>
-
+                            <c:choose>
+                                <c:when test="${Cate.isStatus() == true}">
+                                    <td style="background-color: #3FFF00; text-align: center">Active</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="background-color: red; text-align: center">Inactive</td>
+                                </c:otherwise>
+                            </c:choose>
 
                             <td>  <input class="btn btn-outline-danger" type='submit'value="Update Class Type"name="action"   > </td>
 

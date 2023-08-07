@@ -37,10 +37,7 @@
     <body>
 
         <style>
-            .container{
-                position: relative;
-                left: 1000px;
-            }
+
             .center {
                 text-align: center;
             }
@@ -171,52 +168,140 @@
                 <%@include file="../NavComponents.jsp" %>
             </div>
             <div class="Table">
-                <table class="table">
-                    <div class="col-lg-8 m-15px-tb">
-                        <article class="article">
-                            <div class="article-img">
-                                <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
-                            </div>
-                            <div class="article-title">
-                                <h6><a href="#">Lifestyle</a></h6>
-                                <h2 class="header-ken">${blogDetails.title}</h2>
-                                <div class="media">
-                                    <div class="avatar">
-                                        <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
-                                    </div>
-                                    <div class="media-body">
-                                        <label>${blogDetails.maHV}</label>
-                                        <span>${blogDetails.date}</span>
-                                    </div>
+                <div class="col-lg-8 m-15px-tb">
+                    <article class="article">
+                        <div class="article-img">
+                            <img src="data:image/jpeg;base64,${blogImgDetails.image}" style="width: 100%; object-fit: cover"title alt>
+                        </div>
+                        <div class="article-title">
+                            <h2 class="">${blogDetails.title}</h2>
+                            <div class="media">
+                                <div class="avatar">
+                                    <img src="https://img.freepik.com/free-vector/man-meditating-with-flat-design_23-2147855145.jpg?w=826&t=st=1688749455~exp=1688750055~hmac=48facc0881188275dd2ef67632298bb734903e78636e4623d90d4437e01eaf74" title alt>
+                                </div>
+                                <div class="media-body">
+                                    <c:if  test="${blogDetails.hocVienDTO.username!=null}">
+                                        <label>${blogDetails.hocVienDTO.username}</label>
+                                    </c:if>
+                                    <c:if  test="${blogDetails.trainerDTO!=null}">
+                                        <label>${blogDetails.trainerDTO.username}</label>
+
+                                    </c:if>
+                                    <span>${blogDetails.date}</span>
                                 </div>
                             </div>
-                            <div class="article-content">
-                                <p style="color:#545554; font-size: 20px">${blogDetails.content}</p>
+                        </div>
+                        <div class="article-content">
+                            <span style="color:#545554; font-size: 20px" class="blogContent">${blogDetails.content}</span>
+                        </div>
+                        <!--        <div class="nav tag-cloud">
+                                <a href="#">Design</a>
+                                <a href="#">Development</a>
+                                <a href="#">Travel</a>
+                                <a href="#">Web Design</a>
+                                <a href="#">Marketing</a>
+                                <a href="#">Research</a>
+                                <a href="#">Managment</a>
+                                </div>-->
+                    </article>
+                </div>
+                <section class="content-item" id="comments">
+                    <div class="container">   
+                        <div class="row">
+                            <div class="col-sm-8">   
+
+                                <c:if test = "${sessionScope.hocVienDTO != null || sessionScope.trainerDTO != null}">
+                                    <div class="comment mt-4 text-justify float-left" style="border: none">
+                                        <form action="<%=url%>/CommentController">
+                                            <div class="d-flex flex-row align-items-start"><textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea></div>
+                                            <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button">Cancel</button></div>
+
+                                            <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                            <input type="hidden" name="action" value="postBlog" />
+
+
+
+                                        </form>
+                                    </div>
+                                </c:if>
+
+                                <h3>Comments</h3>
+                                <c:forEach var="commentDTO" items="${requestScope.listComment}">
+                                    <div class="comment mt-4 text-justify float-left">
+
+                                        <form action="<%=url%>/CommentController">
+                                            <button class="btn btn-primary btn-sm shadow-none" type="submit" style="margin-left: 595px;size: 100px">Delete</button>
+                                            <input type="hidden" name="maComment" value="${commentDTO.maComment}" />
+                                            <input type="hidden" name="returnID" value="${blogDetails.maBlog}" />
+                                            <input type="hidden" name="action" value="deleteBlogAdmin" />
+                                        </form>
+
+                                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
+                                        <c:if test="${commentDTO.hocVienDTO.username!=null}">
+                                            <h2>${commentDTO.hocVienDTO.username}</h2>
+                                        </c:if>
+                                        <c:if test="${commentDTO.trainerDTO.username!=null}">
+                                            <h2>${commentDTO.trainerDTO.ten}<bold style="color: greenyellow; font-size: 20px">(Trainer)</bold></h2>
+                                                </c:if>
+                                        <span>- ${commentDTO.date}</span>
+                                        <br>
+                                        <p>${commentDTO.noiDung}</p>
+                                    </div>
+                                </c:forEach>
                             </div>
-                            <!--        <div class="nav tag-cloud">
-                                    <a href="#">Design</a>
-                                    <a href="#">Development</a>
-                                    <a href="#">Travel</a>
-                                    <a href="#">Web Design</a>
-                                    <a href="#">Marketing</a>
-                                    <a href="#">Research</a>
-                                    <a href="#">Managment</a>
-                                    </div>-->
-                        </article>
-
+                        </div>
                     </div>
-                    <form action="<%=url%>/BlogAdminController" method="POST">
+                </section>                               
 
-                   
-                        <input class="btn btn-outline-danger" type='submit' value="Delete" name="action" style="margin-left: 30%" />
+            </div>
+        </div>      
+
+        <form action="<%=url%>/BlogAdminController" method="POST">
 
 
-                        <input type="hidden" name="maBlog" value="${blogDetails.maBlog}" >
-                    </form>
-                </table>
-            </div>      
-        </div>
+            <input class="btn btn-outline-danger" type='submit' value="Delete" name="action" style="margin-left: 30%" />
 
+
+            <input type="hidden" name="maBlog" value="${blogDetails.maBlog}" >
+        </form>
+
+        <style>
+            #comments {
+                width: 797px;
+                
+                margin-bottom: 20px;
+            }
+            #comments form {
+                width: 1000px;
+
+                margin-bottom: -29px;
+            }
+            .comments{
+                margin-top: 5%;
+                margin-left: 20px;
+            }
+
+
+
+            .comment{
+                width: 700px;
+                border: 1px solid rgba(16, 46, 46, 1);
+                font-size: 20px;
+                float: left;
+                border-radius: 5px;
+                padding-left: 40px;
+                padding-right: 30px;
+                padding-top: 15px;
+
+            }
+            .comment h2,.comment span,.darker h4,.darker span{
+                display: inline;
+            }
+
+            .comment p,.comment span,.darker p,.darker span{
+
+            }
+        </style>
         <script>
 
 

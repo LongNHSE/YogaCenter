@@ -97,7 +97,7 @@ public class TrainerController extends HttpServlet {
         String psw = request.getParameter("psw");
         String ho = request.getParameter("Ho");
         String ten = request.getParameter("Ten");
-        long salary = Long.parseLong(request.getParameter("Salary"));
+        long salary = Long.parseLong(request.getParameter("Salary"))*1000000;
         try {
             dateOfBirth = Date.valueOf(request.getParameter("dateOfBirth"));
         } catch (Exception e) {
@@ -166,6 +166,7 @@ public class TrainerController extends HttpServlet {
         rd.forward(request, response);
     }
 
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

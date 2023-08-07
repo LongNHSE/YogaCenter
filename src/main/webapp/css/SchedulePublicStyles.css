@@ -1,0 +1,33 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 14, 2023, 1:35:44 AM
+    Author     : devli
+*/
+.class-details{
+    border: 2px solid rgb(106, 90, 249);
+    color: rgb(106, 90, 249);
+    border-radius: 45px;
+    padding: 8px
+}
+.class-details:hover{
+    background: rgb(106, 90, 249);
+    color: #ffffff;
+    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+}
+.select-btn{
+        padding: 1px 15px;
+    border: 2px solid #CF9FFF;
+}
+.schedule-title{
+        color: #9F2B68;
+    letter-spacing: 3px;
+    text-align: center
+}
+class-code:hover{
+    background: rgb(106, 90, 249);
+    color: #ffffff;
+    box-shadow: 0 0px 20px rgba(106, 90, 249, 0.4);
+}

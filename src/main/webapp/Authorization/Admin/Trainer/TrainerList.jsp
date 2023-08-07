@@ -140,7 +140,7 @@
             margin-left:250px;
         }
         .Table{
-            width: 85.3%;
+            width: 100%;
 
         }
         table {
@@ -186,23 +186,23 @@
             <div class="Table">
                 <table class="table">
 
-                    <thead>
-                        <tr>
+                    <thead >
+                        <tr class="Test">
 
 
-                            <th scope="col">Ma Trainer</th>
+                            <th scope="col">Trainer's ID</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
-                            <th scope="col">Ho</th>
-                            <th scope="col">Ten</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">First Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Day of birth</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Day of Birth</th>
                             <th scope="col">Salary</th>
-                            <th scope="col">So Ngay Nghi</th>
-                            <th scope="col">Trainer Type</th>
+                            <th scope="col">Number of Days Off</th>
+                            <th scope="col">Class Type Currently Managing</th>
                             <th scope="col">Gender</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Assignment Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -219,10 +219,9 @@
                             <td><%= trainerDTO.getEmail()%> </td>
                             <td><%= trainerDTO.getPhone()%> </td>
                             <td><%= trainerDTO.getDob()%> </td>
-                            <td><%= trainerDTO.getSalary()%> </td>
+                            <td><%= trainerDTO.getHocPhiWithDot()%> </td>
                             <td><%= trainerDTO.getSoNgayNghi()%> </td>
                             <td><%= trainerDTO.getTrainerType()%> </td>
-
                             <td><%= trainerDTO.getGender()%> </td>
                             <% if (trainerDTO.getStatus() == false) {%>
                             <td style="color: red;font-weight:  bold">Unassigned </td>

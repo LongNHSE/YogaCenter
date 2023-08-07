@@ -159,7 +159,8 @@ public class SlotDAO {
     public static void main(String[] args) {
 
         SlotDAO slotDAO = new SlotDAO();
-
+        System.out.println(slotDAO.searchByMaSlot("SL001"));
+        System.out.println(slotDAO.getMaSlot("LOP0025"));
 //        System.out.println(slotDAO.maSlot("Lop0003"));
 //        Time timeStart = new Time(9, 15, 00);
 //        Time timeEnd = new Time(10, 45, 00);
