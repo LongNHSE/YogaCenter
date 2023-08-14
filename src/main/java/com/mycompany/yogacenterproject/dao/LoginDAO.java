@@ -49,12 +49,45 @@ public class LoginDAO {
         }
         return null;
     }
+    
+      public HocVienDTO login2() {
+         
+          
+          
+          String username = "O%";
+        String querry = "SELECT * FROM hocVien\n"
+                + "where username like " +"'"+ username+"'";
+        try {
+            conn = new DBUtils().getConnection(); // connect DB
+            ps = conn.prepareStatement(querry);
+            
+//            ps.setString(1, username);
+            
+            rs = ps.executeQuery();
+            while (rs.next()) {
+//              String maHV, String Ho, String Ten, Date dob, String username, String psw, String maLopHoc, String maLoaiTK, String email, String phone
+                String maHV=rs.getString("maHV");
+                String ho=rs.getString("Ho");
+                String ten=rs.getString("Ten");
+                String user =rs.getString("username");
+                String phone=rs.getString("phone");
+                String psw=rs.getString("psw");
+                String maLoaiTk=rs.getString("maLoaiTk");
+                String email=rs.getString("email");
+                String gender=rs.getString("gender");
+                HocVienDTO loginUser= new HocVienDTO(maHV, ho, ten, null, username, phone, psw, maLoaiTk, email, gender);
+                return loginUser;
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         LoginDAO dao = new LoginDAO();
 //        HocVienDTO login = dao.login("devlindinh", "123456");
-        HocVienDTO login = dao.login("longNiger", "123456");
-
-        System.out.println(login.toString());
+        HocVienDTO login = dao.login2();
+        System.out.println(login);
+//        System.out.println(login.toString());
     }
 }
