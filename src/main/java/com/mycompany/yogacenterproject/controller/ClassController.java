@@ -296,79 +296,79 @@ public class ClassController extends HttpServlet {
     }
 
     public void UpdateLoaiLopHoc(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
-        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
-        DescriptionDAO descriptionDAO = new DescriptionDAO();
-        DescriptionDTO descriptionDTO = new DescriptionDTO();
-
-        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
-        String maDescription = request.getParameter("maDescription");
-        String errorMessage = "";
-        boolean check = true;
-
-        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
-
-        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
-            errorMessage += "Ten loai lop hoc da ton tai";
-            check = false;
-        }
-        double hocPhi = 0;
-        try {
-            hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
-        } catch (Exception e) {
-            errorMessage += "Ten loai lop hoc da ton tai";
-            check = false;
-        }
-        if (check == true) {
-            loaiLopHocDTO.setHocPhi(hocPhi);
-            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
-            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
-            loaiLopHocDTO.setMaDescription(maDescription);
-            descriptionDTO.setMaDescription(maDescription);
-            descriptionDTO.setTitle(request.getParameter("title").trim());
-            String content = request.getParameter("description").trim();
-
-            descriptionDTO.setContent(content.trim());
-
-            descriptionDAO.updateDescriptionDTO(descriptionDTO);
-            loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
-
-            try {
-                Part filePart = request.getPart("Banner");
-
-//                List<byte[]> imageListThumb = new ArrayList<>();
+//        LoaiLopHocDAO loaiLopHocDAO = new LoaiLopHocDAO();
+//        LoaiLopHocDTO loaiLopHocDTO = new LoaiLopHocDTO();
+//        DescriptionDAO descriptionDAO = new DescriptionDAO();
+//        DescriptionDTO descriptionDTO = new DescriptionDTO();
 //
-//                String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
-//                byte[] imageData = Base64.getDecoder().decode(base64String);
-                if (filePart != null && filePart.getSize() > 0) {
-                    // Read the file data from the Part
-                    InputStream fileContent = filePart.getInputStream();
-
-                    // Convert the file data to a byte array
-                    byte[] imageData = fileContent.readAllBytes();
-
-                    // Now you have the byte array containing the uploaded image data
-                    // You can further process or store this data as needed
-                    // Example: Convert the byte array to Base64 string
-                    String base64String = Base64.getEncoder().encodeToString(imageData);
-
-                    // Example: Print the Base64 string to the console
-                    LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
-                    lopHocImageDAO.UpdateImage(imageData, maLoaiLopHoc);
-                    // Example: Store the byte array in a session attribute (this is just a demonstration, you can save it to a database or elsewhere)
-                }
-
-            } catch (Exception e) {
-                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
-                rd.forward(request, response);
-            }
-
-        } else {
-            request.setAttribute("errorMessage", errorMessage);
-            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
-            rd.forward(request, response);
-
-        }
+//        String maLoaiLopHoc = request.getParameter("maLoaiLopHoc");
+//        String maDescription = request.getParameter("maDescription");
+//        String errorMessage = "";
+//        boolean check = true;
+//
+//        String tenLoaiLopHoc = request.getParameter("tenLoaiLopHoc").trim();
+//
+//        if (tenLoaiLopHoc.equals(loaiLopHocDAO.searchTenLoaiLopHoc(tenLoaiLopHoc))) {
+//            errorMessage += "Ten loai lop hoc da ton tai";
+//            check = false;
+//        }
+//        double hocPhi = 0;
+//        try {
+//            hocPhi = Double.parseDouble(request.getParameter("hocPhi")) * 1000000;
+//        } catch (Exception e) {
+//            errorMessage += "Ten loai lop hoc da ton tai";
+//            check = false;
+//        }
+//        if (check == true) {
+//            loaiLopHocDTO.setHocPhi(hocPhi);
+//            loaiLopHocDTO.setMaLoaiLopHoc(maLoaiLopHoc);
+//            loaiLopHocDTO.setTenLoaiLopHoc(tenLoaiLopHoc);
+//            loaiLopHocDTO.setMaDescription(maDescription);
+//            descriptionDTO.setMaDescription(maDescription);
+//            descriptionDTO.setTitle(request.getParameter("title").trim());
+//            String content = request.getParameter("description").trim();
+//
+//            descriptionDTO.setContent(content.trim());
+//
+//            descriptionDAO.updateDescriptionDTO(descriptionDTO);
+//            loaiLopHocDAO.updateLoaiLopHoc(loaiLopHocDTO);
+//
+//            try {
+//                Part filePart = request.getPart("Banner");
+//
+////                List<byte[]> imageListThumb = new ArrayList<>();
+////
+////                String base64String = imageThumbArray.substring(imageThumbArray.indexOf(",") + 1);
+////                byte[] imageData = Base64.getDecoder().decode(base64String);
+//                if (filePart != null && filePart.getSize() > 0) {
+//                    // Read the file data from the Part
+//                    InputStream fileContent = filePart.getInputStream();
+//
+//                    // Convert the file data to a byte array
+//                    byte[] imageData = fileContent.readAllBytes();
+//
+//                    // Now you have the byte array containing the uploaded image data
+//                    // You can further process or store this data as needed
+//                    // Example: Convert the byte array to Base64 string
+//                    String base64String = Base64.getEncoder().encodeToString(imageData);
+//
+//                    // Example: Print the Base64 string to the console
+//                    LopHocImageDAO lopHocImageDAO = new LopHocImageDAO();
+//                    lopHocImageDAO.UpdateImage(imageData, maLoaiLopHoc);
+//                    // Example: Store the byte array in a session attribute (this is just a demonstration, you can save it to a database or elsewhere)
+//                }
+//
+//            } catch (Exception e) {
+//                RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+//                rd.forward(request, response);
+//            }
+//
+//        } else {
+//            request.setAttribute("errorMessage", errorMessage);
+//            RequestDispatcher rd = request.getRequestDispatcher("Authorization/Admin/Class/UpdateClassTypePage.jsp");
+//            rd.forward(request, response);
+//
+//        }
     }
 
     private void changeStatusClassType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
